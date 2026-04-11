@@ -12,3 +12,4 @@ ultralytics
 scikit-learn
 pandas
 pillow
+pydantic
