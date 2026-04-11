@@ -46,12 +46,12 @@ Arsitektur berikut hanyalah gambaran besar, bisa berubah kapan saja sesuai kebut
 | Layer | Teknologi |
 |-------|-----------|
 | **Frontend** | Vue 3 + Vite, Pinia (state), Vue Router, Axios |
-| **Backend** | Flask (Python), Flask-JWT-Extended, SQLAlchemy, Marshmallow |
+| **Backend** | FastAPI (Python), python-jose (JWT), SQLAlchemy, Pydantic |
 | **Deep Learning** | YOLOv8 (Ultralytics) — deteksi objek pada citra air |
 | **Machine Learning** | Random Forest (scikit-learn) — klasifikasi data manual |
 | **Database** | Supabase (PostgreSQL) |
 | **File Storage** | Supabase Storage (gambar upload) |
-| **Deployment** | Docker + Nginx + Gunicorn |
+| **Deployment** | Docker + Nginx + Uvicorn |
 
 ---
 
@@ -73,9 +73,9 @@ Arsitektur berikut hanyalah gambaran besar, bisa berubah kapan saja sesuai kebut
 └──────────────────────┼──────────────────────────────────┘
                        │ HTTP (REST API + JWT)
 ┌──────────────────────┼──────────────────────────────────┐
-│                FLASK BACKEND                            │
+│                FASTAPI BACKEND                          │
 │  ┌───────────────────┴───────────────────────────────┐  │
-│  │              API Gateway (Blueprints)             │  │
+│  │              API Gateway (APIRouter)              │  │
 │  │  ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌────────┐ │  │
 │  │  │Auth  │ │User  │ │Analy.│ │Admin │ │Edu/    │ │  │
 │  │  │API   │ │API   │ │API   │ │API   │ │Notif   │ │  │
@@ -204,13 +204,14 @@ PROYEK_PAKAR-AIR/
 │   ├── package.json
 │   └── .env
 │
-├── server/                          # ⚙️ BACKEND (Flask + Python)
+├── server/                          # ⚙️ BACKEND (FastAPI + Python)
 │   ├── app/
-│   │   ├── __init__.py              # App factory (create_app)
+│   │   ├── __init__.py              # App initialization
+│   │   ├── main.py                  # FastAPI app factory
 │   │   ├── config.py                # Configuration (dev/prod)
-│   │   ├── extensions.py            # Flask extensions init
+│   │   ├── dependencies.py          # Dependency injection (auth, db)
 │   │   │
-│   │   ├── api/                     # API Blueprints (routes)
+│   │   ├── api/                     # API Routers (routes)
 │   │   │   ├── __init__.py
 │   │   │   ├── auth.py              #   /api/auth/*
 │   │   │   ├── users.py             #   /api/users/*
@@ -237,7 +238,7 @@ PROYEK_PAKAR-AIR/
 │   │   │   ├── report_service.py    #   CSV/PDF export
 │   │   │   └── education_service.py
 │   │   │
-│   │   ├── schemas/                 # Marshmallow validation
+│   │   ├── schemas/                 # Pydantic schemas (validation)
 │   │   │   ├── __init__.py
 │   │   │   ├── auth_schema.py
 │   │   │   ├── analysis_schema.py
@@ -265,7 +266,7 @@ PROYEK_PAKAR-AIR/
 │   ├── migrations/                  # Alembic DB migrations
 │   ├── uploads/                     # Uploaded images storage
 │   ├── requirements.txt
-│   ├── run.py                       # Flask entry point
+│   ├── run.py                       # Uvicorn entry point
 │   └── .env
 │
 ├── docs/                            # 📖 DOKUMENTASI
@@ -284,7 +285,7 @@ PROYEK_PAKAR-AIR/
 ### Langkah-langkah Proses Analisis
 
 ```
-   USER                          FLASK API                    ML/DL ENGINE
+   USER                          FASTAPI                      ML/DL ENGINE
     │                               │                              │
     │  1. Upload gambar +           │                              │
     │     isi form manual           │                              │
