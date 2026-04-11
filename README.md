@@ -1,5 +1,7 @@
 # 💧 PAKAR-AIR — Sistem Pakar Klasifikasi Sanitasi Air
 
+Arsitektur berikut hanyalah gambaran besar, bisa berubah kapan saja sesuai kebutuhan proyek.
+
 **PAKAR-AIR** adalah aplikasi web berbasis SaaS untuk mengklasifikasikan kualitas sanitasi air, apakah air tersebut **layak digunakan** atau **tidak layak**. Sistem ini menggabungkan **Deep Learning (YOLOv8)** untuk analisis citra air dan **Machine Learning (Random Forest)** untuk analisis data manual, menghasilkan prediksi akhir yang komprehensif.
 
 ---
@@ -47,8 +49,8 @@
 | **Backend** | Flask (Python), Flask-JWT-Extended, SQLAlchemy, Marshmallow |
 | **Deep Learning** | YOLOv8 (Ultralytics) — deteksi objek pada citra air |
 | **Machine Learning** | Random Forest (scikit-learn) — klasifikasi data manual |
-| **Database** | PostgreSQL (production) / SQLite (development) |
-| **File Storage** | Disk lokal (gambar upload) |
+| **Database** | Supabase (PostgreSQL) |
+| **File Storage** | Supabase Storage (gambar upload) |
 | **Deployment** | Docker + Nginx + Gunicorn |
 
 ---
@@ -106,11 +108,12 @@
 │  ┌──────────────────────┴───────────────────────────┐  │
 │  │              Data Layer                          │  │
 │  │  ┌──────────────┐          ┌─────────────────┐  │  │
-│  │  │ PostgreSQL   │          │  File Storage   │  │  │
-│  │  │ (Users,      │          │  (Uploaded       │  │  │
+│  │  │  Supabase    │          │  Supabase       │  │  │
+│  │  │  (PostgreSQL)│          │  Storage        │  │  │
+│  │  │  Users,      │          │  (Uploaded       │  │  │
 │  │  │  Analysis,   │          │   Images)       │  │  │
 │  │  │  Results,    │          │                  │  │  │
-│  │  │  Notif, Edu) │          │                  │  │  │
+│  │  │  Notif, Edu  │          │                  │  │  │
 │  │  └──────────────┘          └─────────────────┘  │  │
 │  └──────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────┘
@@ -387,82 +390,15 @@ Jika Final Score ≤ 0.5 → ❌ TIDAK LAYAK DIGUNAKAN
 
 ---
 
-## 💾 Database Schema
+## 💾 Database
 
-### Tabel: `users`
-| Kolom | Tipe | Keterangan |
-|-------|------|------------|
-| id | INT (PK) | Auto increment |
-| full_name | VARCHAR(100) | Nama lengkap |
-| username | VARCHAR(50, UNIQUE) | Username login |
-| password_hash | VARCHAR(255) | Bcrypt hash |
-| avatar_url | VARCHAR(255) | Path foto profil |
-| role | ENUM('user','admin') | Role pengguna |
-| is_active | BOOLEAN | Status aktif |
-| created_at | DATETIME | Tanggal registrasi |
-| updated_at | DATETIME | Terakhir diupdate |
+Proyek ini menggunakan **Supabase** (PostgreSQL) sebagai database utama dan **Supabase Storage** untuk menyimpan gambar yang diunggah. Database terdiri dari 5 tabel utama:
 
-### Tabel: `analyses`
-| Kolom | Tipe | Keterangan |
-|-------|------|------------|
-| id | INT (PK) | Auto increment |
-| user_id | INT (FK→users) | Pemilik analisis |
-| image_path | VARCHAR(255) | Path gambar yang diupload |
-| image_original_name | VARCHAR(255) | Nama file asli |
-| water_color | VARCHAR(20) | jernih/kuning/coklat/hijau/putih |
-| water_smell | VARCHAR(20) | tidak_berbau/sedikit/menyengat |
-| water_source | VARCHAR(20) | sumur/sungai/PDAM/mata_air/danau |
-| environment_condition | VARCHAR(20) | bersih/cukup_bersih/kotor |
-| water_ph | FLOAT (nullable) | pH air (opsional) |
-| water_temperature | FLOAT (nullable) | Suhu air (opsional) |
-| additional_notes | TEXT | Catatan tambahan |
-| status | ENUM | pending/processing/completed/failed |
-| created_at | DATETIME | Tanggal analisis |
-
-### Tabel: `analysis_results`
-| Kolom | Tipe | Keterangan |
-|-------|------|------------|
-| id | INT (PK) | Auto increment |
-| analysis_id | INT (FK→analyses) | Relasi ke analisis |
-| final_category | VARCHAR(20) | layak / tidak_layak |
-| final_confidence | FLOAT | 0.0 – 1.0 |
-| dl_category | VARCHAR(20) | Hasil YOLO: layak/tidak_layak |
-| dl_confidence | FLOAT | Confidence YOLO |
-| dl_detections | JSON | Objek yang terdeteksi + score |
-| ml_category | VARCHAR(20) | Hasil RF: layak/tidak_layak |
-| ml_confidence | FLOAT | Confidence RF |
-| ml_feature_importance | JSON | Bobot fitur RF |
-| explanation | TEXT | Penjelasan gabungan DL+ML |
-| recommendation | TEXT | Rekomendasi tindak lanjut |
-| created_at | DATETIME | Tanggal hasil |
-
-### Tabel: `notifications`
-| Kolom | Tipe | Keterangan |
-|-------|------|------------|
-| id | INT (PK) | Auto increment |
-| user_id | INT (FK→users) | Penerima notifikasi |
-| analysis_id | INT (FK→analyses) | Analisis terkait |
-| title | VARCHAR(100) | Judul notifikasi |
-| message | TEXT | Isi pesan |
-| type | VARCHAR(20) | analysis_complete/system/info |
-| is_read | BOOLEAN | Status baca |
-| created_at | DATETIME | Tanggal dibuat |
-
-### Tabel: `education_articles`
-| Kolom | Tipe | Keterangan |
-|-------|------|------------|
-| id | INT (PK) | Auto increment |
-| title | VARCHAR(200) | Judul artikel |
-| slug | VARCHAR(200, UNIQUE) | URL slug |
-| content | TEXT | Isi artikel (HTML/Markdown) |
-| category | VARCHAR(30) | parameter/tips/interpretasi |
-| thumbnail_url | VARCHAR(255) | Path gambar thumbnail |
-| is_published | BOOLEAN | Status publikasi |
-| view_count | INT | Jumlah view |
-| created_at | DATETIME | Tanggal dibuat |
-| updated_at | DATETIME | Terakhir diupdate |
-
-### Relasi Antar Tabel
+- **users** — Data pengguna (profil, role, status aktif)
+- **analyses** — Data analisis yang disubmit (gambar, parameter manual, status)
+- **analysis_results** — Hasil prediksi DL+ML (kategori, confidence, deteksi, penjelasan)
+- **notifications** — Notifikasi ke pengguna
+- **education_articles** — Artikel edukasi kualitas air
 
 ```
 users ──────┐
@@ -565,7 +501,7 @@ AdminLayout        → Admin Sidebar + Topbar + Content (untuk admin)
 ### Prerequisites
 - Node.js 18+
 - Python 3.10+
-- PostgreSQL 14+ (atau SQLite untuk development)
+- Akun Supabase (https://supabase.com)
 
 ### 1. Clone Repository
 ```bash
@@ -577,7 +513,6 @@ cd PROYEK_PAKAR-AIR
 ```bash
 cd client
 npm install
-cp .env.example .env
 npm run dev          # → http://localhost:5173
 ```
 
@@ -588,8 +523,6 @@ python -m venv venv
 venv\Scripts\activate          # Windows
 # source venv/bin/activate     # Linux/Mac
 pip install -r requirements.txt
-cp .env.example .env
-flask db upgrade               # Migrate database
 python run.py                  # → http://localhost:5000
 ```
 
@@ -600,19 +533,6 @@ server/ml/saved_models/
 ├── water_yolo.pt         # YOLOv8 trained model
 ├── water_rf.pkl          # Random Forest model
 └── label_encoder.pkl     # Label encoder
-```
-
-### Environment Variables (.env)
-```env
-# Backend
-FLASK_ENV=development
-SECRET_KEY=your-secret-key
-JWT_SECRET_KEY=your-jwt-secret
-DATABASE_URL=sqlite:///pakar_air.db
-UPLOAD_FOLDER=uploads
-
-# Frontend
-VITE_API_BASE_URL=http://localhost:5000/api
 ```
 
 ---
