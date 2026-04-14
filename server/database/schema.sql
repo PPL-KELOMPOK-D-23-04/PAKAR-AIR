@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
     full_name text NOT NULL,
     username text UNIQUE NOT NULL,
     avatar_url text,
-    is_admin boolean DEFAULT false, -- Pakai Boolean sesuai permintaan Anda
+    is_admin boolean DEFAULT false,
     is_active boolean DEFAULT true,
     created_at timestamptz DEFAULT now(),
     updated_at timestamptz DEFAULT now()
