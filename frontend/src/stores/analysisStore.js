@@ -5,3 +5,9 @@ export const useAnalysisStore = defineStore('analysis', {
     image: null
   })
 })
+
+state: () => ({
+  image: null,
+  manualData: {}
+})
+
