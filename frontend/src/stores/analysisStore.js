@@ -10,3 +10,9 @@ export const useAnalysisStore = defineStore('analysis', {
   setImage(file) {
     this.image = file
   },
+
+    setManualData(data) {
+      this.manualData = data
+    }
+  }
+})
