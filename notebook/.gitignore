@@ -7,3 +7,6 @@ Annotations/
 JPEGImages/
 ImageSets/
 dataset/
+runs/
+
+.pt
