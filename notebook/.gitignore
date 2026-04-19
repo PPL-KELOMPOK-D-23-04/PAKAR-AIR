@@ -10,3 +10,11 @@ dataset/
 runs/
 
 *.pt
+
+train.txt
+test.txt
+val.txt
+
+*.jpeg
+*.jpg
+*.png
