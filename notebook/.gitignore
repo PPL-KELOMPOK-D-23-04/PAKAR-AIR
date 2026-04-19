@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+
+images/
+labels/
+Annotations/
+JPEGImages/
+ImageSets/

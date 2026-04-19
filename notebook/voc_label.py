@@ -1,73 +1,98 @@
-"""VOC converted to YOLO"""
+"""VOC converted to YOLO (FIXED)"""
 import xml.etree.ElementTree as ET
 import os
-from os import getcwd
 
 sets = ['train', 'val', 'test']
-classes = ['floater']  # class names 
-abs_path = os.getcwd()
+classes = ['floater']
+
+BASE_PATH = 'dataset/IWHR_AI_Lable_Floater_V1-package2'
+ANNOTATION_PATH = os.path.join(BASE_PATH, 'Annotations')
+IMAGE_PATH = os.path.join(BASE_PATH, 'images')
+LABEL_PATH = 'labels'
+
+os.makedirs(LABEL_PATH, exist_ok=True)
+
 
 def convert(size, box):
-    dw = 1. / (size[0])
-    dh = 1. / (size[1])
+    dw = 1. / size[0]
+    dh = 1. / size[1]
+
     x = (box[0] + box[1]) / 2.0 - 1
     y = (box[2] + box[3]) / 2.0 - 1
     w = box[1] - box[0]
     h = box[3] - box[2]
-    x = x * dw
-    w = w * dw
-    y = y * dh
-    h = h * dh
-    return x, y, w, h
-import shutil
-def movefile(oripath,tardir):
-    filename = os.path.basename(oripath)
-    tarpath = os.path.join(tardir, filename)
-    if not os.path.exists(oripath):
-        print('the dir is not exist:%s' % oripath)
-        status = 0
-    else:
-        if os.path.exists(tardir):
-            if os.path.exists(tarpath):
-                os.remove(tarpath)
-        else:
-            os.makedirs(tardir)
-        shutil.move(oripath, tardir)
-        status = 1
-    return status
+
+    return x * dw, y * dh, w * dw, h * dh
+
+
 def convert_annotation(image_id):
-    in_file = open('Annotations/%s.xml' % (image_id), encoding='UTF-8')
-    out_file = open('labels/%s.txt' % (image_id), 'w')
-    tree = ET.parse(in_file)
+    xml_file = os.path.join(ANNOTATION_PATH, f"{image_id}.xml")
+    txt_file = os.path.join(LABEL_PATH, f"{image_id}.txt")
+
+    if not os.path.exists(xml_file):
+        print(f"❌ XML not found: {xml_file}")
+        return
+
+    tree = ET.parse(xml_file)
     root = tree.getroot()
+
     size = root.find('size')
     w = int(size.find('width').text)
     h = int(size.find('height').text)
-    for obj in root.iter('object'):
-        difficult = obj.find('difficult').text
-        cls = obj.find('name').text
-        if cls not in classes or int(difficult) == 1:
-            continue
-        cls_id = classes.index(cls)
-        xmlbox = obj.find('bndbox')
-        b = (float(xmlbox.find('xmin').text), float(xmlbox.find('xmax').text), float(xmlbox.find('ymin').text),
-             float(xmlbox.find('ymax').text))
-        b1, b2, b3, b4 = b
-        if b2 > w:
-            b2 = w
-        if b4 > h:
-            b4 = h
-        b = (b1, b2, b3, b4)
-        bb = convert((w, h), b)
-        out_file.write(str(cls_id) + " " + " ".join([str(a) for a in bb]) + '\n')
-wd = getcwd()
+
+    with open(txt_file, 'w') as out_file:
+        for obj in root.iter('object'):
+            difficult = obj.find('difficult').text
+            cls = obj.find('name').text
+
+            if cls not in classes or int(difficult) == 1:
+                continue
+
+            cls_id = classes.index(cls)
+            xmlbox = obj.find('bndbox')
+
+            b = (
+                float(xmlbox.find('xmin').text),
+                float(xmlbox.find('xmax').text),
+                float(xmlbox.find('ymin').text),
+                float(xmlbox.find('ymax').text)
+            )
+
+            # clamp
+            b = (min(b[0], w), min(b[1], w), min(b[2], h), min(b[3], h))
+
+            bb = convert((w, h), b)
+            out_file.write(f"{cls_id} {' '.join(map(str, bb))}\n")
+
+
+# 🔥 MAIN LOOP
 for image_set in sets:
-    print(image_set)
-    if not os.path.exists('labels/'):
-        os.makedirs('labels/')
-    image_ids = open('ImageSets/Main/%s.txt' % (image_set)).read().strip().split()
-    list_file = open('%s.txt' % (image_set), 'w')
+    print(f"Processing: {image_set}")
+
+    txt_path = f'ImageSets/Main/{image_set}.txt'
+    if not os.path.exists(txt_path):
+        print(f"❌ Missing: {txt_path}")
+        continue
+
+    image_ids = open(txt_path).read().strip().split()
+    list_file = open(f'{image_set}.txt', 'w')
+
     for image_id in image_ids:
-        list_file.write(abs_path + '/images/%s.jpg\n' % (image_id))
+        # auto detect ekstensi gambar
+        img_path_jpg = os.path.join(IMAGE_PATH, f"{image_id}.jpg")
+        img_path_png = os.path.join(IMAGE_PATH, f"{image_id}.png")
+
+        if os.path.exists(img_path_jpg):
+            img_path = img_path_jpg
+        elif os.path.exists(img_path_png):
+            img_path = img_path_png
+        else:
+            print(f"❌ Image not found: {image_id}")
+            continue
+
+        list_file.write(os.path.abspath(img_path) + '\n')
         convert_annotation(image_id)
+
     list_file.close()
+
+print("✅ Conversion done!")
