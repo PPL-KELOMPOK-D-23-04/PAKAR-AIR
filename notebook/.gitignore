@@ -9,4 +9,4 @@ ImageSets/
 dataset/
 runs/
 
-.pt
+*.pt
