@@ -1,0 +1,515 @@
+<!-- 
+    This document can be used by an administrator as a template to predefine configuration settings for end users, valid for SAP Business Client 6.0 and starting with PL9.
+    As administrator, you can do the following:
+        1 Define default values that influence the behavior of SAP Business Client at runtime
+        2 Define default values for configuration settings that can be changed by the user in settings dialog boxes. 
+            For example, you can set the "Entry Page" value to "First work center page": 
+            <EntryPage>FirstWorkcenterPage</EntryPage>
+            If you do not specify Final="true", the values are default values that the end user can change.
+        3 Prevent the user from changing values in the configuration dialog boxes by specifying the attribute Final="true".
+            For example, when specifying
+            <EntryPage Final="true">FirstWorkcenterPage</EntryPage>
+            the entry page will be set to the first work center page but the user will not see the "Entry Page" setting in the "Personalize" dialog box. 
+        4 Prevent the user from creating new entries in connection dialog boxes (System Selection, Search Providers)          
+-->
+
+<NwbcOptions>
+
+  <SingleOptions>
+
+    <!-- Settings: Personalize - Appearance. 
+        Settings in this section are part of the options a user may change in the "Personalize" dialog box. -->
+
+    <!-- Define the theme. Possible values are "Standard" (Dark), "StandardLight" (Light) "BlueCrystal" and "HighContrast". -->
+    <Theme>Standard</Theme>
+
+    <!-- Define a zoom level for the content area between 50 and 400 percent. -->
+    <Fontsize>100</Fontsize>
+
+    <!-- Define the font size in the content area. Possible values are "Smallest", "Smaller", "Medium", "Larger", "Largest". -->
+    <CanvasFontSize>Medium</CanvasFontSize>
+
+    <!-- Settings: Personalize - Accessibility.
+        Settings in this section are part of the options a user may change in the "Personalize" dialog box.  -->
+
+    <!-- Activate or deactivate the accessibility mode. -->
+    <AccessibilityMode>false</AccessibilityMode>
+
+    <!-- Settings: Personalize - Logon.
+        The settings in this section are part of the options a user may change in the "Personalize" dialog box.  
+        The remaining logon settings are maintained in the registry.  -->
+
+    <!-- Display or hide system selector on startup. In the example below, if you specify false, the user will get the system selector on startup. -->
+    <AutologonMode>false</AutologonMode>
+
+    <!-- Define the entry page. Possible values are "FirstPinnedTab", "IndexPage", "NewTabPage", "FirstWorkcenterPage".  -->
+    <EntryPage>FirstPinnedTab</EntryPage>
+
+    <!-- Define the display mode of the "Administrator Configuration File" field. Possible values are "Hidden" and "ReadOnly". -->
+    <!-- <VisibilityAdminConnectionConfigurationFile>Hidden</VisibilityAdminConnectionConfigurationFile> -->
+
+    <!-- Define the display mode of the "User Configuration File (Path)" field. Possible values are "Hidden" and "ReadOnly". -->
+    <!-- <VisibilityUserConnectionConfigurationPath>Hidden</VisibilityUserConnectionConfigurationPath> -->
+
+    <!-- Settings: Personalize - SAP GUI Interoperability.
+        Settings in this section are part of the options a user may change in the "Personalize" dialog box.  -->
+
+    <!-- Display the user's "Easy Access Favorites" in the favorites panel in addition to Business Client favorites.  -->
+    <MixRemoteFavoritesIntoMenutree>false</MixRemoteFavoritesIntoMenutree>
+
+    <!-- Display the user's "Easy Access Favorites" as a work center. -->
+    <MixRemoteFavoritesIntoNavtree>false</MixRemoteFavoritesIntoNavtree>
+
+    <!-- Display the SAP menu instead of the menu defined in the user's roles. -->
+    <UseSapMenuInsteadUserMenu>false</UseSapMenuInsteadUserMenu>
+
+    <!-- Keep the SAP GUI theme. Allows using the SAP GUI theme that is selected in the SAP Logon options, and overrides the Business Client default theme. -->
+    <KeepSapGuiTheme>false</KeepSapGuiTheme>
+
+    <!-- Start transaction without validation check against the user menu and applications in the backend by setting to "true". -->
+    <StartTransactionWithoutValidation>false</StartTransactionWithoutValidation>
+
+    <!-- Ensure that Business Client does not close tabs with SAP GUI transactions when the user or program navigates back to the SAP GUI entry screen 
+                        by setting this parameter to "true". -->
+    <DoNotCloseGuiTabs>false</DoNotCloseGuiTabs>
+
+    <!-- Open session in new window. If activated, new SAP GUI sessions are opened in a new tab within the same Business Client window. 
+           Otherwise, they are opened in a new window.  -->
+    <OpenNewGuiSessionInNewWindow>false</OpenNewGuiSessionInNewWindow>
+
+    <!-- Show transaction codes. If activated, the transaction codes (technical names) are displayed in addition to the transaction names 
+                        in the navigation and favorites panel, the Index and New Tab page. -->
+    <ShowTechnicalNames>true</ShowTechnicalNames>
+
+    <!-- Enable or disable SAP GUI OK code. If activated, the command field for SAP GUI transactions that run in Business Client will be displayed. 
+                        Since NWBC 4.0, the default value of this property is "false". -->
+    <EnableSapGuiOkCode>false</EnableSapGuiOkCode>
+
+    <!-- Merge system function bar and application bar. If deactivated, the SAP GUI system function bar and the SAP GUI application bar 
+                        for transactions running inside Business Client are displayed in separate rows. -->
+    <MergeGuiToolbar>True</MergeGuiToolbar>
+
+    <!-- Display or hide the SAP GUI title bar of an application in the content area. -->
+    <ShowGuiCaption>true</ShowGuiCaption>
+
+    <!-- Specify SAP Easy Access as the start screen of SAP GUI sessions by setting this parameter to "true". When set to "false", SAP GUI sessions are started in workplace mode (see SAP note 631198 for details). The parameter is valid for NWBC and Fiori Launchpad connections. -->
+    <EnableSapEasyAccess>false</EnableSapEasyAccess>
+
+    <!-- When this property is set to true, the menu bar of the SAP GUI window is integrated into the menu button and the menu bar of the SAP GUI window disappears. 
+         This property is activated by default-->
+    <ShowGuiMenuInToolbar>true</ShowGuiMenuInToolbar>
+
+    <!-- Settings: Personalize - Other.
+        Settings in this section are part of the options a user may change in the "Personalize" dialog box.  -->
+
+    <!-- Open side panel with new tab. If true, a side panel is displayed, for those applications with associated side panels, in the new tab.-->
+    <OpenSidepanelWithNewTab>false</OpenSidepanelWithNewTab>
+
+    <!-- Display tab previews ("thumbnails") in the taskbar for all tabs that are currently open.  -->
+    <TaskbarTabPreviews>true</TaskbarTabPreviews>
+
+    <!-- Display elements of the header area (tabs, pushbuttons for panels, and quick launch field) in one or two rows. -->
+    <ShowTabsOnSeparateOneRow>true</ShowTabsOnSeparateOneRow>
+
+    <!-- Activate or deactivate animations for tabs. Deactivating animations can improve the performance when tabs are created. -->
+    <EnableTabAnimations>false</EnableTabAnimations>
+
+    <!-- Activate or deactivate mostly all animations, including tab animations. Deactivating animations can improve the performance.  -->
+    <EnableAnimations>false</EnableAnimations>
+
+    <!-- Show system information in status bar. If true, NWBC displays a status bar with system information. -->
+    <ShowSystemInfo>false</ShowSystemInfo>
+
+    <!-- Show system information in tab title. If true, Business Client displays the system/client information as a prefix in the tab title for SAP GUI transactions, 
+       Web Dynpro ABAP applications, service maps, and Business Client overview pages. -->
+    <ShowSystemInfoInTabTitle>false</ShowSystemInfoInTabTitle>
+
+    <!--Show work center links on Index page. If true, the work center titles on the "Index" page act as links to the first contained site.-->
+    <ShowWoCLinksOnIndexPage>true</ShowWoCLinksOnIndexPage>
+
+    <!--Activate "Overview Work Center" and "Overview Page" links on Index page, which launch service maps for the respective work center or folder content.-->
+    <ShowOverviewLinkOnIndexPage>false</ShowOverviewLinkOnIndexPage>
+
+    <!--Freezes the content of the pinned tab. For example, on a tab you have a search engine website and perform a search and view the search results. 
+      If this property is set to true, then the next time you return to this tab you will still see the search results. If the property is not not set to true, 
+      the website is still visible but not the search results. -->
+    <FreezePinnedTabs>false</FreezePinnedTabs>
+
+    <!-- Settings: Support. -->
+
+    <!-- Define trace level. Possible values are "Verbose", "Info", "Warning", or "Error". 
+	         In order to prevent the user from changing the value in the "Support" dialog box, you can specify the setting as final, 
+	         e.g. <TraceLevel  SFinal="true">Warning</TraceLevel>. The setting is also then not displayed in the dialog box.-->
+    <TraceLevel>Warning</TraceLevel>
+
+    <!-- System connections: System selector and dynamic handling.
+        System connections themselves are configured in an administrator configuration file based on the SAP UI landscape format. 
+        With some settings in this section, you can control the system selection and maintenance screens.  -->
+
+    <!-- Sets the visible scope for connection types which are visible in System Selector: 
+       Hides all entries of not permitted type of connection in the system selector list. Exclude not permitted connection types from creation in the system selector. 
+       Only shows properties for permitted connection types in the Settings dialog box. You can specify multiple types by separating them with commas. -->
+    <ShowConnectionTypes>NWBC, SAPGUI, FIORI</ShowConnectionTypes>
+
+    <!-- Show Connections as Read-Only. Use this parameter to prevent users from adding, deleting and changing system connections. -->
+    <ShowConnectionsAsReadOnly>false</ShowConnectionsAsReadOnly>
+
+    <!-- Sets the default view of the system selector. Possible values are ExplorerView and ListView. This setting only has an effect when the system selector is being opened 
+	     for the very first time. Later the current state of the system selector will be persisted and restored at every startup. -->
+    <DefaultSystemSelectorView>ListView</DefaultSystemSelectorView>
+
+    <!-- Sets the default selected workspace of the system selector. Specify the GUID of an existing workspace or %ALL%, if you want to display connections from all workspaces. 
+	     This setting only has an effect when the system selector is being opened for the very first time. Later the current state of the system selector will be persisted and 
+	  	 restored at every startup. -->
+    <DefaultSelectedWorkspaceGuid>%ALL%</DefaultSelectedWorkspaceGuid>
+
+    <!-- Sets the order and presence of the columns in the system selectors connection list. It is a comma-separated list which has to contain at least one of the columns
+       Name, Description, SID, Server and Comment. Columns in the system selector appear in the same order as in the list. Duplicate, wrong-spelled and unknown columns will be skipped.
+       If after skipping of invalid columns the final list is empty, all columns will be displayed in the default order. -->
+    <SystemSelectorTableColumns>Name, Description, SID, Server, Comment</SystemSelectorTableColumns>
+
+    <!-- Define a set of base URLs that will be used to generate a set of default URLs for Business Client connections by combining each base URL 
+                        with all available protocols, application server hosts and ports of the specific system.
+                        The generated set of default URLs will be offered for selection in the "URL" dropdown listbox when creating or editing an Business Client connection. 
+                        All URLs in the set will be pinged; the URL with the fastest response time will be suggested.
+                        You can specify multiple base URLs by separating them with commas. -->
+    <DefaultConnectionBaseUrls>/sap/bc/nwbc,/sap/bc/ui2/nwbc</DefaultConnectionBaseUrls>
+
+    <!-- Define a set of base URLs that will be used to generate a set of default URLs for Fiori Launchpad connections by combining each base URL 
+                        with all available protocols, application server hosts and ports of the specific system.
+                        The generated set of default URLs will be offered for selection in the "URL" dropdown listbox when creating or editing a Fiori Launchpad connection. 
+                        All URLs in the set will be pinged; the URL with the fastest response time will be suggested.
+                        You can specify multiple base URLs by separating them with commas. -->
+    <DefaultFioriLaunchpadUrls>/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html,/sap/bc/ui2/flp/FioriLaunchpad.html</DefaultFioriLaunchpadUrls>
+
+    <!-- Activate or deactivate the appearance of the secure login client attribute in the user's systems dialog box.-->
+    <ShowSecureLoginClientAttribute>false</ShowSecureLoginClientAttribute>
+
+    <!-- If an Business Client connection is defined locally, Business Client, by default, stores the user name together with the connection in 
+                        SAPUILandscape.xml when the user accesses the system. 
+                        The next time the user connects to this system, the user name is transmitted to the system logon. 
+                        If set to "true", DoNotSaveConnectionUser prevents Business Client from storing the user name and transmitting it at the next logon. -->
+    <DoNotSaveConnectionUser>false</DoNotSaveConnectionUser>
+
+    <!-- Enable connection to systems that do not have a local definition via startup URL. If you specify "true", Business Client can be started via 
+                        sap-nwbc:// URLs to systems that are not predefined by admin.  -->
+    <AllowTemporaryConnections>false</AllowTemporaryConnections>
+    
+    <!-- Appearance of Business Client menus and shell UI elements. Possible values are "true" or "false". -->
+    
+    <!--ShowFavoriteMenu can activate or deactivate the favorites panel. -->
+    <ShowFavoriteMenu>true</ShowFavoriteMenu>
+
+    <!--ShowNavigationPanel can activate or deactivate the navigation panel. -->
+    <ShowNavigationPanel>true</ShowNavigationPanel>
+
+    <!--ShowViewMenu can activate or deactivate the "View" menu. -->
+    <ShowViewMenu>true</ShowViewMenu>
+
+    <!--ShowSettingsMenu can activate or deactivate the "Settings" menu. -->
+    <ShowSettingsMenu>true</ShowSettingsMenu>
+
+    <!--ShowWindowMenu can activate or deactivate the "Window" menu. -->
+    <ShowWindowMenu>true</ShowWindowMenu>
+
+    <!--ShowHelpMenu can activate or deactivate the "Help" menu. -->
+    <ShowHelpMenu>true</ShowHelpMenu>
+
+    <!--ShowSidePanelMenu can activate or deactivate the "Side Panels" entry in the "Settings > Connections" menu. -->
+    <ShowSidePanelMenu>false</ShowSidePanelMenu>
+
+    <!--ShowSapNwbcHelpMenuItem can activate or deactivate the "SAP Business Client Help" menu item that is shown in the "Help" menu. -->
+    <ShowSapNwbcHelpMenuItem>true</ShowSapNwbcHelpMenuItem>
+
+    <!--ShowSupportReportMenuItem can activate or deactivate the "Create Support Report" menu item that is shown in the "Help" menu. -->
+    <ShowSupportReportMenuItem>true</ShowSupportReportMenuItem>
+
+    <!--ShowExtendedSupportFeaturesMenuItem can activate or deactivate the "Extended Supportability" menu item that is shown in the "Help" menu. -->
+    <ShowExtendedSupportFeaturesMenuItem>true</ShowExtendedSupportFeaturesMenuItem>
+
+    <!--ShowToolsPropertyCollectorMenuItem can activate or deactivate the "Tools" menu item that is shown in the "Help" menu 
+                       when the "Ctrl" key is pressed simultaneously. -->
+    <ShowToolsPropertyCollectorMenuItem>true</ShowToolsPropertyCollectorMenuItem>
+
+    <!-- Show side panels  as Read-Only. Use this parameter to prevent users from adding, deleting and changing side panels. -->
+    <ShowSidePanelsAsReadOnly>false</ShowSidePanelsAsReadOnly>
+
+    <!-- Show search providers as Read-Only. Use this parameter to prevent users from adding, deleting and changing search providers. -->
+    <ShowSearchProvidersAsReadOnly>false</ShowSearchProvidersAsReadOnly>
+
+    <!-- Quick launch and search settings. -->
+
+    <!-- Hide quick launch  completely by setting to "false". -->
+    <EnableQuickLaunch>True</EnableQuickLaunch>
+
+    <!--EnableStartUrlQuickLaunch can activate or deactivate the "Navigate to Web Address" menu item that is shown in the "Quick Launch". -->
+    <EnableStartUrlQuickLaunch>true</EnableStartUrlQuickLaunch>
+
+    <!--EnableStartApplicationQuickLaunch can activate or deactivate the "Start transaction '...'" menu item that is shown in the "Quick Launch". -->
+    <EnableStartApplicationQuickLaunch>true</EnableStartApplicationQuickLaunch>
+
+    <!--EnableSearchQuickLaunch can activate or deactivate the "Search for ... in" menu item in the quick launch dropdown menu, 
+                       which triggers a search for a term in the last search provider used. -->
+    <EnableSearchQuickLaunch>true</EnableSearchQuickLaunch>
+
+    <!-- EnableFavoritesRecentsQuickLaunch can activate or deactivate the "Favorites and Recents" section in the quick launch dropdown menu.
+                       By specifying the attribute Final="true", the search provider does not occur in the "Search Providers" dialog box. -->
+    <EnableFavoritesRecentsQuickLaunch>true</EnableFavoritesRecentsQuickLaunch>
+
+    <!-- EnableNavigationItemsQuickLaunch can activate or deactivate the "My Work Area" section in the quick launch dropdown menu.
+                       By specifying the attribute Final="true", the search provider does not occur in the "Search Providers" dialog box.  -->
+    <EnableNavigationItemsQuickLaunch>true</EnableNavigationItemsQuickLaunch>
+
+    <!--ShowServerApplicationsQuickLaunch can activate or deactivate the "Transactions and Applications" section in the quick launch dropdown menu. 
+      By specifying the attribute Final="true", the search provider does not occur in the "Search Providers" dialog box.-->
+    <ShowServerApplicationsQuickLaunch>true</ShowServerApplicationsQuickLaunch>
+
+    <!--EnableDesktopSearchQuickLaunch can activate or deactivate the "Desktop Search" section in the quick launch dropdown menu.
+                       By specifying the attribute Final="true", the search provider does not occur in the "Search Providers" dialog box. -->
+    <EnableDesktopSearchQuickLaunch>true</EnableDesktopSearchQuickLaunch>
+
+    <!--AnnounceDynamicSearchprovidersViaTrayballoons can activate appearance of tray balloons if search provider was added dynamically. -->
+    <AnnounceDynamicSearchprovidersViaTrayballoons>false</AnnounceDynamicSearchprovidersViaTrayballoons>
+
+
+    <!-- Runtime behavior. -->
+
+    <!-- In the example below, you specify a default value for the maximum number of Web Dynpro ABAP sessions opened in parallel. 
+                        This can be used to limit the server load. -->
+    <MaxWdaSessions>30</MaxWdaSessions>
+
+    <!-- Optional, when specified (in seconds) a dialog box informs the user about idle sessions and allows to view/close session or ignore message. 
+                         A soft way to keep memory load and database locks on server low. -->
+    <!--    <IdleTimeout>1800</IdleTimeout> -->
+
+    <!--  If you specify "true", Business Client checks by default whether SAP GUI for Windows is installed in the correct version.  -->
+    <WinguiCheck>true</WinguiCheck>
+
+    <!-- ShowDataLossPopup activates or deactivates the appearance of the data loss dialog box when the last shell window is being closed. -->
+    <ShowDataLossPopup Final="true">false</ShowDataLossPopup>
+
+    <!--  If you specify "true", Business Client checks every HTTP response URL against the connection-based whitelist. If Business Client detects any security risk, 
+                         it disables parts of the window.external APIs so that Business Client runs in very restricted mode. -->
+    <ActivateHttpSecurityCheck>false</ActivateHttpSecurityCheck>
+
+    <!-- Enable an additional process to handle external commands like SAP shortcuts and external startup URLs (sap-nwbc). If activated, 
+                        it is possible to open the shortcut/external URL within a running Business Client process as a new tab if the connection settings are the same. -->
+    <ActivateDesktopAgent>true</ActivateDesktopAgent>
+    
+    <!-- If set to "true", only navigation targets explicitely assigned to the user in the navigation tree provided by the User-/SAP-Menu  
+    and quick launch targets will be considered in the Frequently Used and Last Opened sections on the New Tab page and in the taskbar recents. -->
+    <AddOnlyStableNavigationItemsToRecents>false</AddOnlyStableNavigationItemsToRecents>
+	
+    <!-- If set to "true", native WinHttp methods are used for proxy resolving as they give ususally the best results, but has sometimes
+    performance loss. Per default the standard .NET proxy resolving is used to avoid performance issues at start time. -->
+    <UseWinHttpForProxyDetection>false</UseWinHttpForProxyDetection>
+
+    <!-- Predefine active connection by corresponding landscape service UUID of system connection  -->
+    <!-- <ActiveConnectionGuid>LandscapeServiceUUID</ActiveConnectionGuid> -->
+
+    <!-- New Tab page  -->
+
+    <!-- If activated, shows a link to "SAP Easy Access" entry page in the new tab page of Business Client. -->
+    <ShowEasyAccessLinkInNewTabPage>true</ShowEasyAccessLinkInNewTabPage>
+
+    <!-- For Enterprise Portal backend only. -->
+
+    <!-- Define a branding image to be displayed on the "Index" and "New Tab" pages instead of the SAP logo. 
+                        Specify an absolute path, e.g. "http(s)://hostname/logo.gif", or a path relative to the connected system, starting with "/". 
+                        "/irj/go/km/docs/etc/public/mimes/images/pictograms/logo.gif", for instance, refers to the image stored in the KM repository of the portal 
+                        you are connected to. Business Client enhances the relative URL with host name of the system connection, e.g. 
+                        https://host:port + /irj/go/km/docs/etc/public/mimes/images/pictograms/logo.gif -->
+    <!-- <BrandingImage>/irj/go/km/docs/etc/public/mimes/images/pictograms/logo.gif</BrandingImage> -->
+
+    <!-- Shortcuts -->
+    
+    <!--EditableShortCuts can activate or deactivate the ability to edit NWBC-shortcuts by users -->
+    <EditableShortCuts>true</EditableShortCuts>
+    
+  </SingleOptions>
+
+
+<!-- You can change key plus modifier keys combination for defined shortcut commands. Do not change ID.  
+        The following shortcuts are valid for NWBC 4.0 and NWBC 5.0 -->
+  
+
+    <!--   <Nwbc40Commands>
+
+        <NwbcCommand>
+	<ID>FocusSpeedBar</ID>
+ 	<Key>L</Key>
+	<ModifierKeys>Alt, Control</ModifierKeys>
+ 	<Description>Focus on Quick Launch/Search Bar</Description>
+        </NwbcCommand>
+        <NwbcCommand>
+	<ID>CloseCurrentTab</ID>
+	<Key>W</Key>
+	<ModifierKeys>Control</ModifierKeys>
+	<Description>Close Tab</Description>
+        </NwbcCommand>
+        <NwbcCommand>
+	<ID>OpenNewTab</ID>
+	<Key>T</Key>
+	<ModifierKeys>Control</ModifierKeys>
+        </NwbcCommand>
+        <NwbcCommand>
+	<ID>Refresh</ID>
+	<Key>F5</Key>
+	<ModifierKeys>None</ModifierKeys>
+	<Description>Refresh Content Area </Description>
+        </NwbcCommand>
+        <NwbcCommand>
+	<ID>Favorites</ID>
+	<Key>I</Key>
+	<ModifierKeys>Control, Shift</ModifierKeys>
+	<Description>Favorites</Description>
+        </NwbcCommand>
+        <NwbcCommand>
+	<ID>Navipanel</ID>
+	<Key>N</Key>
+	<ModifierKeys>Control, Shift</ModifierKeys>
+	<Description>Navigation Panel</Description>
+        </NwbcCommand>
+        <NwbcCommand>
+	<ID>Sidepanel</ID>
+	<Key>P</Key>
+	<ModifierKeys>Control, Shift</ModifierKeys>
+	<Description>Side Panel</Description>
+        </NwbcCommand>
+        <NwbcCommand>
+	<ID>FullScreen</ID>
+	<Key>F11</Key>
+	<ModifierKeys>Alt, Control</ModifierKeys>
+	<Description>Full Screen</Description>
+        </NwbcCommand>
+        <NwbcCommand>
+	<ID>FocusNextGroup</ID>
+	<Key>F6</Key>
+	<ModifierKeys>None</ModifierKeys>
+	<Description>Focus on Next Area</Description>
+        </NwbcCommand>
+        <NwbcCommand>
+	<ID>FocusPreviousGroup</ID>
+	<Key>F6</Key>
+	<ModifierKeys>Shift</ModifierKeys>
+	<Description>Focus on Previous Area</Description>
+        </NwbcCommand>
+        <NwbcCommand>
+   	<ID>FocusMenu</ID>
+	<Key>M</Key>
+	<ModifierKeys>Alt, Control</ModifierKeys>
+	<Description>Focus on Menu</Description>
+        </NwbcCommand>
+        <NwbcCommand>
+	<ID>FocusTabs</ID>
+	<Key>D0</Key>
+	<ModifierKeys>Alt</ModifierKeys>
+	<Description>Focus on Tabs</Description>
+        </NwbcCommand>
+        <NwbcCommand>
+	<ID>FocusLeftPanel</ID>
+	<Key>D1</Key>
+	<ModifierKeys>Alt</ModifierKeys>
+	<Description>Focus on Navigation Panel</Description>
+        </NwbcCommand>    
+        <NwbcCommand>
+	<ID>FocusMainCanvas</ID>
+	<Key>D2</Key>
+	<ModifierKeys>Alt</ModifierKeys>
+	<Description>Focus on Content Area</Description>
+        </NwbcCommand>    
+        <NwbcCommand>
+	<ID>FocusSidepanel</ID>
+	<Key>D3</Key>
+	<ModifierKeys>Alt</ModifierKeys>
+	<Description>Focus on Side Panel</Description>
+        </NwbcCommand>    
+        <NwbcCommand>
+	<ID>ShowShortCuts</ID>
+	<Key>K</Key>
+	<ModifierKeys>Alt, Control</ModifierKeys>
+	<Description>Show Shortcuts</Description>
+        </NwbcCommand>
+        <NwbcCommand>
+	<ID>DOMExplorer</ID>
+	<Key>F12</Key>
+	<ModifierKeys>Control,Alt</ModifierKeys>
+        </NwbcCommand>
+        <NwbcCommand>
+	<ID>MoveCurrentTabLeft</ID>
+	<Key>Left</Key>
+	<ModifierKeys>Control</ModifierKeys>
+	<Description>Move Left</Description>
+        </NwbcCommand>
+	<NwbcCommand>
+	<ID>MoveCurrentTabRight</ID>
+	<Key>Right</Key>
+	<ModifierKeys>Control</ModifierKeys>
+	<Description>Move Right</Description>
+        </NwbcCommand>
+        <NwbcCommand>
+	<ID>RefreshSidePanel</ID>
+	<Key>R</Key>
+	<ModifierKeys>Control</ModifierKeys>
+	<Description>Refresh Side Panel Data</Description>
+        </NwbcCommand>
+        <NwbcCommand>
+	<ID>DisconnectSidePanel</ID>	
+	<Key>D</Key>
+	<ModifierKeys>Control</ModifierKeys>
+	<Description>Disable data updates in Side Panel</Description>
+        </NwbcCommand>
+        <NwbcCommand>
+	<ID>ReconnectSidePanel</ID>
+	<Key>D</Key>
+	<ModifierKeys>Control, Shift</ModifierKeys>
+	<Description>Enable data updates in Side Panel</Description>
+        </NwbcCommand>
+        <NwbcCommand>
+	<ID>SelectNexTab</ID>
+	<Key>Tab</Key>
+	<ModifierKeys>Control</ModifierKeys>
+	<Description>Select Next Tab</Description>
+        </NwbcCommand>
+        <NwbcCommand>
+	<ID>SelectPreviousTab</ID>
+	 <Key>Tab</Key>
+	<ModifierKeys>Control, Shift</ModifierKeys>
+	<Description>Select Previous Tab</Description>
+        </NwbcCommand>
+    </Nwbc40Commands>
+  -->
+
+
+<!--  Feature controls allow you to manage selected features of Business Client as an application hosting the "WebBrowser" control. 
+          By default, Internet Explorer provides a secure environment for browsing the Web. 
+          However, no single configuration fits all situations, and feature controls allow you to make informed decisions about the configuration 
+          of an application hosting the "WebBrowser" control. 
+          http://msdn.microsoft.com/en-us/library/ee330720(v=vs.85)
+          From Business Client's point of view, you can enable or disable a set of features that may be important if you use Business Client as a browser.
+-->
+    <WebbrowserFeatures>
+
+        <!-- http://msdn.microsoft.com/en-us/library/ee330730(v=vs.85)#browser_emulation
+                When enabled, the FEATURE_SCRIPTURL_MITIGATION feature allows the "href" attribute of an object to support the javascript prototcol.       
+        -->
+        <EnableScriptUrlMitigation>true</EnableScriptUrlMitigation>
+
+        <!-- http://msdn.microsoft.com/en-us/library/ee330730(v=vs.85)#browser_emulation
+                The FEATURE_BROWSER_EMULATION feature defines the default emulation mode for Internet Explorer. 
+                If false, the default value for an application hosting the webbrowser control is used - IE7 "Standards Mode". 
+        -->
+        <EnableBrowserEmulation>true</EnableBrowserEmulation>
+      
+      <!-- https://msdn.microsoft.com/en-us/library/ee330731(v=vs.85).aspx#gpu_rendering
+          The FEATURE_GPU_RENDERING feature enables Internet Explorer to use a graphics processing unit (GPU) to render content. 
+          This dramatically improves performance for webpages that are rich in graphics.
+      -->
+      <EnableGpuRendering>true</EnableGpuRendering>
+
+      <!-- Causes layout engine to calculate document pixels as 96 dpi. Normally, a document pixel is the same size as a screen pixel. -->
+      <EnableHighDPIRendering>true</EnableHighDPIRendering>
+
+    </WebbrowserFeatures>
+
+</NwbcOptions>

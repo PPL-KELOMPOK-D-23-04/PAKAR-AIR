@@ -1,0 +1,10 @@
+_SAPPCTXT_HEADER_               002 7500 SAPGUISCRIPTING UK 1504 27.04.2017-23:50 OK 
+SCRIPTING_SCRIPTNOTINST         150 "Підтримка скриптингів не встановлена"
+SCRIPTING_SCRIPTNOTENABLED      150 "Підтримку скриптингу відключено користувачем"
+SCRIPTING_DO_NOT_SHOW_AGAIN     150 "Не показувати це виринаюче вікно, коли скрипт відкриває з'єднання"
+SCRIPTING_SCRIPTISOPENING       150 "Скрипт відкриває з'єднання з системою: %s"
+<#007>SCRIPTING_CANCEL_BTN      016 "Скасувати"
+<#007>SCRIPTING_OK_BTN          016 "OK"
+<#007>SCRIPTING_ALLOW_BTN       016 "Дозволити"
+<#007>SCRIPTING_DENY_BTN        016 "Відхилити"
+<#007>SCRIPTING_HELP_BTN        016 "Довідка"

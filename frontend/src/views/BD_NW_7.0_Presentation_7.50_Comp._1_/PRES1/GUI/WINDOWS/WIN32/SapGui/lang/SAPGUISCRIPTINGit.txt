@@ -1,0 +1,10 @@
+_SAPPCTXT_HEADER_               002 7500 SAPGUISCRIPTING IT 1100 27.04.2017-23:49 OK 
+SCRIPTING_SCRIPTNOTINST         150 "Supporto scripting non installato"
+SCRIPTING_SCRIPTNOTENABLED      150 "Supporto scripting disattivato dall'utente"
+SCRIPTING_DO_NOT_SHOW_AGAIN     150 "Non visualizzare popup se uno script sta per aprire una connessione"
+SCRIPTING_SCRIPTISOPENING       150 "Uno script sta aprendo un collegamento al seguente sistema: %s"
+<#007>SCRIPTING_CANCEL_BTN      016 "Interrompere"
+<#007>SCRIPTING_OK_BTN          016 "OK"
+<#007>SCRIPTING_ALLOW_BTN       016 "Consentire"
+<#007>SCRIPTING_DENY_BTN        016 "Rifiutare"
+<#007>SCRIPTING_HELP_BTN        016 "Help"

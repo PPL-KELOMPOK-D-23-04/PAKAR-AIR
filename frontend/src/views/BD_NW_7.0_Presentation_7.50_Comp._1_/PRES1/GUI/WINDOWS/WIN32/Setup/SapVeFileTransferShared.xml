@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SapSetup Context="Init" WkstaDb="SAPVEFileTransferWksta.xml">
+  <Component Name="SAPVEFileTransfer" Guid="{A3AE05D6-56C5-4921-A055-C46AB579B83E}" Version="10201.89235">
+    <Action Type="File" Dst="%ProgramFiles32%\Common Files\SAP\SAP 3D Visual Enterprise File Transfer 1.0" Condition="NOT(&quot;%WOW64MODE%&quot; = &quot;true&quot;) AND (%DotNetV35% = &quot;EXISTING&quot;) AND NOT(%DotNetV4.0ClientProfile% = &quot;EXISTING&quot;)">
+      <Src>%SapSrcDir%\VE\FileTransfer\version.txt</Src>
+      <Src>%SapSrcDir%\VE\FileTransfer\35_x86\SAP.VE.FileTransfer.exe.config</Src>
+      <Src Register="false">%SapSrcDir%\VE\FileTransfer\35_x86\System.ComponentModel.Composition.dll</Src>
+      <!--Src Register="false">%SapSrcDir%\VE\FileTransfer\35_x86\SAP.VE.FileTransfer.FileHandler.dll</Src-->
+      <Src Register="false">%SapSrcDir%\VE\FileTransfer\35_x86\SAP.VE.FileTransfer.HttpHandler.dll</Src>
+      <Src Register="false">%SapSrcDir%\VE\FileTransfer\35_x86\SAP.VE.FileTransfer.Infrastructure.dll</Src>
+      <Src Register="CreateTLB">%SapSrcDir%\VE\FileTransfer\35_x86\SAP.VE.FileTransfer.Interop.dll</Src>
+      <Src Register="CreateTLB">%SapSrcDir%\VE\FileTransfer\35_x86\SAP.VE.FileTransfer.exe</Src>
+    </Action>
+    <Action Type="File" Dst="%ProgramFiles32%\Common Files\SAP\SAP 3D Visual Enterprise File Transfer 1.0" Condition="NOT(&quot;%WOW64MODE%&quot; = &quot;true&quot;) AND (%DotNetV4.0ClientProfile% = &quot;EXISTING&quot;)">
+      <Src>%SapSrcDir%\VE\FileTransfer\version.txt</Src>
+      <Src>%SapSrcDir%\VE\FileTransfer\40_x86\SAP.VE.FileTransfer.exe.config</Src>
+      <!--Src Register="false">%SapSrcDir%\VE\FileTransfer\40_x86\SAP.VE.FileTransfer.FileHandler.dll</Src-->
+      <Src Register="false">%SapSrcDir%\VE\FileTransfer\40_x86\SAP.VE.FileTransfer.HttpHandler.dll</Src>
+      <Src Register="false">%SapSrcDir%\VE\FileTransfer\40_x86\SAP.VE.FileTransfer.Infrastructure.dll</Src>
+      <Src Register="CreateTLB">%SapSrcDir%\VE\FileTransfer\40_x86\SAP.VE.FileTransfer.Interop.dll</Src>
+      <Src Register="CreateTLB">%SapSrcDir%\VE\FileTransfer\40_x86\SAP.VE.FileTransfer.exe</Src>
+    </Action>
+    <Action Type="File" Dst="%ProgramFiles64%\Common Files\SAP\SAP 3D Visual Enterprise File Transfer 1.0" Condition="(&quot;%WOW64MODE%&quot; = &quot;true&quot;) AND (%DotNetV35% = &quot;EXISTING&quot;) AND NOT(%DotNetV4.0ClientProfilex64% = &quot;EXISTING&quot;)">&gt;
+      <Src>%SapSrcDir%\VE\FileTransfer\version.txt</Src><Src>%SapSrcDir%\VE\FileTransfer\35_x64\SAP.VE.FileTransfer.exe.config</Src><Src Register="false">%SapSrcDir%\VE\FileTransfer\35_x64\System.ComponentModel.Composition.dll</Src><!--Src Register="false">%SapSrcDir%\VE\FileTransfer\35_x64\SAP.VE.FileTransfer.FileHandler.dll</Src--><Src Register="false">%SapSrcDir%\VE\FileTransfer\35_x64\SAP.VE.FileTransfer.HttpHandler.dll</Src><Src Register="false">%SapSrcDir%\VE\FileTransfer\35_x64\SAP.VE.FileTransfer.Infrastructure.dll</Src><Src Register="CreateTLB">%SapSrcDir%\VE\FileTransfer\35_x64\SAP.VE.FileTransfer.Interop.dll</Src><Src Register="CreateTLB">%SapSrcDir%\VE\FileTransfer\35_x64\SAP.VE.FileTransfer.exe</Src></Action>
+    <Action Type="File" Dst="%ProgramFiles64%\Common Files\SAP\SAP 3D Visual Enterprise File Transfer 1.0" Condition="(&quot;%WOW64MODE%&quot; = &quot;true&quot;) AND (%DotNetV4.0ClientProfilex64% = &quot;EXISTING&quot;)">
+      <Src>%SapSrcDir%\VE\FileTransfer\version.txt</Src>
+      <Src>%SapSrcDir%\VE\FileTransfer\40_x64\SAP.VE.FileTransfer.exe.config</Src>
+      <!--Src Register="false">%SapSrcDir%\VE\FileTransfer\40_x64\SAP.VE.FileTransfer.FileHandler.dll</Src-->
+      <Src Register="false">%SapSrcDir%\VE\FileTransfer\40_x64\SAP.VE.FileTransfer.HttpHandler.dll</Src>
+      <Src Register="false">%SapSrcDir%\VE\FileTransfer\40_x64\SAP.VE.FileTransfer.Infrastructure.dll</Src>
+      <Src Register="CreateTLB">%SapSrcDir%\VE\FileTransfer\40_x64\SAP.VE.FileTransfer.Interop.dll</Src>
+      <Src Register="CreateTLB">%SapSrcDir%\VE\FileTransfer\40_x64\SAP.VE.FileTransfer.exe</Src>
+    </Action>
+  </Component>
+</SapSetup>

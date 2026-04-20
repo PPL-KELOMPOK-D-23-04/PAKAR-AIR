@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Locale" Version="750.11" ConnectedId="{14EE8724-9171-4101-B0C5-B9B2B7F6A3DF}">
+	<String Name="strKwAddOnnForSapGuiDescription">
+		<En>Front-End Add-On for SAP Knowledge Warehouse. This package contains components to create / edit / translate / display content.</En>
+		<De>Front-End Add-On für das SAP Knowledge Warehouse. Dieses Paket beinhaltet die Komponenten zum Erstellen / Bearbeiten / Übersetzen / Anzeigen von Inhalten.</De>
+	</String>
+	<String Name="strKwAddOnOnlineEditingDescription">
+		<En>Knowledge Warehouse Editing within SAP GUI. Requires Microsoft Internet Explorer 6 or higher.</En>
+		<De>Knowledge Warehouse Editing in SAP GUI. Microsoft Internet Explorer 6 oder höher erforderlich.</De>
+	</String>
+	<String Name="strKwAddOnTranslator">
+		<En>Knowledge Warehouse Translator: Translation tool to process translation packages offline. Requires Microsoft Internet Explorer 6 or higher.</En>
+		<De>Knowledge Warehouse Translator: Übersetzungswerkzeug zur Offline-Bearbeitung von Übersetzungspaketen. Microsoft Internet Explorer 6 oder höher erforderlich.</De>
+	</String>
+	<String Name="strKwAddOnRequiresSapGuiDescription">
+		<En>requires SAP GUI</En>
+		<De>erfordert SAP GUI</De>
+	</String>
+	<String Name="StrFailedConditionKwHtmlEditor">
+		<En><![CDATA[Knowledge Warehouse HTML Editor: <a style="COLOR:red">Requires Microsoft .Net Framework 4.<a>]]></En>
+		<De><![CDATA[Knowledge Warehouse HTML Editor: <a style="COLOR:red">Benötigt Microsoft .Net Framework 4.<a>]]></De>
+	</String>
+	
+	<String Name="StrFailedConditionKwTranslator">
+		<En><![CDATA[Knowledge Warehouse Translator: <a style="COLOR:red">Requires Microsoft .Net Framework 4.<a>]]></En>
+		<De><![CDATA[Knowledge Warehouse Translator: <a style="COLOR:red">Benötigt Microsoft .Net Framework 4.<a>]]></De>
+	</String>
+	
+	<String Name="strKwHtmlEditorDescription">
+		<En><![CDATA[Knowledge Warehouse HTML Editor: Allows creating / editing of HTML files in SAP GUI for area HTML-Based Documents.<br><br>Requires Microsoft .Net Framework 4.]]></En>
+		<De><![CDATA[Knowledge Warehouse HTML Editor: Erlaubt das Erstellen / Bearbeiten von HTML-Objekten im SAP GUI für Bereich HTML-basierte Dokumente.<br><br>Benötigt Microsoft .Net Framework 4.]]></De>
+	</String>	
+</SapSetup>

@@ -1,0 +1,7 @@
+_SAPPCTXT_HEADER_               002 7500 OFFICEINTEGRATION LT 1904 27.04.2017-23:49 OK 
+OI_FILE                         060 "Failas"
+OI_SAVE_AS                      060 "Áraðyti kaip"
+OI_PRINT_PREVIEW                080 "Spaudinio perþiûra"
+OI_PROPERTIES                   060 "Ypatybës"
+OI_PRINT                        060 "Spausdinti"
+OI_SAVE                         060 "Áraðyti"

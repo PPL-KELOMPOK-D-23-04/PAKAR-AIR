@@ -1,0 +1,10 @@
+_SAPPCTXT_HEADER_               002 7500 SAPGUISCRIPTING HU 1404 27.04.2017-23:49 OK 
+SCRIPTING_SCRIPTNOTINST         150 "Szkripttámogatás nincs telepítve"
+SCRIPTING_SCRIPTNOTENABLED      150 "Szkripttámogatás felhasználó által deaktiválva"
+SCRIPTING_DO_NOT_SHOW_AGAIN     150 "Felbukkanó ablak ne jelenjen meg, ha egy szkript éppen kapcsolatot nyit meg"
+SCRIPTING_SCRIPTISOPENING       150 "Egy szkript kapcsolatot próbál létesíteni a következõ rendszerrel: %s"
+<#007>SCRIPTING_CANCEL_BTN      016 "Megszakítás"
+<#007>SCRIPTING_OK_BTN          016 "OK"
+<#007>SCRIPTING_ALLOW_BTN       016 "Engedélyezés"
+<#007>SCRIPTING_DENY_BTN        016 "Elutasítás"
+<#007>SCRIPTING_HELP_BTN        016 "Segítség"

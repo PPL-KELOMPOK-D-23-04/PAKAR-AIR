@@ -1,0 +1,7 @@
+_SAPPCTXT_HEADER_               002 7500 OFFICEINTEGRATION ZF 8300 27.04.2017-23:50 OK 
+OI_FILE                         060 "檔案"
+OI_SAVE_AS                      060 "另存新檔"
+OI_PRINT_PREVIEW                080 "預覽列印"
+OI_PROPERTIES                   060 "屬性"
+OI_PRINT                        060 "列印"
+OI_SAVE                         060 "儲存"

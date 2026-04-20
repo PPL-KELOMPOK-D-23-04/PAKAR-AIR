@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema 
+    id="SAP_VE_CAD_Sandbox_Common"
+    attributeFormDefault="unqualified"
+    elementFormDefault="qualified"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://schemas.sap.com/VE/Sandbox/2015/March"
+    targetNamespace="http://schemas.sap.com/VE/Sandbox/2015/March"
+>
+
+  <!-- Abstract root type -->
+  <xs:complexType name="Envelope" abstract="true">
+    <xs:attribute name="Version" type="Version" use="required"/>
+    <xs:attribute name="Mac" type="AuthenticationCode" use="optional"/>
+  </xs:complexType>
+
+  <!-- Schema version. As Sandbox messages are transient, only the latest version is allowed to be in circulation. -->
+  <xs:simpleType name="Version">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="5.0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Some basic types -->
+  <xs:simpleType name="ValueType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="signed"/>
+      <xs:enumeration value="unsigned"/>
+      <xs:enumeration value="single"/>
+      <xs:enumeration value="double"/>
+      <xs:enumeration value="string"/>
+      <xs:enumeration value="boolean"/>
+      <xs:enumeration value="object"/>
+      <xs:enumeration value="filename"/>
+      <xs:enumeration value="undefined"/>
+    </xs:restriction>
+  </xs:simpleType>            
+
+  <xs:simpleType name="String">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+      <xs:maxLength value="255"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Restricted to 64-bit (unsigned) integer range: 0 to 18,446,744,073,709,551,615 -->
+  <xs:simpleType name="Id">
+    <xs:restriction base="xs:unsignedLong"/>
+  </xs:simpleType>
+
+  <!-- Restricted to 64-bit (unsigned) integer range: 0 to 18,446,744,073,709,551,615 -->
+  <xs:simpleType name="TimeStamp">
+    <xs:restriction base="xs:unsignedLong"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="Name">
+    <xs:restriction base="String"/>
+  </xs:simpleType>
+
+  <!-- TODO: Restrict -->
+  <xs:simpleType name="AuthenticationCode">
+    <xs:restriction base="String"/>
+  </xs:simpleType>
+
+  <!-- GUID values must use standard registry format, complete with curly braces: {XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX} -->
+  <!-- Note that, GUIDs are case insensitive -->
+  <xs:simpleType name="Guid">
+    <xs:restriction base="String">
+      <xs:pattern value="\{[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}\}"/>      
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- TODO: Are empty values allowed? If not, Value should be restricted, at the moment it is not. -->
+  <xs:complexType name="Parameter">
+    <xs:attribute name="Name" type="Name" use="required"/>
+    <xs:attribute name="Type" type="ValueType" use="optional" default="undefined"/>
+    <xs:attribute name="Value" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="Option">
+    <xs:attribute name="Name" type="Name" use="required"/>
+    <xs:attribute name="Type" type="ValueType" use="optional" default="undefined"/>
+    <xs:attribute name="Value" type="xs:string" use="required"/>
+  </xs:complexType>
+  
+  <!-- TODO: Should use pattern matching (with allowing for wildcards and special locations, like '$USERAPPDATA$') -->
+  <!-- TODO: Implement XSD types for different kind of paths: DosPath, UncPath, DevicePath, RegistryPath (FileOrFolderPath could be a union of Dos-, Unc- and DevicePath) -->
+  <xs:simpleType name="Path">
+    <xs:restriction base="String"/>
+  </xs:simpleType>
+  
+  <!-- TODO: The ProcessingInstruction attribute should be eliminated altogether, however, it is not that simple as some formats require special processing -->
+  <xs:complexType name="File">
+    <xs:attribute name="Path" type="Path" use="required"/>
+    <xs:attribute name="ProcessingInstruction" type="xs:nonNegativeInteger" use="optional"/>
+  </xs:complexType>  
+
+  <!-- TODO: The ProcessingInstruction attribute should be eliminated altogether, however, it is not that simple as some formats require special processing -->
+  <xs:complexType name="Folder">
+    <xs:attribute name="Path" type="Path" use="required"/>
+    <xs:attribute name="ProcessingInstruction" type="xs:nonNegativeInteger" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="RegistryEntry">
+    <xs:attribute name="Path" type="Path" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="Process">
+    <xs:attribute name="Path" type="Path" use="required"/>
+  </xs:complexType>
+
+  <!-- Options generic (group) element shall contain at least one Option child element -->
+  <!-- Options is used in conjunction with various FileCommands -->
+  <xs:complexType name="Options">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="Option" type="Option"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Parameters generic (group) element shall contain at least one Parameter child element -->
+  <!-- Paramters is used in conjunction with InvekeMethodCommand -->
+  <xs:complexType name="Parameters">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="Parameter" type="Parameter"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Paramters is used in conjunction with InvekeMethodCommand -->
+  <xs:complexType name="ReturnType">
+    <xs:attribute name="Type" type="ValueType" use="required"/>
+  </xs:complexType>  
+
+</xs:schema>

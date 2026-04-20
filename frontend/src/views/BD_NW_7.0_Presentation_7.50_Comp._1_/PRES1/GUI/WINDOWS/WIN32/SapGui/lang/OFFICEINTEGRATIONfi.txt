@@ -1,0 +1,7 @@
+_SAPPCTXT_HEADER_               002 7500 OFFICEINTEGRATION FI 1100 27.04.2017-23:49 OK 
+OI_FILE                         060 "Tiedosto"
+OI_SAVE_AS                      060 "Tallenna nimellä"
+OI_PRINT_PREVIEW                080 "Tulostuksen esikatselu"
+OI_PROPERTIES                   060 "Ominaisuudet"
+OI_PRINT                        060 "Tulosta"
+OI_SAVE                         060 "Tallenna"

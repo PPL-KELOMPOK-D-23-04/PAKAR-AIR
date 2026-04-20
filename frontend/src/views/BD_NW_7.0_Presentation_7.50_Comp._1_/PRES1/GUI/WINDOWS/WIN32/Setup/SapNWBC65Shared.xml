@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Init" WkstaDb="SapNWBC65Wksta.xml">
+	<!-- $Id: //nwbc/nwbc.win/65_REL/src/cfg/installation/setup/SapNWBC65Shared.xml#52 $ -->
+	<Component BuildTime="0xD0BF5B8B05AAD201" Guid="{9784391C-F989-417C-8CFA-58D7E0D640E3}" Min_Compliant_Version="6500" Name="$SapNwBcSetup" SysSize="239" Version="6532">
+		<Action Condition="1=0" Dst="%SapSetupDir%" Type="File">
+			<Src>%SAPsrcDir%\SapNwBcSetup.exe</Src>
+		</Action>
+		<Action Condition="1=0" Dst="%SapSetupDir%\setup" Type="File">
+			<Src>%SAPsrcDir%\setup\SapNwBcSetup.cfg</Src>
+		</Action>
+	</Component>
+	<Component BuildTime="0xD0BF5B8B05AAD201" Guid="{2CC8B358-F0DF-44F8-A6A4-494F319F19D2}" Min_Compliant_Version="6500" Name="NWBC Set Variable PreInstall" Order="PreInstall" Version="6507">
+		<Action RunAt="Install" Type="Script">
+			<Src><![CDATA[
+NwEngine.Context.Log.Write "NWBC Script: Set Registry value 'HKLM\SOFTWARE\SAP\SAPGUI Setup Configuration\NWBC65Installed' to TRUE"
+				NwEngine.Shell.SetRegValue "HKLM\SOFTWARE\SAP\SAPGUI Setup Configuration\NWBC65Installed", "REG_SZ", "TRUE"
+			]]></Src>
+		</Action>
+		<Action RunAt="Uninstall" Type="Script">
+			<Src><![CDATA[
+Sub includeFile(fSpec)
+					With CreateObject("Scripting.FileSystemObject")
+						executeGlobal .openTextFile(fSpec).readAll()
+					End With
+				End Sub
+				
+				strFile = NwEngine.Variables.ResolveString("%SAPSetupDir%\Setup\SapGUINWBCScripting.inc")
+				
+				includeFile(strFile)
+				ExecuteGUINWBCIntegration
+			]]></Src>
+		</Action>
+	</Component>
+	<Component BuildTime="0xD0BF5B8B05AAD201" Guid="{87F43202-F37E-42A5-B92C-CF65FAE12EB6}" Min_Compliant_Version="6500" Name="NWBC Set Variable PostInstall" Order="PostInstall" Version="6502">
+		<Action RunAt="Uninstall" Type="Script">
+			<Src><![CDATA[
+NwEngine.Context.Log.Write "NWBC Script: Removing registry value 'HKLM\SOFTWARE\SAP\SAPGUI Setup Configuration\NWBC65Installed'"
+				NwEngine.Shell.DeleteRegValue "HKLM\SOFTWARE\SAP\SAPGUI Setup Configuration\NWBC65Installed"
+			]]></Src>
+		</Action>
+	</Component>
+	<Component BuildTime="0xD0BF5B8B05AAD201" Guid="{955469D2-B11A-4EE6-B54E-139A8F56111F}" Min_Compliant_Version="6500" Name="$ARP NWBC 65" Version="6502">
+		<Action Dst="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\SAP_NWBC65" Type="Registry">
+			<RegValue Name="DisplayName">SAP Business Client 6.5</RegValue>
+			<RegValue Name="DisplayVersion">6.5 PL0</RegValue>
+			<RegValue Name="DisplayIcon">&quot;%SapNWBC65DestDir%\NWBC.exe&quot;,0</RegValue>
+			<RegValue Name="Publisher">SAP SE</RegValue>
+			<RegValue Name="URLUpdateInfo">http://service.sap.com</RegValue>
+			<RegValue Name="UninstallString">&quot;%SAPSetupDir%\setup\nwsapsetup.exe&quot; /product:&quot;NWBCGUI+NWBC65&quot; /uninstall /TitleComponent:&quot;NWBC65&quot; /IgnoreMissingProducts</RegValue>
+		</Action>
+	</Component>
+	<Component BuildTime="0xD0BF5B8B05AAD201" Guid="{1F259969-3739-42DB-9449-43210EE64D31}" Min_Compliant_Version="6500" Name="$NWBC Shared Keys" Version="6505">
+		<Action Dst="HKLM\SOFTWARE\SAP\SAP Shared\SAP_NWBC65" Type="Registry">
+			<RegValue>SAP Business Client 6.5</RegValue>
+			<RegValue Name="SAPSourceDir">%SAPSrcDir%</RegValue>
+			<RegValue Name="SAPDestDir">%SapNWBC65DestDir%</RegValue>
+			<RegValue Name="nwbc_version">6.5</RegValue>
+		</Action>
+		<Action Dst="HKLM\SOFTWARE\SAP\SAP Shared\SAP_NWBC_INSTALLED" Type="Registry">
+			<RegValue>true</RegValue>
+		</Action>
+	</Component>
+	<Component BuildTime="0xD0BF5B8B05AAD201" Guid="{D5BC514C-EB62-4931-B948-66811B8B7334}" Min_Compliant_Version="6500" Name="$NWBC MS DotNET DLLs" Version="6500">
+		<Requires Guid="{EFB8B484-60DE-471F-87E7-6AA2602F137C}"/>
+	</Component>
+	<Component BuildTime="0xD0BF5B8B05AAD201" Guid="{F68BA06D-9582-42D3-BD0A-08481D5A1E4E}" Min_Compliant_Version="6500" Name="$NWBC 65 Files" Size="18683" Update="Always" Version="7006">
+		<Requires Guid="{82E12394-48A1-4D26-980C-44E29146D1E6}"/>
+		<Requires Guid="{E3FA2B73-0977-449E-AC39-E03917DB6D7F}"/>
+		<Requires Guid="{486645F4-2ACB-4B3E-8F8C-FD4F196E8075}"/>
+		<Action Dst="%SapNWBC65DestDir%" Type="File">
+			<Src>%SapSrcDir%\NWBC65\compInfo.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\AxInterop.BrowserUtil.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcSettings.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\Interop.BrowserUtil.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\Interop.MsSearch.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\Interop.SHDocVw.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\Interop.SAPFEWSELib.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\Interop.SapROTWr.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NWBC.exe</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcBrowserHost.exe</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcBrowserIE.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcBrowserEdge.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcBrowserChromium.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcConfiguration.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcCore.exe</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcHttpRuntime.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcDesktopSearch.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcFederatedRuntime.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcModel.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcPipeLib.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcRemoting.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcSapguiCom.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcSapGuiRuntime.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcSapguiExtractor.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcTranslation.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcThemes.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcUiUtil.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcUrlHandler.exe</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcTaskbarHandler.exe</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcDesktopAgent.exe</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcUtil.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcPluginApi.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcExtensionApi.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\NwbcPropertyCollector.exe</Src>
+			<Src>%SapSrcDir%\NWBC65\reset_fontcache.bat</Src>
+			<Src>%SapSrcDir%\NWBC65\BrowserUtil.dll</Src>
+			<Src Register="CreateTLB">%SapSrcDir%\NWBC65\NwbcBrowser.dll</Src>
+			<Src Register="CreateTLB">%SapSrcDir%\NWBC65\NwbcBrowserExternal.dll</Src>
+		</Action>
+		<Action Dst="%SapNWBC65DestDir%\cef" Type="File">
+			<Src>%SapSrcDir%\NWBC65\cef\CefSharp.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\cef\CefSharp.Core.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\cef\CefSharp.WinForms.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\cef\CefSharp.BrowserSubprocess.Core.dll</Src>
+			<Src>%SapSrcDir%\NWBC65\cef\CefSharp.BrowserSubprocess.exe</Src>
+		</Action>
+		<Action Dst="%ALLUSERSPROFILE%\Application Data\SAP\NWBC" Type="File">
+			<Src>%SapSrcDir%\NWBC65\Configuration\NwbcOptions.xsd</Src>
+			<Src>%SapSrcDir%\NWBC65\Configuration\NwbcOptions.xml.template</Src>
+			<Src>%SapSrcDir%\NWBC65\Configuration\NwbcRemoteOptions.xml.template</Src>
+		</Action>
+		<Action Dst="%SapNWBC65DestDir%\Documentation" Type="File">
+			<Src>%SapSrcDir%\NWBC65\Documentation\nwbc65.pdf</Src>
+		</Action>
+		<Action Dst="%SapNWBC65DestDir%\Lang" Type="File">
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_ar.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_bg.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_ca.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_cs.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_da.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_de.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_el.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_en.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_es.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_et.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_fi.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_fr.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_he.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_hr.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_hu.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_it.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_ja.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_kk.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_ko.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_lt.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_lv.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_nl.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_no.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_pl.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_pt.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_ro.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_ru.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_sh.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_sk.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_sl.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_sv.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_th.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_tr.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_zh_cn.txt</Src>
+			<Src>%SapSrcDir%\NWBC65\Lang\nwbcv2_zh_tw.txt</Src>
+		</Action>
+		<Action RunAt="Install" Type="Script">
+			<Src><![CDATA[
+szUNCPath =  NwEngine.Shell.GetUncPath( NwEngine.Variables.ResolveString ("%SAPSrcDir%") )
+			If szUNCPath = "" Then
+				szServerName = "localhost"
+				NwEngine.Context.log.Write "Script: Current Installationsource is on local drive!"
+			Else
+				NwEngine.Context.log.Write "Script: Retrieving Servername from current Installationsource: " & szUNCPath
+				iPos = Instr( 3, szUNCPath, "\", vbTextCompare )
+				szServerName = Mid( szUNCPath, 3, iPos - 3 )
+			End if
+			NWEngine.Variables.InsertVariable "ServerName", szServerName
+			NWEngine.Variables.Persistent("ServerName") = vbFalse
+			]]></Src>
+		</Action>
+		<Action Dst="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet Explorer\MAIN\FeatureControl\FEATURE_MAXCONNECTIONSPERSERVER" Type="Registry">
+			<RegValue Name="NWBC.exe" Type="DWORD">10</RegValue>
+		</Action>
+		<Action Dst="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet Explorer\MAIN\FeatureControl\FEATURE_MAXCONNECTIONSPER1_0SERVER" Type="Registry">
+			<RegValue Name="NWBC.exe" Type="DWORD">10</RegValue>
+		</Action>
+		<Action Dst="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BLOCK_LMZ_SCRIPT" Type="Registry">
+			<RegValue Name="NWBC.exe" Type="DWORD">0</RegValue>
+		</Action>
+		<ExecuteAction RunAt="Uninstall">
+			<Exe DisplayText="Refreshing Icons" SuppressWindow="true">%SapSetupDir%\setup\SapStart.exe</Exe>
+			<Parameters>/refresh</Parameters>
+			<Wait TimeOut="60000">%ErrorLevel% = 0</Wait>
+		</ExecuteAction>
+		<Action Dst="HKCR\.nwbc-config-update" Type="Registry">
+			<RegValue>NWBCfile</RegValue>
+		</Action>
+		<Action Dst="HKCR\NWBCfile" Type="Registry">
+			<RegValue>SAP NWBC Launcher</RegValue>
+		</Action>
+		<Action Dst="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet Explorer\ActiveX Compatibility\{5691A0D5-2B8A-4F75-81D3-65A36943564B}" Type="Registry">
+			<RegValue Name="Compatibility Flags" Type="DWORD">1024</RegValue>
+		</Action>
+		<Action Dst="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet Explorer\ActiveX Compatibility\{85DA149C-A275-4717-AE6F-F5749529CAE5}" Type="Registry">
+			<RegValue Name="Compatibility Flags" Type="DWORD">1024</RegValue>
+		</Action>
+		<Action Dst="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet Explorer\ActiveX Compatibility\{D97CE498-25E9-4265-8710-57C9D05849FC}" Type="Registry">
+			<RegValue Name="Compatibility Flags" Type="DWORD">1024</RegValue>
+		</Action>
+		<Action Dst="HKCR\NWBCfile\DefaultIcon" Type="Registry">
+			<RegValue>%SapNWBC65DestDir%\NWBC.exe,0</RegValue>
+		</Action>
+		<Action Dst="HKCR\NWBCfile\shell" Type="Registry">
+			<RegValue>Open</RegValue>
+		</Action>
+		<Action Dst="HKCR\NWBCfile\shell\open" Type="Registry">
+			<RegValue>Start</RegValue>
+		</Action>
+		<Action Dst="HKCR\NWBCfile\shell\open\command" Type="Registry">
+			<RegValue>%SapNWBC65DestDir%\NWBC.exe %%1</RegValue>
+		</Action>
+		<ExecuteAction RunAt="Install,Update">
+			<Exe DisplayText="Refreshing Icons" SuppressWindow="true">%SapSetupDir%\setup\SapStart.exe</Exe>
+			<Parameters>/refresh</Parameters>
+			<Wait TimeOut="60000">%ErrorLevel% = 0</Wait>
+		</ExecuteAction>
+		<ExecuteAction RunAt="Install,Update">
+			<Exe DisplayText="additional registration of browserUtil.dll" SuppressWindow="true">%WINSYSDIR%\regsvr32.exe</Exe>
+			<Parameters>/s /u &quot;%SapNWBC65DestDir%\BrowserUtil.dll&quot;</Parameters>
+			<Wait TimeOut="60000">%ErrorLevel% = 0</Wait>
+		</ExecuteAction>
+		<ExecuteAction RunAt="Install,Update">
+			<Exe DisplayText="additional registration of browserUtil.dll" SuppressWindow="true">%WINSYSDIR%\regsvr32.exe</Exe>
+			<Parameters>/s &quot;%SapNWBC65DestDir%\BrowserUtil.dll&quot;</Parameters>
+			<Wait TimeOut="60000">%ErrorLevel% = 0</Wait>
+		</ExecuteAction>
+		<Action Dst="HKCR\sapnwbc" Type="Registry">
+			<RegValue Name="URL Protocol"/>
+			<RegValue>&quot;URL: sapnwbc Protocol&quot;</RegValue>
+		</Action>
+		<Action Dst="HKCR\sapnwbc\DefaultIcon" Type="Registry">
+			<RegValue>%SapNWBC65DestDir%\NwbcUrlHandler.exe</RegValue>
+		</Action>
+		<Action Dst="HKCR\sapnwbc\shell\open\command" Type="Registry">
+			<RegValue>&quot;%SapNWBC65DestDir%\NwbcUrlHandler.exe&quot; &quot;%%1&quot;</RegValue>
+		</Action>
+		<Action Dst="HKCR\sap-nwbc" Type="Registry">
+			<RegValue Name="URL Protocol"/>
+			<RegValue>&quot;URL: sapnwbc Protocol&quot;</RegValue>
+		</Action>
+		<Action Dst="HKCR\sap-nwbc\DefaultIcon" Type="Registry">
+			<RegValue>%SapNWBC65DestDir%\NwbcUrlHandler.exe</RegValue>
+		</Action>
+		<Action Dst="HKCR\sap-nwbc\shell\open\command" Type="Registry">
+			<RegValue>&quot;%SapNWBC65DestDir%\NwbcUrlHandler.exe&quot; &quot;%%1&quot;</RegValue>
+		</Action>
+	</Component>
+	<Component BuildTime="0xD0BF5B8B05AAD201" Guid="{011EF348-7C2F-4D60-A846-46EBF9F4A2D4}" Min_Compliant_Version="6502" Name="$NWBC 65 Client Shortcuts" Order="PostInstall" Version="6504">
+		<Action Dst="ProgramFiles\SAP Business Client 6.5" Type="Shortcut">
+			<Src>&quot;%SapNWBC65DestDir%\NWBC.exe&quot;</Src>
+		</Action>
+		<Action Dst="Desktop\SAP Business Client 6.5" Type="Shortcut">
+			<Src>&quot;%SapNWBC65DestDir%\NWBC.exe&quot;</Src>
+		</Action>
+	</Component>
+</SapSetup>

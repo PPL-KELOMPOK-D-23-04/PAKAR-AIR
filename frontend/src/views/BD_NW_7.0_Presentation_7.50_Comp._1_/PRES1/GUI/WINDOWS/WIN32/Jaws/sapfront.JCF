@@ -1,0 +1,18 @@
+;  SAP AG, www.sap.com
+;  Last Update : 2012/03/09
+[Braille]
+BrailleMode=1
+BrailleMessages=1
+[OutputModes]
+TOOL_TIP=1|0|0|Tool Tipp
+[options]
+Verbosity=0
+ScreenEcho=0
+MSAAMode=1
+[OSM]
+IncludeGraphics=1
+[MSAAClasses]
+Button=1
+ListBox=1
+SysTreeView32=1
+SysTabControl32=1

@@ -1,0 +1,6 @@
+_SAPPCTXT_HEADER_               002 7500 FEWUIMSG NO 1100 27.04.2017-23:49 OK 
+<#001>UIMSG_YNA_DLG_REMEMBER    100 "Husk mitt valg"
+LGN_POP_DTF_MESSAGE             200 "Vil du rydde i dokumentkatalog %s?"
+<#001>UIMSG_YNA_DLG_NO          100 "Nei"
+<#001>UIMSG_YNA_DLG_YES         100 "Ja"
+LGN_POP_DTF_TITLE               200 "Opprydning i SAP Logon"

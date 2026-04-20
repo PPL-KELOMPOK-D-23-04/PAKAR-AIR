@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Init" WkstaDb="SapNWBC65WkstaUI.xml">
+	<!-- $Id: //nwbc/nwbc.win/65_REL/src/cfg/installation/setup/SapNWBC65Setup.xml#51 $ -->
+	<SapSetupProduct BuildTime="0xD0BF5B8B05AAD201" CmdLine="NWBC65" Description="NwBc65ProductDescription" Guid="{0096DF59-A2A4-49df-941B-553599D0EEB0}" Name="NwBc65ProductName" PatchLevel="0" Version="7018">
+		<Prerequisite>
+			<Condition>&quot;%DotNetV4.6.2%&quot; = &quot;EXISTING&quot;</Condition>
+			<FailureText>strNWBC65DotNetMissing</FailureText>
+		</Prerequisite>
+		<UI>
+			<Page Type="FolderPath">
+				<PageVariable>SapNWBC65DestDir</PageVariable>
+				<Title>NwBc65ProductName</Title>
+				<SubTitle>NwBc65TargetDirPrompt</SubTitle>
+			</Page>
+		</UI>
+		<IncludesProductPart Comment="Business Client 6.5" ProductGuid="{E4EA99CB-6F1C-4350-9D70-D1A913117518}" Visible="false"/>
+	</SapSetupProduct>
+	<SapSetupProductPart BuildTime="0xD0BF5B8B05AAD201" Guid="{E4EA99CB-6F1C-4350-9D70-D1A913117518}" Name="Business Client 6.5" Version="6561">
+		<RequiresComponent ComponentGuid="{2CC8B358-F0DF-44F8-A6A4-494F319F19D2}"/>
+		<RequiresComponent ComponentGuid="{87F43202-F37E-42A5-B92C-CF65FAE12EB6}"/>
+		<RequiresComponent ComponentGuid="{82E12394-48A1-4D26-980C-44E29146D1E6}"/>
+		<RequiresComponent ComponentGuid="{955469D2-B11A-4EE6-B54E-139A8F56111F}"/>
+		<RequiresComponent ComponentGuid="{1F259969-3739-42DB-9449-43210EE64D31}"/>
+		<RequiresComponent ComponentGuid="{D5BC514C-EB62-4931-B948-66811B8B7334}"/>
+		<RequiresComponent ComponentGuid="{F68BA06D-9582-42D3-BD0A-08481D5A1E4E}"/>
+		<RequiresComponent ComponentGuid="{011EF348-7C2F-4D60-A846-46EBF9F4A2D4}"/>
+	</SapSetupProductPart>
+</SapSetup>

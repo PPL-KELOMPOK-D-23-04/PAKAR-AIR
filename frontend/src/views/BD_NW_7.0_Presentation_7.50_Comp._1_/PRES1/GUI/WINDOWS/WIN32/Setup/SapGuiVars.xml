@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SapSetup Context="Variables" Version="750.31">
+    <Variable Name="Pre_SapGui71" Persistent="FALSE">
+      <Value>FULFILLED</Value>
+      <Value Script="TRUE">
+		<![CDATA[
+			bFulFilled = vbTrue
+			NwEngine.Context.Log.Write "Variable-Script-Action: Checking for older SAP GUI Versions..."
+			If NwEngine.Shell.RegKeyExist("HKLM\SOFTWARE\SAP\SAP Shared") Then
+				szRegValue = NwEngine.Shell.GetRegValue("HKLM\SOFTWARE\SAP\SAP Shared\SAPdestdir")
+				NwEngine.Context.Log.Write "Variable-Script-Action: SapDestDir = " & szRegValue
+				szSapGuiExe = szRegValue & "\SapGui\sapgui.exe"
+				If NwEngine.Shell.FileExist( szSapGuiExe ) Then
+					szVersion = NwEngine.Shell.GetFileVersion( szSapGuiExe )
+					NwEngine.Context.Log.Write "Variable-Script-Action: Existing SAP GUI File-Version is " & szVersion
+					szRelease = Mid( szVersion, 1, Instr( szVersion, "." ) - 1 )
+					NwEngine.Context.Log.Write "Variable-Script-Action: Existing SAP GUI Release is " & szRelease
+					If Int( szRelease ) < 7100 Then
+						NwEngine.Context.Log.Write "Variable-Script-Action: This older version of SAP GUI needs to be uninstalled first."
+						bFulFilled = vbFalse
+					End If 
+				End If
+			End If
+			If Not bFulFilled Then
+				NwEngine.Variables.AppendDefaultValue "Pre_SapGui71", "UNDEFINED"
+			End If
+		]]>
+      </Value>
+    </Variable>
+    <Variable Name="SapFrontEndDir" ConnectedId="{1460620D-C8BC-44c2-86EC-E632E0986B01}" Description="DscrSapFrontEndDir" DisplayInSapAdmin="TRUE" Persistent="TRUE">
+      <Value>%ProgramFiles%\SAP\FrontEnd</Value>
+    </Variable>
+    <Variable Name="SetSapWorkDir" ConnectedId="{1460620D-C8BC-44c2-86EC-E632E0986B01}" Description="DscrSapWorkDir" DisplayInSapAdmin="TRUE">
+      <Value>SAP GUI Default</Value>
+    </Variable>
+    <Variable Name="SetSapGuiHistoryDir" ConnectedId="{1460620D-C8BC-44c2-86EC-E632E0986B01}" Description="DscrSapGuiHistoryDir" DisplayInSapAdmin="TRUE">
+      <Value>SAP GUI Default</Value>
+    </Variable>
+	<Variable Name="SapGuiPatchLevel" ConnectedId="{1460620D-C8BC-44c2-86EC-E632E0986B01}" Persistent="FALSE">
+		<Value>0</Value>
+		<Value Script="TRUE">
+			<![CDATA[
+				strGuiPatch = "0"
+				NwEngine.Context.Log.Write "SAP GUI Script: Reading PatchLevel and Hotfix versions..."
+				strSapGuiSetupXML = NwEngine.Variables.ResolveString("%SapSrcDir%\Setup\SapGuiSetup.xml")
+				If NwEngine.Shell.FileExist(strSapGuiSetupXML) Then
+					NwEngine.Context.Log.Write "SAP GUI Script: Reading file '" & strSapGuiSetupXML & "'."
+					Dim objXMLDoc
+					Set objXMLDoc = CreateObject("Microsoft.XMLDOM")
+					objXMLDoc.async = False
+					objXMLDoc.load(strSapGuiSetupXML)
+					If objXMLDoc.parseError.errorCode <> 0 Then
+						NwEngine.Context.Log.Write "SAP GUI Script: Error reading file '" & strSapGuiSetupXML & "'! ExitCode: " & objXMLDoc.parseError.errorCode
+					Else
+						Dim Node
+						Set Node = objXMLDoc.SelectSingleNode("//SapSetupProduct")
+						
+						strPatchHotfix = Node.getAttribute("PatchLevel")
+						If strPatchHotfix <> "" Then
+							NwEngine.Context.Log.Write "SAP GUI Script: PatchLevel is set to: " & strPatchHotfix
+							strGuiPatch = strPatchHotfix
+							NwEngine.Variables.AppendDefaultValue "SapGuiPatchLevel", strGuiPatch
+						Else
+							NwEngine.Context.Log.Write "SAP GUI Script: PatchLevel attribute is not set."
+						End If
+					End If
+				Else
+					NwEngine.Context.Log.Write "SAP GUI Script: File '" & strSapGuiSetupXML & "' doesn't exist!"
+				End If
+				
+				If strGuiPatch = "0" Then
+					strSapFrontDLL = NwEngine.Variables.ResolveString("%SapSrcDir%\SapGui\sapfront.dll")
+					NwEngine.Context.Log.Write "SAP GUI Script: Reading PatchLevel from '" & strSapFrontDLL & "'."
+					If NwEngine.Shell.FileExist(strSapFrontDLL) Then
+						strFileVersion = NwEngine.Shell.GetFileVersion(strSapFrontDLL)
+						NwEngine.Context.Log.Write "SAP GUI Script: FileVersion of '" & strSapFrontDLL & "' is set to: " & strFileVersion
+						Dim versionArray
+						versionArray = Split(strFileVersion, ".")
+						If versionArray(1) = "0" Then
+							strGuiPatch = "Beta"
+						Else
+							strGuiPatch = versionArray(2)
+						End If
+						NwEngine.Context.Log.Write "SAP GUI Script: SAP GUI PatchLevel is set to: " & strGuiPatch
+						NwEngine.Variables.AppendDefaultValue "SapGuiPatchLevel", strGuiPatch
+					Else
+						NwEngine.Context.Log.Write "SAP GUI Script: File '" & strSapFrontDLL & "' doesn't exist!"
+					End If
+				End If
+			]]>
+		</Value>
+	</Variable>
+	<Variable ConnectedId="{1460620D-C8BC-44c2-86EC-E632E0986B01}" Description="DscrSapGui.ShowShadowBorder" DisplayInSapAdmin="true" Name="SapGui.ShowShadowBorder" Persistent="false">
+		<Value>1</Value>
+	</Variable>
+	<Variable ConnectedId="{1460620D-C8BC-44c2-86EC-E632E0986B01}" Description="DscrSapGui.Sound" DisplayInSapAdmin="true" Name="SapGui.Sound" Persistent="false">
+		<Value>On</Value>
+	</Variable>
+	<Variable ConnectedId="{1460620D-C8BC-44c2-86EC-E632E0986B01}" Description="DscrSapGui.SelectedTheme" DisplayInSapAdmin="true" Name="SapGui.SelectedTheme" Persistent="false">
+		<Value>0x80</Value>
+	</Variable>
+	<Variable ConnectedId="{1460620D-C8BC-44c2-86EC-E632E0986B01}" Description="DscrSapGui.BrandingImage" DisplayInSapAdmin="true" Name="SapGui.BrandingImage" Persistent="false">
+		<Value>NONE</Value>
+	</Variable>
+	<Variable ConnectedId="{1460620D-C8BC-44c2-86EC-E632E0986B01}" Description="DscrSapGui.BrandingImage" DisplayInSapAdmin="false" Name="SapGui.BrandingImage.Internal" Persistent="true">
+		<Value>NONE</Value>
+	</Variable>
+	<Variable ConnectedId="{1460620D-C8BC-44c2-86EC-E632E0986B01}" Description="DscrSapGui.UseBrandingImage" DisplayInSapAdmin="true" Name="SapGui.UseBrandingImage" Persistent="false">
+		<Value>0</Value>
+	</Variable>
+	<Variable ConnectedId="{1460620D-C8BC-44c2-86EC-E632E0986B01}" Description="DscrSapGui.Accessibility" DisplayInSapAdmin="true" Name="SapGui.Accessibility" Persistent="false">
+		<Value>Off</Value>
+	</Variable>
+	<Variable ConnectedId="{1460620D-C8BC-44c2-86EC-E632E0986B01}" Description="DscrSapGui.Accessibility.EnhancedTabChain" DisplayInSapAdmin="true" Name="SapGui.Accessibility.EnhancedTabChain" Persistent="false">
+		<Value>1</Value>
+	</Variable>
+	<Variable ConnectedId="{1460620D-C8BC-44c2-86EC-E632E0986B01}" Description="DscrSapGui.Accessibility.SymbolsAsLetters" DisplayInSapAdmin="true" Name="SapGui.Accessibility.SymbolsAsLetters" Persistent="false">
+		<Value>1</Value>
+	</Variable>
+	<Variable ConnectedId="{1460620D-C8BC-44c2-86EC-E632E0986B01}" Description="DscrSapGui.ConfigFileOnServer" DisplayInSapAdmin="true" Name="SapGui.ConfigFileOnServer" Persistent="false">
+		<Value>NONE</Value>
+	</Variable>
+	<Variable ConnectedId="{1460620D-C8BC-44c2-86EC-E632E0986B01}" Description="DscrSapGui.ConfigFileOnServer" DisplayInSapAdmin="false" Name="SapGui.ConfigFileOnServer.Internal" Persistent="true">
+		<Value>NONE</Value>
+	</Variable>
+	<Variable ConnectedId="{1460620D-C8BC-44c2-86EC-E632E0986B01}" Description="DscrSapGui.LandscapeFileOnServer" DisplayInSapAdmin="true" Name="SapGui.LandscapeFileOnServer" Persistent="false">
+		<Value>NONE</Value>
+	</Variable>
+	<Variable ConnectedId="{1460620D-C8BC-44c2-86EC-E632E0986B01}" Description="DscrSapGui.LandscapeFileOnServer" DisplayInSapAdmin="false" Name="SapGui.LandscapeFileOnServer.Internal" Persistent="true">
+		<Value>NONE</Value>
+	</Variable>
+	<Variable ConnectedId="{146D3BB5-D3FC-4E61-88F4-CE0341A22F54}" Description="DscrSapGui.LandscapeFormatEnabled" DisplayInSapAdmin="true" Name="SapGui.LandscapeFormatEnabled" Persistent="false">
+		<Value>1</Value>
+	</Variable>
+	<Variable ConnectedId="{146D3BB5-D3FC-4E61-88F4-CE0341A22F54}" Description="DscrSapGui.LandscapeFormatEnabled" DisplayInSapAdmin="false" Name="SapGui.LandscapeFormatEnabledInternal" Persistent="false">
+		<Value>1</Value>
+	</Variable>
+	<Variable ConnectedId="{1460620D-C8BC-44c2-86EC-E632E0986B01}" Description="DscrSapFrontEndDir" DisplayInSapAdmin="false" Name="SapFrontEndDirCorrection" Persistent="false">
+	   <Value>%ProgramFiles%\SAP\FrontEnd</Value>
+	   <Value Script='true'>
+		   <![CDATA[
+			   Option Explicit
+			   Dim strSapGuiDestDir
+			   strSapGuiDestDir = "HKEY_LOCAL_MACHINE\SOFTWARE\SAP\SAP Shared\SAPDestDir"
+			   
+			   NwEngine.Context.Log.Write "SAP GUI Script: Checking if registry value " & strSapGuiDestDir & " exists."
+			   If NwEngine.Shell.RegValueExist(strSapGuiDestDir) Then
+				  Dim strSapGuiDestDirValue
+				  strSapGuiDestDirValue = NwEngine.Shell.GetRegValue(strSapGuiDestDir)
+				  If strSapGuiDestDirValue <> "" Then
+					  NwEngine.Context.Log.Write "SAP GUI Script: Registry value " & strSapGuiDestDir & " is set to " & strSapGuiDestDirValue & "."
+					  Dim strWkstaSapGuiDestDirValue
+					  strWkstaSapGuiDestDirValue = NwEngine.Variables.GetValue("SapFrontEndDir")
+					  NwEngine.Context.Log.Write "SAP GUI Script: Wksta value is set to " & strWkstaSapGuiDestDirValue & "."
+					  If strSapGuiDestDirValue <> strWkstaSapGuiDestDirValue Then
+						  NwEngine.Context.Log.Write "SAP GUI Script: Wksta value and registry value are different, the registry value will be used."
+						  NwEngine.Variables.AppendDefaultValue "SapFrontEndDir", strSapGuiDestDirValue
+					  Else
+						  NwEngine.Context.Log.Write "SAP GUI Script: Wksta value and registry value have the same value, everything is ok."
+					  End If
+				  Else
+					  NwEngine.Context.Log.Write "SAP GUI Script: Registry value " & strSapGuiDestDir & " exists, but has no value, everything ok."
+				  End If
+			   Else
+				  NwEngine.Context.Log.Write "SAP GUI Script: Registry value " & strSapGuiDestDir & " doesn't exist, everything is ok."
+			   End If
+		   ]]>
+	   </Value>
+	</Variable>
+</SapSetup>

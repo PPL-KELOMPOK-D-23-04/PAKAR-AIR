@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Init" WkstaDb="SapVC10RtX64Wksta.xml">
+	<Product BuildTime="0xD05EF4C9B1BED201" CmdLine="$VC10RT64" Guid="{05A3F893-D45A-4699-A676-856D2DD247BF}" Name="$VC10RT64" ProdVersion="6" Visible="false">
+		<Contains Guid="{C293FC4A-741B-4c17-9FF6-90CED945B19D}" Name="$VC10RT64"/>
+	</Product>
+	<Component Arch="X64" BuildTime="0xD05EF4C9B1BED201" Guid="{C293FC4A-741B-4C17-9FF6-90CED945B19D}" Min_Compliant_Version="1" Name="$VC10RT64" Order="PreInstall" SysSize="13227" Version="6">
+		<MsiAction Persistent="true">
+			<Condition>&quot;%WOW64MODE%&quot; = &quot;TRUE&quot;</Condition>
+			<MsiFile Hash="SHA-256:0cf0e991295c31218f279b036f6d6a98f3474016db4d408905f6789fca068268" ProductCode="{0CA550DE-10F6-45F8-AB0A-25DBDDE37671}" Timestamp="0x0611BF01AFBED201">%SapSrcDir%\System\VC10\vcredist_x64.msi</MsiFile>
+		</MsiAction>
+	</Component>
+</SapSetup>

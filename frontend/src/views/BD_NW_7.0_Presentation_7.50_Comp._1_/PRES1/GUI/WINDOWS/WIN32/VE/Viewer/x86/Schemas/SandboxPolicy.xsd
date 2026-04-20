@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema 
+    id="SAP_VE_CAD_Sandbox_Policy"
+    attributeFormDefault="unqualified"
+    elementFormDefault="qualified"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://schemas.sap.com/VE/Sandbox/2015/March"
+    targetNamespace="http://schemas.sap.com/VE/Sandbox/2015/March"
+>
+  <xs:include schemaLocation="SandboxCommon.xsd"/>
+  
+  <!-- Policy element can contain any number of FileAccessRule, FolderAccessRule, RegistryEntryAccessRule and ProcessExecutionRule child elements in any order (Policy can be empty too is some cases, that's OK) -->
+  <!-- TODO: For now a Policy element can contain arbitrary number of child elements of all 4 kinds. In the future all access rules of the same kind should be collapsed into a single rule set, so that at most one element of each kind should be contained in Policy -->
+  <xs:complexType name="Policy">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="FileAccessRule" type="FileAccessRule"/>
+      <xs:element name="FolderAccessRule" type="FolderAccessRule"/>
+      <xs:element name="RegistryEntryAccessRule" type="RegistryEntryAccessRule"/>
+      <xs:element name="ProcessExecutionRule" type="ProcessExecutionRule"/>
+    </xs:choice>
+    <xs:attribute name="Type" type="PolicyType" use="optional"/>
+  </xs:complexType>
+
+  <!-- FileAccessRule element can contain any number of File elements (can be empty too for now, see above) -->
+  <!-- TODO: Once collapsing is implemented a rule cannot be empty anymore, it should contain *at least one* child element -->
+  <xs:complexType name="FileAccessRule">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="File" type="File"/>
+    </xs:sequence>
+    <xs:attribute name="AccessRight" type="FileAccessRight" use="required"/>
+  </xs:complexType>
+
+  <!-- FolderAccessRule element can contain any number of Folder elements (can be empty too for now, see above) -->
+  <!-- TODO: Once collapsing is implemented a rule cannot be empty anymore, it should contain *at least one* child element -->
+  <xs:complexType name="FolderAccessRule">
+    <xs:sequence>      
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Folder" type="Folder"/>
+    </xs:sequence>
+    <xs:attribute name="AccessRight" type="FolderAccessRight" use="required"/>
+  </xs:complexType>
+
+  <!-- RegistryEntryAccessRule element can contain any number of RegistryEntry elements (can be empty too for now, see above) -->
+  <!-- TODO: Once collapsing is implemented a rule cannot be empty anymore, it should contain *at least one* child element -->
+  <xs:complexType name="RegistryEntryAccessRule">
+    <xs:sequence>      
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RegistryEntry" type="RegistryEntry"/>
+    </xs:sequence>
+    <xs:attribute name="AccessRight" type="RegistryEntryAccessRight" use="required"/>
+  </xs:complexType>
+
+  <!-- ProcessExecutionRule element can contain any number of Process elements (can be empty too for now, see above) -->
+  <!-- TODO: Once collapsing is implemented a rule cannot be empty anymore, it should contain *at least one* child element -->
+  <xs:complexType name="ProcessExecutionRule">
+    <xs:sequence>      
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Process" type="Process"/>
+    </xs:sequence>
+    <xs:attribute name="ExecutionRight" type="ProcessExecutionRight" use="required"/>
+  </xs:complexType>
+ 
+  <xs:simpleType name="FileAccessRight">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="query"/>
+      <xs:enumeration value="read"/>
+      <xs:enumeration value="readwrite"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="FolderAccessRight">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="query"/>
+      <xs:enumeration value="read"/>
+      <xs:enumeration value="readwrite"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="RegistryEntryAccessRight">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="read"/>
+      <xs:enumeration value="readwrite"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ProcessExecutionRight">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="default"/>
+<!--
+      {C9764AA9-39F8-49B4-A102-C446807E7363}
+      Full execution right is not available for now
+      <xs:enumeration value="full"/>
+-->
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="PolicyType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="plugin"/>
+      <xs:enumeration value="application"/>
+      <xs:enumeration value="session"/>
+      <xs:enumeration value="global"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

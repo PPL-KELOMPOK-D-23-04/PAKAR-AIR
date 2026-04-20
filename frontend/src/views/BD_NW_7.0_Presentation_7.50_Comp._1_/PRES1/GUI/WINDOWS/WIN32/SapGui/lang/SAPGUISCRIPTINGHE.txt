@@ -1,0 +1,10 @@
+_SAPPCTXT_HEADER_               002 7500 SAPGUISCRIPTING HE 1800 27.04.2017-23:49 OK 
+SCRIPTING_SCRIPTNOTINST         150 "תמיכת כתיבת תסריט אינה מותקנת"
+SCRIPTING_SCRIPTNOTENABLED      150 "תמיכת כתיבת תסריט נהפכה ללא-זמינה על-ידי המשתמש"
+SCRIPTING_DO_NOT_SHOW_AGAIN     150 "אל תציג popup זה כאשר תסריט פותח חיבור"
+SCRIPTING_SCRIPTISOPENING       150 "תסריט פותח חיבור למערכת: %s"
+<#007>SCRIPTING_CANCEL_BTN      016 "בטל"
+<#007>SCRIPTING_OK_BTN          016 "אשר"
+<#007>SCRIPTING_ALLOW_BTN       016 "התר"
+<#007>SCRIPTING_DENY_BTN        016 "דחה"
+<#007>SCRIPTING_HELP_BTN        016 "עזרה"

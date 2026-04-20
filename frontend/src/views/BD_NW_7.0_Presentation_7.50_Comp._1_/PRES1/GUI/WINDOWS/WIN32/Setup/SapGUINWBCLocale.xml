@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context='Locale' Version='750.12'>
+	<String Name='strSapGUINWBCProductName'>
+		<En>Install SAP GUI Desktop Icon / Shortcuts even though NWBC is installed</En>
+	</String>
+	<String Name='strSapGUINWBCProductDescription'>
+		<En>When SAP GUI for Windows 7.50 is installed together with NWBC 5.0 by default SAP GUI and SAP GUI Shortcuts will be launched through NWBC. However when you would like to stick with the parallel usage of SAP GUI and NWBC you can select this component to install the SAP Logon (Pad) Desktop Icon and the registration of SAP GUI Shortcuts to SAP Logon.</En>
+	</String>
+	<String Name="DscrSapGui.LandscapeFormatEnabled">
+		<En>Control usage of the new landscape format. Allowed values: 1 = LandscapeFormat; 0 = old ini format.</En>
+		<De>Steuert die Verwendung des Landscape Format. Erlaubte Werte: 1 = LandscapeFormat; 0 = altes ini Format.</De>
+	</String>
+</SapSetup>

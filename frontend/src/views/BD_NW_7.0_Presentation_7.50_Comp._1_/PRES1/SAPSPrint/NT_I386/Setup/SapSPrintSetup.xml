@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Init" WkstaDb="SapSPrintWkstaUI.xml">
+	<SapSetupProduct BuildTime="0x30ABDC1FC8BDD201" CmdLine="SPrint" Description="SapSPrintProductDescription" Guid="{EF091753-B596-4589-9103-57DDBD048CEB}" Name="SapSPrintProductName" Version="750.3">
+		<Prerequisite>
+			<Condition>%Pre_SapSprint%=FULFILLED</Condition>
+			<FailureText>StrFailedConditionHOTFIX_KB921337</FailureText>
+		</Prerequisite>
+		<Prerequisite>
+			<Condition>NOT(IsProductInstalled({768E6874-B6A9-427F-A18D-8C1A77D43FE8}))</Condition>
+			<FailureText>strSapSPrintSPrintx64AlreadyInstalled</FailureText>
+		</Prerequisite>
+		<Prerequisite>
+			<Condition>NOT(%WinType%=[Windows Server 2008,Windows Vista,Windows 2000,Windows XP,Windows Server 2003])</Condition>
+			<FailureText>StrFailedConditionWindowsVersion</FailureText>
+		</Prerequisite>
+		<UI>
+			<Page Type="FolderPath">
+				<PageVariable>SapSPrintDestDir</PageVariable>
+				<WindowCaption>StrWindowCaption</WindowCaption>
+				<Title>SapSPrintProductName</Title>
+				<SubTitle>SapSPrintDestDirPrompt</SubTitle>
+				<BackBtnText>StrBtnBack</BackBtnText>
+				<NextBtnText>StrBtnNext</NextBtnText>
+				<CancelBtnText>StrBtnCancel</CancelBtnText>
+			</Page>
+			<Page Type="InputString">
+				<PageVariable>SapSPrintLPDPort</PageVariable>
+				<WindowCaption>StrWindowCaption</WindowCaption>
+				<Title>SapSPrintProductName</Title>
+				<SubTitle>SapSPrintLPDPortPrompt</SubTitle>
+				<BackBtnText>StrBtnBack</BackBtnText>
+				<NextBtnText>StrBtnNext</NextBtnText>
+				<CancelBtnText>StrBtnCancel</CancelBtnText>
+			</Page>
+		</UI>
+		<IncludesProductPart Comment="SAP SPrint" ProductGuid="{5A5BDDF7-2866-40b7-B084-7EBD7243919A}" Visible="false"/>
+	</SapSetupProduct>
+	<SapSetupProductPart BuildTime="0x30ABDC1FC8BDD201" Guid="{5A5BDDF7-2866-40B7-B084-7EBD7243919A}" Name="SAP SPrint" Version="750.1">
+		<RequiresComponent ComponentGuid="{75402173-B77D-422B-9EEA-25026A88BA65}"/>
+		<RequiresComponent ComponentGuid="{46CDE8E0-CDA5-409F-8C37-7D33045510D6}"/>
+		<RequiresComponent ComponentGuid="{DF520CFA-9F92-4012-A60A-2611568E8634}"/>
+	</SapSetupProductPart>
+</SapSetup>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SapSetup Context="Variables" Version="2001">
+    <Variable Name="SapSPrintDestDir" ConnectedId="{EF091753-B596-4589-9103-57DDBD048CEB}" Description="DscrSapSPrintDestDir" Persistent="TRUE">
+      <Value>%ProgramFiles%\SAP\SAPSPrint</Value>
+    </Variable>
+    <Variable Name="SapSPrintLPDPort" ConnectedId="{EF091753-B596-4589-9103-57DDBD048CEB}" Description="DscrSapSPrintLPDPort">
+      <Value>515</Value>
+    </Variable>
+    <Variable Name="Pre_SapSprint" Persistent="FALSE">
+      <Value>UNDEFINED</Value>
+      <Value Script="TRUE">
+		<![CDATA[
+			szWinType = NwEngine.Variables.ResolveString("%WinType%")
+			szSxsDll = NwEngine.Variables.ResolveString("%WinSysDir%\Sxs.dll")
+			NwEngine.Context.Log.Write "Script: Checking for minimal version of '" & szSxsDll & "'..."
+			If szWinType = "Windows 2000" Then
+				NwEngine.Context.Log.Write "Variable-Script: Running on Windows 2000. No need to check for '" & szSxsDll & "'"
+		    	NwEngine.Variables.AppendDefaultValue "Pre_SapSprint", "FULFILLED"
+			Else
+				If NwEngine.Shell.FileExist( szSxsDll ) Then
+					NwEngine.Context.Log.Write "Variable-Script: Version of '" & szSxsDll & "' = " & NwEngine.Shell.GetFileVersion( szSxsDll )
+					If NwEngine.DE.ConditionsHandler.Evaluate("%WinSysDir%\Sxs.dll>=5.1.2600.2932") Then
+				    	NwEngine.Variables.AppendDefaultValue "Pre_SapSprint", "FULFILLED"
+					Else
+						NwEngine.Context.Log.WriteWarning "Variable-Script: The version of '" & szSxsDll & "' is too low!"
+				    End If
+				Else
+					NwEngine.Context.Log.WriteWarning "Variable-Script: The file '" & szSxsDll & "' is missing!"
+				End If
+			End If
+		]]>
+      </Value>
+    </Variable>
+</SapSetup>

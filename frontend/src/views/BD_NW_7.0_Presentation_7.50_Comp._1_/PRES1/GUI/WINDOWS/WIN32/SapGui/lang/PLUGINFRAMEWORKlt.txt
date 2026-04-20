@@ -1,0 +1,10 @@
+_SAPPCTXT_HEADER_               002 7500 PLUGINFRAMEWORK LT 1904 27.04.2017-23:49 OK 
+CP_SPELLCHECK_COMPLETE          128 "Raðybos patikra baigta"
+MENU_ITEM_EXCEL                 030 "Excel"
+MENU_ITEM_SEARCH                030 "Ieðkoti"
+MENU_ITEM_CONTEXTSEARCH         120 "Ieðkoti SAP þinyno portalo"
+MENU_ITEM_SPELLCHECK            030 "Raðybos taisymas"
+MENU_ITEM_MAIL                  020 "Paðtas"
+MENU_ITEM_PRINT                 020 "Spausdinti"
+CP_SERVICE_MENUITEM             030 "Paslaugos"
+CP_TREE_PRINT                   060 "Spausdinti medá"

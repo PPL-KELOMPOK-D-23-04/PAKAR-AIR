@@ -1,0 +1,10 @@
+_SAPPCTXT_HEADER_               002 7500 PLUGINFRAMEWORK FR 1100 27.04.2017-23:49 OK 
+CP_SPELLCHECK_COMPLETE          128 "Vérification grammaticale et orthographique terminée"
+MENU_ITEM_EXCEL                 030 "Excel"
+MENU_ITEM_SEARCH                030 "Rechercher"
+MENU_ITEM_CONTEXTSEARCH         120 "Rechercher dans SAP Help Portal"
+MENU_ITEM_SPELLCHECK            030 "Correcteur orthographique"
+MENU_ITEM_MAIL                  020 "Mail"
+MENU_ITEM_PRINT                 020 "Imprimer"
+CP_SERVICE_MENUITEM             030 "Services"
+CP_TREE_PRINT                   060 "Imprimer arborescence"

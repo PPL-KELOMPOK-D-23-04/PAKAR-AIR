@@ -1,0 +1,6 @@
+_SAPPCTXT_HEADER_               002 7500 FEWUIMSG PL 1404 27.04.2017-23:50 OK 
+<#001>UIMSG_YNA_DLG_REMEMBER    100 "Zapamiêtanie decyzji"
+LGN_POP_DTF_MESSAGE             200 "Czy wyczyœciæ katalog dokumentów %s?"
+<#001>UIMSG_YNA_DLG_NO          100 "Nie"
+<#001>UIMSG_YNA_DLG_YES         100 "Tak"
+LGN_POP_DTF_TITLE               200 "Czyszczenie SAP Logona"

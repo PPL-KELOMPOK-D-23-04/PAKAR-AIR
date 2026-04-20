@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Init" WkstaDb="SapMFC71Wksta.xml">
+	<Component BuildTime="0x30821D6AAABFD201" Guid="{7271CEDC-9BE0-43DF-A1CB-0C719175B774}" Min_Compliant_Version="1" Name="$MFC71" SysSize="1036" Version="4">
+		<Action Dst="%WinSysDir%" RunAt="Install" Type="File">
+			<Src FileVersion="7.10.3077.0" Hash="SHA-256:4da5efdc46d126b45daeee8bc69c0ba2aa243589046b7dfd12a7e21b9bee6a32" Timestamp="0x65F6BBECBDECD101">%SAPSrcDir%\system\mfc71.dll</Src>
+		</Action>
+	</Component>
+</SapSetup>

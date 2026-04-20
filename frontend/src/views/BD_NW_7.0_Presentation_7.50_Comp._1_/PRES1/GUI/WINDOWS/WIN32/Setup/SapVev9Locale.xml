@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SapSetup Context="Locale" Version="90101.96099" ConnectedId="{45EBADA8-D0FF-4F6A-B71D-A910441060B3}">
+  <String Name="strVEVProductName">
+    <En>SAP 3D Visual Enterprise Viewer 9.0 FP01 MP1</En>
+  </String>
+  <String Name="strVEV">
+    <En>SAP 3D Visual Enterprise Viewer 9.0 FP01 MP1</En>
+  </String>
+  <String Name="strVEVBaseProductPartName">
+    <En>SAP 3D Visual Enterprise Viewer</En>
+  </String>
+  <String Name="strVEVOfficeProductPartName">
+    <En>SAP 3D Visual Enterprise Viewer Office Add-in</En>
+  </String>
+  <String Name="strVEVTargetFolder">
+    <En>Please select the target directory for the SAP 3D Visual Enterprise Viewer 9.0 FP01 MP1 files</En>
+  </String>
+  <String Name="strVEVBaseProductDescription">
+    <En><![CDATA[<span style="color:blue">WARNING: If you have a previous version of Viewer installed it will be updated.</span><br/>]]></En>
+  </String>
+  <String Name="strVEV70Installed">
+    <En><![CDATA[<span style="color:red">ERROR: SAP 3D Visual Enterprise Viewer 9.0 can only be upgraded from 7.1.x and 8.0.x. If you have an earlier release then uninstall the older version first and then install 9.0.</span><br/>]]></En>
+  </String>
+</SapSetup>

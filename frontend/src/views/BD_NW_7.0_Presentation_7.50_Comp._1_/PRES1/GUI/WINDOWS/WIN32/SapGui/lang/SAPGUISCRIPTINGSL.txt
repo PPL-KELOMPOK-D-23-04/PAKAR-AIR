@@ -1,0 +1,10 @@
+_SAPPCTXT_HEADER_               002 7500 SAPGUISCRIPTING SL 1404 27.04.2017-23:50 OK 
+SCRIPTING_SCRIPTNOTINST         150 "Podpora Scripta ni namešèena"
+SCRIPTING_SCRIPTNOTENABLED      150 "Podporo Scripta je deaktiviral uporabnik"
+SCRIPTING_DO_NOT_SHOW_AGAIN     150 "Brez prikaza pojavnega okna, èe Script poskuša vzpostaviti povezavo"
+SCRIPTING_SCRIPTISOPENING       150 "Script želi odpreti povezavo do naslednjega sistema: %s"
+<#007>SCRIPTING_CANCEL_BTN      016 "Prekinitev"
+<#007>SCRIPTING_OK_BTN          016 "V redu"
+<#007>SCRIPTING_ALLOW_BTN       016 "Dovoljenje"
+<#007>SCRIPTING_DENY_BTN        016 "Zavrnitev"
+<#007>SCRIPTING_HELP_BTN        016 "Pomoè"

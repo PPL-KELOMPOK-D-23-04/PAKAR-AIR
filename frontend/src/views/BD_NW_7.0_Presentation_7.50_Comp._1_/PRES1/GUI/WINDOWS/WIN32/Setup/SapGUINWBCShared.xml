@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Init" WkstaDb="SapGUINWBCWksta.xml">
+	<Component BuildTime="0x30821D6AAABFD201" Guid="{55548FF6-7702-4952-9C72-E9C3AAC6433B}" Min_Compliant_Version="750.10" Name="Set variable PreInstall" Order="PreInstall" Version="750.10">
+		<Action RunAt="Install" Type="Script">
+			<Src><![CDATA[
+NwEngine.Context.Log.Write "GUINWBC Script: Set registry value 'HKLM\SOFTWARE\SAP\SAPGUI Setup Configuration\GUINWBCInstalled' to TRUE"
+					NwEngine.Shell.SetRegValue "HKLM\SOFTWARE\SAP\SAPGUI Setup Configuration\GUINWBCInstalled", "REG_SZ", "TRUE"
+			]]></Src>
+		</Action>
+	</Component>
+	<Component BuildTime="0x30821D6AAABFD201" Guid="{AC1E8D2C-08F0-4A7E-A46D-5499CC21AB43}" Min_Compliant_Version="750.10" Name="Set variable PostInstall" Order="PostInstall" Version="750.10">
+		<Action RunAt="Uninstall" Type="Script">
+			<Src><![CDATA[
+NwEngine.Context.Log.Write "GUINWBC Script: Removing registry value 'HKLM\SOFTWARE\SAP\SAPGUI Setup Configuration\GUINWBCInstalled'"
+					NwEngine.Shell.DeleteRegValue "HKLM\SOFTWARE\SAP\SAPGUI Setup Configuration\GUINWBCInstalled"
+			]]></Src>
+		</Action>
+	</Component>
+	<Component BuildTime="0x30821D6AAABFD201" Guid="{486645F4-2ACB-4B3E-8F8C-FD4F196E8075}" Min_Compliant_Version="750.10" Name="SAP NWBCGUI Evaluate Icon Behavior PreInstall" Order="PreInstall" SysSize="23" Update="Always" Version="750.80">
+		<Action Dst="HKLM\SOFTWARE\SAP" Type="Registry">
+			<RegValue Name="GUINWBCInstalled" Type="DWORD">1</RegValue>
+		</Action>
+		<Action Dst="HKLM\SOFTWARE\SAP\SAPLogon" Type="Registry">
+			<RegValue Name="GUINWBCInstalled" Type="DWORD">1</RegValue>
+		</Action>
+		<Action RunAt="Uninstall" Type="Script">
+			<Src><![CDATA[
+NwEngine.Context.Log.Write "GUINWBC Script: Removing HKLM\SOFTWARE\SAP\SAPGUI Setup Configuration as the complete GUI/NWBC will be uninstalled."
+					NwEngine.Shell.DeleteRegKey "HKLM\SOFTWARE\SAP\SAPGUI Setup Configuration"
+			]]></Src>
+		</Action>
+		<Action Dst="%SAPSetupDir%\Setup" Type="File">
+			<Src Hash="SHA-256:543b3fd2b0c0170d32d1dc0a93166660b4d744b3698901c91e4fd42f8ecf0fac" Timestamp="0xB5ACC7542AB9D201">%SapSrcDir%\Setup\SapGUINWBCScripting.inc</Src>
+		</Action>
+		<Action RunAt="Uninstall" Type="Script">
+			<Src><![CDATA[
+Sub includeFile(fSpec)
+					With CreateObject("Scripting.FileSystemObject")
+						executeGlobal .openTextFile(fSpec).readAll()
+					End With
+				End Sub
+				
+				strFile = NwEngine.Variables.ResolveString("%SAPSetupDir%\Setup\SapGUINWBCScripting.inc")
+				
+				includeFile(strFile)
+				ExecuteGUINWBCIntegration
+			]]></Src>
+		</Action>
+	</Component>
+	<Component BuildTime="0x30821D6AAABFD201" Guid="{E3FA2B73-0977-449E-AC39-E03917DB6D7F}" Min_Compliant_Version="750.10" Name="SAP NWBCGUI Evaluate Icon Behavior PostInstall" Order="PostInstall" Update="Always" Version="750.18">
+		<Action RunAt="Install,Update" Type="Script">
+			<Src><![CDATA[
+Sub includeFile(fSpec)
+					With CreateObject("Scripting.FileSystemObject")
+						executeGlobal .openTextFile(fSpec).readAll()
+					End With
+				End Sub
+				
+				strFile = NwEngine.Variables.ResolveString("%SAPSetupDir%\Setup\SapGUINWBCScripting.inc")
+				
+				includeFile(strFile)
+				ExecuteGUINWBCIntegration
+			]]></Src>
+		</Action>
+		<ExecuteAction>
+			<Condition>((%varSapNWBC50IsStandardShortcutHandler% = TRUE) &amp; (%SAPSetupDir%\setup\SapStart.exe &lt;&gt; -1))</Condition>
+			<Exe DisplayText="Refreshing Icons" SuppressWindow="true">%SAPSetupDir%\setup\SapStart.exe</Exe>
+			<Parameters>/refresh</Parameters>
+			<Wait TimeOut="60000">%ErrorLevel% = 0</Wait>
+		</ExecuteAction>
+	</Component>
+</SapSetup>

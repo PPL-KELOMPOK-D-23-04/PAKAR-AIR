@@ -1,0 +1,24 @@
+﻿<?xml version="1.0"?>
+<GDTSymbols>
+<GDTReplace Original="__&lt;DIAMETER&gt;__SYM1.font" Replace="12567"/>
+<GDTReplace Original="__&lt;MAXMATERIAL&gt;__SYM1.font" Replace="12566"/>
+<GDTReplace Original="__&lt;LEASTMATERIAL&gt;__SYM1.font" Replace="12565"/>
+<GDTReplace Original="__&lt;FREESTATE&gt;__SYM1.font" Replace="12550"/>
+<GDTReplace Original="__&lt;NOACTUALSIZE&gt;__SYM1.font" Replace="12572"/>
+<GDTReplace Original="&lt;COUNTERSUNK&gt;" Replace="12576"/>
+<GDTReplace Original="&lt;DEGREE&gt;" Replace="176"/>
+<GDTReplace Original="&lt;DEPTH&gt;" Replace="12577"/>
+<GDTReplace Original="&lt;COUNTERBORE&gt;" Replace="12575"/>
+<GDTReplace Original="&lt;ST&gt;" Replace="12549"/>
+<GDTReplace Original="&lt;PLUSMINUS&gt;" Replace="177"/>
+<GDTReplace Original="&lt;MICRO&gt;" Replace="181"/>
+<GDTReplace Original="&lt;CENTERLINE&gt;" Replace="12570"/>
+<GDTReplace Original="&lt;SQUARE&gt;" Replace="12568"/>
+<GDTReplace Original="&lt;OHM&gt;" Replace="8486"/>
+<GDTReplace Original="&lt;ENVELOPE&gt;" Replace="12580"/>
+<GDTReplace Original="&lt;LOWEROREQUAL&gt;" Replace="8804"/>
+<GDTReplace Original="&lt;GREATEROREQUAL&gt;" Replace="8805"/>
+<GDTReplace Original="&lt;THREADPREFIX&gt;" Replace="77"/>
+<GDTReplace Original="&lt;UPTRIANGLE&gt;" Replace="8710"/>
+<GDTReplace Original="&lt;SLOPE&gt;" Replace="12579"/>
+</GDTSymbols>

@@ -1,0 +1,10 @@
+_SAPPCTXT_HEADER_               002 7500 PLUGINFRAMEWORK RO 1404 27.04.2017-23:50 OK 
+CP_SPELLCHECK_COMPLETE          128 "Verificare ortograficã terminatã"
+MENU_ITEM_EXCEL                 030 "Excel"
+MENU_ITEM_SEARCH                030 "Cãutare"
+MENU_ITEM_CONTEXTSEARCH         120 "Cãutare SAP Help Portal"
+MENU_ITEM_SPELLCHECK            030 "Verificare ortografie"
+MENU_ITEM_MAIL                  020 "Mail"
+MENU_ITEM_PRINT                 020 "Tipãrire"
+CP_SERVICE_MENUITEM             030 "Servicii"
+CP_TREE_PRINT                   060 "Tipãrire arbore"

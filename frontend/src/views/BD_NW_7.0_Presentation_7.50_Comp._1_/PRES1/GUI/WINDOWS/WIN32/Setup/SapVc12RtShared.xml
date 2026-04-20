@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Init" WkstaDb="SapVC12RtWksta.xml">
+	<Component BuildTime="0x30821D6AAABFD201" Guid="{BC01AE68-B71A-43D7-99C6-0A93AFF0C62B}" Name="VC12RT" Order="PreInstall" SysSize="11525" Version="3">
+		<Action Dst="%WinSysDir%" Persistent="true" Type="File">
+			<Src FileVersion="12.0.40660.0" ForceDelete="true" Hash="SHA-256:68df186e26151313a0df2adb0ef5f3a45ebba3cb02229bd8723a29dee60e278d" Timestamp="0x003E842701D8D101">%SapSrcDir%\System\VC12\x86\mfc120.dll</Src>
+			<Src FileVersion="12.0.40660.0" ForceDelete="true" Hash="SHA-256:5e7331a6adeb9d4252531ade800d47b8ddf020b97cfedc58de85386b3ae64e76" Timestamp="0x003E842701D8D101">%SapSrcDir%\System\VC12\x86\mfc120chs.dll</Src>
+			<Src FileVersion="12.0.40660.0" ForceDelete="true" Hash="SHA-256:9eec79bd4af04bba1e11fc24c64d94f30c22985c8ebbce3e0b411a61a1edbabe" Timestamp="0x003E842701D8D101">%SapSrcDir%\System\VC12\x86\mfc120cht.dll</Src>
+			<Src FileVersion="12.0.40660.0" ForceDelete="true" Hash="SHA-256:550f6c9f16fe85a8338b04f1bec43de3babeac60ff257197625f2802907007b8" Timestamp="0x003E842701D8D101">%SapSrcDir%\System\VC12\x86\mfc120deu.dll</Src>
+			<Src FileVersion="12.0.40660.0" ForceDelete="true" Hash="SHA-256:d1dbc7677010f9af7b680ea2efa28c964154997bddbf6c8d9d65ea225a5ec613" Timestamp="0x003E842701D8D101">%SapSrcDir%\System\VC12\x86\mfc120enu.dll</Src>
+			<Src FileVersion="12.0.40660.0" ForceDelete="true" Hash="SHA-256:87e5c496e038c337ca1acee52c145d8f4bdb3e74261b13e1feb740c4e2124e0a" Timestamp="0x003E842701D8D101">%SapSrcDir%\System\VC12\x86\mfc120esn.dll</Src>
+			<Src FileVersion="12.0.40660.0" ForceDelete="true" Hash="SHA-256:b098ed9a5f44052b9ab5ceee82ab4cea5c6d9a14a61816882ef996a0599838b2" Timestamp="0x003E842701D8D101">%SapSrcDir%\System\VC12\x86\mfc120fra.dll</Src>
+			<Src FileVersion="12.0.40660.0" ForceDelete="true" Hash="SHA-256:271abe43d14cbd8c80b85ec804787272522bc06c45b7f93244b718ab0c08a289" Timestamp="0x003E842701D8D101">%SapSrcDir%\System\VC12\x86\mfc120ita.dll</Src>
+			<Src FileVersion="12.0.40660.0" ForceDelete="true" Hash="SHA-256:43cd9fdf714b7dfca4b2a8f54bc25ceeddc7a6212ba59233d89a03c650053407" Timestamp="0x003E842701D8D101">%SapSrcDir%\System\VC12\x86\mfc120jpn.dll</Src>
+			<Src FileVersion="12.0.40660.0" ForceDelete="true" Hash="SHA-256:32dfe0f26b5024ec900a31f0dde736ca62769dc5de48238b485f4322cd367e7d" Timestamp="0x003E842701D8D101">%SapSrcDir%\System\VC12\x86\mfc120kor.dll</Src>
+			<Src FileVersion="12.0.40660.0" ForceDelete="true" Hash="SHA-256:1154c537bd700ebbda599a5c2923e73d098c3eaa930fd0f4d415583ff90eea67" Timestamp="0x003E842701D8D101">%SapSrcDir%\System\VC12\x86\mfc120rus.dll</Src>
+			<Src FileVersion="12.0.40660.0" ForceDelete="true" Hash="SHA-256:6130ad7d21a492cd3f3924bed43d954f80b6b6920374934b9eed057f27130e15" Timestamp="0x003E842701D8D101">%SapSrcDir%\System\VC12\x86\mfc120u.dll</Src>
+			<Src FileVersion="12.0.40660.0" ForceDelete="true" Hash="SHA-256:d6d2ba4ac1606e825216a25ab401d26d77c4300299e957cfadab3b0b945d065a" Timestamp="0x003E842701D8D101">%SapSrcDir%\System\VC12\x86\mfcm120.dll</Src>
+			<Src FileVersion="12.0.40660.0" ForceDelete="true" Hash="SHA-256:8c82f149507c3415250e52bf4c7fe937946a60d51f07492a1e36ab3e14482187" Timestamp="0x003E842701D8D101">%SapSrcDir%\System\VC12\x86\mfcm120u.dll</Src>
+			<Src FileVersion="12.0.40660.0" ForceDelete="true" Hash="SHA-256:d672fb07a05fb53cc821da0fde823fdfd46071854fe8c6c5ea83d7450b978ecb" Timestamp="0x003E842701D8D101">%SapSrcDir%\System\VC12\x86\msvcp120.dll</Src>
+			<Src FileVersion="12.0.40660.0" ForceDelete="true" Hash="SHA-256:e0305aa54823e6f39d847f8b651b7bd08c085f1dbbcb5c3c1ce1942c0fa1e9fa" Timestamp="0x003E842701D8D101">%SapSrcDir%\System\VC12\x86\msvcr120.dll</Src>
+			<Src FileVersion="12.0.40660.0" ForceDelete="true" Hash="SHA-256:c1b61dd24dc2dd5efd5cd548c0cd74fac112358e9e580df4d780d2c125474dad" Timestamp="0x003E842701D8D101">%SapSrcDir%\System\VC12\x86\vcamp120.dll</Src>
+			<Src FileVersion="12.0.40660.0" ForceDelete="true" Hash="SHA-256:1d67a8464991a03fc190d87b43591764f231d7a7a71a72ffc51d982b26691153" Timestamp="0x003E842701D8D101">%SapSrcDir%\System\VC12\x86\vccorlib120.dll</Src>
+			<Src FileVersion="12.0.40660.0" ForceDelete="true" Hash="SHA-256:62287589fc0b577398005f7ac07256d9fe671cdd3e5369faf74b9f64cb572317" Timestamp="0x003E842701D8D101">%SapSrcDir%\System\VC12\x86\vcomp120.dll</Src>
+		</Action>
+	</Component>
+</SapSetup>

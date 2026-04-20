@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Init" WkstaDb="SapIshMedWksta.xml">
+	<Component BuildTime="0x30821D6AAABFD201" Guid="{6D0B1286-BDEC-4CCF-B35E-6D1832786D2F}" Min_Compliant_Version="740.10" Name="$SapIshMed Shared Keys" Version="740.10">
+		<Action Dst="HKLM\SOFTWARE\SAP\SAP Shared\SAP_IshMed" Type="Registry">
+			<RegValue>SAP ISH MED</RegValue>
+			<RegValue Name="SAPSourceDir">%SAPSrcDir%</RegValue>
+			<RegValue Name="SAPDestDir">%SapFrontEndDir%\SapGui</RegValue>
+		</Action>
+	</Component>
+	<Component BuildTime="0x30821D6AAABFD201" Guid="{D9602569-76A8-46B6-ADD2-264B51DC460E}" Min_Compliant_Version="740.10" Name="$SapIshMed Files" Size="1284" Version="740.21">
+		<Action Dst="%SapFrontEndDir%\SapGui" Type="File">
+			<Src Hash="SHA-256:460b8fedc285cfb8f3b249925285b834990d2b0985109beaca930b5c85ff28e8" Timestamp="0xD2975044A8E8D101">%SapSrcDir%\SapGui\ISHMEDControl.jar</Src>
+			<Src Hash="SHA-256:380d6bcdadf40983c5d32d86f17bfe055ace2f967322f04f916cce01f4d27752" Timestamp="0xD2975044A8E8D101">%SapSrcDir%\SapGui\ISHMEDUtilities.jar</Src>
+			<Src Hash="SHA-256:c4b1510a58a7e36d5da5e10f3c20c0d646de0b7a87986ddb29bda7775affba74" Timestamp="0xF25B5544A8E8D101">%SapSrcDir%\SapGui\Scheduler.jar</Src>
+			<Src FileVersion="1.5.2.0" Hash="SHA-256:f0a3927e8016a5a3d428cc17f26cbe8be10f013340242629e4e7073d44190ac5" Timestamp="0xB1F95244A8E8D101">%SapSrcDir%\SapGui\SIJABclient.dll</Src>
+			<Src FileVersion="1.5.2.0" Hash="SHA-256:cc9177136490dd4e740338a5b8ba98cdc48d15d3b86d697c93b8345a60e10b0a" Timestamp="0xB1F95244A8E8D101">%SapSrcDir%\SapGui\SIJAB.exe</Src>
+		</Action>
+		<Action Dst="HKEY_CLASSES_ROOT\CLSID\{3D58476B-EB02-42C0-B05D-3D204B2D5BD9}\DefaultIcon" Type="Registry">
+			<RegValue>%SapFrontEndDir%\SapGui\JCCFWinControl.dll</RegValue>
+		</Action>
+		<Action Dst="HKEY_CLASSES_ROOT\CLSID\{3D58476B-EB02-42C0-B05D-3D204B2D5BD9}\InprocServer32" Type="Registry">
+			<RegValue Name="ThreadingModel">Apartment</RegValue>
+			<RegValue>%JreHomeForIshMed%\bin\axbridge.dll</RegValue>
+		</Action>
+		<Action Dst="HKEY_CLASSES_ROOT\CLSID\{3D58476B-EB02-42C0-B05D-3D204B2D5BD9}\JarFileName" Type="Registry">
+			<RegValue>%SapFrontEndDir%\SapGui\ISHMEDControl.jar</RegValue>
+		</Action>
+		<Action Dst="HKEY_CLASSES_ROOT\CLSID\{65B496AE-BFA3-42A6-B4AD-B6CD515355A0}\InprocServer32" Type="Registry">
+			<RegValue Name="ThreadingModel">Apartment</RegValue>
+			<RegValue>%JreHomeForIshMed%\bin\axbridge.dll</RegValue>
+		</Action>
+		<Action Dst="HKEY_CLASSES_ROOT\CLSID\{65B496AE-BFA3-42A6-B4AD-B6CD515355A0}\JarFileName" Type="Registry">
+			<RegValue>%SapFrontEndDir%\SapGui\ISHMEDControl.jar</RegValue>
+		</Action>
+		<Action Dst="HKEY_CLASSES_ROOT\CLSID\{65B496AE-BFA3-42A6-B4AD-B6CD515355A0}\JavaClass" Type="Registry">
+			<RegValue>com.ishmed.tech.client.jccf.win.WinControl</RegValue>
+		</Action>
+		<Action Dst="HKEY_CLASSES_ROOT\CLSID\{65B496AE-BFA3-42A6-B4AD-B6CD515355A0}\MiscStatus\1" Type="Registry">
+			<RegValue>131473</RegValue>
+		</Action>
+		<Action Dst="HKEY_CLASSES_ROOT\CLSID\{65B496AE-BFA3-42A6-B4AD-B6CD515355A0}\MiscStatus" Type="Registry">
+			<RegValue>0</RegValue>
+		</Action>
+		<Action Dst="HKEY_CLASSES_ROOT\CLSID\{65B496AE-BFA3-42A6-B4AD-B6CD515355A0}\ProgID" Type="Registry">
+			<RegValue>WinControl.Bean.1</RegValue>
+		</Action>
+		<Action Dst="HKEY_CLASSES_ROOT\CLSID\{65B496AE-BFA3-42A6-B4AD-B6CD515355A0}\SourceIID" Type="Registry">
+			<RegValue>{65B496B0-BFA3-42A6-B4AD-B6CD515355A0}</RegValue>
+		</Action>
+		<Action Dst="HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Prefs\com\ishmed\jccf\ishmedutilities" Type="Registry">
+			<RegValue Name="installpath">%SapFrontEndDir%\SapGui</RegValue>
+		</Action>
+		<Action Dst="HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Prefs\com\ishmed\jccf\scheduler" Type="Registry">
+			<RegValue Name="installpath">%SapFrontEndDir%\SapGui</RegValue>
+		</Action>
+		<Action Dst="HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Prefs\com\ishmed\jccf" Type="Registry">
+			<RegValue Name="sapguiinstalled">true</RegValue>
+			<RegValue Name="standalonepath">%SapFrontEndDir%\SapGui</RegValue>
+			<RegValue Name="javavm">1.6.0_12</RegValue>
+		</Action>
+	</Component>
+	<Component BuildTime="0x30821D6AAABFD201" Guid="{58D615CD-4048-4858-99CC-3F4A5260CB3A}" Min_Compliant_Version="750.50" Name="$SapIshMed KillBit Keys" Version="750.50">
+		<Action Dst="HKLM\Software\Microsoft\Internet Explorer\ActiveX Compatibility\{a02c35db-066e-4f0c-8e9b-d4daa7e2e1a2}" FileName="sijab.exe" Type="Registry">
+			<RegValue Name="Compatibility Flags" Type="DWORD">1024</RegValue>
+		</Action>
+		<Action Dst="HKLM\Software\Microsoft\Internet Explorer\ActiveX Compatibility\{872a8103-6e3c-4953-8199-2c01537e2120}" FileName="sijabclient.dll" Type="Registry">
+			<RegValue Name="Compatibility Flags" Type="DWORD">1024</RegValue>
+		</Action>
+		<Action Dst="HKLM\Software\Microsoft\Internet Explorer\ActiveX Compatibility\{f1d9c5f5-518e-4728-a525-cbfdf672ebda}" FileName="sijabclient.dll" Type="Registry">
+			<RegValue Name="Compatibility Flags" Type="DWORD">1024</RegValue>
+		</Action>
+		<Action Dst="HKLM\Software\Microsoft\Internet Explorer\ActiveX Compatibility\{154b8e6b-f4ea-4a38-93f0-76e51c905e60}" FileName="sijab.exe" Type="Registry">
+			<RegValue Name="Compatibility Flags" Type="DWORD">1024</RegValue>
+		</Action>
+		<Action Dst="HKLM\Software\Microsoft\Internet Explorer\ActiveX Compatibility\{bb7f5543-3021-4064-9ce4-f21b510c2d51}" FileName="sijabclient.dll" Type="Registry">
+			<RegValue Name="Compatibility Flags" Type="DWORD">1024</RegValue>
+		</Action>
+	</Component>
+</SapSetup>

@@ -1,0 +1,7 @@
+_SAPPCTXT_HEADER_               002 7500 OFFICEINTEGRATION DA 1100 27.04.2017-23:48 OK 
+OI_FILE                         060 "Fil"
+OI_SAVE_AS                      060 "Gem som"
+OI_PRINT_PREVIEW                080 "Vis udskrift"
+OI_PROPERTIES                   060 "Egenskaber"
+OI_PRINT                        060 "Print"
+OI_SAVE                         060 "Gem"

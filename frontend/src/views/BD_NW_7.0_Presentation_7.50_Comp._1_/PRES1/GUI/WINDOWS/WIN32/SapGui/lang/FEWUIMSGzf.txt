@@ -1,0 +1,6 @@
+_SAPPCTXT_HEADER_               002 7500 FEWUIMSG ZF 8300 27.04.2017-23:50 OK 
+<#001>UIMSG_YNA_DLG_REMEMBER    100 "記住我的決定"
+LGN_POP_DTF_MESSAGE             200 "您要清除文件目錄 %s 嗎？"
+<#001>UIMSG_YNA_DLG_NO          100 "否"
+<#001>UIMSG_YNA_DLG_YES         100 "是"
+LGN_POP_DTF_TITLE               200 "SAP Logon 清除"

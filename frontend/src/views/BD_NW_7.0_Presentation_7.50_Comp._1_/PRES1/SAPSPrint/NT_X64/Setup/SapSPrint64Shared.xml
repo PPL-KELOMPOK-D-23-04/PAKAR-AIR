@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Init" WkstaDb="SapSPrint64Wksta.xml">
+	<Component Arch="X64" BuildTime="0xA073F1B3C8BDD201" Guid="{22B22A74-B827-42ED-81DE-7AEC431D9920}" Min_Compliant_Version="750.1" Name="$SPrint ARP" Version="750.1">
+		<Action Dst="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\SAPSPrint" Type="Registry">
+			<RegValue Name="DisplayName">SAP Print Service (x64)</RegValue>
+			<RegValue Name="DisplayIcon">&quot;%SapSPrint64DestDir%\sapsprint.exe&quot;,0</RegValue>
+			<RegValue Name="Publisher">SAP SE</RegValue>
+			<RegValue Name="URLUpdateInfo">http://service.sap.com</RegValue>
+			<RegValue Name="UninstallString">&quot;%SAPSetupDir%\setup\nwsapsetup.exe&quot; /product:&quot;SPrint64&quot; /uninstall</RegValue>
+		</Action>
+	</Component>
+	<Component Arch="X64" BuildTime="0xA073F1B3C8BDD201" Guid="{223E30BF-DB42-4C78-AECB-922A7A41730B}" Min_Compliant_Version="750.1" Name="$SPrint64 Shared Keys" Version="750.1">
+		<Action Dst="HKLM\SOFTWARE\SAP\SAP Shared\SPrint" Type="Registry">
+			<RegValue>SAP SPrint</RegValue>
+			<RegValue Name="SAPSourceDir">%SAPSrcDir%</RegValue>
+			<RegValue Name="SAPDestDir">%SapSPrint64DestDir%</RegValue>
+		</Action>
+	</Component>
+	<Component Arch="X64" BuildTime="0xA073F1B3C8BDD201" Guid="{1C283B55-A36F-4D26-A17B-E6DF2D931097}" Min_Compliant_Version="750.1" Name="$SPrint64 Files" Size="7676" Version="750.2">
+		<Requires Guid="{3C633F1D-0757-4D13-BD6E-30C8D756D8F4}"/>
+		<Action Dst="%SapSPrint64DestDir%" Type="File">
+			<Src>%SAPsrcDir%\SapSPrint64\swinbitm.txt</Src>
+		</Action>
+		<Action Dst="%SapSPrint64DestDir%" Type="File">
+			<Src>%SAPsrcDir%\SapSPrint64\SAPSprintOptEdit.exe</Src>
+			<Src>%SAPsrcDir%\SapSPrint64\SAPSprintOptEdit_d.chm</Src>
+			<Src>%SAPsrcDir%\SapSPrint64\SAPSprintOptEdit_e.chm</Src>
+			<Src>%SAPsrcDir%\SapSPrint64\omsprint.exe</Src>
+		</Action>
+		<Action Dst="ProgramFiles\SAPSPrint\Options Editor" Type="Shortcut">
+			<Src>&quot;%SapSPrint64DestDir%\SAPSprintOptEdit.exe&quot;</Src>
+		</Action>
+		<Action Dependencies="Spooler" Description="SAP Print Service" DisplayName="SAPSprint" Dst="%SapSPrint64DestDir%" ExeName="%SapSPrint64DestDir%\sapsprint.exe" ServiceName="SAPSprint" Type="NtService">
+			<Src ForceDelete="true">%SAPsrcDir%\SapSPrint64\sapsprint.exe</Src>
+			<Src ForceDelete="true">%SAPsrcDir%\SapSPrint64\sapwin64.dll</Src>
+			<Src ForceDelete="true">%SAPsrcDir%\SapSPrint64\SAPbtmp64.dll</Src>
+			<Src ForceDelete="true">%SAPsrcDir%\SapSPrint64\sappdfpr64.dll</Src>
+		</Action>
+		<Action RunAt="Install" Type="Execute">
+			<Src DisplayText="Setting SPrint (x64) Recovery" Parameters=" -co" SuppressWindow="true" TimeOut="60000">%SapSPrint64DestDir%\sapsprint.exe</Src>
+		</Action>
+		<Action Condition="%SapSPrint64LPDPort%&lt;&gt;" RunAt="Install" Type="Execute">
+			<Src DisplayText="Setting SPrint (x64) LPD Port" Parameters=" -oi LPDPort &quot;%SapSPrint64LPDPort%&quot;" SuppressWindow="true" TimeOut="60000">%SapSPrint64DestDir%\sapsprint.exe</Src>
+		</Action>
+	</Component>
+</SapSetup>

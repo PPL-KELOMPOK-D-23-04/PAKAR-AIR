@@ -1,0 +1,7 @@
+_SAPPCTXT_HEADER_               002 7500 OFFICEINTEGRATION ES 1100 27.04.2017-23:48 OK 
+OI_FILE                         060 "Fichero"
+OI_SAVE_AS                      060 "Grabar como"
+OI_PRINT_PREVIEW                080 "Presentación preliminar"
+OI_PROPERTIES                   060 "Propiedades"
+OI_PRINT                        060 "Imprimir"
+OI_SAVE                         060 "Grabar"

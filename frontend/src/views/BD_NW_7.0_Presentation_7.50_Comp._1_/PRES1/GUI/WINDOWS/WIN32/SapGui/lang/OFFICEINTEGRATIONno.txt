@@ -1,0 +1,7 @@
+_SAPPCTXT_HEADER_               002 7500 OFFICEINTEGRATION NO 1100 27.04.2017-23:49 OK 
+OI_FILE                         060 "Fil"
+OI_SAVE_AS                      060 "Lagre som"
+OI_PRINT_PREVIEW                080 "Forhåndsvisning"
+OI_PROPERTIES                   060 "Egenskaper"
+OI_PRINT                        060 "Skriv ut"
+OI_SAVE                         060 "Lagre"

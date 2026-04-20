@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Locale" Version="2000">
+	<!-- FolderPathPage -->
+	<String name="SapPdfPrint64ProductName">
+		<En>SAP PDFPRINT (x64)</En>
+		<De>SAP PDFPRINT (x64)</De>
+	</String>
+	<String name="SapPdfPrint64DestDirPrompt">
+		<En>Choose the path to the SAP PDF Print (x64) installation directory</En>
+		<De>Wählen Sie das SAP PDF Print (x64) Zielverzeichnis aus</De>
+	</String>
+	<String name="SapPdfPrint64ProductDescription">
+		<En>PDF print library (64 bit version) for SAP Front End and SAPSPrint</En>
+		<De>PDF Druck Funktionalität (64 Bit Version) für SAP Front End und SAPSPrint</De>
+	</String>
+
+	<String name="SapPdfPrint64DestDirPrompt">
+		<En>Choose the path to the SAP PDFPRINT (x64) installation directory</En>
+		<De>Wählen Sie das SAP PDFPRINT (x64) Zielverzeichnis aus</De>
+	</String>
+
+	<String name="DscrSapPdfPrint64DestDir">
+		<En>SAP PDFPRINT (x64) installation directory</En>
+		<De>SAP PDFPRINT (x64) Installationsverzeichnis</De>
+	</String>
+
+</SapSetup>

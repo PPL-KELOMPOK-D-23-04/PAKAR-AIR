@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SapSetup Context="Variables" Version="2001">
+
+    <Variable Name="SapPdfPrintDestDir" ConnectedId="{EF13A039-AFF6-4292-B2D4-43675DCDFE01}" Description="DscrSapPdfPrintDestDir" Persistent="TRUE">
+      <Value>%ProgramFiles%\SAP\SAPPdfPrint</Value>
+    </Variable>
+
+</SapSetup>

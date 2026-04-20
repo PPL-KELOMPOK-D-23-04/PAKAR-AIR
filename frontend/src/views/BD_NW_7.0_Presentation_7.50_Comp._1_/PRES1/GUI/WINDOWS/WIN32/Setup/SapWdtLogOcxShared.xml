@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Init" WkstaDb="SapWdtLogOcxWksta.xml">
+	<Component BuildTime="0x30821D6AAABFD201" Guid="{C0C8FB32-58D0-418B-9B59-8C20CCB40362}" Min_Compliant_Version="750.3431" Name="$SAPWdtLogOCX" Size="2242" Version="750.5129">
+		<Requires Guid="{731ABB07-9B49-4F30-A8ED-0BB2E92F23B5}"/>
+		<Requires Guid="{BE81733F-DC98-459B-AAB0-7B1098A890EA}"/>
+		<Requires Guid="{FA8E618C-1C10-4227-A23A-9D7865276EF4}"/>
+		<Requires Guid="{D0D4EF18-972D-46C4-8288-676B6B6F9C26}"/>
+		<Action Dst="%CommonProgramFiles%\SAP Shared" Type="File">
+			<Src FileVersion="7490.1.0.1" Hash="SHA-256:2f5be82236c6f2b33aecb63156d0b30399658d12a0edf21572637c28092e3bc8" Timestamp="0x7508FC4DAABFD201">%SapSrcDir%\System\SAP\convlib.dll</Src>
+			<Src FileVersion="7500.1.0.8" Hash="SHA-256:6ef86de99f7e544cbf47074a1baf38cbb615aaf0febb7eefc5cdfe083939564e" Timestamp="0xC2CF467097BFD201">%SAPSrcDir%\System\SAP\sapmime.dll</Src>
+			<Src FileVersion="7500.1.0.28" Hash="SHA-256:946946c5525c8b36d4eea155d1b8b65f2004676e0fda291b8be5e3c1527884d8" Timestamp="0x6FA4E37697BFD201">%SAPSrcDir%\System\SAP\sapfilecache.dll</Src>
+			<Src FileVersion="7500.1.0.350" Hash="SHA-256:809f265cd983e9496c5cbead4ee3512db16c509e9099c369870de241dea34f71" Register="FALSE" Timestamp="0x5198DB4EAABFD201">%SapSrcDir%\System\SAP\sapfewut.dll</Src>
+			<Src FileVersion="7500.1.0.124" Hash="SHA-256:6c1f3dc6402f2d7569549612d1f803540a8d2e955e02d0f27278fe1610b327cf" Timestamp="0x31806C4EAABFD201">%SapSrcDir%\System\SAP\saplgmgr2.dll</Src>
+			<Src FileVersion="7500.1.0.159" Hash="SHA-256:7e5441c89ac4c912d19d3acfd10964d7490e7e3a9f3b359fe157b072b5c7cd4c" Timestamp="0xF07B864AAABFD201">%SapSrcDir%\System\SAP\wdtlog.ocx</Src>
+			<Src FileVersion="7500.1.0.9" Hash="SHA-256:956e5de44f5dc00ab670193d7d632cc2e05e13ed00c633bd36b73697187cf1e0" Timestamp="0xC81BA251AABFD201">%SapSrcDir%\System\SAP\SAPRfcWrapperU.dll</Src>
+		</Action>
+		<Action Dst="%CommonProgramFiles%\SAP Shared\Lang" Type="File">
+			<Src Hash="SHA-256:0f777762b82a354a77169c9273f734414ddea63e02e77a581833744a9390184b" Timestamp="0xBBD95AF79FBFD201">%SapSrcDir%\System\SAP\lang\wdtllogAR.txt</Src>
+			<Src Hash="SHA-256:0e5b20ac9ea1e1c58076a3f7b108bc028c567a4dd38dd4e3e05656d1e321c549" Timestamp="0x6A5D40FA9FBFD201">%SapSrcDir%\System\SAP\lang\wdtllogBG.txt</Src>
+			<Src Hash="SHA-256:2ec44253476f5f462e2f9b171b222dd3bb0f78f8359070bff11bfe927d6c216a" Timestamp="0x122D34FD9FBFD201">%SapSrcDir%\System\SAP\lang\wdtllogCA.txt</Src>
+			<Src Hash="SHA-256:8f6c1dc924ab3bdafac178dbcc323a8d588c43dfb6709ebb1e2406d785340f69" Timestamp="0x26121C00A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogCS.txt</Src>
+			<Src Hash="SHA-256:b8dd97bbdfdc39c7e13b81adda4dc050f6d05ffe463c9da8dc9501e0ead05b9b" Timestamp="0x8C1D2A03A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogDA.txt</Src>
+			<Src Hash="SHA-256:2f35874831aefdcc5e630d3b29b1d73c7677a2037fe3638bcce4375860f756a8" Timestamp="0x60C53506A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogDE.txt</Src>
+			<Src Hash="SHA-256:c3b257967942913b42785a978069f074ba29b9e0514ff42c243bd06e73f4bc66" Timestamp="0xE2954809A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogEL.txt</Src>
+			<Src Hash="SHA-256:1b14292d10fe1981ed6d292d59a0dc0b9370371433f9c13e9a6db647dcdb65f6" Timestamp="0x83245E0CA0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogEN.txt</Src>
+			<Src Hash="SHA-256:6116d86204791987f0ca5bc24de4449618d43be1c0947750b25660e972f91a3b" Timestamp="0xEDAA640FA0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogES.txt</Src>
+			<Src Hash="SHA-256:08672366098b93da70481be0a55b28ae7dcf043e923b29f955e90cba585a5da8" Timestamp="0x207D5812A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogET.txt</Src>
+			<Src Hash="SHA-256:04e9e9c74bf149a232a46ba0f4d0e96e1433edabc599eab5766ff9df72da68f0" Timestamp="0xCA5F5F15A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogFI.txt</Src>
+			<Src Hash="SHA-256:f12620a582028e6c35197c47a7a646570a6a674dc85651b9d6f32abed180e129" Timestamp="0x4A927418A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogFR.txt</Src>
+			<Src Hash="SHA-256:e255e60c2e99d042981772c80216e7fe9a0531f3cac422b4017b320266176f16" Timestamp="0xD3D97D1BA0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogHE.txt</Src>
+			<Src Hash="SHA-256:9112bf89cd55fb796fb1fb2e8a501ba34b194363d9959814eb31136a12e865a8" Timestamp="0x34F69E1EA0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogHR.txt</Src>
+			<Src Hash="SHA-256:2497e5d8f9df49277e5dc98eba9ae4e673295fcf85cc72c0a421b251ce3b7b3e" Timestamp="0x3878A321A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogHU.txt</Src>
+			<Src Hash="SHA-256:9862d5b41502f62ffde5eb4b243f76fd6b0da57adc152fdd1e7ac2eae78c0827" Timestamp="0x820BBB24A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogIT.txt</Src>
+			<Src Hash="SHA-256:cfd0af989a0509842a9acd00e473663a693cc81c20244797cb895bc58dfaa619" Timestamp="0x02C8D927A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogJA.txt</Src>
+			<Src Hash="SHA-256:a98bde8623b75b352fc5bb81c96554500236e4f948764fdf8393a7c7cde5bd5c" Timestamp="0x82950B2BA0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogKO.txt</Src>
+			<Src Hash="SHA-256:98a8416f9525aafacf90c765b66a6b94c22c0574c06867b0491e304766f5ccc2" Timestamp="0x5D7C312EA0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogLT.txt</Src>
+			<Src Hash="SHA-256:4d856456a45b53ddec05efe2c4ccc5ba7975b95c0e0b5a891ad8fe6db079584e" Timestamp="0x04D22E31A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogLV.txt</Src>
+			<Src Hash="SHA-256:333956675909775d35b25d176dd2e6504344351faf1481119bebf5b542937a35" Timestamp="0x36DE1D34A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogNL.txt</Src>
+			<Src Hash="SHA-256:333fffaaf15640674cd19bf6e4125eb7f93105ea65a67cddb1df00f908f5f655" Timestamp="0xD6E92B37A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogNO.txt</Src>
+			<Src Hash="SHA-256:2b2742974ff03233543ea28c41237873ba0fd75eadc171b1b6dafda88123eca8" Timestamp="0x921C223AA0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogPL.txt</Src>
+			<Src Hash="SHA-256:2e001d78f73bc6cb0a11adae8a2eb28c0ac505a5bc3b8605dd6e0ac0bc42a42a" Timestamp="0x5B761F3DA0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogPT.txt</Src>
+			<Src Hash="SHA-256:ece59b45c8c3407ff2529eee868a40bed011df3714d8d6d9f849337cda687b66" Timestamp="0x9F4A1340A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogRO.txt</Src>
+			<Src Hash="SHA-256:11c232be6b4252bb20d1a352d82916396054f860305bb0db65b59dcef137628f" Timestamp="0xBEC81743A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogRU.txt</Src>
+			<Src Hash="SHA-256:cb123fc9938f1df6eb3a104549e7c1dcf5a29bb0befa737ae4c4dfa520bb314c" Timestamp="0x30851746A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogSH.txt</Src>
+			<Src Hash="SHA-256:450b51617273fecdcc9c88c4ba28f5d9e9096dac19aadc2dc6a5553650709b1d" Timestamp="0xCB421749A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogSK.txt</Src>
+			<Src Hash="SHA-256:bd4026c88288d655031966a3cdba115f40c21afc4a1307d18604715fe1d68593" Timestamp="0x38EF224CA0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogSL.txt</Src>
+			<Src Hash="SHA-256:abc40ba16488deaa23427e4229cad617b7908753922d0a323dad6ad7a5b1944d" Timestamp="0x93F44F4FA0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogSV.txt</Src>
+			<Src Hash="SHA-256:dd42240f7b5a048c2039c0409123184e84ef3ed27d6247c2c03810c47c358a66" Timestamp="0xFC8A6752A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogTH.txt</Src>
+			<Src Hash="SHA-256:4e7b5fc1497b5308b6eb09c4a6ab4eb1abe9591ea0a1b74c1a9db8a94c127666" Timestamp="0x0FE56455A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogTR.txt</Src>
+			<Src Hash="SHA-256:3d7053752cb9d18d234c67e1279b7f6ef058ccf5217aea5a09c7cf4c5861c75e" Timestamp="0x96296E58A0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogUK.txt</Src>
+			<Src Hash="SHA-256:7015d163b4ce38f8980d58647076fe9e3348f458f79ac5569773e3b548741314" Timestamp="0x4D846B5BA0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogZF.txt</Src>
+			<Src Hash="SHA-256:04a2007ef63079da06508c207267fecbb26a930455d138ad7f851b10242d7e62" Timestamp="0x58F0B95EA0BFD201">%SapSrcDir%\System\SAP\lang\wdtllogZH.txt</Src>
+		</Action>
+	</Component>
+	<Component BuildTime="0x30821D6AAABFD201" Guid="{731ABB07-9B49-4F30-A8ED-0BB2E92F23B5}" Min_Compliant_Version="750.50" Name="$SAPWdtLogOCX Killbit Keys" Version="750.51">
+		<Action Dst="HKLM\Software\Microsoft\Internet Explorer\ActiveX Compatibility\{B24944D6-1501-11CF-8981-0000E8A49FA0}" FileName="wdtlog.ocx" Type="Registry">
+			<RegValue Name="Compatibility Flags" Type="DWORD">1024</RegValue>
+		</Action>
+		<Action Dst="HKLM\Software\Microsoft\Internet Explorer\ActiveX Compatibility\{B24944D9-1501-11CF-8981-0000E8A49FA0}" FileName="wdtlog.ocx" Type="Registry">
+			<RegValue Name="Compatibility Flags" Type="DWORD">1024</RegValue>
+		</Action>
+		<Action Dst="HKLM\Software\Microsoft\Internet Explorer\ActiveX Compatibility\{6678D15A-203A-40AD-9B4F-FF126479E481}" FileName="SAPRfcWrapperU.dll" Type="Registry">
+			<RegValue Name="Compatibility Flags" Type="DWORD">1024</RegValue>
+		</Action>
+	</Component>
+</SapSetup>

@@ -1,0 +1,7 @@
+_SAPPCTXT_HEADER_               002 7500 OFFICEINTEGRATION KO 8500 27.04.2017-23:49 OK 
+OI_FILE                         060 "파일"
+OI_SAVE_AS                      060 "다른 이름으로 저장"
+OI_PRINT_PREVIEW                080 "인쇄 미리보기"
+OI_PROPERTIES                   060 "속성"
+OI_PRINT                        060 "인쇄"
+OI_SAVE                         060 "저장"

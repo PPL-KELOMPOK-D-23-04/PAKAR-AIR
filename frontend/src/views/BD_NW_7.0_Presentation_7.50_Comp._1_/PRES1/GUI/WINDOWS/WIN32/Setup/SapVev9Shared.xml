@@ -1,0 +1,555 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SapSetup Context="Init" WkstaDb="SAPVEVWksta.xml">
+  <Component Name="VEViewer ARP" Guid="{7F2156D0-D8EF-4F0A-BC99-D6021675936B}" Version="90101.96099" Arch="X86">
+    <Action Type="Registry" Dst="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{0C4E74D6-FA8F-4F52-A5F6-AC9FAFABC342}">
+      <RegValue Name="DisplayName" Type="REG_SZ">SAP 3D Visual Enterprise Viewer 9.0</RegValue>
+      <RegValue Name="DisplayIcon" Type="REG_SZ">"%varVev9DestDir%\VEViewer.exe",0</RegValue>
+      <RegValue Name="DisplayVersion" Type="REG_SZ">%varVevVersion%</RegValue>
+      <RegValue Name="InstallLocation" Type="REG_SZ">%varVev9DestDir%</RegValue>
+      <RegValue Name="Publisher" Type="REG_SZ">SAP SE</RegValue>
+      <RegValue Name="URLUpdateInfo" Type="REG_SZ">http://service.sap.com</RegValue>
+      <RegValue Name="UninstallString" Type="REG_SZ">"%SAPSetupDir%\Setup\NwSapSetup.exe" /Product:"VEV3D" /Uninstall</RegValue>
+    </Action>
+  </Component>
+  <Component Name="VEViewer Shortcuts" Guid="{C5782D19-BD6C-4102-A926-54080843A717}" Version="90101.96099">
+    <Requires Guid="{ED9CBFD5-0FAF-4281-A0FC-C957CA7FF5F6}" Name="VEViewer Root Files" />
+    <Action Type="Shortcut" Dst="ProgramFiles\SAP 3D Visual Enterprise\SAP 3D Visual Enterprise Viewer 9.0\SAP 3D Visual Enterprise Viewer 9.0">
+      <Src>"%varVev9DestDir%\VEViewer.exe"</Src>
+    </Action>
+    <Action Type="Shortcut" Dst="ProgramFiles\SAP 3D Visual Enterprise\SAP 3D Visual Enterprise Viewer 9.0\SAP 3D Visual Enterprise Viewer Help">
+      <Src>"%varVev9DestDir%\vev_index.chm"</Src>
+    </Action>
+  </Component>
+  <Component Name="VEViewer Registry" Guid="{C2EA9CA4-3652-4125-9EEC-D8EF906AD6E9}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <Action Type="Registry" Dst="HKEY_LOCAL_MACHINE\Software\SAP\SAP 3D Visual Enterprise Viewer">
+      <RegValue Name="ProductName" Type="REG_SZ">SAP 3D Visual Enterprise Viewer 9.0</RegValue>
+      <RegValue Name="Exe" Type="REG_SZ">VEViewer.exe</RegValue>
+      <RegValue Name="Path" Type="REG_SZ">%varVev9DestDir%</RegValue>
+      <RegValue Name="PluginsPath" Type="REG_SZ">%varVev9DestDir%\Plugins</RegValue>
+    </Action>
+    <Action Type="Registry" Dst="HKEY_LOCAL_MACHINE\Software\Classes\Applications\VEViewer.exe\shell\open\command">
+      <RegValue>%varVev9DestDir%\VEViewer.exe "%%1" %%*</RegValue>
+    </Action>
+    <!-- File associations for VEViewer -->
+    <!-- Conditional file types -->
+    <Action Type="Script" RunAt="Install" Condition="&quot;%varVevIsBlockFileAssoc%&quot;=&quot;false&quot;">
+      <Src><![CDATA[
+fileassoc = Split("3dm 3ds ai bmp c4 cel dds dib dst dwf dwg dxf eps fbx flc fli flt gif hdr hpgl iff int inta iv j2k jp2 jpc jpeg jpg jpx jt lw lwo lws obj pcx pic plt png ppm prj psd rgb rgba rle skp svg tga tif tiff u3d vdsl vrml wrl")
+For Each assoc In fileassoc
+    bCanI = True
+    If NwEngine.Shell.RegKeyExist("HKLM\Software\Classes\." & assoc & "\") Then
+        NwEngine.Context.Log.Write "VEV Script: ." & assoc & " exists"
+        strRegValue = NWEngine.Shell.GetRegValue("HKLM\Software\Classes\." & assoc)
+        bCanI = (strRegValue = ("SAP." & assoc)) Or (strRegValue = ("Right Hemisphere." & assoc))
+        if Not bCanI Then
+            strRegValue = NWEngine.Shell.GetRegValue("HKLM\Software\Classes\." & assoc & "\")
+            bCanI = (strRegValue = ("SAP." & assoc)) Or (strRegValue = ("Right Hemisphere." & assoc))
+        End If
+    End If
+
+    If bCanI Then
+        If NwEngine.Shell.RegKeyExist("HKLM\Software\Classes\." & assoc) Then NwEngine.Shell.DeleteRegKey "HKLM\Software\Classes\." & assoc
+        NwEngine.Shell.SetRegValue "HKLM\Software\Classes\." & assoc & "\", "REG_SZ", "SAP." & assoc
+        NwEngine.Shell.SetRegValue "HKLM\Software\Classes\." & assoc & "\SAP." & assoc & "\ShellNew\SapCreateKey", "REG_DWORD", "0"
+        NwEngine.Shell.SetRegValue "HKLM\Software\Classes\SAP." & assoc & "\shell\Open\command\", "REG_SZ", chr(34) & NwEngine.Variables.ResolveString("%varVev9DestDir%\VEViewer.exe") & chr(34) & " " & chr(34) & "%1" & chr(34) & " %*"
+        NwEngine.Shell.SetRegValue "HKLM\Software\Classes\SAP." & assoc & "\shell\Open\command\SapCreateKey", "REG_DWORD", "0"
+        NwEngine.Shell.SetRegValue "HKLM\Software\Classes\SAP." & assoc & "\DefaultIcon\", "REG_SZ", NwEngine.Variables.ResolveString("%varVev9DestDir%\VEViewer.ico")
+        NwEngine.Context.Log.Write "VEV Script: ." & assoc & " file association registered"
+    Else
+        NwEngine.Context.Log.Write "VEV Script: ." & assoc & " file association already in use, skipping registration"
+    End If
+Next
+strCmdLine = NwEngine.Variables.ResolveString("%WinSysDir%\ie4uinit.exe")
+If NwEngine.Shell.FileExist(strCmdLine) Then
+    NwEngine.Shell.ExecuteEx chr(34) & strCmdLine & chr(34) & " -ClearIconCache", vbTrue, vbFalse
+Else
+    strCmdLine = NwEngine.Variables.ResolveString("%WinSysDir64%\ie4uinit.exe")
+    If NwEngine.Shell.FileExist(strCmdLine) Then NwEngine.Shell.ExecuteEx chr(34) & strCmdLine & chr(34) & " -ClearIconCache", vbTrue, vbFalse
+End If
+]]></Src>
+    </Action>
+    <Action Type="Script" RunAt="Uninstall">
+      <Src><![CDATA[
+fileassoc = Split("3dm 3ds ai bmp c4 cel dds dib dst dwf dwg dxf eps fbx flc fli flt gif hdr hpgl iff int inta iv j2k jp2 jpc jpeg jpg jpx jt lw lwo lws obj pcx pic plt png ppm prj psd rgb rgba rle skp svg tga tif tiff u3d vdsl vrml wrl")
+For Each assoc In fileassoc
+    If NwEngine.Shell.RegKeyExist("HKLM\Software\Classes\SAP." & assoc) Then NwEngine.Shell.DeleteRegKey "HKLM\Software\Classes\SAP." & assoc
+    If NwEngine.Shell.RegKeyExist("HKLM\Software\Classes\." & assoc & "\SAP." & assoc & "\ShellNew\SapCreateKey") Then NwEngine.Shell.DeleteRegKey "HKLM\Software\Classes\." & assoc
+Next
+strCmdLine = NwEngine.Variables.ResolveString("%WinSysDir%\ie4uinit.exe")
+If NwEngine.Shell.FileExist(strCmdLine) Then
+    NwEngine.Shell.ExecuteEx chr(34) & strCmdLine & chr(34) & " -ClearIconCache", vbTrue, vbFalse
+Else
+    strCmdLine = NwEngine.Variables.ResolveString("%WinSysDir64%\ie4uinit.exe")
+    If NwEngine.Shell.FileExist(strCmdLine) Then NwEngine.Shell.ExecuteEx chr(34) & strCmdLine & chr(34) & " -ClearIconCache", vbTrue, vbFalse
+End If
+]]></Src>
+    </Action>
+    <!-- Unconditional file types (.RH and .RHZ) -->
+    <Action Type="Script" RunAt="Install" Condition="&quot;%varVevIsBlockFileAssoc%&quot;=&quot;false&quot;">
+      <Src><![CDATA[
+fileassoc = Split("cgm rh rhz vds")
+For Each assoc In fileassoc
+    If NwEngine.Shell.RegKeyExist("HKLM\Software\Classes\." & assoc) Then NwEngine.Shell.DeleteRegKey "HKLM\Software\Classes\." & assoc
+    NwEngine.Shell.SetRegValue "HKLM\Software\Classes\." & assoc & "\", "REG_SZ", "SAP." & assoc
+    NwEngine.Shell.SetRegValue "HKLM\Software\Classes\." & assoc & "\SAP." & assoc & "\ShellNew\SapCreateKey", "REG_DWORD", "0"
+    NwEngine.Shell.SetRegValue "HKLM\Software\Classes\SAP." & assoc & "\shell\Open\command\", "REG_SZ", chr(34) & NwEngine.Variables.ResolveString("%varVev9DestDir%\VEViewer.exe") & chr(34) & " " & chr(34) & "%1" & chr(34) & " %*"
+    NwEngine.Shell.SetRegValue "HKLM\Software\Classes\SAP." & assoc & "\shell\Open\command\SapCreateKey", "REG_DWORD", "0"
+    NwEngine.Shell.SetRegValue "HKLM\Software\Classes\SAP." & assoc & "\DefaultIcon\", "REG_SZ", NwEngine.Variables.ResolveString("%varVev9DestDir%\VEViewer.ico")
+    NwEngine.Context.Log.Write "VEV Script: ." & assoc & " file association registered"
+Next
+
+NwEngine.Shell.SetRegValue "HKLM\Software\Classes\SAP.cgm\DefaultIcon\", "REG_SZ", NwEngine.Variables.ResolveString("%varVev9DestDir%\cgm.ico")
+NwEngine.Shell.SetRegValue "HKLM\Software\Classes\SAP.vds\DefaultIcon\", "REG_SZ", NwEngine.Variables.ResolveString("%varVev9DestDir%\vds.ico")
+strCmdLine = NwEngine.Variables.ResolveString("%WinSysDir%\ie4uinit.exe")
+If NwEngine.Shell.FileExist(strCmdLine) Then
+    NwEngine.Shell.ExecuteEx chr(34) & strCmdLine & chr(34) & " -ClearIconCache", vbTrue, vbFalse
+Else
+    strCmdLine = NwEngine.Variables.ResolveString("%WinSysDir64%\ie4uinit.exe")
+    If NwEngine.Shell.FileExist(strCmdLine) Then NwEngine.Shell.ExecuteEx chr(34) & strCmdLine & chr(34) & " -ClearIconCache", vbTrue, vbFalse
+End If
+]]></Src>
+    </Action>
+    <Action Type="Script" RunAt="Uninstall">
+      <Src><![CDATA[
+fileassoc = Split("rh rhz vds")
+For Each assoc In fileassoc
+    If NwEngine.Shell.RegKeyExist("HKLM\Software\Classes\." & assoc) Then NwEngine.Shell.DeleteRegKey "HKLM\Software\Classes\." & assoc
+    If NwEngine.Shell.RegKeyExist("HKLM\Software\Classes\SAP." & assoc) Then NwEngine.Shell.DeleteRegKey "HKLM\Software\Classes\SAP." & assoc
+Next
+If NwEngine.Shell.RegKeyExist("HKLM\Software\Classes\SAP.cgm\shell\Open\command\") Then NwEngine.Shell.DeleteRegKey "HKLM\Software\Classes\SAP.cgm\shell\Open\"
+If NwEngine.Shell.RegKeyExist("HKLM\Software\Classes\SAP.cgm\DefaultIcon\") Then NwEngine.Shell.DeleteRegKey "HKLM\Software\Classes\SAP.cgm\DefaultIcon\"
+]]></Src>
+    </Action>
+    <!-- CLSID for file types we want to drag and drop into MSOffice -->
+    <Action Type="Script" RunAt="Install" Condition="&quot;%varVevIsBlockFileAssoc%&quot;=&quot;false&quot;">
+      <Src><![CDATA[
+fileassoc = Split("3dm 3ds ai dds dst dwf dwg dxf eps fbx flt hpgl iv jt lw lwo lws obj plt prj rh rhz skp svg u3d wrl")
+For Each assoc In fileassoc
+    NwEngine.Shell.SetRegValue "HKLM\Software\Classes\SAP." & assoc & "\CLSID\", "REG_SZ", "{1110E0D7-D33E-438C-88A4-1FA6A88F9A6B}"
+Next
+strCmdLine = NwEngine.Variables.ResolveString("%WinSysDir%\ie4uinit.exe")
+If NwEngine.Shell.FileExist(strCmdLine) Then
+    NwEngine.Shell.ExecuteEx chr(34) & strCmdLine & chr(34) & " -ClearIconCache", vbTrue, vbFalse
+Else
+    strCmdLine = NwEngine.Variables.ResolveString("%WinSysDir64%\ie4uinit.exe")
+    If NwEngine.Shell.FileExist(strCmdLine) Then NwEngine.Shell.ExecuteEx chr(34) & strCmdLine & chr(34) & " -ClearIconCache", vbTrue, vbFalse
+End If
+]]></Src>
+    </Action>
+    <Action Type="Script" RunAt="Uninstall">
+      <Src><![CDATA[
+fileassoc = Split("3dm 3ds ai dds dst dwf dwg dxf eps fbx flt hpgl iv jt lw lwo lws obj plt prj rh rhz skp svg u3d wrl")
+
+For Each assoc In fileassoc
+    If NwEngine.Shell.RegKeyExist("HKLM\Software\Classes\SAP." & assoc & "\CLSID") Then
+        strTempKey = NWEngine.Shell.GetRegValue("HKLM\Software\Classes\SAP." & assoc & "\CLSID")
+        If strTempKey = "{1110E0D7-D33E-438C-88A4-1FA6A88F9A6B}" Then NwEngine.Shell.DeleteRegKey "HKLM\Software\Classes\SAP." & assoc & "\CLSID"
+    End If
+Next
+strCmdLine = NwEngine.Variables.ResolveString("%WinSysDir%\ie4uinit.exe")
+If NwEngine.Shell.FileExist(strCmdLine) Then
+    NwEngine.Shell.ExecuteEx chr(34) & strCmdLine & chr(34) & " -ClearIconCache", vbTrue, vbFalse
+Else
+    strCmdLine = NwEngine.Variables.ResolveString("%WinSysDir64%\ie4uinit.exe")
+    If NwEngine.Shell.FileExist(strCmdLine) Then NwEngine.Shell.ExecuteEx chr(34) & strCmdLine & chr(34) & " -ClearIconCache", vbTrue, vbFalse
+End If
+]]></Src>
+    </Action>
+  </Component>
+  <Component Name="VEViewer PostInstall Steps" Guid="{2ECEF391-73DB-423D-A29C-4D0CC343DF3F}" Version="90101.96099" Min_Compliant_Version="90100.1" Order="PostInstall">
+    <Action Type="Script" RunAt="Install">
+      <Src><![CDATA[
+strURLRedirection = NwEngine.Variables.ResolveString("%APPDATA%\SAP\SAP 3D Visual Enterprise")
+If Not NwEngine.Shell.FileExist(strURLRedirection & "\URLRedirection.xml") Then
+    createXml = False
+    Dim base
+    If NwEngine.Shell.RegValueExist("HKEY_CURRENT_USER\Software\SAP\SAP 3D Visual Enterprise Viewer\features\url_redirectprotection") Then
+        createXml = True
+        base = "HKEY_CURRENT_USER\Software\SAP\SAP 3D Visual Enterprise Viewer\features\"
+    ElseIf NwEngine.Shell.RegValueExist("HKEY_CURRENT_USER\Software\SAP\SAP Visual Enterprise Viewer 71\features\url_redirectprotection") Then
+        createXml = True
+        base = "HKEY_CURRENT_USER\Software\SAP\SAP Visual Enterprise Viewer 71\features\"
+    End If
+    If createXml Then
+        Set objXmlFile = CreateObject("NwSapSetupATLCommon.TextFileParser")
+        objXmlFile.AppendLine "<?xml version=" & chr(34) & "1.0" & chr(34) & " encoding=" & chr(34) & "utf-8" & chr(34) & "?>"
+        objXmlFile.AppendLine "<UrlRedirectionPolicy xmlns=" & chr(34) & "http://schemas.sap.com/VE/UrlRedirection/2014/Feb" & chr(34) & ">"
+        If NwEngine.Shell.GetRegValue(base & "url_redirectprotection") = "1" Then
+            objXmlFile.AppendLine "    <Whitelist UrlProtection=" & chr(34) & "true" & chr(34) & ">"
+        Else
+            objXmlFile.AppendLine "    <Whitelist UrlProtection=" & chr(34) & "false" & chr(34) & ">"
+        End If
+        domains = base & "URLWhiteList\"
+        If NwEngine.Shell.RegKeyExist(domains) Then
+            For Each domain In NwEngine.Shell.EnumRegValues(domains)
+                domain = Trim(NwEngine.Shell.GetRegValue(domains & domain))
+                If domain <> "" Then objXmlFile.AppendLine "        <Domain>" & domain & "</Domain>"
+            Next
+        End If
+        objXmlFile.AppendLine "    </Whitelist>"
+        objXmlFile.AppendLine "</UrlRedirectionPolicy>"
+        If NwEngine.Shell.CreateDirectory(strURLRedirection) Then
+            objXmlFile.Save(strURLRedirection & "\URLRedirection.xml")
+            NwEngine.Context.Log.Write "VEV Script: " & chr(34) & strURLRedirection & "\URLRedirection.xml" & chr(34) & " was created"
+        End If
+    End If
+End If
+]]></Src>
+    </Action>
+    <ExecuteAction RunAt="Uninstall">
+      <Exe SuppressWindow="true">%WinSysDir%\taskkill.exe</Exe>
+      <Parameters>/f /im PreViewer.exe</Parameters>
+      <Wait TimeOut="1000" />
+    </ExecuteAction>
+  </Component>
+  <Component Name="VEViewer Root Files" Guid="{ED9CBFD5-0FAF-4281-A0FC-C957CA7FF5F6}" Version="90101.96099" Min_Compliant_Version="90100.1" Arch="X86">
+    <Requires Guid="{3848346C-9B11-4BEE-8A2B-49D58921829B}" Name="VEViewer Qt Lib Main" />
+    <Requires Guid="{F4641190-00EA-4424-A977-ADA19F175A17}" Name="VEViewer Help" />
+    <Requires Guid="{EE510E04-A169-4D53-BAFA-41153C1504D3}" Name="VEViewer Appsight" />
+    <Requires Guid="{A907A401-EF5B-40A6-882D-75D2A02C37C7}" Name="VEViewer Data" />
+    <Requires Guid="{889BA8D9-1A2D-41A1-9C21-AC194EF5A8F6}" Name="VEViewer Sandbox Schemas" />
+    <Requires Guid="{D2DEAC61-F7DA-445F-94E6-1E6D9406656B}" Name="VEViewer Group Policies" />
+    <Requires Guid="{88B500E3-46E4-41F2-9DA2-A6645FD2D691}" Name="VEViewer MUI" />
+    <Requires Guid="{80240E98-E9A9-41E7-B93C-5F399862D3C0}" Name="VEViewer Java Plugins" />
+    <Requires Guid="{489D1BB5-8A59-45D9-A92E-80F5B81F22BE}" Name="VEViewer Shaders" />
+    <Action Type="File" Dst="%varVev9DestDir%">
+      <Src Register="false">%SapSrcDir%\VE\Viewer\x86\CgmCore.dll</Src>
+      <Src Register="false">%SapSrcDir%\VE\Viewer\x86\CgmPrint.dll</Src>
+      <Src Register="false">%SapSrcDir%\VE\Viewer\x86\DVAndOffice.dll</Src>
+      <Src Register="false">%SapSrcDir%\VE\Viewer\x86\DVCore.dll</Src>
+      <Src Register="false">%SapSrcDir%\VE\Viewer\x86\GCore.dll</Src>
+      <Src Register="false">%SapSrcDir%\VE\Viewer\x86\e3ui.dll</Src>
+      <Src Register="false">%SapSrcDir%\VE\Viewer\x86\e3zlib.dll</Src>
+      <Src Register="false">%SapSrcDir%\VE\Viewer\x86\QtModalDialogHelper.dll</Src>
+      <Src Register="false">%SapSrcDir%\VE\Libs\x86\xerces-c-3.1.2\xerces-c_3_1.dll</Src>
+      <Src Register="false" AppPath="false">%SapSrcDir%\VE\Viewer\x86\Sandbox.exe</Src>
+      <Src Register="false">%SapSrcDir%\VE\Viewer\x86\VEViewer.exe</Src>
+      <Src>%SapSrcDir%\VE\Viewer\default.hdr</Src>
+      <Src>%SapSrcDir%\VE\Viewer\version.txt</Src>
+      <Src>%SapSrcDir%\VE\Viewer\VEViewer.ico</Src>
+      <Src>%SapSrcDir%\VE\Shared\cgm.ico</Src>
+      <Src>%SapSrcDir%\VE\Shared\vds.ico</Src>
+    </Action>
+  </Component>
+  <Component Name="VEViewer Help" Guid="{F4641190-00EA-4424-A977-ADA19F175A17}" Version="90101.96099" Arch="X86">
+    <Requires Guid="{A7E0A95F-68DE-4AFC-8E8A-EA49D3539C5A}" Name="VEViewer English Help" />
+    <Requires Guid="{DF52930D-DD17-4A8A-93F5-AF68206E18F9}" Name="VEViewer German Help" />
+  </Component>
+  <Component Name="VEViewer English Help" Guid="{A7E0A95F-68DE-4AFC-8E8A-EA49D3539C5A}" Version="90101.96099" Arch="X86">
+    <Action Type="File" Dst="%varVev9DestDir%">
+      <Src>%SapSrcDir%\VE\Viewer\Help\vev_index.chm</Src>
+    </Action>
+  </Component>
+  <Component Name="VEViewer German Help" Guid="{DF52930D-DD17-4A8A-93F5-AF68206E18F9}" Version="90101.96099" Arch="X86">
+    <Action Type="File" Dst="%varVev9DestDir%\MUI\de_DE">
+      <Src>%SapSrcDir%\VE\Viewer\Help\de_DE\vev_index.chm</Src>
+    </Action>
+  </Component>
+  <Component Name="VEViewer ActiveX Proxy x32 Files" Guid="{5390A353-6612-4A49-BB5B-26019C564302}" Version="90101.96099" Min_Compliant_Version="90100.1" Arch="X86">
+    <Requires Guid="{ED9CBFD5-0FAF-4281-A0FC-C957CA7FF5F6}" Name="VEViewer Root Files" />
+    <Requires Guid="{D0C1BF50-B655-44DF-8317-D4840FAA1C27}" Name="VEViewer Plugins" />
+    <Requires Guid="{F2CD0944-B0E8-4218-8808-F27E8FB8EF6B}" Name="VEViewer Matai" />
+    <!--
+    <Action Type="File" Dst="%varVev9DestDir%">
+      <Src Register="true">%SapSrcDir%\VE\Viewer\x86\ABAPAPI.ocx</Src>
+    </Action>
+-->
+    <Action Type="File" Dst="%varVev9DestDir%">
+      <Src Register="true">%SapSrcDir%\VE\Viewer\x86\ExplorationXPublish.ocx</Src>
+    </Action>
+    <Action Type="File" Dst="%varVev9DestDir%">
+      <Src Register="true">%SapSrcDir%\VE\Viewer\x86\Exploration3D.ocx</Src>
+    </Action>
+  </Component>
+  <Component Name="VEViewer ActiveX Proxy x64 Files" Guid="{9A088AF3-5733-4F87-A7CC-0CD0926F9141}" Version="90101.96099" Min_Compliant_Version="90100.1" Arch="X64">
+    <Requires Guid="{ED9CBFD5-0FAF-4281-A0FC-C957CA7FF5F6}" Name="VEViewer Root Files" />
+    <Requires Guid="{D0C1BF50-B655-44DF-8317-D4840FAA1C27}" Name="VEViewer Plugins" />
+    <Action Type="File" Dst="%varVev9DestDir%\Viewer64">
+      <Src Register="true">%SapSrcDir%\VE\Viewer\x64\Exploration3D.ocx</Src>
+    </Action>
+  </Component>
+  <Component Name="VEViewer ActiveX Files" Guid="{2D1BCDF4-0D1F-4C50-AE59-991E9A01B618}" Version="90101.96099" Min_Compliant_Version="90100.1" Arch="X86">
+    <Requires Guid="{ED9CBFD5-0FAF-4281-A0FC-C957CA7FF5F6}" Name="VEViewer Root Files" />
+    <Requires Guid="{D0C1BF50-B655-44DF-8317-D4840FAA1C27}" Name="VEViewer Plugins" />
+    <Requires Guid="{F2CD0944-B0E8-4218-8808-F27E8FB8EF6B}" Name="VEViewer Matai" />
+    <Requires Guid="{5390A353-6612-4A49-BB5B-26019C564302}" Name="VEViewer ActiveX Proxy x32 Files" />
+    <Requires Guid="{9A088AF3-5733-4F87-A7CC-0CD0926F9141}" Name="VEViewer ActiveX Proxy x64 Files" />
+    <Action Type="File" Dst="%varVev9DestDir%">
+      <Src Register="true">%SapSrcDir%\VE\Viewer\x86\DeepViewForGAC.dll</Src>
+      <Src Register="true">%SapSrcDir%\VE\Viewer\x86\npDeepView.dll</Src>
+      <Src Register="true">%SapSrcDir%\VE\Viewer\x86\npGAC.dll</Src>
+      <Src Register="true">%SapSrcDir%\VE\Viewer\x86\PreViewer.exe</Src>
+    </Action>
+  </Component>
+  <Component Name="VEViewer Office Add-In Files" Guid="{F3530A8E-D211-4610-9D65-210A4F62943D}" Version="90101.96099" Min_Compliant_Version="90100.1" Arch="X86">
+    <Requires Guid="{2D1BCDF4-0D1F-4C50-AE59-991E9A01B618}" Name="VEViewer ActiveX Files" />
+    <Action Type="File" Dst="%varVev9DestDir%">
+      <Src Register="true">%SapSrcDir%\VE\Viewer\x86\OfficeInserting.dll</Src>
+      <Src Register="true">%SapSrcDir%\VE\Viewer\x86\OfficeViewing.dll</Src>
+    </Action>
+  </Component>
+  <Component Name="VEViewer Appsight" Guid="{EE510E04-A169-4D53-BAFA-41153C1504D3}" Version="90101.96099" Min_Compliant_Version="90100.1" Arch="X86">
+    <ArchiveAction Dst="%varVev9DestDir%\AppSight">
+      <Archive>%SapSrcDir%\VE\Viewer\AppSight.cab</Archive>
+    </ArchiveAction>
+  </Component>
+  <Component Name="VEViewer Data" Guid="{A907A401-EF5B-40A6-882D-75D2A02C37C7}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <ArchiveAction Dst="%varVev9DestDir%\Data">
+      <Archive>%SapSrcDir%\VE\Viewer\Data.cab</Archive>
+    </ArchiveAction>
+  </Component>
+  <Component Name="VEViewer Sandbox Schemas" Guid="{889BA8D9-1A2D-41A1-9C21-AC194EF5A8F6}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <ArchiveAction Dst="%varVev9DestDir%\Schemas">
+      <Archive>%SapSrcDir%\VE\Shared\SandboxSchemas-v5.cab</Archive>
+    </ArchiveAction>
+  </Component>
+  <Component Name="VEViewer Group Policies" Guid="{D2DEAC61-F7DA-445F-94E6-1E6D9406656B}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <Action Type="File" Dst="%varVev9DestDir%\DomainGroupPolicies">
+      <Src>%SapSrcDir%\VE\Shared\DomainGroupPolicies\SandBox.adm</Src>
+    </Action>
+  </Component>
+  <Component Name="VEViewer MUI" Guid="{88B500E3-46E4-41F2-9DA2-A6645FD2D691}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <ArchiveAction Dst="%varVev9DestDir%\MUI">
+      <Archive>%SapSrcDir%\VE\Viewer\MUI.cab</Archive>
+    </ArchiveAction>
+  </Component>
+  <Component Name="VEViewer Plugins" Guid="{D0C1BF50-B655-44DF-8317-D4840FAA1C27}" Version="90101.96099" Min_Compliant_Version="90100.1" Arch="X86">
+    <Requires Guid="{F264EA0C-2B7D-49F6-882A-DE26F6FD2EF1}" Name="VEViewer Qt Lib Plugins" />
+    <Requires Guid="{D1FFABFB-6240-4773-8DC0-C19577974C01}" Name="VEViewer Qt Plugins" />
+    <Requires Guid="{338946FF-14B5-4F76-A427-8707CB95B10C}" Name="VEViewer RhDita" />
+    <Requires Guid="{D8D3B72C-FFC8-4048-BA4E-5237D870F712}" Name="VEViewer DataKit schema.cab" />
+    <Requires Guid="{812C7220-0B1F-4DED-9B4E-4A8E32DCED75}" Name="VEViewer SMLib.cab" />
+    <Requires Guid="{75A52B79-86B1-4B0B-8D53-437DA13F61A5}" Name="VEViewer U3D.cab" />
+    <Requires Guid="{E702A213-696C-40FB-87E1-0FF903C2A071}" Name="VEViewer VzxmlSchemas.cab" />
+    <Requires Guid="{6F077F36-3BC8-4CD1-92C3-6C3CC69FAFF7}" Name="VEViewer JTDK Translator" />
+    <Requires Guid="{78E10040-DF6F-4FFC-9C8E-6174B8FD17D3}" Name="VEViewer Teigha Translator" />
+    <Action Type="File" Dst="%varVev9DestDir%\Plugins">
+      <Src Register="false">%SapSrcDir%\VE\Viewer\x86\e3zlib.dll</Src>
+      <Src Register="false">%SapSrcDir%\VE\Libs\x86\glew-1.13.0\glew32.dll</Src>
+      <Src Register="false">%SapSrcDir%\VE\Libs\x86\SketchUpAPI-20\SketchUpAPI.dll</Src>
+      <Src Register="false">%SapSrcDir%\VE\Libs\x86\xerces-c-3.1.2\xerces-c_3_1.dll</Src>
+      <Src Register="false">%SapSrcDir%\VE\Viewer\x86\Plugins\XercescLibs.dll</Src>
+      <Src>%SapSrcDir%\VE\Shared\GDTReplace.xml</Src>
+      <Src>%SapSrcDir%\VE\Viewer\Plugins\plugins.manifest</Src>
+      <Src>%SapSrcDir%\VE\Viewer\Plugins\RenderOutputForm.xml</Src>
+      <!-- VE Plugins -->
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\2d.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\2dtools.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\3dif.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\3difr.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\3ds.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\3DXInput.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\ai.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\assembly.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\AVCalculator.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\CAD_vds.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\Collaboration.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\CollaborationGUI.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\CoreCAD_Lean.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\DirectMedia.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\DKReader_Lean.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\drawing.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\drvDX9.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\drvOpenGL.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\drvSoft.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\drvSofta.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\DSolid.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\dvis.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\Dwf.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\DxfDwg.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\DynamicLabels.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\e3zip.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\fbx.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\FileDownloader.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\FileTransferBridge.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\FlyTo.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\hdr.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\HDRRaytrace.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\Hotspot.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\hpgl.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\IdentifierUI.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\jp2k.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\kftools.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\lwo.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\MataiImport.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\Measurements.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\NamedAttributes.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\nurbsobj.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\obj.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\openflt.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\partlist.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\pcut.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\PDFView.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\PMIBase.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\polybool.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\query.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\queryui.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\rh.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\rhino.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\RHPMIInterface.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\RHSolid.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\RHSolid_DK.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\rhz.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\Sandbox.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\SketchUp.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\SolidSMlib.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\StandardObjects.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\StepMgr.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\styleslib.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\svg.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\tesselate.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\texteditor.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\thrustline.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\vds.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\visual_compare.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\VisualAssemblyBrowse.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\VolumeSelect.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\Voxels.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\vrml.x3d</Src>
+      <Src>%SapSrcDir%\VE\Viewer\x86\Plugins\vzxml.x3d</Src>
+    </Action>
+  </Component>
+  <Component Name="VEViewer Matai" Guid="{F2CD0944-B0E8-4218-8808-F27E8FB8EF6B}" Version="90101.96099" Min_Compliant_Version="90100.1" Arch="X86">
+    <ArchiveAction Dst="%varVev9DestDir%">
+      <Archive>%SapSrcDir%\VE\Matai\x86\Matai.cab</Archive>
+    </ArchiveAction>
+  </Component>
+  <Component Name="VEViewer RhDita" Guid="{338946FF-14B5-4F76-A427-8707CB95B10C}" Version="90101.96099">
+    <Requires Guid="{9A2B3FA7-90B0-4C4E-A035-222CE4C08B40}" Name="VEViewer RhDita.cab" />
+    <Requires Guid="{24A4F6B6-E22F-46DB-B506-74D9AD44DAD7}" Name="VEViewer RhDita Scripts" />
+  </Component>
+  <Component Name="VEViewer RhDita.cab" Guid="{9A2B3FA7-90B0-4C4E-A035-222CE4C08B40}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <Action Type="Script" RunAt="Uninstall">
+      <Src><![CDATA[
+strFolderToCheck = NwEngine.Variables.ResolveString("%varVev9DestDir%\Plugins\RhDita")
+If NwEngine.Shell.DirectoryExist(strFolderToCheck) Then
+    NwEngine.Context.Log.Write "VEV Script: RhDita exists, killing..."
+    NwEngine.Shell.DeleteDirectory strFolderToCheck
+End If
+]]></Src>
+    </Action>
+    <!-- NB: script must be before, otherwise SAPSetup will remove folder before uninstalling .cab -->
+    <ArchiveAction Dst="%varVev9DestDir%\Plugins\RhDita">
+      <Archive>%SapSrcDir%\VE\Viewer\Plugins\RhDita.cab</Archive>
+    </ArchiveAction>
+  </Component>
+  <Component Name="VEViewer RhDita Scripts" Guid="{24A4F6B6-E22F-46DB-B506-74D9AD44DAD7}" Version="90101.96099">
+    <Requires Guid="{9A2B3FA7-90B0-4C4E-A035-222CE4C08B40}" Name="VEViewer RhDita.cab" />
+    <ExecuteAction RunAt="Install">
+      <Exe SuppressWindow="true" DisplayText="Installing XMetaL Plugin">%WinSysDir%\cscript.exe</Exe>
+      <Parameters>"%varVev9DestDir%\Plugins\RhDita\XMetalInstall\inst2.js"</Parameters>
+      <Wait TimeOut="120000">%ErrorLevel% = 0</Wait>
+    </ExecuteAction>
+    <ExecuteAction RunAt="Uninstall">
+      <Exe SuppressWindow="true" DisplayText="Uninstalling XMetaL Plugin">%WinSysDir%\cscript.exe</Exe>
+      <Parameters>"%varVev9DestDir%\Plugins\RhDita\XMetalInstall\uninst.js"</Parameters>
+      <Wait TimeOut="120000">%ErrorLevel% = 0</Wait>
+    </ExecuteAction>
+  </Component>
+  <Component Name="VEViewer DataKit schema.cab" Guid="{D8D3B72C-FFC8-4048-BA4E-5237D870F712}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <ArchiveAction Dst="%varVev9DestDir%\Plugins\schema">
+      <Archive>%SapSrcDir%\VE\Shared\DKSchemas.cab</Archive>
+    </ArchiveAction>
+  </Component>
+  <Component Name="VEViewer SMLib.cab" Guid="{812C7220-0B1F-4DED-9B4E-4A8E32DCED75}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <ArchiveAction Dst="%varVev9DestDir%\Plugins">
+      <Archive>%SapSrcDir%\VE\Libs\x86\SMLib-7.8.cab</Archive>
+    </ArchiveAction>
+  </Component>
+  <Component Name="VEViewer U3D.cab" Guid="{75A52B79-86B1-4B0B-8D53-437DA13F61A5}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <ArchiveAction Dst="%varVev9DestDir%\Plugins\U3D">
+      <Archive>%SapSrcDir%\VE\Libs\x86\U3D-1.2.851.cab</Archive>
+    </ArchiveAction>
+  </Component>
+  <Component Name="VEViewer VzxmlSchemas.cab" Guid="{E702A213-696C-40FB-87E1-0FF903C2A071}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <ArchiveAction Dst="%varVev9DestDir%\Plugins\vzxmlschemas">
+      <Archive>%SapSrcDir%\VE\Shared\VzxmlSchemas-v4.cab</Archive>
+    </ArchiveAction>
+  </Component>
+  <Component Name="VEViewer Java Plugins" Guid="{80240E98-E9A9-41E7-B93C-5F399862D3C0}" Version="90101.96099">
+    <Action Type="File" Dst="%varVev9DestDir%\java">
+      <Src>%SapSrcDir%\VE\Viewer\java\sap.ve.viewer_8.0.3.zip</Src>
+      <Src>%SapSrcDir%\VE\Viewer\java\sap.ve.viewer_8.0.3_x64.zip</Src>
+      <Src>%SapSrcDir%\VE\Viewer\java\sap.ve.viewer_8.0.3_x64_Java_SE_1.6.zip</Src>
+      <Src>%SapSrcDir%\VE\Viewer\java\sap.visualenterprise.viewer_8.0.1.zip</Src>
+      <Src>%SapSrcDir%\VE\Viewer\java\sap.visualenterprise.viewer_8.0.1_x64.zip</Src>
+      <Src>%SapSrcDir%\VE\Viewer\java\sap.visualenterprise.viewer_8.0.1_x64_Java_SE_1.6.zip</Src>
+    </Action>
+  </Component>
+  <Component Name="VEViewer Qt Lib Main" Guid="{3848346C-9B11-4BEE-8A2B-49D58921829B}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <ArchiveAction Dst="%varVev9DestDir%">
+      <Archive>%SapSrcDir%\VE\Libs\x86\Qt-4.8.6.cab</Archive>
+    </ArchiveAction>
+  </Component>
+  <Component Name="VEViewer Qt Lib Plugins" Guid="{F264EA0C-2B7D-49F6-882A-DE26F6FD2EF1}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <ArchiveAction Dst="%varVev9DestDir%\Plugins">
+      <Archive>%SapSrcDir%\VE\Libs\x86\Qt-4.8.6.cab</Archive>
+    </ArchiveAction>
+  </Component>
+  <Component Name="VEViewer Qt Plugins" Guid="{D1FFABFB-6240-4773-8DC0-C19577974C01}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <ArchiveAction Dst="%varVev9DestDir%\Plugins\Qt Plugins">
+      <Archive>%SapSrcDir%\VE\Libs\x86\QtPlugins-4.8.6.cab</Archive>
+    </ArchiveAction>
+  </Component>
+  <Component Name="VEViewer Shaders" Guid="{489D1BB5-8A59-45D9-A92E-80F5B81F22BE}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <ArchiveAction Dst="%varVev9DestDir%\Shaders">
+      <Archive>%SapSrcDir%\VE\Shared\Shaders.cab</Archive>
+    </ArchiveAction>
+  </Component>
+  <!-- JT Translator -->
+  <Component Name="VEViewer JTDK Translator" Guid="{6F077F36-3BC8-4CD1-92C3-6C3CC69FAFF7}" Version="90101.96099">
+    <Requires Guid="{E6404B54-CBA3-48B4-B7CC-3788395EA5E2}" Name="VEViewer Qt JTDK" />
+    <Requires Guid="{2755D7D4-8365-4D5E-A3D1-CBC8B37D5AB4}" Name="VEViewer Matai JTDK" />
+    <Requires Guid="{C8786C87-E870-4D9E-AD60-44C4B27449ED}" Name="VEViewer SandboxSchemas JTDK" />
+    <Action Type="File" Dst="%varVev9DestDir%\Plugins\Translators\JTDK">
+      <Src Register="false" AppPath="false">%SapSrcDir%\VE\Translators\x86\JTDK\JTDKTranslator.exe</Src>
+      <Src Register="false">%SapSrcDir%\VE\Libs\x86\xerces-c-3.1.2\xerces-c_3_1.dll</Src>
+    </Action>
+    <Action Type="File" Dst="%varVev9DestDir%\Plugins\Translators\JTDK\schema">
+      <Src>%SapSrcDir%\VE\Translators\schema\Tasks.xsd</Src>
+    </Action>
+  </Component>
+  <Component Name="VEViewer Qt JTDK" Guid="{E6404B54-CBA3-48B4-B7CC-3788395EA5E2}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <ArchiveAction Dst="%varVev9DestDir%\Plugins\Translators\JTDK">
+      <Archive>%SapSrcDir%\VE\Libs\x86\Qt-4.8.6.cab</Archive>
+    </ArchiveAction>
+  </Component>
+  <Component Name="VEViewer Matai JTDK" Guid="{2755D7D4-8365-4D5E-A3D1-CBC8B37D5AB4}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <ArchiveAction Dst="%varVev9DestDir%\Plugins\Translators\JTDK">
+      <Archive>%SapSrcDir%\VE\Matai\x86\Matai.cab</Archive>
+    </ArchiveAction>
+  </Component>
+  <Component Name="VEViewer SandboxSchemas JTDK" Guid="{C8786C87-E870-4D9E-AD60-44C4B27449ED}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <ArchiveAction Dst="%varVev9DestDir%\Plugins\Translators\JTDK\schema">
+      <Archive>%SapSrcDir%\VE\Shared\SandboxSchemas-v5.cab</Archive>
+    </ArchiveAction>
+  </Component>
+  <!-- Teigha Translator -->
+  <Component Name="VEViewer Teigha Translator" Guid="{78E10040-DF6F-4FFC-9C8E-6174B8FD17D3}" Version="90101.96099">
+    <Requires Guid="{7DC67A39-81AA-4159-AFE2-56B9DFD01229}" Name="VEViewer Qt Teigha" />
+    <Requires Guid="{FAC739AF-8193-409C-8096-198E00E5F886}" Name="VEViewer Matai Teigha" />
+    <Requires Guid="{0689BA74-438E-49E1-94EF-2B916694AF5E}" Name="VEViewer SandboxSchemas Teigha" />
+    <Action Type="File" Dst="%varVev9DestDir%\Plugins\Translators\Teigha">
+      <Src Register="false" AppPath="false">%SapSrcDir%\VE\Translators\x86\Teigha\TeighaTranslator.exe</Src>
+      <Src Register="false">%SapSrcDir%\VE\Libs\x86\xerces-c-3.1.2\xerces-c_3_1.dll</Src>
+    </Action>
+    <Action Type="File" Dst="%varVev9DestDir%\Plugins\Translators\Teigha\schema">
+      <Src>%SapSrcDir%\VE\Translators\schema\Tasks.xsd</Src>
+    </Action>
+  </Component>
+  <Component Name="VEViewer Qt Teigha" Guid="{7DC67A39-81AA-4159-AFE2-56B9DFD01229}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <ArchiveAction Dst="%varVev9DestDir%\Plugins\Translators\Teigha">
+      <Archive>%SapSrcDir%\VE\Libs\x86\Qt-4.8.6.cab</Archive>
+    </ArchiveAction>
+  </Component>
+  <Component Name="VEViewer Matai Teigha" Guid="{FAC739AF-8193-409C-8096-198E00E5F886}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <ArchiveAction Dst="%varVev9DestDir%\Plugins\Translators\Teigha">
+      <Archive>%SapSrcDir%\VE\Matai\x86\Matai.cab</Archive>
+    </ArchiveAction>
+  </Component>
+  <Component Name="VEViewer SandboxSchemas Teigha" Guid="{0689BA74-438E-49E1-94EF-2B916694AF5E}" Version="90101.96099" Min_Compliant_Version="90100.1">
+    <ArchiveAction Dst="%varVev9DestDir%\Plugins\Translators\Teigha\schema">
+      <Archive>%SapSrcDir%\VE\Shared\SandboxSchemas-v5.cab</Archive>
+    </ArchiveAction>
+  </Component>
+</SapSetup>

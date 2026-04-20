@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Locale" Version="750.3"  ConnectedId="{EB645960-713B-425C-A926-61EB2A14EFD4}">
+    <!-- FolderPathPage -->
+    <String name="SapBiPcsProductName">
+        <En>SAP BW Precalculation Service</En>
+        <De>SAP BW Precalculation Service</De>
+    </String>
+
+    <String name="SapBiPcsProductDescription">
+        <En>Service to precalculate workbooks in SAP BW Broadcaster.</En>
+        <De>Dienst zum Vorberechnen von Arbeitsmappen im SAP BW Broadcaster.</De>
+    </String>
+
+    <String name="SapBiPcsDestDirPrompt">
+        <En>Choose the path to the SAP BW Precalculation Service installation directory</En>
+        <De>W&#228;hlen Sie das SAP BW Precalculation Service Zielverzeichnis aus</De>
+    </String>
+
+    <String name="DscrSapBiPcsDestDir">
+        <En>SAP BW Precalculation Service installation directory</En>
+        <De>SAP BW Precalculation Service Installationsverzeichnis</De>
+    </String>
+
+    <String name="strSapBIPcsOlderVersionInstalled">
+        <En>The old version of SAP BW Precalculation Service must be uninstalled.</En>
+        <De>Die alte Version des SAP BW Precalculation Service muss deinstalliert werden.</De>
+    </String>
+	<String Name="strSapBIPcsBEXNotFound">
+		<En>SAP Business Explorer 7.50 must be installed first.</En>
+		<De>SAP Business Explorer 7.50 muss zuerst installiert werden.</De>
+	</String>
+	<String Name="strSapBIPcsBEXVersionTooHigh">
+		<En>The installed version of SAP Business Explorer 7.50 is built with .NET Framework 4.x. This version of SAP BW Precalculation Service is not compatible with it. Please download an newer version of SAP BW Precalculation Server from SMP.</En>
+		<De>Die installierte Version vom SAP Business Explorer 7.50 verwendet das .NET Framework 4.x. Diese Version des SAP BW Precalculation Server ist damit nicht kompatibel. Bitte downloaden Sie eine neuere Version des SAP BW Precalculation Server vom SMP.</De>
+	</String>
+</SapSetup>

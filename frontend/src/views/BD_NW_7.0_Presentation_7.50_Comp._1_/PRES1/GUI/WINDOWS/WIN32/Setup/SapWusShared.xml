@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Init" WkstaDb="SapWUSWksta.xml">
+	<Component BuildTime="0x30821D6AAABFD201" Guid="{5C4D15BE-7199-4927-9E63-7A0E0CA207D4}" Min_Compliant_Version="1" Name="$SAPWUS ARP" Version="900.110">
+		<Action Dst="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\SAP_WUS" Type="Registry">
+			<RegValue Name="DisplayName">SAPSetup Automatic Workstation Update Service</RegValue>
+			<RegValue Name="DisplayIcon">&quot;%SapSetupDir%\Setup\Updater\NwSapSetupUserNotificationTool.exe&quot;,0</RegValue>
+			<RegValue Name="Publisher">SAP AG</RegValue>
+			<RegValue Name="URLUpdateInfo">http://service.sap.com</RegValue>
+			<RegValue Name="UninstallString">&quot;%SAPSetupDir%\Setup\NwSapSetup.exe&quot; /product:&quot;SAPWUS&quot; /uninstall</RegValue>
+		</Action>
+	</Component>
+	<Component BuildTime="0x30821D6AAABFD201" Guid="{25596A32-5EBF-4FA7-8B3E-1871FAAB6353}" Min_Compliant_Version="1" Name="$SAPWUS Shared Keys" Version="900.110">
+		<Action Dst="HKLM\SOFTWARE\SAP\SAP Shared\SAP_WUS" Type="Registry">
+			<RegValue>SAPSetup Automatic Workstation Update Service</RegValue>
+			<RegValue Name="SAPSourceDir">%SAPSrcDir%</RegValue>
+			<RegValue Name="SAPDestDir">%SapWUSDestDir%</RegValue>
+		</Action>
+	</Component>
+	<Component BuildTime="0x30821D6AAABFD201" Guid="{41D37BB1-B482-41BC-A1A4-B3662A55A021}" Min_Compliant_Version="1" Name="$SAPWUS Configurations" Version="900.110">
+		<Action Dst="%SAPSetupDir%\Setup\Updater" Type="File">
+			<Src Hash="SHA-256:566765d676266fc1c505a4bb6a5f86711a75a1ae8297ee2565a85319278ba16e" Timestamp="0x00DDD411FA74CB01">%SapSrcDir%\Setup\Updater\WkstaUpdater.cfg</Src>
+		</Action>
+	</Component>
+	<Component BuildTime="0x30821D6AAABFD201" Guid="{73BD1C1C-878A-49FA-AC4D-DB11688F2D0B}" Min_Compliant_Version="2106" Name="$SAPWUS Files" Order="PostInstall" SysSize="5870" Version="900.110">
+		<Requires Guid="{41D37BB1-B482-41BC-A1A4-B3662A55A021}"/>
+		<Requires Guid="{BC01AE68-B71A-43D7-99C6-0A93AFF0C62B}"/>
+		<Action Type="Script">
+			<Src><![CDATA[NwEngine.Shell.TerminateProcessInstances("NwSapSetupUserNotificationTool.exe")]]></Src>
+		</Action>
+		<Action Condition="&quot;%SAPSetupDir%\Setup\Updater\NwSapAutoWorkstationUpdateService.exe&quot; &lt; 8.6.1.64" RunAt="Install" Type="Script">
+			<Src><![CDATA[
+NwEngine.Context.log.Write "Script-Action: terminating old AWUS service in order to prevent machine reboot on service shutdown."
+NwEngine.Shell.TerminateProcessInstances("NwSapAutoWorkstationUpdateService.exe")
+			]]></Src>
+		</Action>
+		<Action Condition="&quot;%SAPSetupDir%\Setup\Updater\NwSapAutoWorkstationUpdateService.exe&quot; &lt; 8.6.1.64" RunAt="Update" Type="Script">
+			<Src><![CDATA[
+NwEngine.Context.log.Write "Script-Action: terminating old AWUS service in order to prevent machine reboot on service shutdown."
+NwEngine.Shell.TerminateProcessInstances("NwSapAutoWorkstationUpdateService.exe")
+			]]></Src>
+		</Action>
+		<Action Dependencies="RPCSS" Description="SAPSetup Automatic Workstation Update Service" DisplayName="SAPSetup Automatic Workstation Update Service" Dst="%SAPSetupDir%\Setup\Updater" ExeName="&quot;%SAPSetupDir%\Setup\Updater\NwSapAutoWorkstationUpdateService.exe&quot;" ServiceName="NWSAPAutoWorkstationUpdateSvc" TerminateRunningService="true" Type="NtService">
+			<Src FileVersion="9.0.85.0" Hash="SHA-256:7df493a7f1d5ed1ce7b251e83ebd7328c2324cc7c97d502d555aad1b781f5b08" Timestamp="0x000A8121A291D201">%SapSrcDir%\Setup\Updater\NwSapAutoWorkstationUpdateService.exe</Src>
+			<Src FileVersion="9.0.85.0" Hash="SHA-256:6c2090559275f6407ce18e1b5d9144688094c85d372045d62cf479352c8b0618" Register="false" Timestamp="0x0037B222A291D201">%SapSrcDir%\Setup\Updater\NwSapFeiLg.dll</Src>
+			<Src FileVersion="9.0.85.0" Hash="SHA-256:8db75793698de70d6bf9c060c3bba1f1d3fae9dd4e25bc33af0005da53d7779f" Register="false" Timestamp="0x0064E323A291D201">%SapSrcDir%\Setup\Updater\NwSapFeiUt.dll</Src>
+			<Src FileVersion="9.0.85.0" Hash="SHA-256:dc4b02ff902ff513fb1a002cbc52afebd5a20f1e78147b31a9b3c2dacd9485ad" Register="false" Timestamp="0x00911425A291D201">%SapSrcDir%\Setup\Updater\NwSapSetupATLCommon.dll</Src>
+			<Src FileVersion="9.0.85.0" Hash="SHA-256:ec5dbe4f6da6ecbf2467482aa126af1be062dac414b3834a9648b69043017a69" Register="false" Timestamp="0x00BE4526A291D201">%SapSrcDir%\Setup\Updater\NwSapSetupUi.dll</Src>
+			<Src FileVersion="9.0.85.0" Hash="SHA-256:91a75924f75aee1602459159f6febf1ba33f6f2bbd52030b0153b9c26afad8e5" Register="false" Timestamp="0x00911425A291D201">%SapSrcDir%\Setup\Updater\NwSapSetupEngine.dll</Src>
+		</Action>
+		<Action Dst="%SAPSetupDir%\Setup\Updater" Type="File">
+			<Src FileVersion="9.0.85.0" Hash="SHA-256:e3ee80cb96d954bf001ca66630d70891b4a5088203189d98407a8b561f146132" Timestamp="0x00EB7627A291D201">%SapSrcDir%\Setup\Updater\NwSapSetupUserNotificationTool.exe</Src>
+		</Action>
+		<Action Dst="HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NWSAPAutoWorkstationUpdateSvc" Type="Registry">
+			<RegValue Name="DelayedAutoStart" Type="DWORD">1</RegValue>
+		</Action>
+	</Component>
+</SapSetup>

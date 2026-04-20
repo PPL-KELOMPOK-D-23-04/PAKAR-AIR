@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Init" WkstaDb="SapBiWkstaUI.xml">
+	<SapSetupProduct BuildTime="0xB0400BC8A7BFD201" CmdLine="SapBI" Description="SapBiProductDescription" Guid="{986C96AA-FE9A-48ab-B384-6D418EFEC1DB}" Name="SapBiProductName" Version="750.84">
+		<!-- When .NET Framework is changed to 4.6, increase major version to 751, so BI PreCalc is able to check for correct version -->
+		<Prerequisite>
+			<Condition>%DotNetV2050727%=EXISTING</Condition>
+			<FailureText>StrFailedConditionDotNetv20</FailureText>
+		</Prerequisite>
+		<Succeeds ProductGuid="{61CF11DF-8382-47B1-A227-CCF64D66A843}"/>
+		<UI>
+			<Page Type="FolderPath">
+				<PageVariable>SapBiDestDir</PageVariable>
+				<Title>SapBiProductName</Title>
+				<SubTitle>SapBiTargetDirPrompt</SubTitle>
+			</Page>
+		</UI>
+		<IncludesProductPart Comment="Business Explorer (SAP NetWeaver 7.X)" ProductGuid="{90C8D495-2790-4354-872B-91BB2025A1FD}"/>
+		<IncludesProductPart Comment="OLE DB for OLAP Provider" ProductGuid="{5390360A-98D9-4377-BD41-9A147392D000}"/>
+	</SapSetupProduct>
+	<SapSetupProductPart BuildTime="0xB0400BC8A7BFD201" Description="SapBiProductDescription" Guid="{90C8D495-2790-4354-872B-91BB2025A1FD}" Name="Business Explorer (SAP NetWeaver 7.X)" Version="750.13">
+		<RequiresComponent ComponentGuid="{433088B7-6CC2-4232-AAFD-AD2F68402F17}"/>
+		<RequiresComponent ComponentGuid="{0886B59A-C64D-4AD5-BA6D-EDB01BCE69E7}"/>
+		<RequiresComponent ComponentGuid="{7271CEDC-9BE0-43DF-A1CB-0C719175B774}"/>
+		<RequiresComponent ComponentGuid="{D90D6783-FA88-4578-B262-0B086F62ED1E}"/>
+		<RequiresComponent ComponentGuid="{E773C20A-08A9-41A0-8DF3-8BFD1A26254E}"/>
+		<RequiresComponent ComponentGuid="{8EF39596-2C13-4CFE-AA02-C4697BB55D80}"/>
+		<RequiresComponent ComponentGuid="{BC01AE68-B71A-43D7-99C6-0A93AFF0C62B}"/>
+		<RequiresComponent ComponentGuid="{C0C8FB32-58D0-418B-9B59-8C20CCB40362}"/>
+		<RequiresComponent ComponentGuid="{E7A36482-6208-43C3-940D-83C7E4ADA37A}"/>
+		<RequiresComponent ComponentGuid="{21B43D24-E493-4351-B2BF-C690DF981FDC}"/>
+		<RequiresComponent ComponentGuid="{66EF6ABF-7F7F-4406-A907-950B40005948}"/>
+		<RequiresComponent ComponentGuid="{9659D3C1-3C75-4230-BB86-DA170E4C6381}"/>
+		<RequiresComponent ComponentGuid="{4C6645DF-8834-4B72-A87C-D60CC929CFC0}"/>
+		<RequiresComponent ComponentGuid="{985A37A5-0D57-481C-8C89-C978945B2B1E}"/>
+	</SapSetupProductPart>
+	<SapSetupProductPart BuildTime="0xB0400BC8A7BFD201" Description="strOLEDBForOlapProviderDescription" Guid="{5390360A-98D9-4377-BD41-9A147392D000}" Name="OLE DB for OLAP Provider" Version="750.10">
+		<RequiresComponent ComponentGuid="{433088B7-6CC2-4232-AAFD-AD2F68402F17}"/>
+		<RequiresComponent ComponentGuid="{0886B59A-C64D-4AD5-BA6D-EDB01BCE69E7}"/>
+		<RequiresComponent ComponentGuid="{7271CEDC-9BE0-43DF-A1CB-0C719175B774}"/>
+		<RequiresComponent ComponentGuid="{D90D6783-FA88-4578-B262-0B086F62ED1E}"/>
+		<RequiresComponent ComponentGuid="{E773C20A-08A9-41A0-8DF3-8BFD1A26254E}"/>
+		<RequiresComponent ComponentGuid="{8EF39596-2C13-4CFE-AA02-C4697BB55D80}"/>
+		<RequiresComponent ComponentGuid="{E92A7287-4EA3-43E3-85D5-66EC32D338F4}"/>
+	</SapSetupProductPart>
+</SapSetup>

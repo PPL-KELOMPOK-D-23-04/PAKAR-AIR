@@ -1,0 +1,10 @@
+_SAPPCTXT_HEADER_               002 7500 PLUGINFRAMEWORK RU 1504 27.04.2017-23:50 OK 
+CP_SPELLCHECK_COMPLETE          128 "Проверка провописания завершена"
+MENU_ITEM_EXCEL                 030 "Excel"
+MENU_ITEM_SEARCH                030 "Поиск"
+MENU_ITEM_CONTEXTSEARCH         120 "Поиск в SAP Help Portal"
+MENU_ITEM_SPELLCHECK            030 "Проверка правописания"
+MENU_ITEM_MAIL                  020 "Электронная почта"
+MENU_ITEM_PRINT                 020 "Печать"
+CP_SERVICE_MENUITEM             030 "Сервисы"
+CP_TREE_PRINT                   060 "Печать дерева"

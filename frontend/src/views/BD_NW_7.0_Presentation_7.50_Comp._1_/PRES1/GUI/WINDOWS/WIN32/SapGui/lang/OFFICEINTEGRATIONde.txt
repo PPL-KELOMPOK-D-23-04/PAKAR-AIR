@@ -1,0 +1,7 @@
+_SAPPCTXT_HEADER_               002 7500 OFFICEINTEGRATION DE 1100 27.04.2017-23:48 OK 
+OI_FILE                         060 "Datei"
+OI_SAVE_AS                      060 "Sichern unter"
+OI_PRINT_PREVIEW                080 "Druckvorschau"
+OI_PROPERTIES                   060 "Eigenschaften"
+OI_PRINT                        060 "Drucken"
+OI_SAVE                         060 "Sichern"

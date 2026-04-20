@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Init" WkstaDb="SapBwCommonWksta.xml">
+	<Product BuildTime="0xB0400BC8A7BFD201" CmdLine="BW_COMMON" Guid="{40F73A4A-DECE-407f-BC56-86C236CE71D4}" Name="BW Common" ProdVersion="750.4001" Visible="FALSE" WkstaDb="SapBwCommonWksta.xml"/>
+	<Component BuildTime="0xB0400BC8A7BFD201" Guid="{9659D3C1-3C75-4230-BB86-DA170E4C6381}" Min_Compliant_Version="750.4001" Name="$SAP BEX XLA" Size="1991" Version="750.4005">
+		<Action Condition="%WinType%=[Windows Vista,Windows 7,Windows Server 2008,Windows Server 2008 R2]" RunAt="UnInstall" Type="Script">
+			<Src><![CDATA[
+option explicit
+				dim szSystemDrive, szProgramDataFolder, szProgramDataFolderResolved
+				dim szCommonPrograms, szCommonProgramsResolved, szStartMenuSubFolder
+				szSystemDrive = NwEngine.Variables.ResolveString("%SystemDrive%")
+				' NwEngine.Context.Log.Write "szSystemDrive = " & Chr(34) & szSystemDrive & Chr(34)
+				szProgramDataFolder = NwEngine.Shell.GetRegValue("HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\ProgramData")
+				' NwEngine.Context.Log.Write "szProgramDataFolder = " & Chr(34) & szProgramDataFolder & Chr(34)
+				szProgramDataFolderResolved = Replace( szProgramDataFolder, "%%%SystemDrive%%%", szSystemDrive )
+				' NwEngine.Context.Log.Write "szProgramDataFolderResolved = " & Chr(34) & szProgramDataFolderResolved & Chr(34)
+				szCommonPrograms = NwEngine.Shell.GetRegValue( "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Common Programs" )
+				szCommonProgramsResolved = Replace( szCommonPrograms, "%%%ProgramData%%%", szProgramDataFolderResolved )
+				NwEngine.Context.Log.Write "Start-menu common programs = " & Chr(34) & szCommonProgramsResolved & Chr(34)
+				szStartMenuSubFolder = szCommonProgramsResolved & "\Business Explorer"
+				NwEngine.Context.Log.Write "Running extra clean-up on Vista: " & Chr(34) & szStartMenuSubFolder & Chr(34)
+				If NwEngine.Shell.DirectoryExist( szStartMenuSubFolder ) Then
+					NwEngine.Shell.DeleteDirectory szStartMenuSubFolder
+				End If
+			]]></Src>
+		</Action>
+		<Action Dst="HKCR\SAP.BusinessExplorer.Analyzer\path" Type="Registry">
+			<RegValue>%CommonProgramFiles%\SAP Shared\BW</RegValue>
+		</Action>
+		<Action Dst="%CommonProgramFiles%\SAP Shared\BW" Type="File">
+			<Src Hash="SHA-256:3ab5f672aa99d5c4f5ef9c8be5f39b2236a989eb9a104a78991018b18b0018ff" Timestamp="0x4685ED24599FD201">%SAPsrcDir%\Bw\sapbexs.xla</Src>
+		</Action>
+		<Action Condition="%msexcel2007exists%=True" Dst="%CommonProgramFiles%\SAP Shared\BW" Type="File">
+			<Src Hash="SHA-256:c0e0a912c3e83853ea36ba9e144ff6b6ce08a5c92ff4fba45cc400e0b869570e" Timestamp="0x499C54DB3EAED201">%SAPsrcDir%\Bw\office2007\sapbexc.xla</Src>
+		</Action>
+		<Action Condition="%msexcel2007exists%&lt;&gt;True" Dst="%CommonProgramFiles%\SAP Shared\BW" Type="File">
+			<Src Hash="SHA-256:8b86349039b2beb7fb539ed6cdd04f0f2920569cc47e72665936f225828b271a" Timestamp="0xE5FE56DB3EAED201">%SAPsrcDir%\Bw\sapbexc.xla</Src>
+		</Action>
+	</Component>
+	<Component BuildTime="0xB0400BC8A7BFD201" Guid="{E92A7287-4EA3-43E3-85D5-66EC32D338F4}" Min_Compliant_Version="5000" Name="$OLE Files" Size="3578" Version="5004">
+		<Requires Guid="{D0D4EF18-972D-46C4-8288-676B6B6F9C26}"/>
+		<Requires Guid="{2F0FE915-E036-408E-88C4-502C807F2A81}"/>
+		<Action Dst="%CommonProgramFiles%\SAP Shared\BW\OleOlap" Type="File">
+			<Src FileVersion="4.0.0.8" Hash="SHA-256:275c3f69f8f0c6b926b51efc7c02d73df5648ee016cb1f55d0de5235a3b23b12" Timestamp="0x98FB794BEF2AD201">%SapSrcDir%\BW\oleolap\mdrmsap.dll</Src>
+			<Src FileVersion="4.0.0.8" Hash="SHA-256:7d998179cb6f58df73338b064c2c42e59cb1535fa2322f34d96c00e75b95400d" Timestamp="0x385C7C4BEF2AD201">%SapSrcDir%\BW\oleolap\scerrlkp.dll</Src>
+		</Action>
+	</Component>
+	<Component BuildTime="0xB0400BC8A7BFD201" Guid="{2F0FE915-E036-408E-88C4-502C807F2A81}" Min_Compliant_Version="740.50" Name="$BW Common KillBit Keys" Version="750.50">
+		<Action Dst="HKLM\Software\Microsoft\Internet Explorer\ActiveX Compatibility\{B01952B0-AF66-11D1-B10D-0060086F6D97}" FileName="mdrmsap.dll" Type="Registry">
+			<RegValue Name="Compatibility Flags" Type="DWORD">1024</RegValue>
+		</Action>
+		<Action Dst="HKLM\Software\Microsoft\Internet Explorer\ActiveX Compatibility\{C847AFFE-7249-448E-8355-1E1C5EC3B261}" FileName="mdrmsap.dll" Type="Registry">
+			<RegValue Name="Compatibility Flags" Type="DWORD">1024</RegValue>
+		</Action>
+		<Action Dst="HKLM\Software\Microsoft\Internet Explorer\ActiveX Compatibility\{CAD867DA-39D4-4D5E-BC07-2A366F489E1D}" FileName="mdrmsap.dll" Type="Registry">
+			<RegValue Name="Compatibility Flags" Type="DWORD">1024</RegValue>
+		</Action>
+		<Action Dst="HKLM\Software\Microsoft\Internet Explorer\ActiveX Compatibility\{FEB42122-2EAD-11D1-83C5-006097097E2E}" FileName="scerrlkp.dll" Type="Registry">
+			<RegValue Name="Compatibility Flags" Type="DWORD">1024</RegValue>
+		</Action>
+	</Component>
+</SapSetup>

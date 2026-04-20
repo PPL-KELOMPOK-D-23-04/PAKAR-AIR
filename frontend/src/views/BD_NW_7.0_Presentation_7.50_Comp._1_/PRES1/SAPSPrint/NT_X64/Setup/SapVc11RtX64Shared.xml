@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Init" WkstaDb="SapVC11RtX64Wksta.xml">
+	<Component Arch="X64" BuildTime="0x100667CFB1BED201" Guid="{3C633F1D-0757-4D13-BD6E-30C8D756D8F4}" Name="VC11RT64" Order="PreInstall" SysSize="14257" Version="4">
+		<Action Dst="%WinSysDir%" Persistent="true" Type="File">
+			<Src FileVersion="11.0.51106.1" ForceDelete="true" Hash="SHA-256:ae996edb9b050677c4f82d56092efdc75f0addc97a14e2c46753e2db3f6bd732" Timestamp="0x003B7395A4BBCD01">%SapSrcDir%\System\VC11\x64\msvcr110.dll</Src>
+			<Src FileVersion="11.0.51106.1" ForceDelete="true" Hash="SHA-256:27f394ae01d12f851f1dee3632dee3c5afa1d267f7a96321d35fd43105b035ad" Timestamp="0x003B7395A4BBCD01">%SapSrcDir%\System\VC11\x64\msvcp110.dll</Src>
+			<Src FileVersion="11.0.51106.1" ForceDelete="true" Hash="SHA-256:f5f635c0cf8252b81c8283ae7063e5bdbc7d608ee8798ec6064707b489339d5d" Timestamp="0x003B7395A4BBCD01">%SapSrcDir%\System\VC11\x64\vccorlib110.dll</Src>
+			<Src FileVersion="11.0.60610.1" ForceDelete="true" Hash="SHA-256:873d57e5cd660d49b403780685e91b6e3bc9e65b6e59435e0c5a5dfa1de0422c" Timestamp="0x00D449931965CE01">%SapSrcDir%\System\VC11\x64\atl110.dll</Src>
+			<Src FileVersion="11.0.51106.1" ForceDelete="true" Hash="SHA-256:b26ddd1aeaf3f81edcc5a55a1938357a466ea2b0652560c4999faa92960f6190" Timestamp="0x003B7395A4BBCD01">%SapSrcDir%\System\VC11\x64\vcamp110.dll</Src>
+			<Src FileVersion="11.0.60610.1" ForceDelete="true" Hash="SHA-256:18fca73cf08bd9d27511b2da1ec6573c352ee7d00bc5f2504a8ff56b28a73551" Timestamp="0x00D449931965CE01">%SapSrcDir%\System\VC11\x64\mfc110.dll</Src>
+			<Src FileVersion="11.0.60610.1" ForceDelete="true" Hash="SHA-256:49559ea7183464f3564c562e7d216ce78ef1e66ac9dea2ece32dae00905f385c" Timestamp="0x00D449931965CE01">%SapSrcDir%\System\VC11\x64\mfc110u.dll</Src>
+			<Src FileVersion="11.0.60610.1" ForceDelete="true" Hash="SHA-256:8d8e108ab7b57de812db4736811311595e1b785deebff1868dea739720290b84" Timestamp="0x00D449931965CE01">%SapSrcDir%\System\VC11\x64\mfcm110.dll</Src>
+			<Src FileVersion="11.0.60610.1" ForceDelete="true" Hash="SHA-256:4fd4dad2f823aae2f65f0ade89b22bba24edd35e0bac685c91ab3be0efa104e9" Timestamp="0x00D449931965CE01">%SapSrcDir%\System\VC11\x64\mfcm110u.dll</Src>
+			<Src FileVersion="11.0.60610.1" ForceDelete="true" Hash="SHA-256:ba804369560a31d6e9e623f37abaea3e5bf06cca457de3fe8a1c26786f2d1238" Timestamp="0x00D449931965CE01">%SapSrcDir%\System\VC11\x64\mfc110chs.dll</Src>
+			<Src FileVersion="11.0.60610.1" ForceDelete="true" Hash="SHA-256:06b7b1bdd83b32c621d4a9349280ab99455c830643d97a78e78ed844fb30e5ab" Timestamp="0x00D449931965CE01">%SapSrcDir%\System\VC11\x64\mfc110cht.dll</Src>
+			<Src FileVersion="11.0.60610.1" ForceDelete="true" Hash="SHA-256:70969f6ffc7dddeb26588410cf3bee5c40d27761d4116859f4e25b083656bce6" Timestamp="0x00D449931965CE01">%SapSrcDir%\System\VC11\x64\mfc110deu.dll</Src>
+			<Src FileVersion="11.0.60610.1" ForceDelete="true" Hash="SHA-256:6279e0d79f7f5cb25431de09a76d6c6db197e6b2a6713b9329a1d2273271ccd6" Timestamp="0x00D449931965CE01">%SapSrcDir%\System\VC11\x64\mfc110enu.dll</Src>
+			<Src FileVersion="11.0.60610.1" ForceDelete="true" Hash="SHA-256:272cf9f204737851f31161d6e6a31347918b33dfc052d0ad046f5d7a9c2ad14d" Timestamp="0x00D449931965CE01">%SapSrcDir%\System\VC11\x64\mfc110esn.dll</Src>
+			<Src FileVersion="11.0.60610.1" ForceDelete="true" Hash="SHA-256:90d556905811217470a98de3d08d0b523313729dd7b799d324a9424cdb618600" Timestamp="0x00D449931965CE01">%SapSrcDir%\System\VC11\x64\mfc110fra.dll</Src>
+			<Src FileVersion="11.0.60610.1" ForceDelete="true" Hash="SHA-256:5dedfc5fabb64875918cf846628a133744bb8812bc9319f517e9e584b181aada" Timestamp="0x00D449931965CE01">%SapSrcDir%\System\VC11\x64\mfc110ita.dll</Src>
+			<Src FileVersion="11.0.60610.1" ForceDelete="true" Hash="SHA-256:b3aab7a77d7d1379be3b5e87bc627dd933074cb6897300c479ff2a5c67fe8efd" Timestamp="0x00D449931965CE01">%SapSrcDir%\System\VC11\x64\mfc110jpn.dll</Src>
+			<Src FileVersion="11.0.60610.1" ForceDelete="true" Hash="SHA-256:cead3aab9ec7d02c826b0701292a11222cbc213b47ac1f3f040f38730a3202e0" Timestamp="0x00D449931965CE01">%SapSrcDir%\System\VC11\x64\mfc110kor.dll</Src>
+			<Src FileVersion="11.0.60610.1" ForceDelete="true" Hash="SHA-256:972e7259cb56ee54a4e5e31df1324f78fe22703535fc6ffc8e9f5eb4ae421ab5" Timestamp="0x00D449931965CE01">%SapSrcDir%\System\VC11\x64\mfc110rus.dll</Src>
+			<Src FileVersion="11.0.51106.1" ForceDelete="true" Hash="SHA-256:30dbc138c12eca9cd0721c2208fd8c657090ac39b1cb7d20f1aa19935cdd946d" Timestamp="0x003B7395A4BBCD01">%SapSrcDir%\System\VC11\x64\vcomp110.dll</Src>
+		</Action>
+	</Component>
+</SapSetup>

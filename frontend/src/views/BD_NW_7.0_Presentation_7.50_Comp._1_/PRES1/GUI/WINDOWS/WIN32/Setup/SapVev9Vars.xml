@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SapSetup Context="Variables" Version="90101.96099" ConnectedId="{45EBADA8-D0FF-4F6A-B71D-A910441060B3}">
+  <Variable Name="varVevIsUpgrade" Persistent="false">
+    <Value>false</Value>
+  </Variable>
+  <Variable Name="varVev9DestDir" Persistent="true">
+    <Value>%ProgramFiles32%\SAP\SAP 3D Visual Enterprise Viewer</Value>
+    <Value Script="true"><![CDATA[
+If NwEngine.Shell.RegKeyExist("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{28126c7b-be67-41de-a765-bce3a3df5bc5}") Then
+    NwEngine.Context.Log.Write "VEV Script: Found DV 6.5 registry entries, installation will stop now"
+    NwEngine.Variables.AppendDefaultValue "varVevIsUpgrade", "true"
+ElseIf NwEngine.Shell.RegKeyExist("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{539d6858-dea7-4bae-be62-5629a44d2f95}") Then
+    NwEngine.Context.Log.Write "VEV Script: Found DV 6.5 registry entries, installation will stop now"
+    NwEngine.Variables.AppendDefaultValue "varVevIsUpgrade", "true"
+ElseIf NwEngine.Shell.RegKeyExist("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{58f45911-8fd2-46ad-93c8-38527c015dd4}") Then
+    NwEngine.Context.Log.Write "VEV Script: Found DV 6.5 registry entries, installation will stop now"
+    NwEngine.Variables.AppendDefaultValue "varVevIsUpgrade", "true"
+ElseIf NwEngine.Shell.RegKeyExist("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{906dd608-4d16-4700-b50b-4b76741ad65f}") Then
+    NwEngine.Context.Log.Write "VEV Script: Found DV 6.5 registry entries, installation will stop now"
+    NwEngine.Variables.AppendDefaultValue "varVevIsUpgrade", "true"
+ElseIf NwEngine.Shell.RegKeyExist("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\SAP Visual Enterprise Viewer 70") Then
+    NwEngine.Context.Log.Write "VEV Script: Found VEV 7.0 registry entries, installation will stop now"
+    NwEngine.Variables.AppendDefaultValue "varVevIsUpgrade", "true"
+ElseIf NwEngine.Shell.RegKeyExist("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\SAP Visual Enterprise Viewer 71") Then
+    NwEngine.Context.Log.Write "VEV Script: Found a VEV 7.1 registry entries"
+    strTempPath71 = NwEngine.Variables.ResolveString("%ProgramFiles32%\SAP\SAP Visual Enterprise Viewer 7.1")
+    strDvOrigDir = NwEngine.Shell.GetRegValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\SAP Visual Enterprise Viewer 71\InstallLocation")
+    If strDvOrigDir = "" Then
+        NwEngine.Context.Log.Write "VEV Script: There are leftovers of VEV 7.1"
+        strTempPath = NwEngine.Variables.ResolveString("%ProgramFiles32%\SAP\SAP 3D Visual Enterprise Viewer")
+    ElseIf strDvOrigDir = strTempPath71 Then
+        NwEngine.Context.Log.Write "VEV Script: VEV 7.1 is installed in default location " & strTempPath71
+        strTempPath = NwEngine.Variables.ResolveString("%ProgramFiles32%\SAP\SAP 3D Visual Enterprise Viewer")
+    Else
+        NwEngine.Context.Log.Write "VEV Script: VEV 7.1 is installed in non-default location " & strDvOrigDir
+        strTempPath = strDvOrigDir
+    End If
+    NwEngine.Variables.AppendDefaultValue "varVev9DestDir", strTempPath
+    NwEngine.Context.Log.Write "VEV Script: Default location for VEV 9.0 is " & strTempPath
+ElseIf NwEngine.Shell.RegKeyExist("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{0C4E74D6-FA8F-4F52-A5F6-AC9FAFABC342}") Then
+    NwEngine.Context.Log.Write "VEV Script: Found a VEV 8.0 registry entries"
+    strTempPath80 = NwEngine.Variables.ResolveString("%ProgramFiles32%\SAP\SAP 3D Visual Enterprise Viewer")
+    strDvOrigDir = NwEngine.Shell.GetRegValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{0C4E74D6-FA8F-4F52-A5F6-AC9FAFABC342}\InstallLocation")
+    If strDvOrigDir = "" Then
+        NwEngine.Context.Log.Write "VEV Script: There are leftovers of VEV 8.0"
+        strTempPath = NwEngine.Variables.ResolveString("%ProgramFiles32%\SAP\SAP 3D Visual Enterprise Viewer")
+    ElseIf strDvOrigDir = strTempPath80 Then
+        NwEngine.Context.Log.Write "VEV Script: VEV 8.0 is installed in default location " & strTempPath80
+        strTempPath = NwEngine.Variables.ResolveString("%ProgramFiles32%\SAP\SAP 3D Visual Enterprise Viewer")
+    Else
+        NwEngine.Context.Log.Write "VEV Script: VEV 8.0 is installed in non-default location " & strDvOrigDir
+        strTempPath = strDvOrigDir
+    End If
+    NwEngine.Variables.AppendDefaultValue "varVev9DestDir", strTempPath
+    NwEngine.Context.Log.Write "VEV Script: Default location for VEV 9.0 is " & strTempPath
+Else
+    strTempPath = NwEngine.Variables.ResolveString("%ProgramFiles32%\SAP\SAP 3D Visual Enterprise Viewer")
+    NwEngine.Context.Log.Write "VEV Script: Default location for VEV 9.0 is " & strTempPath
+    NwEngine.Variables.AppendDefaultValue "varVev9DestDir", strTempPath
+End If
+]]></Value>
+  </Variable>
+  <Variable Name="varVEDestDir" Persistent="false">
+    <Value>%varVev9DestDir%</Value>
+  </Variable>
+  <Variable Name="varVevVersion" Persistent="false">
+    <Value>0.0.0.0</Value>
+    <Value Script="true"><![CDATA[
+Option Explicit
+Dim path
+path = "%SapSrcDir%\VE\Viewer\version.txt"
+NwEngine.Context.Log.Write "VEV Script: Retrieving version from " & path
+Dim pathVersion
+pathVersion = NwEngine.Variables.ResolveString(path)
+Dim version
+If NwEngine.Shell.FileExist(pathVersion) Then
+    Dim fso
+    Dim file
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    Set file = fso.OpenTextFile(pathVersion, 1)
+    version = file.ReadLine
+    NwEngine.Context.Log.Write "VEV Script: Read version from " & path & ": " & version
+Else
+    version = NwEngine.Shell.GetFileVersion(NwEngine.Variables.ResolveString("%SapSrcDir%\VE\Viewer\x86\VEViewer.exe"))
+    NwEngine.Context.Log.Write "VEV Script: File " & path & " cannot be found."
+End If
+NwEngine.Variables.AppendDefaultValue "varVevVersion", version
+]]></Value>
+  </Variable>
+  <Variable Name="varVevIsBlockFileAssoc" Persistent="false">
+    <Value>false</Value>
+    <Value Script="true"><![CDATA[
+Dim argCollection
+Set argCollection = NwEngine.Context.Args
+szProductType = argCollection.Item("Type")
+If szProductType = "Block" Then
+    NwEngine.Context.Log.Write "VEV Script: File association creation is blocked"
+    NwEngine.Variables.AppendDefaultValue "varVevIsBlockFileAssoc", "true"
+Else
+    NwEngine.Context.Log.Write "VEV Script: File association creation is allowed"
+End If
+]]></Value>
+  </Variable>
+</SapSetup>

@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="SAP_VE_CAD_Translator_Tasks"
+    targetNamespace="http://schemas.sap.com/VE/CAD/Translator/2013/August/Tasks"
+    attributeFormDefault="unqualified"
+    elementFormDefault="qualified"
+    xmlns="http://schemas.sap.com/VE/CAD/Translator/2013/August/Tasks"
+    xmlns:sandbox="http://schemas.sap.com/VE/Sandbox/2015/March"    
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:import schemaLocation="SandboxMessage.xsd" namespace="http://schemas.sap.com/VE/Sandbox/2015/March"/>  
+  
+  <xs:element name="Tasks" type="Tasks"/>
+  
+  <xs:complexType name="Tasks">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="Task" type="Task"/>
+    </xs:sequence>
+    <xs:attribute name="Hash" type="xs:string" use="optional" />
+    <xs:attribute name="NeutralVersion" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="Task">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="Source" type="Source"/>
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="Target" type="Target"/>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ResponseLocation" type="ResponseLocation"/>
+      <xs:element minOccurs="0" maxOccurs="1" name="Environment" type="Environment"/>
+      <xs:element minOccurs="0" maxOccurs="1" name="Options" type="Options"/>
+      <xs:element minOccurs="0" maxOccurs="1" name="Sandbox" type="Sandbox"/>
+    </xs:sequence>
+    <xs:attribute name="Type" type="TaskType" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="Source">
+    <xs:attribute name="File" type="sandbox:Path" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="Target">
+    <xs:attribute name="Folder" type="sandbox:Path" use="required" />
+    <xs:attribute name="File" type="xs:string" use="optional" />
+    <xs:attribute name="Format" type="xs:string" use="optional" />
+    <!--
+    disabled until it is specified what path it should be relative to
+    e.g. output folder, but how to ensure data files will be there, if they use subfolders / search paths?
+    <xs:attribute name="RelativePaths" type="xs:boolean" use="optional" />    
+    -->
+  </xs:complexType>
+
+  <xs:complexType name="ResponseLocation">
+    <xs:attribute name="File" type="sandbox:Path" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="Product">
+    <xs:attribute name="Name" type="xs:string" use="optional"/>
+    <xs:attribute name="Folder" type="sandbox:Path" use="optional"/>
+    <xs:attribute name="Language" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="Environment">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Product" type="Product"/>
+    </xs:sequence>
+    <xs:attribute name="TempFolder" type="sandbox:Path" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="Options">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Option" type="Option"/>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Bom" type="Bom"/>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Searchpaths" type="SearchPaths"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Sandbox">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Message" type="sandbox:Message"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Option">
+    <xs:attribute name="Name" type="xs:string" use="required"/>
+    <xs:attribute name="Value" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="Bom">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Parameter" type="sandbox:Parameter"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="SearchPaths">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Searchpath" type="SearchPath"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="SearchPath">
+    <xs:attribute name="Folder" type="sandbox:Path" use="required"/>
+    <xs:attribute name="Recursive" type="xs:boolean" use="required"/>
+  </xs:complexType>
+
+  <xs:simpleType name="TaskType">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="import"/>
+    <xs:enumeration value="export"/>
+    <xs:enumeration value="bom"/>
+  </xs:restriction>
+  </xs:simpleType>
+
+  <!--
+  <xs:complexType name="Message">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Policy" type="Policy"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Policy">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FolderAccessRule" type="FolderAccessRule"/>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FileAccessRule" type="FileAccessRule"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="FolderAccessRule">
+    <xs:sequence>      
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Folder" type="Folder"/>
+    </xs:sequence>
+    <xs:attribute name="Grant" type="AccessRight" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="FileAccessRule">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="File" type="Folder"/>
+    </xs:sequence>
+    <xs:attribute name="Grant" type="AccessRight" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="Folder">
+    <xs:attribute name="Path" type="Path" use="required"/>
+  </xs:complexType>
+  
+  <xs:complexType name="File">
+    <xs:attribute name="Path" type="Path" use="required"/>
+  </xs:complexType>  
+  
+  <xs:simpleType name="AccessRight">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="read"/>
+      <xs:enumeration value="write"/>
+      <xs:enumeration value="readwrite"/>
+    </xs:restriction>
+  </xs:simpleType>  
+-->
+</xs:schema>

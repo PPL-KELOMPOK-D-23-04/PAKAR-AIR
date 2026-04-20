@@ -1,0 +1,8 @@
+_SAPPCTXT_HEADER_               002 7500 GRIDVIEW AR 8704 27.04.2017-23:48 OK 
+GRIDVIEW_MSGBOX_TEXT            128 "йзпя хоа ЦЕЦи гАьхгзи"
+GRIDVIEW_TOOLTIP_SELECT_ALL     080 "ймоМо гАъА"
+GRIDVIEW_TOOLTIP_TEXT_COLLAPSE  080 "ьМ гАймоМо"
+GRIDVIEW_TOOLTIP_TEXT_EXPAND    080 "йФсМз гАймоМо"
+GRIDVIEW_MSGBOX_ERROR           128 "Аг МЦъДъ Дсн ймоМогй Цйзоои"
+GRIDVIEW_MSGBOX_TITLE2          080 "зяж гАтхъи"
+GRIDVIEW_MSGBOX_TITLE           080 "зяж гАтхъи"

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Init" WkstaDb="SapPdfPrint64WkstaUI.xml">
+	<SapSetupProduct BuildTime="0x10379771C8BDD201" CmdLine="PdfPrint64" Description="SapPdfPrint64ProductDescription" Guid="{B7A282B2-5F73-4A35-AE75-A922A2EAFD6A}" Name="SapPdfPrint64ProductName" Version="750.2">
+		<UI>
+			<Page Type="FolderPath">
+				<PageVariable>SapPdfPrint64DestDir</PageVariable>
+				<WindowCaption>StrWindowCaption</WindowCaption>
+				<Title>SapPdfPrint64ProductName</Title>
+				<SubTitle>SapPdfPrint64DestDirPrompt</SubTitle>
+				<BackBtnText>StrBtnBack</BackBtnText>
+				<NextBtnText>StrBtnNext</NextBtnText>
+				<CancelBtnText>StrBtnCancel</CancelBtnText>
+			</Page>
+		</UI>
+		<IncludesProductPart Comment="SAP PdfPrint 64" Guid="{E7A6AC58-3821-4248-AD90-4D3A030E4371}" Visible="false"/>
+	</SapSetupProduct>
+	<SapSetupProductPart BuildTime="0x10379771C8BDD201" Guid="{E7A6AC58-3821-4248-AD90-4D3A030E4371}" Name="SAP PdfPrint 64" Version="750.1">
+		<RequiresComponent ComponentGuid="{C293FC4A-741B-4C17-9FF6-90CED945B19D}"/>
+		<RequiresComponent ComponentGuid="{F4E5A7B4-FDF8-4F72-93A2-66E0B5FD303F}"/>
+		<RequiresComponent ComponentGuid="{2104A7CB-09BA-439B-ADC2-72AF2559D8F4}"/>
+		<RequiresComponent ComponentGuid="{CE7F5559-F088-4F48-BE32-B6B9580E549F}"/>
+	</SapSetupProductPart>
+</SapSetup>

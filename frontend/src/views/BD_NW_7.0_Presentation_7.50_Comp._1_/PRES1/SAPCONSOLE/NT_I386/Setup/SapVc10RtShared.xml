@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Init" WkstaDb="SapVC10RtWksta.xml">
+	<Product BuildTime="0xE0FFB9305D90D201" CmdLine="$VC10RT" Guid="{F1561FC9-F0F9-487e-B8A4-BA87B116E95B}" Name="$VC10RT" ProdVersion="6" Visible="false">
+		<Contains Guid="{EB118682-0BFD-467c-8DC9-1E4435883D50}" Name="$VC10RT"/>
+	</Product>
+	<Component BuildTime="0xE0FFB9305D90D201" Guid="{EB118682-0BFD-467C-8DC9-1E4435883D50}" Min_Compliant_Version="2" Name="$VC10RT" Order="PreInstall" SysSize="10642" Version="6">
+		<MsiAction Persistent="true">
+			<MsiFile Hash="SHA-256:b74ae2a1c0453c5e37d682a99373301cb285fba0f68e801934e6632ace8e3cfa" ProductCode="{2385C070-EC26-4AB9-8718-E605C977C0ED}" Timestamp="0x69E4158F5A90D201">%SapSrcDir%\System\VC10\vcredist_x86.msi</MsiFile>
+		</MsiAction>
+	</Component>
+</SapSetup>

@@ -1,0 +1,8 @@
+_SAPPCTXT_HEADER_               002 7500 GRIDVIEW BG 1504 27.04.2017-23:48 OK 
+GRIDVIEW_MSGBOX_TEXT            128 "Не може да стартира задача печат"
+GRIDVIEW_TOOLTIP_SELECT_ALL     080 "Избор на всички"
+GRIDVIEW_TOOLTIP_TEXT_COLLAPSE  080 "Скриване на избор"
+GRIDVIEW_TOOLTIP_TEXT_EXPAND    080 "Разширяване на избор"
+GRIDVIEW_MSGBOX_ERROR           128 "Не можете да копирате множество критерии на избор"
+GRIDVIEW_MSGBOX_TITLE2          080 "GridView"
+GRIDVIEW_MSGBOX_TITLE           080 "GridView"

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SapSetup Context="Locale" Version="750.2" ConnectedId="{986C96AA-FE9A-48ab-B384-6D418EFEC1DB}">
+        <!-- FolderPathPage -->
+        <String name="SapBiProductName">
+                <En>Business Explorer</En>
+                <De>Business Explorer</De>
+        </String>
+        <String Name="SapBiTargetDirPrompt">
+                <En>Select the target directory for the Business Explorer</En>
+                <De>W&#228;hlen Sie das Zielverzeichnis für den Business Explorer</De>
+        </String>
+        <String name="SapBiProductDescription">
+                <En>Business Intelligence Suite of SAP NetWeaver that provides tools for analysis, reporting and planning.</En>
+                <De>Business Intelligence Suite von SAP NetWeaver, die Werkzeuge für Analyse, Reporting und Planung zur Verfügung stellt</De>
+        </String>
+        <String Name="DscrSapBiDestDir">
+                <En>Business Explorer installation directory</En>
+                <De>Business Explorer Instalaltionsverzeichnis</De>
+        </String>
+        <String Name="strOLEDBForOlapProviderDescription">
+                <En>Front-End Add-On to enable OLE DB for OLAP clients to connect to SAP NetWeaver Business Intelligence (BI)</En>
+                <De>Frontend-Add-On, das Clients von OLE DB for OLAP eine Verbindung zu SAP NetWeaver Business Intelligence (BI) ermöglicht</De>
+        </String>
+</SapSetup>

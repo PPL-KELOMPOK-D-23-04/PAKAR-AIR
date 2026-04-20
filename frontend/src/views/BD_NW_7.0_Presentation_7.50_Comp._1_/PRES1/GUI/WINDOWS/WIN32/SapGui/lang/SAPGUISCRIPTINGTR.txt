@@ -1,0 +1,10 @@
+_SAPPCTXT_HEADER_               002 7500 SAPGUISCRIPTING TR 1614 27.04.2017-23:50 OK 
+SCRIPTING_SCRIPTNOTINST         150 "Skript desteði kurulmadý"
+SCRIPTING_SCRIPTNOTENABLED      150 "Skript desteði etkinliði kullanýcý tarafýndan kaldýrýldý"
+SCRIPTING_DO_NOT_SHOW_AGAIN     150 "Skript, baðlantý açmak üzereyken açýlýr pencereyi görüntüleme!"
+SCRIPTING_SCRIPTISOPENING       150 "Bir script þu sisteme baðlantý açýyor: %s"
+<#007>SCRIPTING_CANCEL_BTN      016 "Ýptal"
+<#007>SCRIPTING_OK_BTN          016 "TAMAM"
+<#007>SCRIPTING_ALLOW_BTN       016 "Ýzin ver"
+<#007>SCRIPTING_DENY_BTN        016 "Reddet"
+<#007>SCRIPTING_HELP_BTN        016 "Yardým"

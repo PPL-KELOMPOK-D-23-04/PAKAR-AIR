@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema 
+    id="SAP_VE_CAD_Sandbox_Message"
+    attributeFormDefault="unqualified"
+    elementFormDefault="qualified"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://schemas.sap.com/VE/Sandbox/2015/March"
+    targetNamespace="http://schemas.sap.com/VE/Sandbox/2015/March"
+>
+  <xs:include schemaLocation="SandboxCommon.xsd"/>
+  <xs:include schemaLocation="SandboxPolicy.xsd"/>
+  <xs:include schemaLocation="SandboxTask.xsd"/>
+  <xs:include schemaLocation="SandboxResponse.xsd"/>
+
+  <!-- Message root element shall contain one and only one Policy, Response or Task child element -->
+  <xs:element name="Message" type ="Message"/>
+
+  <xs:complexType name="Message">
+    <xs:complexContent>
+      <xs:extension base="Envelope">
+        <xs:choice>
+          <xs:element name="Policy" type="Policy"/>
+          <xs:element name="Response" type="Response"/>
+          <xs:element name="Task" type="Task"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+</xs:schema>

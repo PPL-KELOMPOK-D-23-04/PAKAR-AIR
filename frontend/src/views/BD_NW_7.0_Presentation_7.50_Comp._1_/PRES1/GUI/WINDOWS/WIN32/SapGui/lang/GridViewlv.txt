@@ -1,0 +1,8 @@
+_SAPPCTXT_HEADER_               002 7500 GRIDVIEW LV 1904 27.04.2017-23:49 OK 
+GRIDVIEW_MSGBOX_TEXT            128 "Nevarçja startçt drukas darbu"
+GRIDVIEW_TOOLTIP_SELECT_ALL     080 "Atlasiet visu"
+GRIDVIEW_TOOLTIP_TEXT_COLLAPSE  080 "Sakïaut atlasi"
+GRIDVIEW_TOOLTIP_TEXT_EXPAND    080 "Izvçrst atlasi"
+GRIDVIEW_MSGBOX_ERROR           128 "Nevarat kopçt vairâkatlases"
+GRIDVIEW_MSGBOX_TITLE2          080 "GridView"
+GRIDVIEW_MSGBOX_TITLE           080 "GridView"

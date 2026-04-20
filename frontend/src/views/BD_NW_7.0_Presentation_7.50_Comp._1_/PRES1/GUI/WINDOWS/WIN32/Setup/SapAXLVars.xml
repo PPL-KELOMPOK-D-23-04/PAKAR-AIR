@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='utf-8'?>
+<SapSetup Context='Variables' Version='1.5' ConnectedId='{a8f40c86-7154-4464-86a0-9a496334f1d5}'>
+    <Variable Name='SapAXLDestDirx86' Persistent='true' ConnectedId='{a8f40c86-7154-4464-86a0-9a496334f1d5}'>
+        <Value>%ProgramFiles32%\SAP\AXL</Value>
+    </Variable>
+    <Variable Name='SapAXLDestDirx64' Persistent='true' ConnectedId='{a8f40c86-7154-4464-86a0-9a496334f1d5}'>
+        <Value>%ProgramFiles64%\SAP\AXL</Value>
+    </Variable>
+    <Variable Name='SapAXLIs64Bit' Persistent='true' ConnectedId='{a8f40c86-7154-4464-86a0-9a496334f1d5}'>
+        <Value>UNDEFINED</Value>
+    </Variable>
+    <Variable Name='SapAXLVersion' Persistent='false' ConnectedId='{a8f40c86-7154-4464-86a0-9a496334f1d5}'>
+        <Value>3.0.6</Value>
+    </Variable>
+    <Variable Name='SapAXLDestDir' Persistent='true' ConnectedId='{a8f40c86-7154-4464-86a0-9a496334f1d5}'>
+        <Value>%ProgramFiles32%\SAP\AXL</Value>
+        <Value Script='true'><![CDATA[
+				NwEngine.Context.Log.Write "AXL Script: Setting destination folder according to bitness of operating system and installed microsoft office"
+				szAXLDestDirx86 = "%SapAXLDestDirx86%"
+				szAXLDestDirx64 = "%SapAXLDestDirx64%"
+				If "%MSExcel2007Exists%" = "TRUE" Or "%MSExcel2013Exists%" = "TRUE" Or "%MSExcel2010Exists%" = "TRUE" Or "%MSExcel2016Exists%" = "TRUE" Then
+					If "%WOW64MODE%" = "TRUE" And (("%MSO2010Is64Bit%" = "TRUE") Or ("%MSO2013Is64Bit%" = "TRUE") Or ("%MSO2016Is64Bit%" = "TRUE")) Then
+						NwEngine.Context.Log.Write "AXL Script: Found 64 Bit operating system and 64 Bit Office, destination folder is '" + szAXLDestDirx64 + "'."
+						NwEngine.Variables.AppendDefaultValue "SapAXLDestDir", szAXLDestDirx64
+						NwEngine.Variables.AppendDefaultValue "SapAXLIs64Bit", "TRUE"
+					Else
+						If %WOW64Mode% = TRUE Then
+							NwEngine.Context.Log.Write "AXL Script: Found 64 bit operating system, but office is installed in 32 bit, using 32 bit destination folder: '" + szAXLDestDirx86 + "'."
+						Else
+							NwEngine.Context.Log.Write "AXL Script: Found 32 bit operating system, using 32 bit destination folder: '" + szAXLDestDirx86 + "'."
+						End If
+						NwEngine.Variables.AppendDefaultValue "SapAXLDestDir", szAXLDestDirx86
+						NwEngine.Variables.AppendDefaultValue "SapAXLIs64Bit", "FALSE"
+					End If
+				Else
+					NwEngine.Context.Log.Write "AXL Script: Could not found any supported Microsoft Excel version, cannot set destination folder!"
+				End If
+			]]></Value>
+    </Variable>
+    <Variable Name='SapAXLDestDir_Temp' Persistent='false' DisplayInSapAdmin='false' ConnectedId='{a8f40c86-7154-4464-86a0-9a496334f1d5}'>
+        <Value Script='true'><![CDATA[
+				NwEngine.Context.Log.Write "AXL Script: Checking if SapAXLDestDir is set to a valid path or UNDEFINED..."
+				CurrentPath = NwEngine.Variables.GetValue("SapAXLDestDir")
+				If CurrentPath = "UNDEFINED" Then
+					NwEngine.Context.Log.Write "AXL Script: Something is wrong here, SapAXLDestDir is set to UNDEFINED, this needs to be overwritten..."
+					szAXLDestDirx86 = "%SapAXLDestDirx86%"
+					szAXLDestDirx64 = "%SapAXLDestDirx64%"
+					If "%MSExcel2007Exists%" = "TRUE" Or "%MSExcel2013Exists%" = "TRUE" Or "%MSExcel2010Exists%" = "TRUE" Or "%MSExcel2016Exists%" = "TRUE" Then
+						If "%WOW64MODE%" = "TRUE" And (("%MSO2010Is64Bit%" = "TRUE") Or ("%MSO2013Is64Bit%" = "TRUE") Or ("%MSO2016Is64Bit%" = "TRUE")) Then
+							NwEngine.Context.Log.Write "AXL Script: Found 64 Bit operating system and 64 Bit Office, destination folder is '" + szAXLDestDirx64 + "'."
+							NwEngine.Variables.AppendDefaultValue "SapAXLDestDir", szAXLDestDirx64
+							NwEngine.Variables.AppendDefaultValue "SapAXLIs64Bit", "TRUE"
+						Else
+							If %WOW64Mode% = TRUE Then
+								NwEngine.Context.Log.Write "AXL Script: Found 64 bit operating system, but office is installed in 32 bit, using 32 bit destination folder: '" + szAXLDestDirx86 + "'."
+							Else
+								NwEngine.Context.Log.Write "AXL Script: Found 32 bit operating system, using 32 bit destination folder: '" + szAXLDestDirx86 + "'."
+							End If
+							NwEngine.Variables.AppendDefaultValue "SapAXLDestDir", szAXLDestDirx86
+							NwEngine.Variables.AppendDefaultValue "SapAXLIs64Bit", "FALSE"
+						End If
+					Else
+						NwEngine.Context.Log.Write "AXL Script: Could not found any supported Microsoft Excel version, cannot set destination folder!"
+					End If
+				Else
+					NwEngine.Context.Log.Write "AXL Script: SapAXLDestDir is set to a path, everything OK."
+				End If
+			]]></Value>
+    </Variable>
+	<Variable Name='SapAXLVSTOInstallerPath' Persistent='false' DisplayInSapAdmin='false' ConnectedId='{a8f40c86-7154-4464-86a0-9a496334f1d5}'>
+		<Variable>UNDEFINED</Variable>
+		<Variable Script='true'>
+			<![CDATA[
+				NwEngine.Context.Log.Write "AXL Script: Checking for VSTOinstaller.exe..."
+				If %SapAXLIs64Bit% = TRUE Then
+					szPath = NwEngine.Variables.ResolveString("%COMMONPROGRAMFILES64%\Microsoft Shared\VSTO\10.0\VSTOInstaller.exe")
+					If NwEngine.Shell.FileExist(szPath) Then
+						NwEngine.Context.Log.Write "AXL Script: Found VSTOInstaller.exe (64 Bit) here: " & szPath
+						NwEngine.Variables.AppendDefaultValue "SapAXLVSTOInstallerPath", szPath
+					Else
+						NwEngine.Context.Log.Write "AXL Script: Could not find VSTOInstaller.exe, vsto cannot be registered!"
+					End If
+				Else 
+					szPath = NwEngine.Variables.ResolveString("%COMMONPROGRAMFILES32%\Microsoft Shared\VSTO\10.0\VSTOInstaller.exe")
+					If NwEngine.Shell.FileExist(szPath) Then
+						NwEngine.Context.Log.Write "AXL Script: Found VSTOInstaller.exe (32 Bit) here: " & szPath
+						NwEngine.Variables.AppendDefaultValue "SapAXLVSTOInstallerPath", szPath
+					Else
+						NwEngine.Context.Log.Write "AXL Script: Could not find VSTOInstaller.exe, vsto cannot be registered!"
+					End If
+				End If
+			]]>
+		</Variable>
+	</Variable>
+</SapSetup>
