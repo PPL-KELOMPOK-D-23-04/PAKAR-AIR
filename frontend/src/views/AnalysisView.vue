@@ -8,32 +8,31 @@ const store = useAnalysisStore()
 const loading = ref(false)
 
 const handleSubmit = () => {
-  if (!store.image) {
-    alert('Upload gambar dulu')
-    return
-  }
-
-  if (Object.keys(store.manualData).length === 0) {
-    alert('Isi data dulu')
-    return
-  }
+  if (!store.image) return
+  if (Object.keys(store.manualData).length === 0) return
 
   loading.value = true
 
   setTimeout(() => {
-    console.log('IMAGE:', store.image)
-    console.log('DATA:', store.manualData)
+    console.log(store.image, store.manualData)
     loading.value = false
   }, 1000)
 }
 </script>
 
 <template>
-  <div>
+  <div class="analysis-container">
     <h1>Analisis Kualitas Air</h1>
 
-    <ImageUploader />
-    <ManualDataForm />
+    <div class="analysis-content">
+      <div class="left">
+        <ImageUploader />
+      </div>
+
+      <div class="right">
+        <ManualDataForm />
+      </div>
+    </div>
 
     <button 
       @click="handleSubmit"
@@ -43,3 +42,18 @@ const handleSubmit = () => {
     </button>
   </div>
 </template>
+
+<style scoped>
+.analysis-container {
+  padding: 20px;
+}
+
+.analysis-content {
+  display: flex;
+  gap: 20px;
+}
+
+.left, .right {
+  flex: 1;
+}
+</style>
