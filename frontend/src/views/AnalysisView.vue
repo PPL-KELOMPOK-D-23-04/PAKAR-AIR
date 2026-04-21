@@ -6,9 +6,19 @@ import { useAnalysisStore } from '@/stores/analysisStore'
 const store = useAnalysisStore()
 
 const handleSubmit = () => {
-  console.log('IMAGE:', store.image)
-  console.log('DATA:', store.manualData)
+  if (!store.image) {
+    alert('Upload gambar dulu')
+    return
+  }
+
+  if (Object.keys(store.manualData).length === 0) {
+    alert('Isi data dulu')
+    return
+  }
+
+  console.log('READY TO ANALYZE')
 }
+
 </script>
 
 <template>
