@@ -49,16 +49,49 @@ const handleSubmit = () => {
 </template>
 
 <style scoped>
-.analysis-container {
+.analysis-page {
+  padding: 24px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+/* CARD */
+.card {
+  background: white;
+  border-radius: 12px;
   padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-.analysis-content {
-  display: flex;
-  gap: 20px;
+/* BUTTON */
+.analyze-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  background: #3b82f6;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-.left, .right {
-  flex: 1;
+.analyze-btn:hover {
+  background: #2563eb;
+}
+
+.analyze-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
 }
 </style>
