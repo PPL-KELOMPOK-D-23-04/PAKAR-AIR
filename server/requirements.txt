@@ -7,9 +7,10 @@ pydantic-settings
 python-jose[cryptography]
 passlib[bcrypt]
 python-multipart
+python-dotenv
 supabase
 ultralytics
 scikit-learn
 pandas
 pillow
-pydantic
+psycopg2-binary
