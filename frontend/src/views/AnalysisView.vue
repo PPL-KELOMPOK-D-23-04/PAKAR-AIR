@@ -4,19 +4,40 @@ import ImageUploader from '@/components/analysis/ImageUploader.vue'
 import ManualDataForm from '@/components/analysis/ManualDataForm.vue'
 import PredictionResult from '@/components/analysis/PredictionResult.vue'
 import { useAnalysisStore } from '@/stores/analysisStore'
+import { analyzeWater } from '@/api/analysis'
 
 const store = useAnalysisStore()
 const loading = ref(false)
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   if (!store.image) return
   if (Object.keys(store.manualData).length === 0) return
 
   loading.value = true
 
-  // nanti di sini langsung diganti API (tanpa dummy sekarang)
+  try {
+    const formData = new FormData()
 
-  loading.value = false
+    formData.append('file', store.image)
+
+    Object.keys(store.manualData).forEach((key) => {
+      formData.append(key, store.manualData[key])
+    })
+
+    const res = await analyzeWater(formData)
+
+    store.setResult({
+      category: res.data.category,
+      confidence: res.data.confidence,
+      explanation: res.data.explanation,
+      recommendation: res.data.recommendation
+    })
+
+  } catch (err) {
+    console.error(err)
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 
