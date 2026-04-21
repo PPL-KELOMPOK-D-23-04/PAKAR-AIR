@@ -1,9 +1,11 @@
 <script setup>
+import { ref } from 'vue'
 import ImageUploader from '@/components/analysis/ImageUploader.vue'
 import ManualDataForm from '@/components/analysis/ManualDataForm.vue'
 import { useAnalysisStore } from '@/stores/analysisStore'
 
 const store = useAnalysisStore()
+const loading = ref(false)
 
 const handleSubmit = () => {
   if (!store.image) {
@@ -16,9 +18,14 @@ const handleSubmit = () => {
     return
   }
 
-  console.log('READY TO ANALYZE')
-}
+  loading.value = true
 
+  setTimeout(() => {
+    console.log('IMAGE:', store.image)
+    console.log('DATA:', store.manualData)
+    loading.value = false
+  }, 1000)
+}
 </script>
 
 <template>
@@ -28,6 +35,11 @@ const handleSubmit = () => {
     <ImageUploader />
     <ManualDataForm />
 
-    <button @click="handleSubmit">Analisis</button>
+    <button 
+      @click="handleSubmit"
+      :disabled="!store.image || loading"
+    >
+      {{ loading ? 'Memproses...' : 'Analisis' }}
+    </button>
   </div>
 </template>
