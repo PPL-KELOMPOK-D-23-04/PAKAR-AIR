@@ -18,6 +18,12 @@ export const useAnalysisStore = defineStore('analysis', {
 
     setResult(data) {
       this.result = data
+    },
+
+    resetAnalysis() {
+      this.image = null
+      this.manualData = {}
+      this.result = null
     }
   }
 })

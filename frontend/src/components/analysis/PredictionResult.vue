@@ -18,6 +18,11 @@ defineProps({
     <p>Confidence: {{ result.confidence }}%</p>
 
     <div>
+      <h3>Penjelasan:</h3>
+      <p>{{ result.explanation }}</p>
+    </div>
+
+    <div>
       <h3>Rekomendasi:</h3>
       <p>{{ result.recommendation }}</p>
     </div>

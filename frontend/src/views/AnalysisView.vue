@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import ImageUploader from '@/components/analysis/ImageUploader.vue'
 import ManualDataForm from '@/components/analysis/ManualDataForm.vue'
+import PredictionResult from '@/components/analysis/PredictionResult.vue'
 import { useAnalysisStore } from '@/stores/analysisStore'
 
 const store = useAnalysisStore()
@@ -13,10 +14,9 @@ const handleSubmit = () => {
 
   loading.value = true
 
-  setTimeout(() => {
-    console.log(store.image, store.manualData)
-    loading.value = false
-  }, 1000)
+  // nanti di sini langsung diganti API (tanpa dummy sekarang)
+
+  loading.value = false
 }
 </script>
 
@@ -40,6 +40,9 @@ const handleSubmit = () => {
     >
       {{ loading ? 'Memproses...' : 'Analisis' }}
     </button>
+
+    <!-- tetap siap nampung hasil -->
+    <PredictionResult :result="store.result" />
   </div>
 </template>
 
