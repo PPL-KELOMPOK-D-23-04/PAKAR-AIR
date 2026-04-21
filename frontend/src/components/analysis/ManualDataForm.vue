@@ -13,8 +13,10 @@ const form = reactive({
 })
 
 watch(form, () => {
+  if (!form.ph || isNaN(form.ph)) return
   store.setManualData(form)
 }, { deep: true })
+
 </script>
 
 <template>

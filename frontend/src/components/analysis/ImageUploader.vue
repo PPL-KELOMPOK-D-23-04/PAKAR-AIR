@@ -6,8 +6,17 @@ const store = useAnalysisStore()
 const { previewUrl, handleFileChange } = useFileUpload()
 
 const onChange = (e) => {
+  const file = e.target.files[0]
+
+  if (!file) return
+
+  if (!file.type.startsWith('image/')) {
+    alert('File harus berupa gambar')
+    return
+  }
+
   handleFileChange(e)
-  store.setImage(e.target.files[0])
+  store.setImage(file)
 }
 </script>
 
