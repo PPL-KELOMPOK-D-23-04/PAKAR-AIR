@@ -1,6 +1,14 @@
 <script setup>
 import ImageUploader from '@/components/analysis/ImageUploader.vue'
 import ManualDataForm from '@/components/analysis/ManualDataForm.vue'
+import { useAnalysisStore } from '@/stores/analysisStore'
+
+const store = useAnalysisStore()
+
+const handleSubmit = () => {
+  console.log('IMAGE:', store.image)
+  console.log('DATA:', store.manualData)
+}
 </script>
 
 <template>
@@ -9,5 +17,7 @@ import ManualDataForm from '@/components/analysis/ManualDataForm.vue'
 
     <ImageUploader />
     <ManualDataForm />
+
+    <button @click="handleSubmit">Analisis</button>
   </div>
 </template>
