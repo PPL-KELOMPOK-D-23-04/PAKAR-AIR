@@ -16,7 +16,6 @@ import EducationView from '@/views/EducationView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 
 const routes = [
-  // 🌐 PUBLIC
   {
     path: '/',
     component: DefaultLayout,
@@ -34,7 +33,6 @@ const routes = [
     ]
   },
 
-  // 🔐 AUTH
   {
     path: '/',
     component: AuthLayout,
@@ -52,7 +50,6 @@ const routes = [
     ]
   },
 
-  // 📊 USER DASHBOARD
   {
     path: '/',
     component: DashboardLayout,
