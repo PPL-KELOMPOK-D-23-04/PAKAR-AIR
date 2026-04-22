@@ -2,7 +2,7 @@
   <div class="profile-container">
     <h1 class="title">Profil Saya</h1>
 
-    <!-- ========== BAGIAN FOTO PROFIL (PKD20TPA-29) ========== -->
+    <!-- ========== UPDATE FOTO (PKD20TPA-29) ========== -->
     <div class="photo-section">
       <div class="avatar-wrapper">
         <img 
@@ -23,7 +23,7 @@
       <p class="photo-hint">Klik ikon kamera untuk ganti foto (max 2MB)</p>
     </div>
 
-    <!-- ========== BAGIAN FORM EDIT NAMA & USERNAME (PKD20TPA-28) ========== -->
+    <!-- ========== UPDATE NAMA & USERNAME (PKD20TPA-28) ========== -->
     <div class="form-section">
       <div class="form-group">
         <label>Nama Lengkap</label>
@@ -56,7 +56,6 @@
         />
       </div>
 
-      <!-- ========== BUTTON SIMPAN ========== -->
       <button 
         @click="updateProfil" 
         :disabled="loading"
@@ -66,7 +65,7 @@
       </button>
     </div>
 
-    <!-- ========== PESAN HASIL ========== -->
+    <!-- PESAN NOTIFIKASI -->
     <div v-if="message" :class="['message', messageType]">
       {{ message }}
     </div>
@@ -90,44 +89,55 @@ const formData = ref({
   email: ''
 })
 
-// ========== AMBIL DATA USER SAAT LOAD (PKD20TPA-27) ==========
-onMounted(async () => {
-  await loadUserData()
+// ========== LOAD DATA SAAT HALAMAN DIBUKA (PKD20TPA-27) ==========
+onMounted(() => {
+  loadUserData()
 })
 
+// ========== AMBIL DATA USER DARI API ==========
 const loadUserData = async () => {
   try {
-    // Ambil dari localStorage dulu (sementara)
-    const savedUser = localStorage.getItem('user_data')
-    if (savedUser) {
-      const user = JSON.parse(savedUser)
+    // AMBIL TOKEN DARI LOCALSTORAGE
+    const token = localStorage.getItem('token')
+    
+    if (!token) {
+      console.log('User belum login')
+      return
+    }
+
+    // PANGGIL API GET PROFILE
+    const response = await fetch('http://localhost:8000/api/user/profile', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (response.ok) {
+      const user = await response.json()
       formData.value = {
         nama: user.nama || '',
         username: user.username || '',
-        email: user.email || 'user@example.com'
+        email: user.email || ''
       }
       fotoProfil.value = user.foto_profil || null
+    } else {
+      console.error('Gagal load data user')
     }
-    
-    // Nanti ganti dengan panggilan API real:
-    // const response = await fetch('http://localhost:8000/api/user/profile', {
-    //   headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-    // })
-    // const data = await response.json()
-    // formData.value = data
   } catch (error) {
-    console.error('Gagal load data:', error)
+    console.error('Error load data:', error)
   }
 }
 
-// ========== UPDATE FOTO (PKD20TPA-29) + VALIDASI (PKD20TPA-30) ==========
+// ========== UPDATE FOTO + VALIDASI (PKD20TPA-29 & PKD20TPA-30) ==========
 const handleUploadFoto = (event) => {
   const file = event.target.files[0]
   
-  // VALIDASI: file harus ada
+  // VALIDASI 1: File harus ada
   if (!file) return
   
-  // VALIDASI: tipe file (hanya gambar)
+  // VALIDASI 2: Tipe file harus gambar
   const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg']
   if (!allowedTypes.includes(file.type)) {
     message.value = '❌ Format file harus JPG, JPEG, atau PNG'
@@ -136,7 +146,7 @@ const handleUploadFoto = (event) => {
     return
   }
   
-  // VALIDASI: ukuran file max 2MB
+  // VALIDASI 3: Ukuran file max 2MB
   if (file.size > 2 * 1024 * 1024) {
     message.value = '❌ Ukuran file maksimal 2MB'
     messageType.value = 'error'
@@ -144,53 +154,55 @@ const handleUploadFoto = (event) => {
     return
   }
   
-  // Preview foto sebelum upload
+  // PREVIEW FOTO SEBELUM UPLOAD
   const reader = new FileReader()
   reader.onload = (e) => {
     previewFoto.value = e.target.result
   }
   reader.readAsDataURL(file)
   
-  // Upload ke server (PKD20TPA-31)
+  // UPLOAD KE SERVER
   uploadFotoKeServer(file)
 }
 
+// ========== UPLOAD FOTO KE API (PKD20TPA-31) ==========
 const uploadFotoKeServer = async (file) => {
   loading.value = true
   
-  // Simulasi upload (pakai FormData)
   const formDataUpload = new FormData()
   formDataUpload.append('foto_profil', file)
   
   try {
-    // === INTEGRASI API (PKD20TPA-31) ===
-    // Nanti ganti dengan endpoint real:
-    // const response = await fetch('http://localhost:8000/api/user/upload-photo', {
-    //   method: 'POST',
-    //   headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
-    //   body: formDataUpload
-    // })
-    // const result = await response.json()
+    const token = localStorage.getItem('token')
     
-    // Simulasi berhasil
-    setTimeout(() => {
-      fotoProfil.value = previewFoto.value
+    const response = await fetch('http://localhost:8000/api/user/upload-photo', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      body: formDataUpload
+    })
+
+    if (response.ok) {
+      const result = await response.json()
+      fotoProfil.value = result.foto_url
       message.value = '✅ Foto profil berhasil diupdate!'
       messageType.value = 'success'
-      loading.value = false
-      setTimeout(() => { message.value = '' }, 3000)
-    }, 500)
-    
+    } else {
+      throw new Error('Gagal upload foto')
+    }
   } catch (error) {
     message.value = '❌ Gagal upload foto'
     messageType.value = 'error'
+  } finally {
     loading.value = false
+    setTimeout(() => { message.value = '' }, 3000)
   }
 }
 
-// ========== UPDATE PROFIL (PKD20TPA-28) + VALIDASI (PKD20TPA-30) ==========
+// ========== UPDATE PROFIL + VALIDASI (PKD20TPA-28 & PKD20TPA-30) ==========
 const updateProfil = async () => {
-  // VALIDASI INPUT SEBELUM UPDATE
+  // VALIDASI NAMA
   if (!formData.value.nama || formData.value.nama.trim().length < 3) {
     message.value = '❌ Nama harus diisi minimal 3 karakter'
     messageType.value = 'error'
@@ -198,6 +210,7 @@ const updateProfil = async () => {
     return
   }
   
+  // VALIDASI USERNAME
   if (!formData.value.username || formData.value.username.trim().length < 3) {
     message.value = '❌ Username harus diisi minimal 3 karakter'
     messageType.value = 'error'
@@ -205,7 +218,7 @@ const updateProfil = async () => {
     return
   }
   
-  // Validasi username: hanya huruf, angka, underscore
+  // VALIDASI USERNAME (hanya huruf, angka, underscore)
   const usernameRegex = /^[a-zA-Z0-9_]+$/
   if (!usernameRegex.test(formData.value.username)) {
     message.value = '❌ Username hanya boleh huruf, angka, dan underscore (_)'
@@ -217,39 +230,33 @@ const updateProfil = async () => {
   loading.value = true
   
   try {
-    // === INTEGRASI API (PKD20TPA-31) ===
-    // Nanti ganti dengan endpoint real:
-    // const response = await fetch('http://localhost:8000/api/user/profile', {
-    //   method: 'PUT',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Authorization': `Bearer ${localStorage.getItem('token')}`
-    //   },
-    //   body: JSON.stringify({
-    //     nama: formData.value.nama,
-    //     username: formData.value.username
-    //   })
-    // })
-    // const result = await response.json()
+    const token = localStorage.getItem('token')
     
-    // Simulasi simpan ke localStorage
-    const userData = {
-      nama: formData.value.nama,
-      username: formData.value.username,
-      email: formData.value.email,
-      foto_profil: fotoProfil.value
+    // PANGGIL API UPDATE PROFILE
+    const response = await fetch('http://localhost:8000/api/user/profile', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        nama: formData.value.nama,
+        username: formData.value.username
+      })
+    })
+
+    if (response.ok) {
+      message.value = '✅ Profil berhasil diperbarui!'
+      messageType.value = 'success'
+    } else {
+      throw new Error('Gagal update profil')
     }
-    localStorage.setItem('user_data', JSON.stringify(userData))
-    
-    message.value = '✅ Profil berhasil diperbarui!'
-    messageType.value = 'success'
-    
-    setTimeout(() => { message.value = '' }, 3000)
   } catch (error) {
     message.value = '❌ Gagal menyimpan perubahan'
     messageType.value = 'error'
   } finally {
     loading.value = false
+    setTimeout(() => { message.value = '' }, 3000)
   }
 }
 </script>
@@ -268,7 +275,6 @@ const updateProfil = async () => {
   margin-bottom: 2rem;
 }
 
-/* ========== STYLE FOTO ========== */
 .photo-section {
   text-align: center;
   margin-bottom: 2rem;
@@ -311,7 +317,6 @@ const updateProfil = async () => {
   margin-top: 0.5rem;
 }
 
-/* ========== STYLE FORM ========== */
 .form-section {
   background: #f8f9fa;
   padding: 1.5rem;
@@ -365,7 +370,6 @@ const updateProfil = async () => {
   cursor: not-allowed;
 }
 
-/* ========== STYLE MESSAGE ========== */
 .message {
   margin-top: 1rem;
   padding: 0.75rem;

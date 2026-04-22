@@ -1,345 +1,304 @@
 <template>
-  <div class="search-filter-container">
-    <!-- Search Bar -->
-    <div class="search-wrapper">
-      <div class="search-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <input 
-        type="text" 
-        v-model="searchQuery"
-        placeholder="Cari berdasarkan tanggal, sumber air, atau status..."
-        class="search-input"
-        @input="handleSearch"
-      />
-      <button 
-        v-if="searchQuery" 
-        @click="clearSearch" 
-        class="clear-button"
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2"/>
-        </svg>
-      </button>
+  <div class="search-container">
+    <div class="search-header">
+      <router-link to="/edukasi" class="back-btn">
+        ← Kembali ke Edukasi
+      </router-link>
+      <h1 class="search-title">🔍 Cari Artikel Edukasi</h1>
     </div>
 
-    <!-- Filter Dropdown -->
-    <div class="filter-wrapper">
-      <button @click="toggleFilter" class="filter-button">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M4 6H20M6 12H18M10 18H14" stroke="currentColor" stroke-width="2"/>
-        </svg>
-        Filter
-        <span v-if="activeFilterCount > 0" class="filter-badge">{{ activeFilterCount }}</span>
-      </button>
+    <!-- FORM PENCARIAN -->
+    <div class="search-box">
+      <div class="search-input-wrapper">
+        <span class="search-icon">🔍</span>
+        <input 
+          v-model="searchQuery" 
+          type="text"
+          placeholder="Cari artikel tentang kualitas air, pencemaran, teknologi..."
+          @input="handleSearch"
+          class="search-input"
+        />
+        <button v-if="searchQuery" @click="clearSearch" class="clear-btn">✖</button>
+      </div>
+      
+      <div class="filter-section">
+        <span class="filter-label">Filter kategori:</span>
+        <button 
+          v-for="cat in categories" 
+          :key="cat"
+          @click="selectedCategory = cat"
+          :class="['filter-btn', { active: selectedCategory === cat }]"
+        >
+          {{ cat }}
+        </button>
+        <button 
+          @click="selectedCategory = 'Semua'"
+          :class="['filter-btn', { active: selectedCategory === 'Semua' }]"
+        >
+          Semua
+        </button>
+      </div>
+    </div>
 
-      <!-- Filter Dropdown Menu -->
-      <div v-if="showFilter" class="filter-dropdown">
-        <div class="filter-section">
-          <label class="filter-label">Status Kualitas</label>
-          <div class="filter-options">
-            <label v-for="status in filterOptions.status" :key="status.value" class="filter-checkbox">
-              <input type="checkbox" :value="status.value" v-model="selectedFilters.status">
-              <span :class="['status-badge', status.class]">{{ status.label }}</span>
-            </label>
-          </div>
+    <!-- HASIL PENCARIAN -->
+    <div class="search-stats" v-if="searchQuery || selectedCategory !== 'Semua'">
+      Menampilkan {{ filteredArticles.length }} dari {{ articles.length }} artikel
+    </div>
+
+    <div v-if="filteredArticles.length === 0" class="no-results">
+      <span class="no-results-icon">😢</span>
+      <h3>Tidak ada artikel yang ditemukan</h3>
+      <p>Coba dengan kata kunci lain atau lihat semua artikel</p>
+      <button @click="resetSearch" class="reset-btn">Lihat Semua Artikel</button>
+    </div>
+
+    <div v-else class="results-grid">
+      <div 
+        v-for="article in filteredArticles" 
+        :key="article.id"
+        class="article-card"
+        @click="goToArticle(article.route)"
+      >
+        <div class="card-image">
+          <img :src="article.image" :alt="article.title">
+          <span class="card-category">{{ article.category }}</span>
         </div>
-        <div class="filter-section">
-          <label class="filter-label">Sumber Air</label>
-          <div class="filter-options">
-            <label v-for="source in filterOptions.sumberAir" :key="source" class="filter-checkbox">
-              <input type="checkbox" :value="source" v-model="selectedFilters.sumberAir">
-              <span>{{ source }}</span>
-            </label>
+        <div class="card-content">
+          <h3>{{ article.title }}</h3>
+          <p>{{ article.excerpt }}</p>
+          <div class="card-meta">
+            <span>📅 {{ article.date }}</span>
+            <span>⏱️ {{ article.readTime }}</span>
           </div>
-        </div>
-        <div class="filter-actions">
-          <button @click="applyFilters" class="apply-btn">Terapkan</button>
-          <button @click="resetFilters" class="reset-btn">Reset</button>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: "SearchFilterBar",
-  data() {
-    return {
-      searchQuery: "",
-      showFilter: false,
-      selectedFilters: {
-        status: [],
-        sumberAir: []
-      },
-      filterOptions: {
-        status: [
-          { value: "aman", label: "Aman", class: "status-aman" },
-          { value: "perlu_perlakuan", label: "Perlu Perlakuan", class: "status-perlu" },
-          { value: "tercemar", label: "Berpotensi Tercemar", class: "status-tercemar" }
-        ],
-        sumberAir: ["Sumur", "Sungai", "PDAM", "Danau", "Air Hujan"]
-      }
-    };
+<script setup>
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+// DATA ARTIKEL
+const articles = ref([
+  {
+    id: 1,
+    title: 'Parameter Kualitas Air yang Perlu Diketahui',
+    excerpt: 'Pelajari berbagai parameter fisika, kimia, dan biologi untuk menentukan kualitas air bersih.',
+    category: 'Edukasi Dasar',
+    date: '22 April 2026',
+    readTime: '5 menit',
+    image: 'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400',
+    route: '/artikel',
+    keywords: ['parameter', 'kualitas air', 'fisika', 'kimia', 'biologi', 'pH', 'kekeruhan']
   },
-  computed: {
-    activeFilterCount() {
-      return this.selectedFilters.status.length + this.selectedFilters.sumberAir.length;
-    }
+  {
+    id: 2,
+    title: 'Dampak Pencemaran Air bagi Kesehatan dan Lingkungan',
+    excerpt: 'Ketahui bahaya pencemaran air dan dampaknya terhadap kesehatan manusia dan ekosistem.',
+    category: 'Kesehatan & Lingkungan',
+    date: '22 April 2026',
+    readTime: '6 menit',
+    image: 'https://images.unsplash.com/photo-1564424224827-cd24b8915874?w=400',
+    route: '/artikel2',
+    keywords: ['pencemaran', 'limbah', 'kesehatan', 'penyakit', 'diare', 'lingkungan', 'ekosistem']
   },
-  methods: {
-    handleSearch() {
-      this.$emit("search", {
-        query: this.searchQuery,
-        filters: this.selectedFilters
-      });
-    },
-    clearSearch() {
-      this.searchQuery = "";
-      this.handleSearch();
-    },
-    toggleFilter() {
-      this.showFilter = !this.showFilter;
-    },
-    applyFilters() {
-      this.showFilter = false;
-      this.handleSearch();
-    },
-    resetFilters() {
-      this.selectedFilters = {
-        status: [],
-        sumberAir: []
-      };
-      this.applyFilters();
-    }
+  {
+    id: 3,
+    title: 'Teknologi Pengolahan Air Bersih dan Penerapannya di Indonesia',
+    excerpt: 'Berbagai teknologi modern dan tradisional untuk mengolah air menjadi layak konsumsi.',
+    category: 'Teknologi & Inovasi',
+    date: '22 April 2026',
+    readTime: '7 menit',
+    image: 'https://images.unsplash.com/photo-1625314887424-9f1900b1a621?w=400',
+    route: '/artikel3',
+    keywords: ['teknologi', 'pengolahan air', 'RO', 'filtrasi', 'SODIS', 'UV', 'IPAL']
   }
-};
+])
+
+// STATE
+const searchQuery = ref('')
+const selectedCategory = ref('Semua')
+
+const categories = ['Edukasi Dasar', 'Kesehatan & Lingkungan', 'Teknologi & Inovasi']
+
+// FUNGSI PENCARIAN & FILTER
+const filteredArticles = computed(() => {
+  let result = articles.value
+
+  // Filter berdasarkan kategori
+  if (selectedCategory.value !== 'Semua') {
+    result = result.filter(article => article.category === selectedCategory.value)
+  }
+
+  // Filter berdasarkan kata kunci pencarian
+  if (searchQuery.value.trim()) {
+    const query = searchQuery.value.toLowerCase()
+    result = result.filter(article => 
+      article.title.toLowerCase().includes(query) ||
+      article.excerpt.toLowerCase().includes(query) ||
+      article.keywords.some(keyword => keyword.toLowerCase().includes(query))
+    )
+  }
+
+  return result
+})
+
+// HANDLER
+const handleSearch = () => {
+  // Auto-trigger dari computed
+}
+
+const clearSearch = () => {
+  searchQuery.value = ''
+}
+
+const resetSearch = () => {
+  searchQuery.value = ''
+  selectedCategory.value = 'Semua'
+}
+
+const goToArticle = (route) => {
+  router.push(route)
+}
 </script>
 
 <style scoped>
-.search-filter-container {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 24px;
+.search-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-/* Search Wrapper */
-.search-wrapper {
-  flex: 1;
+.search-header {
+  margin-bottom: 2rem;
+}
+
+.back-btn {
+  display: inline-block;
+  color: #3498db;
+  text-decoration: none;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.search-title {
+  font-size: 2rem;
+  color: #2c3e50;
+}
+
+.search-box {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.search-input-wrapper {
   position: relative;
-  display: flex;
-  align-items: center;
+  margin-bottom: 1.5rem;
 }
 
 .search-icon {
   position: absolute;
-  left: 16px;
-  color: #94a3b8;
-  display: flex;
-  align-items: center;
-  pointer-events: none;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
 }
 
 .search-input {
   width: 100%;
-  padding: 12px 40px 12px 48px;
-  border: 1px solid #e2e8f0;
+  padding: 1rem 1rem 1rem 3rem;
+  font-size: 1rem;
+  border: 2px solid #e0e0e0;
   border-radius: 12px;
-  font-size: 14px;
-  background: white;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #3498db;
 }
 
-.clear-button {
+.clear-btn {
   position: absolute;
-  right: 12px;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
   background: none;
   border: none;
-  color: #94a3b8;
+  font-size: 1rem;
   cursor: pointer;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  border-radius: 999px;
-  transition: all 0.2s;
-}
-
-.clear-button:hover {
-  color: #64748b;
-  background: #f1f5f9;
-}
-
-/* Filter Button */
-.filter-wrapper {
-  position: relative;
-}
-
-.filter-button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 18px;
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #334155;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.filter-button:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
-}
-
-.filter-badge {
-  background: #3b82f6;
-  color: white;
-  font-size: 11px;
-  border-radius: 999px;
-  padding: 2px 7px;
-  margin-left: 4px;
-}
-
-/* Filter Dropdown */
-.filter-dropdown {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  width: 320px;
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-  padding: 16px;
-  z-index: 50;
+  color: #95a5a6;
 }
 
 .filter-section {
-  margin-bottom: 20px;
-}
-
-.filter-section:last-child {
-  margin-bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .filter-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #475569;
-  display: block;
-  margin-bottom: 12px;
+  font-weight: 500;
+  color: #2c3e50;
 }
 
-.filter-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.filter-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: #334155;
-  cursor: pointer;
-}
-
-.filter-checkbox input {
-  margin: 0;
-  cursor: pointer;
-}
-
-.status-badge {
-  padding: 4px 10px;
+.filter-btn {
+  padding: 0.5rem 1rem;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
   border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.status-aman {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.status-perlu {
-  background: #fef9c3;
-  color: #854d0e;
-}
-
-.status-tercemar {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-.filter-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid #f1f5f9;
-}
-
-.apply-btn {
-  flex: 1;
-  background: #3b82f6;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
   cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover {
+  background: #e8f4fd;
+}
+
+.filter-btn.active {
+  background: #3498db;
+  color: white;
+  border-color: #3498db;
+}
+
+.search-stats {
+  margin-bottom: 1rem;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.no-results {
+  text-align: center;
+  padding: 3rem;
+  background: #f8f9fa;
+  border-radius: 16px;
+}
+
+.no-results-icon {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 1rem;
 }
 
 .reset-btn {
-  flex: 1;
-  background: #f1f5f9;
-  color: #475569;
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: #3498db;
+  color: white;
   border: none;
-  padding: 8px 12px;
   border-radius: 8px;
-  font-size: 13px;
   cursor: pointer;
 }
 
-/* Responsive */
-@media (max-width: 640px) {
-  .search-filter-container {
-    flex-direction: column;
-  }
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, min
   
-  .search-wrapper {
-    width: 100%;
-  }
-  
-  .filter-wrapper {
-    width: 100%;
-  }
-  
-  .filter-button {
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .filter-dropdown {
-    width: 100%;
-    right: auto;
-    left: 0;
-  }
-}
-</style>
