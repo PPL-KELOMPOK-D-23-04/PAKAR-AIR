@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<SapSetup Context="Init" WkstaDb="SapVEGDTFontSharedWksta.xml">
-  <Component Name="SAP 3D Visual Enterprise GDT Fonts" Guid="{29BE450E-C588-438E-8B9F-A5655E0B70B1}" Version="3" SysSize="335">
-    <Action Type="File" Dst="%WinDir%\Fonts">
-      <Src>%SapSrcDir%\VE\Shared\RHGDT.ttf</Src>
-    </Action>
-  </Component>
-</SapSetup>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<SapSetup Context="Init" WkstaDb="SapDHtmlEdWksta.xml">
-	<Component BuildTime="0x9009812BADBFD201" Guid="{4E0401AC-4944-4861-98DC-DDCE7A532E2A}" Min_Compliant_Version="15" Name="$DHtmlEd" SysSize="505" Version="15">
-		<MsiAction Persistent="true">
-			<Condition>NOT(%WinType%=[Windows XP,Windows Server 2003])</Condition>
-			<MsiFile Hash="SHA-256:b610a81cdc5c1e3a19af235c9dc1ca0045bd8498689ffa2f8223acd5b34cfb24" ProductCode="{2EA870FA-585F-4187-903D-CB9FFD21E2E0}" Timestamp="0x0078CE3D9D91D201">%SapSrcDir%\System\DhtmlEd.msi</MsiFile>
-		</MsiAction>
-	</Component>
-</SapSetup>

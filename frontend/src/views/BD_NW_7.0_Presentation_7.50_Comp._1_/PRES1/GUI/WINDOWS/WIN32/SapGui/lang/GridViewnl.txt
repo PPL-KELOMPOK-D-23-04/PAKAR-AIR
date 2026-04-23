@@ -1,8 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 GRIDVIEW NL 1100 27.04.2017-23:49 OK 
-GRIDVIEW_MSGBOX_TEXT            128 "Starten afdrukopdracht niet mogelijk"
-GRIDVIEW_TOOLTIP_SELECT_ALL     080 "Alle selecteren"
-GRIDVIEW_TOOLTIP_TEXT_COLLAPSE  080 "Selectie verbergen"
-GRIDVIEW_TOOLTIP_TEXT_EXPAND    080 "Selectie weergeven"
-GRIDVIEW_MSGBOX_ERROR           128 "Kopiëren meervoudige selecties niet mogelijk"
-GRIDVIEW_MSGBOX_TITLE2          080 "GridView"
-GRIDVIEW_MSGBOX_TITLE           080 "GridView"

@@ -1,7 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 OFFICEINTEGRATION SK 1404 27.04.2017-23:50 OK 
-OI_FILE                         060 "S˙bor"
-OI_SAVE_AS                      060 "Uloûiù ako"
-OI_PRINT_PREVIEW                080 "TlaËov˝ n·hæad"
-OI_PROPERTIES                   060 "Vlastnosti"
-OI_PRINT                        060 "TlaË"
-OI_SAVE                         060 "Uloûenie"

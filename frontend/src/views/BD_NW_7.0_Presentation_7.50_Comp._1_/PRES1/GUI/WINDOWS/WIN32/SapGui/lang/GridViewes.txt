@@ -1,8 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 GRIDVIEW ES 1100 27.04.2017-23:48 OK 
-GRIDVIEW_MSGBOX_TEXT            128 "No se ha podido lanzar la orden de salida"
-GRIDVIEW_TOOLTIP_SELECT_ALL     080 "Seleccionar (todo)"
-GRIDVIEW_TOOLTIP_TEXT_COLLAPSE  080 "Ocultar selección"
-GRIDVIEW_TOOLTIP_TEXT_EXPAND    080 "Desplegar selección"
-GRIDVIEW_MSGBOX_ERROR           128 "Selecciones múltiples no se pueden copiar"
-GRIDVIEW_MSGBOX_TITLE2          080 "GridView"
-GRIDVIEW_MSGBOX_TITLE           080 "GridView"

@@ -1,7 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 OFFICEINTEGRATION TH 8600 27.04.2017-23:50 OK 
-OI_FILE                         060 "ไฟล์"
-OI_SAVE_AS                      060 "เก็บบันทึกเป็น"
-OI_PRINT_PREVIEW                080 "ตัวอย่างก่อนพิมพ์"
-OI_PROPERTIES                   060 "คุณสมบัติ"
-OI_PRINT                        060 "พิมพ์"
-OI_SAVE                         060 "เก็บบันทึก"

@@ -1,8 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 GRIDVIEW FI 1100 27.04.2017-23:48 OK 
-GRIDVIEW_MSGBOX_TEXT            128 "Tulostuspyyntöä ei voi käynnistää"
-GRIDVIEW_TOOLTIP_SELECT_ALL     080 "Valitse kaikki"
-GRIDVIEW_TOOLTIP_TEXT_COLLAPSE  080 "Tiivistä valinta"
-GRIDVIEW_TOOLTIP_TEXT_EXPAND    080 "Laajenna valinta"
-GRIDVIEW_MSGBOX_ERROR           128 "Monivalintoja ei voi kopioida"
-GRIDVIEW_MSGBOX_TITLE2          080 "GridView"
-GRIDVIEW_MSGBOX_TITLE           080 "GridView"

@@ -1,7 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 OFFICEINTEGRATION ET 1904 27.04.2017-23:48 OK 
-OI_FILE                         060 "Fail"
-OI_SAVE_AS                      060 "Salvesta nimega"
-OI_PRINT_PREVIEW                080 "Prindi eelvaade"
-OI_PROPERTIES                   060 "Atribuudid"
-OI_PRINT                        060 "Prindi"
-OI_SAVE                         060 "Salvesta"

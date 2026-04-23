@@ -1,3 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 SEARCHHELP FI 1100 27.04.2017-23:49 OK 
-SEARCH_HELP_CANCEL              080 "Keskeytä (F12)"
-SEARCH_HELP_FIND                080 "Hae (syöttö)"

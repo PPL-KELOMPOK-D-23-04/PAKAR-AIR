@@ -1,6 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 FEWUIMSG HR 1404 27.04.2017-23:49 OK 
-<#001>UIMSG_YNA_DLG_REMEMBER    100 "Zapamti moju odluku"
-LGN_POP_DTF_MESSAGE             200 "Želite li poèistiti direktorij dokumenata %s?"
-<#001>UIMSG_YNA_DLG_NO          100 "Ne"
-<#001>UIMSG_YNA_DLG_YES         100 "Da"
-LGN_POP_DTF_TITLE               200 "Èišæenje SAP Logona"

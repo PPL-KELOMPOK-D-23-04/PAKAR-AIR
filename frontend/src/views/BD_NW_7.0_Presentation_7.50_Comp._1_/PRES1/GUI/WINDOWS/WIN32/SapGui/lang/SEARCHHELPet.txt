@@ -1,3 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 SEARCHHELP ET 1904 27.04.2017-23:48 OK 
-SEARCH_HELP_CANCEL              080 "Tühista (F12)"
-SEARCH_HELP_FIND                080 "Otsi (ENTER)"

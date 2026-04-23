@@ -1,7 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 OFFICEINTEGRATION TR 1614 27.04.2017-23:50 OK 
-OI_FILE                         060 "Dosya"
-OI_SAVE_AS                      060 "Yeni adla sakla"
-OI_PRINT_PREVIEW                080 "Yazdýrma öngörünümü"
-OI_PROPERTIES                   060 "Özellikler"
-OI_PRINT                        060 "Yazdýr"
-OI_SAVE                         060 "Sakla"

@@ -1,3 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 SEARCHHELP PT 1100 27.04.2017-23:50 OK 
-SEARCH_HELP_CANCEL              080 "Cancelar (F12)"
-SEARCH_HELP_FIND                080 "Procurar (entrada)"

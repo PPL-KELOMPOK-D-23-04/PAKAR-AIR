@@ -1,8 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 GRIDVIEW SL 1404 27.04.2017-23:50 OK 
-GRIDVIEW_MSGBOX_TEXT            128 "Naloga izpisa ni bilo možno zagnati"
-GRIDVIEW_TOOLTIP_SELECT_ALL     080 "Izberi vse"
-GRIDVIEW_TOOLTIP_TEXT_COLLAPSE  080 "Skrèitev izbire"
-GRIDVIEW_TOOLTIP_TEXT_EXPAND    080 "Razširitev izbire"
-GRIDVIEW_MSGBOX_ERROR           128 "Veèkratnih izbir ni bilo možno kopirati"
-GRIDVIEW_MSGBOX_TITLE2          080 "Grid pogled"
-GRIDVIEW_MSGBOX_TITLE           080 "Grid pogled"

@@ -1,7 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 OFFICEINTEGRATION NL 1100 27.04.2017-23:49 OK 
-OI_FILE                         060 "Bestand"
-OI_SAVE_AS                      060 "Opslaan als"
-OI_PRINT_PREVIEW                080 "Afdrukvoorbeeld"
-OI_PROPERTIES                   060 "Eigenschappen"
-OI_PRINT                        060 "Afdrukken"
-OI_SAVE                         060 "Opslaan"

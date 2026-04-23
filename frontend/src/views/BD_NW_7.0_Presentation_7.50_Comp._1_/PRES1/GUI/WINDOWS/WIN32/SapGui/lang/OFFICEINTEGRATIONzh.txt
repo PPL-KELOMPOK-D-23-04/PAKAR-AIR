@@ -1,7 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 OFFICEINTEGRATION ZH 8400 27.04.2017-23:51 OK 
-OI_FILE                         060 "文件"
-OI_SAVE_AS                      060 "另存为"
-OI_PRINT_PREVIEW                080 "打印预览"
-OI_PROPERTIES                   060 "属性"
-OI_PRINT                        060 "打印"
-OI_SAVE                         060 "保存"

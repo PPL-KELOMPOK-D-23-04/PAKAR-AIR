@@ -1,6 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 FEWUIMSG NL 1100 27.04.2017-23:49 OK 
-<#001>UIMSG_YNA_DLG_REMEMBER    100 "Beslissing voorlopig opslaan"
-LGN_POP_DTF_MESSAGE             200 "Documentdirectory %s opschonen?"
-<#001>UIMSG_YNA_DLG_NO          100 "Nee"
-<#001>UIMSG_YNA_DLG_YES         100 "Ja"
-LGN_POP_DTF_TITLE               200 "SAP Logon opschonen"

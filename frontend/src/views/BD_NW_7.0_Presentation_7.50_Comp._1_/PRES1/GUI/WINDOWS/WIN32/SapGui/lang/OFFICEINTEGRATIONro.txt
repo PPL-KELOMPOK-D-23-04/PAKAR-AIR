@@ -1,7 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 OFFICEINTEGRATION RO 1404 27.04.2017-23:50 OK 
-OI_FILE                         060 "Fiºier"
-OI_SAVE_AS                      060 "Salvare ca"
-OI_PRINT_PREVIEW                080 "Previzualizare pt.tipãrire"
-OI_PROPERTIES                   060 "Proprietãþi"
-OI_PRINT                        060 "Tipãrire"
-OI_SAVE                         060 "Salvare"

@@ -1,7 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 OFFICEINTEGRATION HE 1800 27.04.2017-23:49 OK 
-OI_FILE                         060 "קובץ"
-OI_SAVE_AS                      060 "שמור בשם"
-OI_PRINT_PREVIEW                080 "תצוגה מקדימה של הדפסה"
-OI_PROPERTIES                   060 "תכונות"
-OI_PRINT                        060 "הדפס"
-OI_SAVE                         060 "שמור"

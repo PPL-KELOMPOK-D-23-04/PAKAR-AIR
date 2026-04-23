@@ -1,7 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 OFFICEINTEGRATION IT 1100 27.04.2017-23:49 OK 
-OI_FILE                         060 "File"
-OI_SAVE_AS                      060 "Salvare con nome"
-OI_PRINT_PREVIEW                080 "Anteprima di stampa"
-OI_PROPERTIES                   060 "Proprietà"
-OI_PRINT                        060 "Stampare"
-OI_SAVE                         060 "Salvare"

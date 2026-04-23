@@ -1,7 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 OFFICEINTEGRATION JA 8000 27.04.2017-23:49 OK 
-OI_FILE                         060 "ファイル"
-OI_SAVE_AS                      060 "名前を付けて保存"
-OI_PRINT_PREVIEW                080 "印刷プレビュー"
-OI_PROPERTIES                   060 "プロパティ"
-OI_PRINT                        060 "印刷"
-OI_SAVE                         060 "保存"

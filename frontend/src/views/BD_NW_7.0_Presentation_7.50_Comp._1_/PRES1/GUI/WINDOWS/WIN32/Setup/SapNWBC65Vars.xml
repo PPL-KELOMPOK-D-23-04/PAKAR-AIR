@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<SapSetup Context="Variables" Version="306" ConnectedId="{0096DF59-A2A4-49df-941B-553599D0EEB0}">
-<!-- $Id: //nwbc/nwbc.win/65_REL/src/cfg/installation/setup/SapNWBC65Vars.xml#3 $ -->
-    <Variable Name="SapNWBC65DestDir" ConnectedId="{0096DF59-A2A4-49df-941B-553599D0EEB0}" Persistent="true" DisplayInSapAdmin="true" Description="DscrSapNWBC65DestDir">
-      <Value>%ProgramFiles%\SAP\NWBC65</Value>
-    </Variable>
-</SapSetup>

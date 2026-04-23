@@ -1,8 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 GRIDVIEW SK 1404 27.04.2017-23:50 OK 
-GRIDVIEW_MSGBOX_TEXT            128 "TlaËov˙ poûiadavku nebolo moûnÈ spustiù"
-GRIDVIEW_TOOLTIP_SELECT_ALL     080 "Vybraù vöetko"
-GRIDVIEW_TOOLTIP_TEXT_COLLAPSE  080 "Zbaliù v˝ber"
-GRIDVIEW_TOOLTIP_TEXT_EXPAND    080 "Rozbaliù v˝ber"
-GRIDVIEW_MSGBOX_ERROR           128 "Nie je moûnÈ kopÌrovaù viac v˝berov"
-GRIDVIEW_MSGBOX_TITLE2          080 "GridView"
-GRIDVIEW_MSGBOX_TITLE           080 "GridView"

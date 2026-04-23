@@ -1,8 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 GRIDVIEW DE 1100 27.04.2017-23:48 OK 
-GRIDVIEW_MSGBOX_TEXT            128 "Druckauftrag konnte nicht gestartet werden"
-GRIDVIEW_TOOLTIP_SELECT_ALL     080 "Alle auswählen"
-GRIDVIEW_TOOLTIP_TEXT_COLLAPSE  080 "Auswahl zuklappen"
-GRIDVIEW_TOOLTIP_TEXT_EXPAND    080 "Auswahl aufklappen"
-GRIDVIEW_MSGBOX_ERROR           128 "Mehrfachselektionen können nicht kopiert werden"
-GRIDVIEW_MSGBOX_TITLE2          080 "GridView"
-GRIDVIEW_MSGBOX_TITLE           080 "GridView"

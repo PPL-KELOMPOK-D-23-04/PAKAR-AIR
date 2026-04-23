@@ -1,8 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 GRIDVIEW CS 1404 27.04.2017-23:48 OK 
-GRIDVIEW_MSGBOX_TEXT            128 "Tiskový požadavek nebylo možno spustit"
-GRIDVIEW_TOOLTIP_SELECT_ALL     080 "Výbìr všech"
-GRIDVIEW_TOOLTIP_TEXT_COLLAPSE  080 "Sbalit výbìr"
-GRIDVIEW_TOOLTIP_TEXT_EXPAND    080 "Rozbalit výbìr"
-GRIDVIEW_MSGBOX_ERROR           128 "Vícenásobné výbìry nemùžete zkopírovat"
-GRIDVIEW_MSGBOX_TITLE2          080 "View møížky"
-GRIDVIEW_MSGBOX_TITLE           080 "View møížky"

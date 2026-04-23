@@ -1,6 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 FEWUIMSG FI 1100 27.04.2017-23:48 OK 
-<#001>UIMSG_YNA_DLG_REMEMBER    100 "Merkitse päätös"
-LGN_POP_DTF_MESSAGE             200 "Haluatko puhdistaa asiakirjahakemiston %s?"
-<#001>UIMSG_YNA_DLG_NO          100 "Ei"
-<#001>UIMSG_YNA_DLG_YES         100 "Kyllä"
-LGN_POP_DTF_TITLE               200 "SAP Logonin puhdistus"

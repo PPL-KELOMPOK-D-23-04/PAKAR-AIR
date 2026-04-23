@@ -1,8 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 GRIDVIEW PL 1404 27.04.2017-23:50 OK 
-GRIDVIEW_MSGBOX_TEXT            128 "Nie mo¿na by³o uruchomiæ zlecenia wydruku"
-GRIDVIEW_TOOLTIP_SELECT_ALL     080 "Wybór wszystkich"
-GRIDVIEW_TOOLTIP_TEXT_COLLAPSE  080 "Zwijanie wyboru"
-GRIDVIEW_TOOLTIP_TEXT_EXPAND    080 "Rozwijanie wyboru"
-GRIDVIEW_MSGBOX_ERROR           128 "Nie mo¿na skopiowaæ wyborów wielokrotnych"
-GRIDVIEW_MSGBOX_TITLE2          080 "GridView"
-GRIDVIEW_MSGBOX_TITLE           080 "GridView"

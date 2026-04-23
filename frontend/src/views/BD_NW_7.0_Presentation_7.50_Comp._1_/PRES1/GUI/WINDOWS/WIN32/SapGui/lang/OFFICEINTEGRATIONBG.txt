@@ -1,7 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 OFFICEINTEGRATION BG 1504 27.04.2017-23:48 OK 
-OI_FILE                         060 "Файл"
-OI_SAVE_AS                      060 "Запазване като"
-OI_PRINT_PREVIEW                080 "Предпечатен преглед"
-OI_PROPERTIES                   060 "Свойства"
-OI_PRINT                        060 "Печат"
-OI_SAVE                         060 "Запазване"

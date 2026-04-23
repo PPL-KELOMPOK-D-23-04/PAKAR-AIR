@@ -1,8 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 GRIDVIEW RU 1504 27.04.2017-23:50 OK 
-GRIDVIEW_MSGBOX_TEXT            128 "Запрос на печать не удалось запустить"
-GRIDVIEW_TOOLTIP_SELECT_ALL     080 "Выбрать все"
-GRIDVIEW_TOOLTIP_TEXT_COLLAPSE  080 "Свернуть выбор"
-GRIDVIEW_TOOLTIP_TEXT_EXPAND    080 "Развернуть выбор"
-GRIDVIEW_MSGBOX_ERROR           128 "Многократный выбор не может быть скопирован"
-GRIDVIEW_MSGBOX_TITLE2          080 "GridView"
-GRIDVIEW_MSGBOX_TITLE           080 "GridView"

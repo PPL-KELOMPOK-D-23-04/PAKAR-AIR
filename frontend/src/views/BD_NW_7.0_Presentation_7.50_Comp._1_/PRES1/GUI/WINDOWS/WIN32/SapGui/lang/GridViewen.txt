@@ -1,8 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 GRIDVIEW EN 1100 27.04.2017-23:48 OK 
-GRIDVIEW_MSGBOX_TEXT            128 "Could not start print job"
-GRIDVIEW_TOOLTIP_SELECT_ALL     080 "Select All"
-GRIDVIEW_TOOLTIP_TEXT_COLLAPSE  080 "Collapse Selection"
-GRIDVIEW_TOOLTIP_TEXT_EXPAND    080 "Expand Selection"
-GRIDVIEW_MSGBOX_ERROR           128 "You cannot copy multiple selections"
-GRIDVIEW_MSGBOX_TITLE2          080 "GridView"
-GRIDVIEW_MSGBOX_TITLE           080 "GridView"

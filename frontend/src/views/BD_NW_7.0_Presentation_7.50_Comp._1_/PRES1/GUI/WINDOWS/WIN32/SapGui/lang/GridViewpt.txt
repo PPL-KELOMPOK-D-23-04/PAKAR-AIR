@@ -1,8 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 GRIDVIEW PT 1100 27.04.2017-23:50 OK 
-GRIDVIEW_MSGBOX_TEXT            128 "Não foi possível iniciar a ordem de impressão"
-GRIDVIEW_TOOLTIP_SELECT_ALL     080 "Selecionar todos"
-GRIDVIEW_TOOLTIP_TEXT_COLLAPSE  080 "Comprimir seleção"
-GRIDVIEW_TOOLTIP_TEXT_EXPAND    080 "Expandir seleção"
-GRIDVIEW_MSGBOX_ERROR           128 "Não é possível copiar as seleções múltiplas"
-GRIDVIEW_MSGBOX_TITLE2          080 "Visão de grid"
-GRIDVIEW_MSGBOX_TITLE           080 "Visão de grid"

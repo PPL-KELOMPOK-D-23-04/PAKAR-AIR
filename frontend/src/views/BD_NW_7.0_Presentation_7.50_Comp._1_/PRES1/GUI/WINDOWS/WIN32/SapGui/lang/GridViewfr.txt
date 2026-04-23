@@ -1,8 +1,0 @@
-_SAPPCTXT_HEADER_               002 7500 GRIDVIEW FR 1100 27.04.2017-23:49 OK 
-GRIDVIEW_MSGBOX_TEXT            128 "Impossible de lancer l'ordre d'édition"
-GRIDVIEW_TOOLTIP_SELECT_ALL     080 "Tout sélectionner"
-GRIDVIEW_TOOLTIP_TEXT_COLLAPSE  080 "Réduire sélection"
-GRIDVIEW_TOOLTIP_TEXT_EXPAND    080 "Développer sélection"
-GRIDVIEW_MSGBOX_ERROR           128 "Vous ne pouvez pas copier des sélections multiples."
-GRIDVIEW_MSGBOX_TITLE2          080 "Vue de grille"
-GRIDVIEW_MSGBOX_TITLE           080 "Vue de grille"
