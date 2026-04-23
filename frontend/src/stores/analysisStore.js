@@ -3,27 +3,44 @@ import { defineStore } from 'pinia'
 export const useAnalysisStore = defineStore('analysis', {
   state: () => ({
     image: null,
-    manualData: {},
-    result: null
+    manualData: {
+      ph: null,
+      hardness: null,
+      solids: null,
+      chloramines: null,
+      sulfate: null,
+      conductivity: null,
+      organic_carbon: null,
+      trihalomethanes: null,
+      turbidity: null,
+    },
+    result: null,
   }),
 
   actions: {
     setImage(file) {
       this.image = file
     },
-
     setManualData(data) {
-      this.manualData = data
+      this.manualData = { ...this.manualData, ...data }
     },
-
-    setResult(data) {
-      this.result = data
+    setResult(result) {
+      this.result = result
     },
-
-    resetAnalysis() {
+    reset() {
       this.image = null
-      this.manualData = {}
+      this.manualData = {
+        ph: null,
+        hardness: null,
+        solids: null,
+        chloramines: null,
+        sulfate: null,
+        conductivity: null,
+        organic_carbon: null,
+        trihalomethanes: null,
+        turbidity: null,
+      }
       this.result = null
-    }
-  }
+    },
+  },
 })
