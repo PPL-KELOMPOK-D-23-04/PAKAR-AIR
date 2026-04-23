@@ -31,10 +31,18 @@ const router = createRouter({
       name: 'Artikel_3',
       component: () => import('../views/HomeArtikel3.vue'),
     },
+
+    // ─── Admin Routes (PKD20TP-9) ──────────────────────────────
+    {
+      path: '/admin/users',
+      name: 'adminUsers',
+      component: () => import('../views/admin/AdminUsers.vue'),
+      meta: { requiresAuth: true, requiresAdmin: true },
+    },
   ],
 })
 
-// Navigation Guard
+// ─── Navigation Guard ──────────────────────────────────────────
 router.beforeEach((to) => {
   const authStore = useAuthStore()
 
@@ -48,6 +56,11 @@ router.beforeEach((to) => {
 
   // Route is guest-only (e.g. login) → redirect to dashboard if already logged in
   if (to.meta.guestOnly && authStore.isLoggedIn) {
+    return { name: 'dashboard' }
+  }
+
+  // Route requires admin → redirect to dashboard if not admin
+  if (to.meta.requiresAdmin && !authStore.currentUser?.is_admin) {
     return { name: 'dashboard' }
   }
 })
