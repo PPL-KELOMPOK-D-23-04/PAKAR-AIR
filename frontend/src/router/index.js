@@ -22,17 +22,35 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: '/Artikel2',
-      name: 'Artikel_2',
-      component: () => import('../views/HomeArtikel2.vue'),
+    path: '/edukasi',
+    name: 'Edukasi',
+    component: () => import('../views/EdukasiView.vue')
     },
     {
-      path: '/Artikel3',
-      name: 'Artikel_3',
-      component: () => import('../views/HomeArtikel3.vue'),
+      path: '/artikel',
+      name: 'Artikel1',
+      component: () => import('../views/HomeArtikel.vue')
     },
-  ],
-})
+    {
+      path: '/artikel2',
+      name: 'Artikel2',
+      component: () => import('../views/HomeArtikel2.vue')
+    },
+    {
+      path: '/artikel3',
+      name: 'Artikel3',
+      component: () => import('../views/HomeArtikel3.vue')
+    },
+    // ========== HALAMAN PROFILE ==========
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: () => import('../views/ProfileView.vue')
+    }
+  ]
+
+    
+  })
 
 // Navigation Guard
 router.beforeEach((to) => {
