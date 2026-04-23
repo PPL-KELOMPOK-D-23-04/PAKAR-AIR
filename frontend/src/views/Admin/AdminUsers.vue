@@ -47,8 +47,8 @@
         </div>
         <div class="topbar-right">
           <div class="user-badge">
-            <div class="avatar">{{ initials(authStore.currentUser?.full_name || 'Admin') }}</div>
-            <span class="user-label">{{ authStore.currentUser?.full_name || 'Admin' }}</span>
+            <div class="avatar">A</div>
+            <span class="user-label">Admin</span>
           </div>
         </div>
       </header>
@@ -191,13 +191,22 @@
                 <!-- Actions -->
                 <td class="td-actions">
                   <div class="action-group">
-                    <!-- PKD20TPA-33: Toggle Active/Inactive (komponen terpisah) -->
-                    <UserStatusToggle
+                    <!-- Toggle Active/Inactive -->
+                    <button
                       v-if="!user.is_admin"
-                      :user="user"
-                      @toggled="onUserToggled"
-                      @error="onToggleError"
-                    />
+                      class="btn-action"
+                      :class="user.is_active ? 'btn-deactivate' : 'btn-activate'"
+                      :disabled="actionLoading[user.id]"
+                      :title="user.is_active ? 'Nonaktifkan akun' : 'Aktifkan akun'"
+                      @click="toggleUserStatus(user)"
+                    >
+                      <span v-if="actionLoading[user.id]" class="action-spinner"></span>
+                      <template v-else>
+                        <UserXIcon v-if="user.is_active" class="action-icon" />
+                        <UserCheckIcon v-else class="action-icon" />
+                        {{ user.is_active ? 'Nonaktifkan' : 'Aktifkan' }}
+                      </template>
+                    </button>
 
                     <!-- Delete -->
                     <button
@@ -210,7 +219,7 @@
                       <Trash2Icon class="action-icon" />
                     </button>
 
-                    <!-- Admin protected (no actions) -->
+                    <!-- Admin badge (no actions) -->
                     <span v-if="user.is_admin" class="admin-protected">
                       <LockIcon class="lock-icon" /> Terlindungi
                     </span>
@@ -247,15 +256,15 @@
           <div class="modal-icon">🗑️</div>
           <h3 class="modal-title">Hapus Akun Pengguna?</h3>
           <p class="modal-desc">
-            Akun <strong>{{ deleteModal.user?.full_name }}</strong> akan dihapus permanen beserta
-            semua data analisisnya. Tindakan ini tidak dapat dibatalkan.
+            Akun <strong>{{ deleteModal.user?.full_name }}</strong> akan dihapus permanen beserta semua data analisisnya.
+            Tindakan ini tidak dapat dibatalkan.
           </p>
           <div class="modal-actions">
             <button class="modal-cancel" @click="deleteModal.show = false">Batal</button>
             <button
               class="modal-confirm"
               :disabled="actionLoading[deleteModal.user?.id]"
-              @click="handleDeleteUser(deleteModal.user)"
+              @click="deleteUser(deleteModal.user)"
             >
               <span v-if="actionLoading[deleteModal.user?.id]">
                 <span class="spinner-sm"></span> Menghapus...
@@ -272,6 +281,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 import {
   LayoutDashboardIcon,
   UsersIcon,
@@ -281,6 +291,8 @@ import {
   ChevronLeftIcon,
   SearchIcon,
   RefreshCwIcon,
+  UserCheckIcon,
+  UserXIcon,
   UserIcon,
   ShieldCheckIcon,
   Trash2Icon,
@@ -289,15 +301,13 @@ import {
   CheckCircleIcon,
 } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/authStore'
-import { listUsers, deleteUser as apiDeleteUser } from '@/api/admin'
-
-// PKD20TPA-33: komponen toggle status user
-import UserStatusToggle from '@/components/admin/UserStatusToggle.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
 
-// ── State ──────────────────────────────────────────────────────
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+
+// ── State ──────────────────────────────────────────────────
 const sidebarCollapsed = ref(false)
 const users = ref([])
 const loading = ref(false)
@@ -309,7 +319,7 @@ const actionLoading = reactive({})
 const deleteModal = reactive({ show: false, user: null })
 const toast = reactive({ show: false, type: 'success', message: '' })
 
-// ── Computed ───────────────────────────────────────────────────
+// ── Computed ───────────────────────────────────────────────
 const activeCount = computed(() => users.value.filter(u => u.is_active).length)
 const inactiveCount = computed(() => users.value.filter(u => !u.is_active).length)
 
@@ -328,7 +338,7 @@ const filteredUsers = computed(() => {
   return result
 })
 
-// ── Helpers ────────────────────────────────────────────────────
+// ── Helpers ────────────────────────────────────────────────
 function initials(name) {
   if (!name) return '?'
   return name
@@ -355,17 +365,15 @@ function showToast(message, type = 'success') {
   setTimeout(() => (toast.show = false), 3500)
 }
 
-// ── API Calls ──────────────────────────────────────────────────
-
-/**
- * PKD20TPA-32: Fetch semua pengguna dari backend
- * Menggunakan listUsers() dari admin.js → GET /api/admin/users
- */
+// ── API Calls ──────────────────────────────────────────────
 async function fetchUsers() {
   loading.value = true
   error.value = ''
   try {
-    users.value = await listUsers()
+    const { data } = await axios.get(`${API_BASE}/api/admin/users`, {
+      headers: { Authorization: `Bearer ${authStore.token}` },
+    })
+    users.value = data
   } catch (err) {
     error.value =
       err.response?.data?.detail ||
@@ -375,24 +383,34 @@ async function fetchUsers() {
   }
 }
 
-/**
- * PKD20TPA-33: Handler event dari UserStatusToggle.vue
- * Dipanggil setelah komponen berhasil toggle status.
- * Update state lokal tanpa fetch ulang.
- */
-function onUserToggled({ userId, isActive }) {
-  const user = users.value.find(u => u.id === userId)
-  if (user) user.is_active = isActive
-  showToast(
-    isActive
-      ? `Akun ${user?.full_name} berhasil diaktifkan.`
-      : `Akun ${user?.full_name} berhasil dinonaktifkan.`,
-    'success'
-  )
-}
-
-function onToggleError(message) {
-  showToast(message, 'error')
+// PKD20TPA-33: Disable/enable user
+async function toggleUserStatus(user) {
+  actionLoading[user.id] = true
+  try {
+    const newStatus = !user.is_active
+    await axios.put(
+      `${API_BASE}/api/admin/users/${user.id}/status`,
+      null,
+      {
+        params: { is_active: newStatus },
+        headers: { Authorization: `Bearer ${authStore.token}` },
+      }
+    )
+    user.is_active = newStatus
+    showToast(
+      newStatus
+        ? `Akun ${user.full_name} berhasil diaktifkan.`
+        : `Akun ${user.full_name} berhasil dinonaktifkan.`,
+      'success'
+    )
+  } catch (err) {
+    showToast(
+      err.response?.data?.detail || 'Gagal mengubah status pengguna.',
+      'error'
+    )
+  } finally {
+    actionLoading[user.id] = false
+  }
 }
 
 function confirmDeleteUser(user) {
@@ -400,17 +418,13 @@ function confirmDeleteUser(user) {
   deleteModal.show = true
 }
 
-/**
- * Hapus pengguna secara permanen
- * Menggunakan deleteUser() dari admin.js → DELETE /api/admin/users/:id
- *
- * @param {Object} user - objek pengguna yang akan dihapus
- */
-async function handleDeleteUser(user) {
+async function deleteUser(user) {
   if (!user) return
   actionLoading[user.id] = true
   try {
-    await apiDeleteUser(user.id)
+    await axios.delete(`${API_BASE}/api/admin/users/${user.id}`, {
+      headers: { Authorization: `Bearer ${authStore.token}` },
+    })
     users.value = users.value.filter(u => u.id !== user.id)
     deleteModal.show = false
     showToast(`Akun ${user.full_name} berhasil dihapus.`, 'success')
@@ -429,12 +443,12 @@ async function handleLogout() {
   router.push('/')
 }
 
-// ── Lifecycle ──────────────────────────────────────────────────
+// ── Lifecycle ──────────────────────────────────────────────
 onMounted(fetchUsers)
 </script>
 
 <style scoped>
-/* ── Root Layout ──────────────────────────────────────────────── */
+/* ── Root Layout ──────────────────────────────────────────── */
 .admin-users-root {
   display: flex;
   min-height: 100vh;
@@ -442,7 +456,7 @@ onMounted(fetchUsers)
   font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
-/* ── Sidebar ──────────────────────────────────────────────────── */
+/* ── Sidebar ──────────────────────────────────────────────── */
 .sidebar {
   width: 240px;
   background: linear-gradient(180deg, #0f172a 0%, #1e3a5f 100%);
@@ -540,21 +554,21 @@ onMounted(fetchUsers)
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  width: 100%;
   padding: 0.7rem 0.75rem;
   border-radius: 10px;
-  color: rgba(255,255,255,0.55);
-  background: none;
-  border: none;
-  cursor: pointer;
+  background: rgba(239,68,68,0.12);
+  border: 1px solid rgba(239,68,68,0.2);
+  color: #fca5a5;
   font-size: 0.9rem;
   font-weight: 500;
-  width: 100%;
-  transition: background 0.2s, color 0.2s;
+  cursor: pointer;
+  transition: background 0.2s;
   white-space: nowrap;
 }
-.logout-btn:hover { background: rgba(239,68,68,0.15); color: #fca5a5; }
+.logout-btn:hover { background: rgba(239,68,68,0.25); color: #fecaca; }
 
-/* ── Main Wrapper ─────────────────────────────────────────────── */
+/* ── Main Wrapper ─────────────────────────────────────────── */
 .main-wrapper {
   flex: 1;
   margin-left: 240px;
@@ -565,11 +579,11 @@ onMounted(fetchUsers)
 }
 .sidebar-collapsed ~ .main-wrapper { margin-left: 72px; }
 
-/* ── Topbar ───────────────────────────────────────────────────── */
+/* ── Topbar ───────────────────────────────────────────────── */
 .topbar {
   background: #fff;
   border-bottom: 1px solid #e2e8f0;
-  padding: 1.25rem 2rem;
+  padding: 1rem 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -577,41 +591,40 @@ onMounted(fetchUsers)
   top: 0;
   z-index: 50;
 }
-.page-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #0f172a;
-  margin: 0;
+.page-title { font-size: 1.25rem; font-weight: 700; color: #0f172a; margin: 0; }
+.page-subtitle { font-size: 0.8rem; color: #64748b; margin: 0.15rem 0 0; }
+.user-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 50px;
+  padding: 0.375rem 1rem 0.375rem 0.375rem;
 }
-.page-subtitle {
-  font-size: 0.8rem;
-  color: #94a3b8;
-  margin: 0.15rem 0 0;
-}
-.topbar-right { display: flex; align-items: center; gap: 1rem; }
-.user-badge { display: flex; align-items: center; gap: 0.5rem; }
 .avatar {
   width: 2rem;
   height: 2rem;
   background: linear-gradient(135deg, #3b82f6, #06b6d4);
-  border-radius: 8px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   font-weight: 700;
-  font-size: 0.7rem;
+  font-size: 0.875rem;
 }
-.user-label { font-size: 0.875rem; font-weight: 600; color: #475569; }
+.user-label { font-size: 0.8rem; color: #475569; font-weight: 600; }
 
-/* ── Main Content ─────────────────────────────────────────────── */
-.main-content { flex: 1; padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+/* ── Main Content ─────────────────────────────────────────── */
+.main-content { flex: 1; padding: 2rem; }
 
-/* ── Stats Grid ───────────────────────────────────────────────── */
+/* ── Stats ────────────────────────────────────────────────── */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 220px));
   gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 .stat-card {
   background: #fff;
@@ -620,9 +633,11 @@ onMounted(fetchUsers)
   display: flex;
   align-items: center;
   gap: 1rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-  border: 1px solid #f1f5f9;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  transition: box-shadow 0.2s, transform 0.2s;
 }
+.stat-card:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.08); transform: translateY(-2px); }
 .stat-icon-wrap {
   width: 2.75rem;
   height: 2.75rem;
@@ -632,94 +647,92 @@ onMounted(fetchUsers)
   justify-content: center;
   flex-shrink: 0;
 }
-.stat-icon-wrap.blue { background: #eff6ff; }
-.stat-icon-wrap.green { background: #f0fdf4; }
-.stat-icon-wrap.red { background: #fff1f2; }
+.stat-icon-wrap.blue { background: rgba(59,130,246,0.1); color: #3b82f6; }
+.stat-icon-wrap.green { background: rgba(16,185,129,0.1); color: #10b981; }
+.stat-icon-wrap.red { background: rgba(239,68,68,0.1); color: #ef4444; }
 .stat-icon { width: 1.25rem; height: 1.25rem; }
-.stat-icon-wrap.blue .stat-icon { color: #3b82f6; }
-.stat-icon-wrap.green .stat-icon { color: #22c55e; }
-.stat-icon-wrap.red .stat-icon { color: #ef4444; }
-.stat-value { font-size: 1.5rem; font-weight: 800; color: #0f172a; line-height: 1; }
-.stat-label { font-size: 0.8rem; color: #94a3b8; margin-top: 0.2rem; }
+.stat-value { font-size: 1.5rem; font-weight: 800; color: #0f172a; }
+.stat-label { font-size: 0.8rem; color: #64748b; font-weight: 500; }
 
-/* ── Toolbar ──────────────────────────────────────────────────── */
+/* ── Toolbar ──────────────────────────────────────────────── */
 .toolbar {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  margin-bottom: 1rem;
   flex-wrap: wrap;
 }
 .search-wrap {
   flex: 1;
-  min-width: 220px;
+  min-width: 200px;
   position: relative;
 }
 .search-icon {
   position: absolute;
-  left: 0.875rem;
+  left: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
   width: 1rem;
   height: 1rem;
   color: #94a3b8;
-  pointer-events: none;
 }
 .search-input {
   width: 100%;
-  padding: 0.625rem 0.875rem 0.625rem 2.5rem;
-  border: 1.5px solid #e2e8f0;
+  padding: 0.6rem 1rem 0.6rem 2.25rem;
+  border: 1px solid #e2e8f0;
   border-radius: 10px;
   font-size: 0.875rem;
-  color: #0f172a;
+  color: #334155;
   background: #fff;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
   box-sizing: border-box;
 }
-.search-input:focus { border-color: #3b82f6; }
+.search-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+}
 .filter-select {
-  padding: 0.625rem 0.875rem;
-  border: 1.5px solid #e2e8f0;
+  padding: 0.6rem 0.875rem;
+  border: 1px solid #e2e8f0;
   border-radius: 10px;
   font-size: 0.875rem;
-  color: #475569;
+  color: #334155;
   background: #fff;
   outline: none;
   cursor: pointer;
-  transition: border-color 0.2s;
 }
-.filter-select:focus { border-color: #3b82f6; }
 .btn-refresh {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.625rem 1rem;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 10px;
+  gap: 0.375rem;
+  padding: 0.6rem 1rem;
   background: #fff;
-  color: #475569;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
   font-size: 0.875rem;
   font-weight: 500;
+  color: #475569;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
-  white-space: nowrap;
+  transition: background 0.2s;
 }
-.btn-refresh:hover:not(:disabled) { background: #f8fafc; border-color: #cbd5e1; }
-.btn-refresh:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn-icon { width: 1rem; height: 1rem; }
+.btn-refresh:hover:not(:disabled) { background: #f8fafc; }
+.btn-icon { width: 0.95rem; height: 0.95rem; }
 .spinning { animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Error Banner ─────────────────────────────────────────────── */
+/* ── Error Banner ─────────────────────────────────────────── */
 .error-banner {
-  background: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fecaca;
-  border-radius: 12px;
-  padding: 0.875rem 1rem;
   display: flex;
   align-items: center;
-  gap: 0.625rem;
+  gap: 0.5rem;
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  color: #b91c1c;
   font-size: 0.875rem;
+  margin-bottom: 1rem;
 }
 .error-icon { width: 1rem; height: 1rem; flex-shrink: 0; }
 .error-close {
@@ -727,40 +740,46 @@ onMounted(fetchUsers)
   background: none;
   border: none;
   cursor: pointer;
-  color: #991b1b;
-  font-size: 0.875rem;
-  padding: 0 0.25rem;
+  color: #b91c1c;
+  font-size: 1rem;
 }
 
-/* ── Loading & Empty State ────────────────────────────────────── */
-.loading-state, .empty-state {
+/* ── Loading / Empty State ────────────────────────────────── */
+.loading-state {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 4rem 2rem;
-  color: #94a3b8;
   gap: 1rem;
+  padding: 4rem 2rem;
+  color: #64748b;
 }
 .loader-ring {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 3rem;
+  height: 3rem;
   border: 3px solid #e2e8f0;
   border-top-color: #3b82f6;
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  animation: spin 0.7s linear infinite;
 }
-.empty-icon { width: 3rem; height: 3rem; opacity: 0.3; }
-.empty-title { font-size: 1rem; font-weight: 600; color: #64748b; margin: 0; }
-.empty-sub { font-size: 0.875rem; color: #94a3b8; margin: 0; }
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 4rem 2rem;
+  color: #94a3b8;
+}
+.empty-icon { width: 3rem; height: 3rem; margin-bottom: 0.5rem; }
+.empty-title { font-size: 1rem; font-weight: 600; color: #475569; margin: 0; }
+.empty-sub { font-size: 0.875rem; margin: 0; }
 
-/* ── Table ────────────────────────────────────────────────────── */
+/* ── Table ────────────────────────────────────────────────── */
 .table-wrap {
   background: #fff;
+  border: 1px solid #e2e8f0;
   border-radius: 16px;
-  border: 1px solid #f1f5f9;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 .user-table {
   width: 100%;
@@ -790,7 +809,7 @@ onMounted(fetchUsers)
 .row-inactive { opacity: 0.65; }
 .user-table td { padding: 0.875rem 1rem; vertical-align: middle; }
 
-/* ── Table Cells ──────────────────────────────────────────────── */
+/* Cells */
 .td-user { display: flex; align-items: center; gap: 0.75rem; min-width: 180px; }
 .user-avatar {
   width: 2.25rem;
@@ -846,7 +865,7 @@ onMounted(fetchUsers)
 }
 .td-date { color: #64748b; white-space: nowrap; }
 
-/* ── Action Buttons ───────────────────────────────────────────── */
+/* Actions */
 .action-group { display: flex; align-items: center; gap: 0.5rem; }
 .btn-action {
   display: inline-flex;
@@ -901,7 +920,7 @@ onMounted(fetchUsers)
 }
 .lock-icon { width: 0.8rem; height: 0.8rem; }
 
-/* ── Table Footer ─────────────────────────────────────────────── */
+/* Table Footer */
 .table-footer {
   padding: 0.875rem 1rem;
   border-top: 1px solid #f1f5f9;
@@ -909,7 +928,7 @@ onMounted(fetchUsers)
 }
 .table-info { font-size: 0.8rem; color: #94a3b8; }
 
-/* ── Toast ────────────────────────────────────────────────────── */
+/* ── Toast ────────────────────────────────────────────────── */
 .toast {
   position: fixed;
   bottom: 1.5rem;
@@ -932,7 +951,7 @@ onMounted(fetchUsers)
 .toast-slide-enter-from { transform: translateX(100%); opacity: 0; }
 .toast-slide-leave-to { transform: translateX(100%); opacity: 0; }
 
-/* ── Modal ────────────────────────────────────────────────────── */
+/* ── Modal ────────────────────────────────────────────────── */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -1000,10 +1019,7 @@ onMounted(fetchUsers)
 .modal-fade-enter-active, .modal-fade-leave-active { transition: opacity 0.25s; }
 .modal-fade-enter-from, .modal-fade-leave-to { opacity: 0; }
 
-/* ── Keyframes ────────────────────────────────────────────────── */
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── Responsive ───────────────────────────────────────────────── */
+/* ── Responsive ───────────────────────────────────────────── */
 @media (max-width: 900px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .main-content { padding: 1rem; }
