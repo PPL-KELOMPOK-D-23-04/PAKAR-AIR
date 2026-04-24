@@ -32,13 +32,15 @@ async def submit_analysis(
     Uploads image + manual data → runs DL + ML → returns result.
 
     manual_data should be a JSON string with fields:
-    - water_color: jernih / kuning / coklat / hijau / putih
-    - water_smell: tidak_berbau / sedikit / menyengat
-    - water_source: sumur / sungai / PDAM / mata_air / danau
-    - environment_condition: bersih / cukup_bersih / kotor
-    - water_ph: float (optional, default 7.0)
-    - water_temperature: float (optional, default 25.0)
-    - additional_notes: string (optional)
+    - ph: float (0 - 14)
+    - Hardness: float
+    - Solids: float
+    - Chloramines: float
+    - Sulfate: float
+    - Conductivity: float
+    - Organic_carbon: float
+    - Trihalomethanes: float
+    - Turbidity: float
     """
     # Parse manual data JSON
     try:
