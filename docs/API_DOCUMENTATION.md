@@ -192,37 +192,45 @@ Submit analisis baru — upload citra air + isi form data manual (KF-03, KF-04, 
 **Format `manual_data` (JSON string):**
 ```json
 {
-  "water_color": "jernih",
-  "water_smell": "tidak_berbau",
-  "water_source": "PDAM",
-  "environment_condition": "bersih",
-  "water_ph": 7.0,
-  "water_temperature": 25.0,
-  "additional_notes": "catatan opsional"
+  "ph": 7.08,
+  "Hardness": 204.89,
+  "Solids": 20791.32,
+  "Chloramines": 7.30,
+  "Sulfate": 368.52,
+  "Conductivity": 564.31,
+  "Organic_carbon": 10.38,
+  "Trihalomethanes": 86.99,
+  "Turbidity": 2.96,
 }
 ```
 
 **Nilai valid:**
-| Field                  | Opsi                                           |
-|------------------------|-------------------------------------------------|
-| `water_color`          | `jernih`, `kuning`, `coklat`, `hijau`, `putih` |
-| `water_smell`          | `tidak_berbau`, `sedikit`, `menyengat`         |
-| `water_source`         | `sumur`, `sungai`, `PDAM`, `mata_air`, `danau` |
-| `environment_condition`| `bersih`, `cukup_bersih`, `kotor`              |
-| `water_ph`             | Float 0–14 (default: 7.0, opsional)            |
-| `water_temperature`    | Float dalam °C (default: 25.0, opsional)       |
+| Field            | Type  | Keterangan                           |
+|------------------|-------|--------------------------------------|
+| `ph`             | Float | Nilai pH air (0 - 14)                |
+| `Hardness`       | Float | Kapasitas air untuk sabun (mg/L)     |
+| `Solids`         | Float | Total padatan terlarut (ppm)         |
+| `Chloramines`    | Float | Jumlah kloramin (ppm)                |
+| `Sulfate`        | Float | Jumlah sulfat terlarut (mg/L)        |
+| `Conductivity`   | Float | Konduktivitas listrik air (μS/cm)    |
+| `Organic_carbon` | Float | Jumlah karbon organik (ppm)          |
+| `Trihalomethanes`| Float | Jumlah Trihalomethanes (μg/L)        |
+| `Turbidity`      | Float | Ukuran kejernihan air (NTU)          |
 
 **Contoh Axios:**
 ```javascript
 const formData = new FormData();
 formData.append('image', fileInput.files[0]);
 formData.append('manual_data', JSON.stringify({
-  water_color: 'coklat',
-  water_smell: 'menyengat',
-  water_source: 'sungai',
-  environment_condition: 'kotor',
-  water_ph: 6.5,
-  water_temperature: 28.0
+  ph: 7.08,
+  Hardness: 204.89,
+  Solids: 20791.32,
+  Chloramines: 7.30,
+  Sulfate: 368.52,
+  Conductivity: 564.31,
+  Organic_carbon: 10.38,
+  Trihalomethanes: 86.99,
+  Turbidity: 2.96
 }));
 
 const response = await axios.post('/api/analysis', formData, {
@@ -257,12 +265,15 @@ Ambil detail hasil analisis lengkap (KF-06).
     "original_filename": "foto_air.jpg"
   },
   "manual_input": {
-    "water_color": "coklat",
-    "water_smell": "menyengat",
-    "water_source": "sungai",
-    "environment_condition": "kotor",
-    "water_ph": 6.5,
-    "water_temperature": 28.0
+    "ph": 7.08,
+    "Hardness": 204.89,
+    "Solids": 20791.32,
+    "Chloramines": 7.30,
+    "Sulfate": 368.52,
+    "Conductivity": 564.31,
+    "Organic_carbon": 10.38,
+    "Trihalomethanes": 86.99,
+    "Turbidity": 2.96
   },
   "result": {
     "id": "uuid-string",
@@ -271,18 +282,20 @@ Ambil detail hasil analisis lengkap (KF-06).
     "dl_category": "tidak_layak",
     "dl_confidence": 0.82,
     "dl_detections": [
-      {"label": "air_keruh", "confidence": 0.89},
-      {"label": "sampah", "confidence": 0.75}
+      {"label": "floater", "confidence": 0.89}
     ],
     "ml_category": "tidak_layak",
     "ml_confidence": 0.91,
     "ml_feature_importance": {
-      "water_color": 0.25,
-      "water_smell": 0.20,
-      "environment_condition": 0.15,
-      "water_source": 0.15,
-      "water_ph": 0.15,
-      "water_temperature": 0.10
+      "ph": 0.12,
+      "Hardness": 0.11,
+      "Solids": 0.15,
+      "Chloramines": 0.09,
+      "Sulfate": 0.14,
+      "Conductivity": 0.10,
+      "Organic_carbon": 0.08,
+      "Trihalomethanes": 0.09,
+      "Turbidity": 0.12
     },
     "explanation": "Analisis citra: terdeteksi air_keruh (89%), sampah (75%). ...",
     "recommendation": "Air ini TIDAK LAYAK digunakan secara langsung. ..."
