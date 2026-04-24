@@ -48,8 +48,7 @@ const router = createRouter({
       component: () => import('../views/ProfileView.vue')
     }
   ]
-
-    
+  
   })
 
 // Navigation Guard
