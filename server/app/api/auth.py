@@ -43,15 +43,20 @@ async def login(
     return auth_service.login_user(data, supabase, db)
 
 
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+
+auth_bearer = HTTPBearer()
+
 @router.post("/logout", response_model=MessageResponse)
 async def logout(
+    token: HTTPAuthorizationCredentials = Depends(auth_bearer),
     supabase: Client = Depends(get_supabase),
 ):
     """
     KF-02: Logout — invalidates session server-side.
     Frontend should also discard the token.
     """
-    result = auth_service.logout_user("", supabase)
+    result = auth_service.logout_user(token.credentials, supabase)
     return MessageResponse(message=result["message"])
 
 

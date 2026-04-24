@@ -16,6 +16,9 @@ class ProfileUpdate(BaseModel):
     username: Optional[str] = None
     avatar_url: Optional[str] = None
 
+class PasswordChange(BaseModel):
+    new_password: str
+
 class ProfileResponse(ProfileBase):
     id: UUID
     is_admin: bool

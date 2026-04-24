@@ -7,8 +7,8 @@ logger = logging.getLogger(__name__)
 
 # Paths to saved models
 # Using relative paths from server root
-MODEL_PATH = os.path.join("ml", "saved_models", "random_forest_model.pkl")
-SCALER_PATH = os.path.join("ml", "saved_models", "scaler.pkl")
+MODEL_PATH = os.path.join("ML_DL", "saved_models", "random_forest_model.pkl")
+SCALER_PATH = os.path.join("ML_DL", "saved_models", "scaler.pkl")
 
 def preprocess_manual_data(data: dict, scaler) -> np.ndarray:
     """
