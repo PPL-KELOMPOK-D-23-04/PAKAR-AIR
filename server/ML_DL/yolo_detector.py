@@ -3,7 +3,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-MODEL_PATH = os.path.join("ml", "saved_models", "water_yolo.pt")
+MODEL_PATH = os.path.join("ML_DL", "saved_models", "water_yolo.pt")
 
 # Class labels for YOLOv8 model (based on notebook/data.yaml)
 CLASS_LABELS = {
@@ -28,6 +28,8 @@ def predict_image(image_path: str) -> dict:
         from ultralytics import YOLO
 
         model = YOLO(MODEL_PATH)
+        # Debug: Print actual model class names to terminal
+        print(f"DEBUG: Model classes -> {model.names}")
         results = model(image_path, verbose=False)
 
         detections = []
