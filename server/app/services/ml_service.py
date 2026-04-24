@@ -9,16 +9,16 @@ import logging
 logger = logging.getLogger(__name__)
 
 # Model file paths
-YOLO_MODEL_PATH = os.path.join("ml", "saved_models", "water_yolo.pt")
-RF_MODEL_PATH = os.path.join("ml", "saved_models", "water_rf.pkl")
-LABEL_ENCODER_PATH = os.path.join("ml", "saved_models", "label_encoder.pkl")
+YOLO_MODEL_PATH = os.path.join("ML_DL", "saved_models", "water_yolo.pt")
+RF_MODEL_PATH = os.path.join("ML_DL", "saved_models", "random_forest_model.pkl")
+SCALER_PATH = os.path.join("ML_DL", "saved_models", "scaler.pkl")
 
 
 def _models_available() -> dict:
     """Check which model files are present."""
     return {
         "yolo": os.path.exists(YOLO_MODEL_PATH),
-        "rf": os.path.exists(RF_MODEL_PATH),
+        "rf": os.path.exists(RF_MODEL_PATH) and os.path.exists(SCALER_PATH),
     }
 
 
@@ -33,7 +33,7 @@ def run_full_inference(image_path: str | None, manual_data: dict) -> dict:
     dl_result = {"category": None, "confidence": 0.0, "detections": []}
     if image_path and available["yolo"]:
         try:
-            from ml.yolo_detector import predict_image
+            from ML_DL.yolo_detector import predict_image
             dl_result = predict_image(image_path)
         except Exception as e:
             logger.error(f"YOLO inference failed: {e}")
@@ -45,7 +45,7 @@ def run_full_inference(image_path: str | None, manual_data: dict) -> dict:
     ml_result = {"category": None, "confidence": 0.0, "feature_importance": {}}
     if manual_data and available["rf"]:
         try:
-            from ml.rf_classifier import predict_manual
+            from ML_DL.rf_classifier import predict_manual
             ml_result = predict_manual(manual_data)
         except Exception as e:
             logger.error(f"RF inference failed: {e}")
@@ -54,7 +54,7 @@ def run_full_inference(image_path: str | None, manual_data: dict) -> dict:
         ml_result = _placeholder_ml_result(manual_data)
 
     # ── Fusion ───────────────────────────────────────────
-    from ml.fusion import fuse_results
+    from ML_DL.fusion import fuse_results
     final = fuse_results(dl_result, ml_result)
 
     return {
@@ -90,26 +90,22 @@ def _placeholder_dl_result() -> dict:
 
 def _placeholder_ml_result(manual_data: dict) -> dict:
     """Return placeholder ML result based on simple heuristics."""
-    # Simple rule-based fallback
+    # Simple rule-based fallback based on chemical features
     score = 0.5
-    smell = manual_data.get("water_smell", "tidak_berbau")
-    color = manual_data.get("water_color", "jernih")
-    env = manual_data.get("environment_condition", "bersih")
+    ph = float(manual_data.get("ph", 7.0))
+    turbidity = float(manual_data.get("Turbidity", 3.0))
 
-    if color == "jernih":
+    # Basic heuristic: extreme pH is bad
+    if 6.5 <= ph <= 8.5:
         score += 0.2
-    elif color in ("coklat", "hijau"):
+    else:
         score -= 0.3
 
-    if smell == "tidak_berbau":
-        score += 0.1
-    elif smell == "menyengat":
+    # Basic heuristic: high turbidity is bad
+    if turbidity < 4.0:
+        score += 0.2
+    else:
         score -= 0.3
-
-    if env == "bersih":
-        score += 0.1
-    elif env == "kotor":
-        score -= 0.2
 
     score = max(0.0, min(1.0, score))
     category = "layak" if score > 0.5 else "tidak_layak"
@@ -118,11 +114,14 @@ def _placeholder_ml_result(manual_data: dict) -> dict:
         "category": category,
         "confidence": score,
         "feature_importance": {
-            "water_color": 0.25,
-            "water_smell": 0.20,
-            "environment_condition": 0.15,
-            "water_source": 0.15,
-            "water_ph": 0.15,
-            "water_temperature": 0.10,
+            "ph": 0.25,
+            "Turbidity": 0.25,
+            "Solids": 0.10,
+            "Hardness": 0.10,
+            "Chloramines": 0.10,
+            "Sulfate": 0.05,
+            "Conductivity": 0.05,
+            "Organic_carbon": 0.05,
+            "Trihalomethanes": 0.05,
         },
     }
