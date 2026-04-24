@@ -1,9 +1,3 @@
-"""
-YOLOv8 inference wrapper for water image analysis.
-Detects objects/conditions in water images:
-  0: air_jernih, 1: air_keruh, 2: air_berwarna,
-  3: sampah, 4: alga, 5: busa, 6: minyak
-"""
 import os
 import logging
 

@@ -1,7 +1,3 @@
-"""
-Random Forest classifier wrapper for manual water quality data.
-Uses pre-trained model and scaler to classify based on 9 chemical parameters.
-"""
 import os
 import pickle
 import logging
@@ -16,7 +12,7 @@ SCALER_PATH = os.path.join("ml", "saved_models", "scaler.pkl")
 
 def preprocess_manual_data(data: dict, scaler) -> np.ndarray:
     """
-    Convert manual input dict to scaled feature array for RF model.
+    Convert manual input dict (from API_DOCUMENTATION) to scaled feature array for RF model.
     Features (9): [ph, Hardness, Solids, Chloramines, Sulfate, 
                   Conductivity, Organic_carbon, Trihalomethanes, Turbidity]
     """
@@ -38,7 +34,6 @@ def preprocess_manual_data(data: dict, scaler) -> np.ndarray:
     except Exception as e:
         logger.error(f"Preprocessing error: {e}")
         raise ValueError(f"Input data format error: {e}")
-
 def predict_manual(data: dict) -> dict:
     """
     Run Random Forest inference on manual water quality data.

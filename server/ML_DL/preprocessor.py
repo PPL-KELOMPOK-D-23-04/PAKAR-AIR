@@ -1,7 +1,3 @@
-"""
-Preprocessor — image and data preprocessing utilities.
-Used by yolo_detector and rf_classifier before inference.
-"""
 from PIL import Image
 import os
 
