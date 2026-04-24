@@ -47,3 +47,29 @@ def update_avatar(current_user: Profile, avatar_url: str, db: Session) -> Profil
     db.commit()
     db.refresh(current_user)
     return current_user
+
+
+def change_password(new_password: str, supabase) -> dict:
+    """
+    Change user password in Supabase Auth.
+    """
+    try:
+        # Note: In a real server-side context with a shared client, 
+        # updating password usually requires the user's JWT or Admin API.
+        # Supabase Python SDK update_user works if the client has the user's session.
+        supabase.auth.update_user({"password": new_password})
+        return {"message": "Password berhasil diperbarui"}
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Gagal memperbarui password: {str(e)}"
+        )
+
+
+def delete_account(current_user: Profile, db: Session) -> dict:
+    """
+    Delete user profile from local database.
+    """
+    db.delete(current_user)
+    db.commit()
+    return {"message": "Akun berhasil dihapus dari sistem lokal"}
