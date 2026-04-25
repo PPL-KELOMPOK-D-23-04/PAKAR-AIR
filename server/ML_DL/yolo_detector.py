@@ -42,9 +42,13 @@ def predict_image(image_path: str) -> dict:
                 conf = float(box.conf[0])
                 class_info = CLASS_LABELS.get(cls_id, {"label": f"unknown_{cls_id}", "positive": False})
 
+                # Extract bounding box coordinates (x1, y1, x2, y2)
+                bbox = [round(float(x), 2) for x in box.xyxy[0]]
+
                 detections.append({
                     "label": class_info["label"],
                     "confidence": round(conf, 4),
+                    "bbox": bbox,
                 })
 
                 if class_info["positive"]:
