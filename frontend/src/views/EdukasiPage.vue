@@ -1,9 +1,8 @@
 <template>
   <div class="edukasi-page">
     
-    <!-- HERO HEADER - Bagian atas halaman -->
+    <!-- HERO HEADER - Background hijau dengan teks -->
     <div class="hero-header">
-      <div class="hero-overlay"></div>
       <div class="hero-content">
         <div class="hero-badge">PUSAT EDUKASI</div>
         <h1>Pelajari Lebih Dalam Tentang<br>Kualitas Air Bersih</h1>
@@ -11,7 +10,7 @@
       </div>
     </div>
 
-    <!-- SECTION ARTIKEL -->
+    <!-- SECTION DAFTAR ARTIKEL -->
     <div class="articles-section">
       <div class="container">
         <div class="section-title">
@@ -22,8 +21,8 @@
 
         <div class="articles-grid">
           
-          <!-- CARD ARTIKEL 1: Parameter Fisik Air -->
-          <div class="article-card" @click="goToArtikel('fisik')">
+          <!-- CARD ARTIKEL 1 (HomeArtikel) -->
+          <div class="article-card" @click="goToArtikel('home')">
             <div class="card-image">
               <img :src="getImageUrl('cover-air-bersih.jpg')" alt="Air Bersih">
               <span class="card-category">Panduan Visual</span>
@@ -38,7 +37,7 @@
             </div>
           </div>
 
-          <!-- CARD ARTIKEL 2: Dampak Pencemaran Air -->
+          <!-- CARD ARTIKEL 2 (HomeArtikel2) -->
           <div class="article-card" @click="goToArtikel('kesehatan')">
             <div class="card-image">
               <img :src="getImageUrl('cover-pencemaran.jpg')" alt="Pencemaran Air">
@@ -54,7 +53,7 @@
             </div>
           </div>
 
-          <!-- CARD ARTIKEL 3: Interpretasi Hasil PAKAR-AIR -->
+          <!-- CARD ARTIKEL 3 (HomeArtikel3) -->
           <div class="article-card" @click="goToArtikel('interpretasi')">
             <div class="card-image">
               <img :src="getImageUrl('cover-ai-analisis.jpg')" alt="Analisis AI">
@@ -79,26 +78,26 @@
       <div class="container">
         <div class="stats-grid">
           <div class="stat-item">
-            <div class="stat-number">3+</div>
+            <div class="stat-number">3</div>
             <div class="stat-label">Artikel Edukasi</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number">1000+</div>
-            <div class="stat-label">Pembaca Setia</div>
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Gratis Akses</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number">24/7</div>
-            <div class="stat-label">Akses Gratis</div>
+            <div class="stat-number">AI</div>
+            <div class="stat-label">Berbasis AI</div>
           </div>
           <div class="stat-item">
             <div class="stat-number">SDG 6</div>
-            <div class="stat-label">Mendukung Air Bersih</div>
+            <div class="stat-label">Air Bersih</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- CTA SECTION -->
+    <!-- TOMBOL AJAKAN -->
     <div class="cta-section">
       <div class="container">
         <div class="cta-content">
@@ -117,21 +116,21 @@ export default {
   name: 'EdukasiPage',
   methods: {
     getImageUrl(imageName) {
-      // Fungsi untuk mengambil gambar dari folder assets/images
+      // Mengambil gambar dari folder assets/images
       try {
         return require(`@/assets/images/${imageName}`);
       } catch (e) {
-        // Jika gambar tidak ditemukan, pakai placeholder
+        // Jika gambar tidak ada, pakai placeholder
         return `https://placehold.co/600x400/e8e2d8/8b7355?text=${imageName.replace('.jpg', '')}`;
       }
     },
-    goToArtikel(artikel) {
-      if (artikel === 'fisik') {
-        this.$router.push('/edukasi/fisik');
-      } else if (artikel === 'kesehatan') {
-        this.$router.push('/edukasi/kesehatan');
-      } else if (artikel === 'interpretasi') {
-        this.$router.push('/edukasi/interpretasi');
+    goToArtikel(jenis) {
+      if (jenis === 'home') {
+        this.$router.push('/home-artikel');
+      } else if (jenis === 'kesehatan') {
+        this.$router.push('/home-artikel2');
+      } else if (jenis === 'interpretasi') {
+        this.$router.push('/home-artikel3');
       }
     },
     goToAnalisis() {
@@ -153,31 +152,16 @@ export default {
   background: #faf8f5;
 }
 
-/* ========== HERO HEADER ========== */
+/* HERO HEADER */
 .hero-header {
   background: linear-gradient(135deg, #2c5f2d 0%, #4a7c4a 100%);
-  height: 400px;
-  position: relative;
+  min-height: 380px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   color: white;
-}
-
-.hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.2);
-}
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  padding: 20px;
+  padding: 60px 20px;
 }
 
 .hero-badge {
@@ -202,7 +186,7 @@ export default {
   opacity: 0.9;
 }
 
-/* ========== SECTION ARTIKEL ========== */
+/* SECTION ARTIKEL */
 .articles-section {
   padding: 60px 0;
 }
@@ -236,7 +220,7 @@ export default {
   font-size: 15px;
 }
 
-/* ========== GRID ARTIKEL ========== */
+/* GRID ARTIKEL */
 .articles-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -329,7 +313,7 @@ export default {
   font-weight: 500;
 }
 
-/* ========== STATISTIK ========== */
+/* STATISTIK */
 .stats-section {
   background: #2c3e2f;
   padding: 50px 0;
@@ -337,7 +321,7 @@ export default {
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 32px;
   text-align: center;
 }
@@ -354,7 +338,7 @@ export default {
   color: rgba(255,255,255,0.7);
 }
 
-/* ========== CTA SECTION ========== */
+/* CTA SECTION */
 .cta-section {
   padding: 60px 0;
   background: #f5f0e8;
@@ -388,10 +372,10 @@ export default {
   background: #4a6a4a;
 }
 
-/* ========== RESPONSIVE ========== */
+/* RESPONSIF */
 @media (max-width: 768px) {
   .hero-header {
-    height: 300px;
+    min-height: 300px;
   }
   
   .hero-header h1 {
