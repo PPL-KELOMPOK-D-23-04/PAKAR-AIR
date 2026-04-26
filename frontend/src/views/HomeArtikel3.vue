@@ -1,36 +1,34 @@
 <template>
-  <div class="article-page">
-    <div class="article-container">
-      <!-- HEADER - SAMA DENGAN ARTIKEL 1 & 2 -->
-      <header class="article-header">
-        <div class="article-meta">
-          <span class="article-category ai">Panduan Pengguna AI</span>
-          <span class="article-date">15 Maret 2026 · 7 menit membaca</span>
+  <div class="page">
+    <div class="container">
+      
+      <!-- HEADER -->
+      <div class="header">
+        <div class="meta">
+          <span class="kategori">Panduan Pengguna AI</span>
+          <span class="tanggal">15 Maret 2026 · 6 menit membaca</span>
         </div>
-        <h1 class="article-title">Memahami Hasil PAKAR-AIR: Panduan Lengkap Interpretasi Kategori, Confidence Score, dan Rekomendasi</h1>
-        <div class="article-byline">
-          <span class="author">Tim Pakar PAKAR-AIR</span>
-          <span class="separator">•</span>
-          <span class="source">Sumber: Dokumentasi Teknis PAKAR-AIR v1.0 & Standar Kualitas Air Kemenkes RI</span>
+        <h1>Memahami Hasil PAKAR-AIR: Panduan Lengkap Kategori, Confidence Score, dan Rekomendasi</h1>
+        <div class="penulis">
+          Tim Pakar PAKAR-AIR | Sumber: Dokumentasi Teknis PAKAR-AIR v1.0
         </div>
-      </header>
+      </div>
 
-      <!-- GAMBAR HERO -->
-      <figure class="article-figure">
-        <img src="https://placehold.co/900x500/6b8c6b/ffffff?text=Hasil+Analisis+PAKAR-AIR" alt="Ilustrasi hasil analisis PAKAR-AIR" class="hero-image">
-        <figcaption class="image-caption">PAKAR-AIR memberikan hasil analisis dalam tiga kategori dengan tingkat kepercayaan | Ilustrasi: PAKAR-AIR</figcaption>
-      </figure>
+      <!-- GAMBAR -->
+      <div class="gambar">
+        <img src="https://placehold.co/900x450/6b8c6b/ffffff?text=Hasil+Analisis+PAKAR-AIR" alt="Hasil analisis PAKAR-AIR">
+        <p class="caption">PAKAR-AIR memberikan hasil analisis dalam tiga kategori dengan tingkat kepercayaan</p>
+      </div>
 
       <!-- KONTEN UTAMA -->
-      <div class="article-content">
+      <div class="konten">
         
-        <!-- LEAD -->
+        <!-- Lead -->
         <p class="lead">
           <strong>Jakarta, PAKAR-AIR</strong> — Setelah Anda melakukan analisis kualitas air menggunakan 
           PAKAR-AIR, sistem akan menampilkan hasil prediksi yang terdiri dari tiga komponen utama: 
           <strong>kategori kualitas air, tingkat kepercayaan (confidence score), dan rekomendasi penggunaan</strong>. 
-          Panduan ini akan membantu Anda memahami setiap komponen tersebut secara mendalam, sehingga 
-          Anda dapat mengambil keputusan yang tepat berdasarkan hasil analisis.
+          Panduan ini akan membantu Anda memahami setiap komponen tersebut secara mendalam.
         </p>
 
         <p>
@@ -38,48 +36,48 @@
           adalah sistem yang dirancang untuk memberikan estimasi awal kualitas air melalui kombinasi 
           analisis citra air dan data manual yang Anda inputkan. Sebagai alat bantu (decision support system), 
           PAKAR-AIR membantu Anda mendapatkan gambaran awal tentang kualitas air secara cepat, mudah, 
-          dan terjangkau — sebelum memutuskan untuk melakukan uji laboratorium lebih lanjut jika diperlukan.
+          dan terjangkau.
         </p>
 
-        <!-- ========== BAGIAN 1: TIGA KATEGORI ========== -->
-        <h2>A. Tiga Kategori Kualitas Air</h2>
+        <!-- Bagian 1: Tiga Kategori -->
+        <h2>1. Tiga Kategori Kualitas Air</h2>
         <p>
           Berdasarkan parameter yang dianalisis (warna, kekeruhan, bau, sumber air, kondisi lingkungan, 
           serta fitur visual dari citra air), PAKAR-AIR mengklasifikasikan kualitas air ke dalam 
-          <strong>tiga kategori utama</strong>. Berikut penjelasan detail setiap kategori beserta tindakan yang direkomendasikan:
+          <strong>tiga kategori utama</strong>:
         </p>
 
-        <div class="kategori-grid">
-          <!-- Kategori 1: AMAN -->
+        <div class="grid-tiga-kategori">
           <div class="kategori-card aman">
-            <div class="kategori-icon">✅</div>
-            <h3>Aman</h3>
+            <div class="kategori-icon">A</div>
+            <div class="kategori-judul">Aman</div>
             <div class="kategori-badge">Rekomendasi: Dapat Digunakan</div>
-            <p>Air memenuhi standar fisik dan parameter umum yang ditetapkan oleh Peraturan Menteri Kesehatan RI No. 492/Menkes/Per/IV/2010.</p>
-            <div class="kategori-detail">
+            <div class="kategori-deskripsi">
+              Air memenuhi standar fisik dan parameter umum yang ditetapkan oleh Peraturan Menteri 
+              Kesehatan RI No. 492/Menkes/Per/IV/2010.
+            </div>
+            <div class="kategori-karakteristik">
               <strong>Karakteristik:</strong>
               <ul>
                 <li>Tidak berwarna atau sangat jernih</li>
                 <li>Tidak berbau</li>
                 <li>Tidak berasa</li>
-                <li>Tidak ada partikel tersuspensi yang terlihat</li>
+                <li>Tidak ada partikel tersuspensi</li>
               </ul>
             </div>
-            <div class="kategori-action">
-              <strong>📌 Tindakan yang Direkomendasikan:</strong><br>
-              Air layak digunakan untuk kebutuhan rumah tangga seperti mandi, mencuci, dan memasak. 
-              Namun, untuk konsumsi langsung (minum), tetap <strong>rebus hingga mendidih</strong> minimal 10 menit 
-              untuk memastikan sterilitas dari kemungkinan kontaminasi mikroba yang tidak terdeteksi.
+            <div class="kategori-tindakan">
+              <strong>Tindakan:</strong> Rebus hingga mendidih sebelum dikonsumsi.
             </div>
           </div>
 
-          <!-- Kategori 2: PERLU PERLAKUAN -->
           <div class="kategori-card perlu">
-            <div class="kategori-icon">⚠️</div>
-            <h3>Perlu Perlakuan</h3>
-            <div class="kategori-badge">Rekomendasi: Harus Diolah Terlebih Dahulu</div>
-            <p>Terdeteksi adanya kekeruhan, bau ringan, warna yang mencurigakan, atau indikasi awal kontaminasi.</p>
-            <div class="kategori-detail">
+            <div class="kategori-icon">P</div>
+            <div class="kategori-judul">Perlu Perlakuan</div>
+            <div class="kategori-badge">Rekomendasi: Harus Diolah</div>
+            <div class="kategori-deskripsi">
+              Terdeteksi adanya kekeruhan, bau ringan, warna mencurigakan, atau indikasi awal kontaminasi.
+            </div>
+            <div class="kategori-karakteristik">
               <strong>Karakteristik:</strong>
               <ul>
                 <li>Sedikit keruh atau berwarna (kekuningan/kehijauan)</li>
@@ -87,47 +85,34 @@
                 <li>Mungkin mengandung partikel tersuspensi</li>
               </ul>
             </div>
-            <div class="kategori-action">
-              <strong>📌 Tindakan yang Direkomendasikan:</strong><br>
-              Air <strong>masih dapat digunakan</strong> setelah melalui proses pengolahan sederhana:
-              <ol>
-                <li>Saring dengan kain bersih atau saringan keramik untuk menghilangkan partikel</li>
-                <li>Endapkan selama 2-4 jam agar partikel halus mengendap</li>
-                <li>Rebus minimal 15 menit untuk memastikan sterilisasi</li>
-                <li>Jika memungkinkan, gunakan filter karbon aktif untuk menghilangkan bau dan rasa</li>
-              </ol>
+            <div class="kategori-tindakan">
+              <strong>Tindakan:</strong> Saring dengan kain, endapkan 2-4 jam, rebus 15 menit.
             </div>
           </div>
 
-          <!-- Kategori 3: BERPOTENSI TERCEMAR -->
           <div class="kategori-card tercemar">
-            <div class="kategori-icon">❌</div>
-            <h3>Berpotensi Tercemar</h3>
+            <div class="kategori-icon">T</div>
+            <div class="kategori-judul">Berpotensi Tercemar</div>
             <div class="kategori-badge">Rekomendasi: JANGAN Digunakan</div>
-            <p>Indikasi kuat adanya kontaminan berbahaya seperti bakteri patogen, logam berat, atau limbah kimia.</p>
-            <div class="kategori-detail">
+            <div class="kategori-deskripsi">
+              Indikasi kuat adanya kontaminan berbahaya (bakteri patogen, logam berat, limbah kimia).
+            </div>
+            <div class="kategori-karakteristik">
               <strong>Karakteristik:</strong>
               <ul>
                 <li>Keruh pekat, berwarna (coklat, merah, kehitaman)</li>
                 <li>Bau menyengat (telur busuk, minyak, kimia)</li>
-                <li>Berasal dari lingkungan yang berisiko tinggi (dekat industri, timbunan sampah)</li>
+                <li>Dari lingkungan berisiko tinggi (dekat industri)</li>
               </ul>
             </div>
-            <div class="kategori-action">
-              <strong>📌 Tindakan yang Direkomendasikan:</strong><br>
-              <strong>JANGAN gunakan air ini untuk minum, memasak, mandi, atau mencuci peralatan makan.</strong>
-              <ol>
-                <li>Cari sumber air alternatif yang lebih aman (air kemasan, air isi ulang terpercaya)</li>
-                <li>Segera lakukan uji laboratorium untuk mengetahui jenis kontaminan secara pasti</li>
-                <li>Laporkan ke dinas kesehatan atau lingkungan setempat jika sumber air digunakan banyak orang</li>
-                <li>Jika terpaksa menggunakan (misal untuk mencuci), gunakan sarung tangan dan hindari kontak langsung</li>
-              </ol>
+            <div class="kategori-tindakan">
+              <strong>Tindakan:</strong> JANGAN digunakan. Segera uji laboratorium.
             </div>
           </div>
         </div>
 
-        <!-- ========== BAGIAN 2: CONFIDENCE SCORE ========== -->
-        <h2>B. Memahami Confidence Score (Tingkat Kepercayaan)</h2>
+        <!-- Bagian 2: Confidence Score -->
+        <h2>2. Memahami Confidence Score (Tingkat Kepercayaan)</h2>
         <p>
           <strong>Confidence score</strong> adalah angka antara 0-100% yang menunjukkan seberapa yakin model AI 
           PAKAR-AIR terhadap prediksi yang dihasilkan. Angka ini dihitung berdasarkan <strong>kualitas dan kelengkapan data input</strong> 
@@ -139,196 +124,122 @@
           <li>Kesesuaian antara data visual dan data manual</li>
         </ul>
 
-        <div class="confidence-container">
+        <div class="confidence-box">
           <div class="confidence-bar">
-            <div class="bar-segment high" style="width: 40%">80 - 100%</div>
-            <div class="bar-segment medium" style="width: 35%">60 - 79%</div>
-            <div class="bar-segment low" style="width: 25%">0 - 59%</div>
+            <div class="bar tinggi" style="width: 40%">80 - 100%</div>
+            <div class="bar sedang" style="width: 35%">60 - 79%</div>
+            <div class="bar rendah" style="width: 25%">0 - 59%</div>
           </div>
           <div class="confidence-legend">
             <div class="legend-item">
-              <span class="legend-dot high"></span>
-              <span class="legend-text"><strong>Tinggi (80-100%)</strong> — Prediksi sangat kuat. Hasil dapat diandalkan untuk pengambilan keputusan. Data input Anda berkualitas baik.</span>
+              <span class="dot tinggi"></span>
+              <span><strong>Tinggi (80-100%)</strong> — Prediksi sangat kuat, dapat diandalkan untuk pengambilan keputusan.</span>
             </div>
             <div class="legend-item">
-              <span class="legend-dot medium"></span>
-              <span class="legend-text"><strong>Sedang (60-79%)</strong> — Prediksi cukup yakin, namun disarankan untuk mengulang analisis dengan foto yang lebih jelas dan data yang lebih lengkap untuk hasil yang lebih akurat.</span>
+              <span class="dot sedang"></span>
+              <span><strong>Sedang (60-79%)</strong> — Prediksi cukup yakin, disarankan mengulang analisis dengan foto yang lebih baik.</span>
             </div>
             <div class="legend-item">
-              <span class="legend-dot low"></span>
-              <span class="legend-text"><strong>Rendah (0-59%)</strong> — Kualitas input tidak memadai. Hasil prediksi tidak dapat diandalkan. Ulangi analisis dengan pencahayaan yang lebih baik, foto yang lebih tajam, dan data yang lengkap.</span>
+              <span class="dot rendah"></span>
+              <span><strong>Rendah (0-59%)</strong> — Kualitas input tidak memadai. Ulangi analisis dengan pencahayaan lebih baik.</span>
             </div>
           </div>
         </div>
 
-        <div class="info-card tip">
-          <div class="info-icon">💡</div>
-          <div class="info-content">
+        <div class="kotak-tips">
+          <span class="tips-icon">!</span>
+          <div>
             <strong>Tips Meningkatkan Confidence Score</strong>
             <ul>
-              <li><strong>Pencahayaan:</strong> Gunakan cahaya alami yang cukup (pukul 10.00 - 14.00). Hindari bayangan dan silau.</li>
-              <li><strong>Wadah sampel:</strong> Gunakan gelas atau wadah bening (kaca atau plastik transparan) yang bersih.</li>
-              <li><strong>Latar belakang:</strong> Letakkan wadah di atas kertas putih bersih untuk kontras yang optimal.</li>
-              <li><strong>Posisi kamera:</strong> Foto dari jarak 20-30 cm, pastikan fokus tajam dan seluruh sampel air terlihat.</li>
-              <li><strong>Data manual:</strong> Isi seluruh field dengan jujur dan teliti (pilih warna, bau, sumber air, kondisi lingkungan yang paling sesuai).</li>
-              <li><strong>Hindari filter:</strong> Jangan gunakan filter kamera atau efek editing pada foto air.</li>
-              <li><strong>Ulangi analisis:</strong> Jika confidence score rendah, lakukan analisis ulang dengan memperbaiki kualitas foto dan kelengkapan data.</li>
+              <li>Gunakan foto dengan pencahayaan alami yang cukup (pukul 10.00 - 14.00)</li>
+              <li>Letakkan sampel air dalam wadah bening (gelas kaca) dengan latar belakang putih bersih</li>
+              <li>Pastikan foto tidak buram, tidak terlalu gelap, dan tidak terkena bayangan</li>
+              <li>Isi seluruh data manual dengan jujur dan teliti (warna, bau, sumber air, kondisi lingkungan)</li>
+              <li>Jangan gunakan filter atau efek kamera saat memotret sampel air</li>
             </ul>
           </div>
         </div>
 
-        <!-- ========== BAGIAN 3: REKOMENDASI ========== -->
-        <h2>C. Memahami Rekomendasi Penggunaan</h2>
+        <!-- Bagian 3: Contoh Kasus -->
+        <h2>3. Contoh Hasil Analisis</h2>
         <p>
-          Berdasarkan kombinasi kategori kualitas air dan confidence score, PAKAR-AIR akan memberikan 
-          rekomendasi spesifik yang dapat Anda ikuti. Berikut panduan interpretasi rekomendasi:
+          Berikut adalah beberapa skenario contoh hasil analisis menggunakan PAKAR-AIR:
         </p>
 
-        <div class="recommendation-grid">
-          <div class="rekom-card">
-            <div class="rekom-icon">🚰</div>
-            <div class="rekom-content">
-              <strong>Untuk Air Minum dan Memasak</strong>
-              <p>Jika kategori <strong>Aman</strong> dengan confidence score >80%: Air siap digunakan setelah direbus.<br>
-              Jika confidence score 60-80%: Rebus lebih lama (15-20 menit) atau gunakan filter tambahan.<br>
-              Jika confidence score <60% atau kategori lain: Jangan gunakan untuk konsumsi.</p>
-            </div>
-          </div>
-          <div class="rekom-card">
-            <div class="rekom-icon">🛁</div>
-            <div class="rekom-content">
-              <strong>Untuk Mandi dan Mencuci</strong>
-              <p>Kategori <strong>Aman</strong> atau <strong>Perlu Perlakuan</strong>: Dapat digunakan. Untuk kategori Perlu Perlakuan, disarankan untuk menghindari kontak dengan mata dan luka terbuka.<br>
-              Kategori <strong>Tercemar</strong>: Jangan digunakan untuk mandi atau mencuci pakaian karena partikel kontaminan dapat menempel.</p>
-            </div>
-          </div>
-          <div class="rekom-card">
-            <div class="rekom-icon">🌱</div>
-            <div class="rekom-content">
-              <strong>Untuk Irigasi Tanaman</strong>
-              <p>Kategori <strong>Aman</strong> dan <strong>Perlu Perlakuan</strong>: Aman untuk tanaman non-pangan. Untuk tanaman pangan (sayur, buah), gunakan air dengan kategori Aman.<br>
-              Kategori <strong>Tercemar</strong>: Jangan gunakan untuk irigasi tanaman yang akan dikonsumsi.</p>
-            </div>
-          </div>
-          <div class="rekom-card">
-            <div class="rekom-icon">🐟</div>
-            <div class="rekom-content">
-              <strong>Untuk Kolam Ikan/Ternak</strong>
-              <p>Hanya gunakan air dengan kategori <strong>Aman</strong> dan confidence score >80%. Kontaminan dalam air dapat membunuh ikan dan hewan ternak atau membuat dagingnya tidak layak konsumsi.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- ========== BAGIAN 4: CONTOH KASUS ========== -->
-        <h2>D. Contoh Kasus Analisis</h2>
-        <p>
-          Berikut adalah beberapa skenario contoh hasil analisis menggunakan PAKAR-AIR untuk membantu 
-          Anda memahami bagaimana membaca dan menginterpretasikan output sistem:
-        </p>
-
-        <div class="example-list">
-          <div class="example-item">
-            <div class="example-header">📋 Skenario 1: Air Sumur di Daerah Pemukiman (Hasil Optimal)</div>
-            <div class="example-body">
-              <p><strong>Data Input:</strong></p>
-              <ul>
-                <li>Foto: Air tampak jernih, tidak berwarna, latar putih</li>
-                <li>Warna: Tidak berwarna / jernih</li>
-                <li>Bau: Tidak berbau</li>
-                <li>Sumber air: Sumur gali (kedalaman 15 meter)</li>
-                <li>Lingkungan: Pemukiman warga, tidak ada pabrik dalam radius 1 km</li>
-              </ul>
+        <div class="contoh-list">
+          <div class="contoh-item">
+            <div class="contoh-judul">Skenario 1: Air Sumur di Daerah Pemukiman</div>
+            <div class="contoh-isi">
+              <p><strong>Data Input:</strong> Foto air jernih, tidak berbau, sumber sumur, lingkungan pemukiman.</p>
               <p><strong>Output PAKAR-AIR:</strong></p>
               <ul>
-                <li>Kategori: <span class="badge-safe">Aman</span></li>
+                <li>Kategori: <span class="badge aman-badge">Aman</span></li>
                 <li>Confidence Score: 94% (Tinggi)</li>
-                <li>Rekomendasi: Air layak digunakan untuk kebutuhan rumah tangga. Rebus hingga mendidih sebelum dikonsumsi.</li>
+                <li>Rekomendasi: Air layak digunakan. Rebus sebelum minum.</li>
               </ul>
-              <p class="example-note">✅ Interpretasi: Sangat baik. Data input berkualitas tinggi. Air aman digunakan dengan catatan direbus terlebih dahulu.</p>
+              <p class="contoh-note">Interpretasi: Sangat baik. Data input berkualitas tinggi. Air aman digunakan.</p>
             </div>
           </div>
 
-          <div class="example-item">
-            <div class="example-header">📋 Skenario 2: Air Sungai di Dekat Kawasan Industri (Hasil Peringatan)</div>
-            <div class="example-body">
-              <p><strong>Data Input:</strong></p>
-              <ul>
-                <li>Foto: Air tampak keruh kecoklatan, ada buih di permukaan</li>
-                <li>Warna: Coklat muda</li>
-                <li>Bau: Bau amis dan sedikit menyengat seperti kimia</li>
-                <li>Sumber air: Sungai</li>
-                <li>Lingkungan: Sekitar 500 meter dari pabrik tekstil dan industri kecil</li>
-              </ul>
+          <div class="contoh-item">
+            <div class="contoh-judul">Skenario 2: Air Sungai di Dekat Kawasan Industri</div>
+            <div class="contoh-isi">
+              <p><strong>Data Input:</strong> Foto keruh kecoklatan, bau amis, sumber sungai, lingkungan industri.</p>
               <p><strong>Output PAKAR-AIR:</strong></p>
               <ul>
-                <li>Kategori: <span class="badge-danger">Berpotensi Tercemar</span></li>
+                <li>Kategori: <span class="badge tercemar-badge">Berpotensi Tercemar</span></li>
                 <li>Confidence Score: 87% (Tinggi)</li>
-                <li>Rekomendasi: JANGAN gunakan air ini untuk keperluan apapun. Segera lakukan uji laboratorium untuk mengetahui jenis kontaminan secara pasti. Laporkan ke dinas lingkungan setempat.</li>
+                <li>Rekomendasi: JANGAN digunakan. Segera uji laboratorium.</li>
               </ul>
-              <p class="example-note">⚠️ Interpretasi: Peringatan serius. Model AI sangat yakin bahwa air ini tercemar. Harus segera ditindaklanjuti dengan uji lab.</p>
+              <p class="contoh-note">Interpretasi: Peringatan serius. Harus segera ditindaklanjuti dengan uji lab.</p>
             </div>
           </div>
 
-          <div class="example-item">
-            <div class="example-header">📋 Skenario 3: Kualitas Input Kurang Baik (Hasil Tidak Optimal)</div>
-            <div class="example-body">
-              <p><strong>Data Input:</strong></p>
-              <ul>
-                <li>Foto: Gelap, buram, kurang fokus, terlihat bayangan jari</li>
-                <li>Warna: Tidak diisi</li>
-                <li>Bau: Tidak diisi</li>
-                <li>Sumber air: Tidak diisi</li>
-                <li>Lingkungan: Tidak diisi</li>
-              </ul>
+          <div class="contoh-item">
+            <div class="contoh-judul">Skenario 3: Kualitas Input Kurang Baik</div>
+            <div class="contoh-isi">
+              <p><strong>Data Input:</strong> Foto gelap buram, data manual tidak diisi.</p>
               <p><strong>Output PAKAR-AIR:</strong></p>
               <ul>
-                <li>Kategori: <span class="badge-warning">Tidak Dapat Ditentukan</span></li>
+                <li>Kategori: Tidak dapat ditentukan</li>
                 <li>Confidence Score: 42% (Rendah)</li>
-                <li>Rekomendasi: Ulangi analisis dengan foto yang lebih jelas (cahaya cukup, fokus tajam, latar putih) dan lengkapi seluruh data manual yang diminta.</li>
+                <li>Rekomendasi: Ulangi analisis dengan foto yang lebih jelas dan data lengkap.</li>
               </ul>
-              <p class="example-note">📌 Interpretasi: Hasil tidak dapat diandalkan. Perbaiki kualitas input dan ulangi analisis.</p>
+              <p class="contoh-note">Interpretasi: Hasil tidak dapat diandalkan. Perbaiki kualitas input.</p>
             </div>
           </div>
 
-          <div class="example-item">
-            <div class="example-header">📋 Skenario 4: Air PDAM di Perkotaan (Ambang Batas)</div>
-            <div class="example-body">
-              <p><strong>Data Input:</strong></p>
-              <ul>
-                <li>Foto: Air tampak jernih</li>
-                <li>Warna: Tidak berwarna</li>
-                <li>Bau: Bau kaporit ringan</li>
-                <li>Sumber air: PDAM</li>
-                <li>Lingkungan: Perkotaan, kepadatan tinggi</li>
-              </ul>
+          <div class="contoh-item">
+            <div class="contoh-judul">Skenario 4: Air PDAM di Perkotaan</div>
+            <div class="contoh-isi">
+              <p><strong>Data Input:</strong> Foto air jernih, bau kaporit ringan, sumber PDAM.</p>
               <p><strong>Output PAKAR-AIR:</strong></p>
               <ul>
-                <li>Kategori: <span class="badge-warning">Perlu Perlakuan</span></li>
+                <li>Kategori: <span class="badge perlu-badge">Perlu Perlakuan</span></li>
                 <li>Confidence Score: 76% (Sedang)</li>
-                <li>Rekomendasi: Air masih dapat digunakan. Endapkan selama 30 menit atau rebus untuk menghilangkan bau kaporit. Gunakan filter karbon aktif untuk hasil optimal.</li>
+                <li>Rekomendasi: Endapkan 30 menit atau gunakan filter karbon aktif.</li>
               </ul>
-              <p class="example-note">📌 Interpretasi: Air PDAM umumnya sudah memenuhi standar, namun bau kaporit menunjukkan kadar klorin yang tinggi. Perlakuan sederhana sudah cukup.</p>
+              <p class="contoh-note">Interpretasi: Air PDAM umumnya memenuhi standar, kadar klorin tinggi.</p>
             </div>
           </div>
         </div>
 
-        <!-- ========== BAGIAN 5: BATASAN SISTEM ========== -->
-        <h2>E. Batasan PAKAR-AIR (Harus Dipahami)</h2>
+        <!-- Bagian 4: Batasan Sistem -->
+        <h2>4. Batasan PAKAR-AIR (Harus Dipahami)</h2>
         <p>
-          Sebagai pengguna PAKAR-AIR, penting untuk memahami keterbatasan sistem agar tidak 
-          terjadi kesalahan interpretasi atau pengambilan keputusan yang keliru:
+          Sebagai pengguna PAKAR-AIR, penting untuk memahami keterbatasan sistem agar tidak terjadi 
+          kesalahan interpretasi:
         </p>
 
-        <div class="warning-card">
-          <div class="warning-icon">⚠️</div>
-          <div class="warning-content">
+        <div class="kotak-batasan">
+          <span class="batasan-icon">!</span>
+          <div>
             <strong>Batasan Fundamental PAKAR-AIR</strong>
             <ul>
-              <li><strong>Bukan pengganti uji laboratorium:</strong> PAKAR-AIR adalah <strong>alat skrining awal (screening tool)</strong> yang memberikan estimasi cepat. Untuk keperluan medis, legal, atau konsumsi massal (depot air minum, restoran, industri makanan), <strong>WAJIB melakukan uji laboratorium standar yang terakreditasi</strong>.</li>
-              <li><strong>Parameter terbatas:</strong> Parameter yang dianalisis terbatas pada aspek visual (dari foto) dan data manual yang diinput pengguna. Sistem <strong>tidak mendeteksi</strong> virus, logam berat kadar sangat rendah, pestisida, atau kontaminan mikroba spesifik secara langsung.</li>
-              <li><strong>Ketergantungan pada kualitas input:</strong> Akurasi prediksi sangat bergantung pada kualitas foto dan kelengkapan data manual yang Anda berikan. Foto buram, gelap, atau data tidak lengkap akan menghasilkan confidence score rendah.</li>
-              <li><strong>Estimasi, bukan diagnosis:</strong> Hasil PAKAR-AIR adalah <strong>estimasi awal</strong> berdasarkan dataset yang digunakan untuk melatih model AI. Selalu konfirmasi dengan uji laboratorium jika hasil menunjukkan indikasi pencemaran.</li>
-              <li><strong>Tidak terintegrasi dengan sensor fisik:</strong> PAKAR-AIR saat ini hanya berbasis web dan belum mencakup integrasi dengan perangkat sensor fisik untuk pengukuran parameter kimia secara real-time.</li>
+              <li><strong>Bukan pengganti uji laboratorium:</strong> PAKAR-AIR adalah alat skrining awal (screening tool), BUKAN pengganti uji laboratorium bersertifikasi.</li>
+              <li><strong>Parameter terbatas:</strong> Sistem tidak mendeteksi virus, logam berat kadar sangat rendah, pestisida, atau kontaminan mikroba spesifik secara langsung.</li>
+              <li><strong>Ketergantungan pada kualitas input:</strong> Akurasi prediksi sangat bergantung pada kualitas foto dan kelengkapan data manual.</li>
+              <li><strong>Estimasi, bukan diagnosis:</strong> Hasil PAKAR-AIR adalah estimasi awal berdasarkan dataset pelatihan model AI.</li>
             </ul>
           </div>
         </div>
@@ -336,75 +247,59 @@
         <p>
           Jika confidence score berada di bawah 60% atau kategori menunjukkan "Berpotensi Tercemar", 
           <strong>WAJIB melakukan konfirmasi ke laboratorium kesehatan lingkungan terdekat</strong> 
-          (Balai Teknis Kesehatan Lingkungan, Laboratorium Kesehatan Daerah, atau laboratorium terakreditasi lainnya).
+          (Balai Teknis Kesehatan Lingkungan atau Laboratorium Kesehatan Daerah).
         </p>
 
-        <!-- ========== BAGIAN 6: FAQ ========== -->
-        <h2>F. Pertanyaan yang Sering Diajukan (FAQ)</h2>
+        <!-- Bagian 5: FAQ -->
+        <h2>5. Pertanyaan yang Sering Diajukan (FAQ)</h2>
 
-        <div class="faq-section">
+        <div class="faq-list">
           <div class="faq-item">
-            <div class="faq-question">Apakah PAKAR-AIR bisa menggantikan tes laboratorium untuk air minum?</div>
-            <div class="faq-answer">Tidak. PAKAR-AIR adalah alat bantu skrining awal. Untuk keperluan medis, legal, atau komersial, Anda tetap WAJIB menggunakan uji laboratorium standar yang terakreditasi. PAKAR-AIR membantu Anda mengetahui kapan perlu melakukan uji lab lebih lanjut.</div>
+            <div class="faq-pertanyaan">Apakah PAKAR-AIR bisa menggantikan tes laboratorium?</div>
+            <div class="faq-jawaban">Tidak. PAKAR-AIR adalah alat bantu skrining awal. Untuk keperluan medis, legal, atau komersial, Anda tetap WAJIB menggunakan uji laboratorium standar yang terakreditasi.</div>
           </div>
-
           <div class="faq-item">
-            <div class="faq-question">Seberapa akurat PAKAR-AIR dibandingkan uji laboratorium?</div>
-            <div class="faq-answer">PAKAR-AIR memiliki tingkat akurasi yang baik untuk parameter visual (warna, kekeruhan, indikasi kontaminasi kasat mata). Namun, akurasinya tidak dapat menyamai uji laboratorium yang menggunakan peralatan canggih (spektrofotometer, PCR, dll.) dengan metode standar. PAKAR-AIR mencapai akurasi sekitar 85-90% untuk deteksi kontaminasi tingkat menengah hingga berat.</div>
+            <div class="faq-pertanyaan">Seberapa akurat PAKAR-AIR?</div>
+            <div class="faq-jawaban">PAKAR-AIR memiliki tingkat akurasi sekitar 85-90% untuk deteksi kontaminasi tingkat menengah hingga berat berdasarkan parameter visual. Namun, akurasinya tidak dapat menyamai uji laboratorium.</div>
           </div>
-
           <div class="faq-item">
-            <div class="faq-question">Mengapa confidence score saya rendah padahal air terlihat bersih?</div>
-            <div class="faq-answer">Confidence score rendah biasanya disebabkan oleh kualitas foto yang kurang baik: pencahayaan kurang (foto gelap), gambar buram (kurang fokus), latar belakang tidak kontras, atau ada bayangan/refleksi. Data manual yang tidak lengkap juga menurunkan confidence score. Coba ulangi analisis dengan memperbaiki faktor-faktor tersebut.</div>
+            <div class="faq-pertanyaan">Mengapa confidence score saya rendah padahal air terlihat bersih?</div>
+            <div class="faq-jawaban">Confidence score rendah biasanya disebabkan oleh kualitas foto yang kurang baik: pencahayaan kurang, gambar buram, latar belakang tidak kontras, atau data manual tidak lengkap.</div>
           </div>
-
           <div class="faq-item">
-            <div class="faq-question">Apakah data analisis saya aman dan disimpan?</div>
-            <div class="faq-answer">Ya. Semua data analisis Anda disimpan secara aman untuk keperluan riwayat analisis. Data hanya dapat diakses oleh akun Anda sendiri (pengguna yang melakukan analisis). PAKAR-AIR mematuhi prinsip perlindungan data pribadi dan tidak membagikan data pengguna kepada pihak ketiga tanpa izin tertulis.</div>
+            <div class="faq-pertanyaan">Apakah data analisis saya aman dan disimpan?</div>
+            <div class="faq-jawaban">Ya. Semua data analisis Anda disimpan secara aman untuk keperluan riwayat analisis. Data hanya dapat diakses oleh akun Anda sendiri dan tidak dibagikan ke pihak ketiga.</div>
           </div>
-
           <div class="faq-item">
-            <div class="faq-question">Bisakah saya mengekspor hasil analisis untuk dokumentasi?</div>
-            <div class="faq-answer">Ya, Anda dapat mengekspor hasil analisis dari halaman Riwayat Analisis dalam format PDF atau CSV. Fitur ini berguna untuk dokumentasi pribadi, laporan, atau sebagai lampiran saat berkonsultasi dengan tenaga kesehatan atau laboratorium.</div>
-          </div>
-
-          <div class="faq-item">
-            <div class="faq-question">Apakah PAKAR-AIR mendeteksi semua jenis kontaminan air?</div>
-            <div class="faq-answer">Tidak. PAKAR-AIR dirancang untuk mendeteksi indikasi kontaminasi berdasarkan parameter visual (warna, kekeruhan, buih, partikel) dan data manual (bau, sumber, lingkungan). Sistem tidak dapat mendeteksi kontaminan yang tidak mengubah tampilan air, seperti kadar logam berat rendah, pestisida dosis kecil, atau virus tertentu. Untuk deteksi kontaminan tersebut, diperlukan uji laboratorium khusus.</div>
+            <div class="faq-pertanyaan">Bisakah saya mengekspor hasil analisis?</div>
+            <div class="faq-jawaban">Ya, Anda dapat mengekspor hasil analisis dari halaman Riwayat Analisis dalam format PDF atau CSV untuk dokumentasi pribadi.</div>
           </div>
         </div>
 
-        <!-- ========== BAGIAN 7: REFERENSI ========== -->
-        <div class="reference-card">
-          <h4>📚 Referensi dan Sumber</h4>
-          <ul>
-            <li>Dokumentasi Teknis PAKAR-AIR (Pendeteksi Kualitas Air Berbasis Artificial Intelligence) v1.0</li>
-            <li>Peraturan Menteri Kesehatan Republik Indonesia No. 492/Menkes/Per/IV/2010 tentang Persyaratan Kualitas Air Minum</li>
-            <li>World Health Organization (WHO) — Guidelines for Drinking-water Quality, 4th Edition incorporating the 1st and 2nd addenda (2024)</li>
-            <li>United Nations Sustainable Development Goal 6: Clean Water and Sanitation — Progress Report 2025</li>
-            <li>American Public Health Association (APHA) — Standard Methods for the Examination of Water and Wastewater, 24th Edition</li>
-            <li>ISO 5667 Series — Water Quality Sampling Guidelines</li>
-          </ul>
+        <!-- Referensi -->
+        <div class="referensi">
+          <strong>Referensi</strong><br>
+          Dokumentasi Teknis PAKAR-AIR (Pendeteksi Kualitas Air Berbasis Artificial Intelligence) v1.0<br>
+          Peraturan Menteri Kesehatan RI No. 492/Menkes/Per/IV/2010 tentang Persyaratan Kualitas Air Minum<br>
+          World Health Organization (WHO) — Guidelines for Drinking-water Quality, 4th Edition<br>
+          United Nations Sustainable Development Goal 6: Clean Water and Sanitation
         </div>
 
-        <!-- CLOSING NOTE -->
-        <p class="closing-note">
-          <strong>Pesan dari Tim PAKAR-AIR:</strong> Kami berharap panduan ini membantu Anda memahami 
-          hasil analisis air dengan lebih baik. PAKAR-AIR hadir untuk memberdayakan masyarakat dalam 
-          memantau kualitas air secara mandiri. Ingatlah bahwa air bersih adalah fondasi kesehatan. 
-          Dengan pengetahuan yang tepat, Anda dapat melindungi diri, keluarga, dan lingkungan dari 
-          risiko yang terkait dengan air tercemar.
+        <p class="penutup">
+          <strong>Pesan PAKAR-AIR:</strong> Kami berharap panduan ini membantu Anda memahami hasil analisis 
+          air dengan lebih baik. PAKAR-AIR hadir untuk memberdayakan masyarakat dalam memantau kualitas air 
+          secara mandiri. Dengan pengetahuan yang tepat, Anda dapat melindungi diri, keluarga, dan lingkungan 
+          dari risiko yang terkait dengan air tercemar.
         </p>
-        <p class="closing-note">
-          <strong>#AirBersihUntukSemua #SDG6 #PAKARAIR</strong>
-        </p>
+
       </div>
 
-      <!-- FOOTER - SAMA DENGAN ARTIKEL 1 & 2 -->
-      <footer class="article-footer">
-        <button @click="$router.back()" class="btn-outline">← Kembali ke Halaman Edukasi</button>
-        <button @click="cobaAnalisis" class="btn-primary ai-btn">Mulai Analisis Air Sekarang →</button>
-      </footer>
+      <!-- FOOTER TOMBOL -->
+      <div class="footer">
+        <button class="btn-kembali" @click="kembali">← Kembali ke Halaman Edukasi</button>
+        <button class="btn-analisis" @click="analisis">Coba Analisis Sekarang →</button>
+      </div>
+
     </div>
   </div>
 </template>
@@ -413,7 +308,10 @@
 export default {
   name: 'ArtikelInterpretasi',
   methods: {
-    cobaAnalisis() {
+    kembali() {
+      this.$router.back();
+    },
+    analisis() {
       this.$router.push('/analisis');
     }
   }
@@ -421,159 +319,140 @@ export default {
 </script>
 
 <style scoped>
-/* ============================================ */
-/* STYLE SAMA PERSIS DENGAN ARTIKEL 1 & 2       */
-/* Desain: Profesional, Elegan, Warm, Clean     */
-/* ============================================ */
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-.article-page {
-  background: #faf8f5;
+.page {
+  background: #f5f3ef;
   min-height: 100vh;
-  padding: 2rem 1rem;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  padding: 40px 20px;
+  font-family: 'Inter', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
 }
 
-.article-container {
+.container {
   max-width: 880px;
   margin: 0 auto;
   background: #ffffff;
-  border-radius: 24px;
+  border-radius: 20px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
   overflow: hidden;
 }
 
-/* HEADER */
-.article-header {
-  padding: 2.5rem 2.8rem 1rem 2.8rem;
+/* Header */
+.header {
+  padding: 32px 36px 0 36px;
 }
 
-.article-meta {
+.meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.2rem;
-  font-size: 0.8rem;
+  margin-bottom: 16px;
+  font-size: 13px;
 }
 
-.article-category {
-  background: #f0ebe3;
-  color: #8b7355;
-  padding: 0.2rem 0.8rem;
-  border-radius: 20px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-}
-
-.article-category.ai {
+.kategori {
   background: #e8eef0;
   color: #4a6a6a;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 500;
 }
 
-.article-date {
+.tanggal {
   color: #9aa6b5;
 }
 
-.article-title {
-  font-size: 1.9rem;
-  line-height: 1.35;
+h1 {
+  font-size: 28px;
+  line-height: 1.3;
   font-weight: 600;
   color: #3a5a4a;
-  margin-bottom: 1rem;
-  letter-spacing: -0.3px;
+  margin-bottom: 12px;
 }
 
-.article-byline {
-  font-size: 0.8rem;
+.penulis {
+  font-size: 12px;
   color: #7c8b9c;
   border-top: 1px solid #edebe6;
-  padding-top: 1rem;
+  padding-top: 14px;
 }
 
-.separator {
-  margin: 0 0.5rem;
+/* Gambar */
+.gambar {
+  padding: 24px 36px 0 36px;
 }
 
-/* FIGURE & IMAGE */
-.article-figure {
-  margin: 1.5rem 2.8rem;
-}
-
-.hero-image {
+.gambar img {
   width: 100%;
-  border-radius: 16px;
-  object-fit: cover;
-  background: #e8e4dd;
+  border-radius: 14px;
 }
 
-.image-caption {
-  font-size: 0.7rem;
+.caption {
+  font-size: 11px;
   color: #a8b3c0;
   text-align: center;
-  margin-top: 0.6rem;
+  margin-top: 8px;
 }
 
-/* CONTENT */
-.article-content {
-  padding: 0 2.8rem 2rem 2.8rem;
+/* Konten */
+.konten {
+  padding: 16px 36px 32px 36px;
 }
 
 .lead {
-  font-size: 1.05rem;
-  line-height: 1.65;
+  font-size: 16px;
+  line-height: 1.6;
   color: #4b5c6e;
-  margin-bottom: 1.5rem;
+  margin-bottom: 20px;
   border-left: 3px solid #c9a87b;
-  padding-left: 1.2rem;
+  padding-left: 18px;
 }
 
 p {
-  font-size: 1rem;
+  font-size: 15px;
   line-height: 1.7;
   color: #3a4a5c;
-  margin-bottom: 1.2rem;
+  margin-bottom: 16px;
+}
+
+ul {
+  margin: 12px 0 16px 30px;
+}
+
+li {
+  margin-bottom: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #4a5a6a;
 }
 
 h2 {
-  font-size: 1.4rem;
+  font-size: 22px;
   font-weight: 600;
   color: #3a5a4a;
-  margin: 2rem 0 1rem 0;
-  padding-bottom: 0.3rem;
+  margin: 32px 0 16px 0;
+  padding-bottom: 6px;
   border-bottom: 2px solid #e8e2d8;
 }
 
-h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #5a7a5a;
-  margin-bottom: 0.5rem;
-}
-
-/* KATEGORI GRID (3 kategori) */
-.kategori-grid {
+/* Grid tiga kategori */
+.grid-tiga-kategori {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.2rem;
-  margin: 1.5rem 0;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin: 20px 0;
 }
 
 .kategori-card {
   background: #f8f6f2;
-  padding: 1.2rem;
   border-radius: 16px;
+  padding: 18px;
   border-top: 3px solid;
-  transition: all 0.2s ease;
-}
-
-.kategori-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .kategori-card.aman { border-top-color: #6b8c6b; }
@@ -581,45 +460,362 @@ h3 {
 .kategori-card.tercemar { border-top-color: #b85c5c; }
 
 .kategori-icon {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+  width: 40px;
+  height: 40px;
+  background: rgba(0,0,0,0.05);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
 }
+
+.kategori-judul {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.aman .kategori-judul { color: #4a6a4a; }
+.perlu .kategori-judul { color: #b87c4a; }
+.tercemar .kategori-judul { color: #b85c5c; }
 
 .kategori-badge {
-  font-size: 0.7rem;
-  background: rgba(0, 0, 0, 0.05);
-  padding: 0.2rem 0.5rem;
+  font-size: 11px;
+  background: rgba(0,0,0,0.05);
+  padding: 4px 8px;
   border-radius: 20px;
   display: inline-block;
-  margin: 0.5rem 0;
+  margin-bottom: 12px;
+}
+
+.kategori-deskripsi {
+  font-size: 13px;
+  line-height: 1.55;
   color: #5a6a7a;
+  margin-bottom: 12px;
 }
 
-.kategori-card p {
-  font-size: 0.9rem;
-  margin-bottom: 0.8rem;
-  color: #5a6a7a;
+.kategori-karakteristik {
+  font-size: 12px;
+  margin: 10px 0;
 }
 
-.kategori-detail {
-  font-size: 0.85rem;
-  margin: 0.8rem 0;
-  padding: 0.5rem;
-  background: rgba(0, 0, 0, 0.02);
-  border-radius: 8px;
+.kategori-karakteristik ul {
+  margin: 6px 0 0 18px;
 }
 
-.kategori-detail ul {
-  margin: 0.3rem 0 0 1rem;
-  padding: 0;
+.kategori-karakteristik li {
+  font-size: 11px;
+  margin-bottom: 4px;
 }
 
-.kategori-detail li {
-  font-size: 0.8rem;
-  margin-bottom: 0.2rem;
+.kategori-tindakan {
+  background: rgba(0,0,0,0.03);
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  margin-top: 10px;
 }
 
-.kategori-action {
-  font-size: 0.8rem;
-  background: rgba(0, 0, 0, 0.03);
-  padding:
+/* Confidence Box */
+.confidence-box {
+  background: #f8f6f2;
+  padding: 20px;
+  border-radius: 16px;
+  margin: 20px 0;
+}
+
+.confidence-bar {
+  display: flex;
+  height: 40px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.bar.tinggi { background: #6b8c6b; }
+.bar.sedang { background: #d4a373; }
+.bar.rendah { background: #b85c5c; }
+
+.confidence-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.dot.tinggi { background: #6b8c6b; }
+.dot.sedang { background: #d4a373; }
+.dot.rendah { background: #b85c5c; }
+
+/* Kotak tips */
+.kotak-tips {
+  background: #e8f4f8;
+  border-left: 4px solid #6b8c6b;
+  padding: 16px;
+  border-radius: 12px;
+  margin: 20px 0;
+  display: flex;
+  gap: 12px;
+}
+
+.tips-icon {
+  background: #6b8c6b;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.kotak-tips ul {
+  margin: 8px 0 0 18px;
+}
+
+/* Contoh */
+.contoh-list {
+  margin: 16px 0;
+}
+
+.contoh-item {
+  border: 1px solid #e8e2d8;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.contoh-judul {
+  background: #f6f3ef;
+  padding: 12px 16px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #5c4a3a;
+}
+
+.contoh-isi {
+  padding: 14px 16px;
+}
+
+.contoh-isi p {
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.contoh-isi ul {
+  margin: 6px 0 6px 20px;
+}
+
+.contoh-isi li {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.contoh-note {
+  font-size: 12px;
+  color: #7a8a8a;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+.badge {
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.aman-badge { background: #d4e5d4; color: #3d6b3d; }
+.perlu-badge { background: #f0e5c8; color: #a5832e; }
+.tercemar-badge { background: #f0d6d6; color: #b85c5c; }
+
+/* Kotak batasan */
+.kotak-batasan {
+  background: #fef6f0;
+  border-left: 4px solid #d4a373;
+  padding: 16px;
+  border-radius: 12px;
+  margin: 20px 0;
+  display: flex;
+  gap: 12px;
+}
+
+.batasan-icon {
+  background: #d4a373;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.kotak-batasan ul {
+  margin: 8px 0 0 18px;
+}
+
+/* FAQ */
+.faq-list {
+  margin: 16px 0;
+}
+
+.faq-item {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #ece6df;
+}
+
+.faq-pertanyaan {
+  font-weight: 600;
+  font-size: 14px;
+  color: #4a6a4a;
+  margin-bottom: 6px;
+}
+
+.faq-jawaban {
+  font-size: 13px;
+  color: #6a7a8a;
+  line-height: 1.55;
+}
+
+/* Referensi */
+.referensi {
+  background: #f8f6f2;
+  padding: 16px 20px;
+  border-radius: 12px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #7a8a7a;
+  margin: 24px 0 16px 0;
+}
+
+.referensi strong {
+  font-size: 12px;
+  color: #8b7355;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Penutup */
+.penutup {
+  font-style: italic;
+  background: #faf7f2;
+  padding: 16px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #6a7a6a;
+  margin-top: 20px;
+}
+
+/* Footer */
+.footer {
+  padding: 16px 36px 32px 36px;
+  border-top: 1px solid #ece6df;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  background: #fefcf9;
+}
+
+.btn-kembali, .btn-analisis {
+  padding: 10px 24px;
+  border-radius: 40px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.btn-kembali {
+  background: transparent;
+  border: 1px solid #d4cbbc;
+  color: #8b7355;
+}
+
+.btn-kembali:hover {
+  background: #f5f0e8;
+}
+
+.btn-analisis {
+  background: #6b8c6b;
+  border: none;
+  color: white;
+}
+
+.btn-analisis:hover {
+  background: #4d6b4d;
+}
+
+/* Responsif */
+@media (max-width: 700px) {
+  .header, .gambar, .konten, .footer {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  
+  h1 {
+    font-size: 22px;
+  }
+  
+  .grid-tiga-kategori {
+    grid-template-columns: 1fr;
+  }
+  
+  .meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .footer {
+    flex-direction: column;
+  }
+  
+  .btn-kembali, .btn-analisis {
+    text-align: center;
+  }
+  
+  .confidence-bar {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .bar {
+    padding: 6px;
+  }
+}
+</style>
