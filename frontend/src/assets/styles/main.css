@@ -1,302 +1,126 @@
-/* ============================================================
-   PAKAR-AIR · main.css
-   Tailwind base + custom design tokens
-   Design system: grayscale, no gradients, rounded-sm/md only
-   ============================================================ */
+/* =====================================================
+   PAKAR-AIR — Global Base Styles
+   ===================================================== */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* ----------------------------------------------------------
-   1. CSS CUSTOM PROPERTIES (Design Tokens)
-   ---------------------------------------------------------- */
+/* 1. CSS Variables */
 :root {
-  /* Neutral scale */
-  --color-bg:           #f9fafb;   /* gray-50  – page background     */
-  --color-surface:      #ffffff;   /* white    – card surfaces        */
-  --color-border:       #d1d5db;   /* gray-300 – default borders      */
-  --color-border-light: #e5e7eb;   /* gray-200 – dividers             */
-  --color-border-dark:  #9ca3af;   /* gray-400 – active/hover borders */
+  --color-bg: #f3f6fb;
+  --color-surface: #ffffff;
+  --color-border: #e2e8f0;
+  --color-border-light: #eef0f4;
 
-  /* Text */
-  --color-text-primary:   #1f2937; /* gray-800 */
-  --color-text-secondary: #4b5563; /* gray-600 */
-  --color-text-muted:     #6b7280; /* gray-500 */
-  --color-text-subtle:    #9ca3af; /* gray-400 */
+  --color-text-primary: #1a202c;
+  --color-text-secondary: #4a5568;
+  --color-text-muted: #a0aec0;
 
-  /* Interactive */
-  --color-action-bg:      #e5e7eb; /* gray-200 – primary button fill  */
-  --color-action-hover:   #d1d5db; /* gray-300 – primary button hover */
-  --color-active-nav:     #f3f4f6; /* gray-100 – active sidebar item  */
+  --color-accent: #3b82f6;
+  --color-accent-hover: #2563eb;
 
-  /* Layout */
-  --sidebar-width:        260px;
-  --topbar-height:        60px;
+  --color-success-bg: #f0fdf4;
+  --color-success-border: #bbf7d0;
+  --color-success-text: #166534;
+  --color-success-badge: #dcfce7;
 
-  /* Typography */
-  --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --color-danger-bg: #fef2f2;
+  --color-danger-border: #fecaca;
+  --color-danger-text: #991b1b;
+  --color-danger-badge: #fee2e2;
+
+  --color-neutral-badge: #f1f5f9;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 13px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
 }
 
-/* ----------------------------------------------------------
-   2. BASE RESETS
-   ---------------------------------------------------------- */
-@layer base {
-  *, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  html {
-    font-family: var(--font-sans);
-    font-size: 14px;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: var(--color-text-primary);
-    background-color: var(--color-bg);
-  }
-
-  body {
-    min-height: 100vh;
-    background-color: var(--color-bg);
-  }
-
-  /* Headings */
-  h1, h2, h3, h4, h5, h6 {
-    font-weight: 600;
-    color: var(--color-text-primary);
-    line-height: 1.3;
-  }
-
-  /* Links */
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  /* Scrollbar – minimal, grayscale */
-  ::-webkit-scrollbar        { width: 5px; height: 5px; }
-  ::-webkit-scrollbar-track  { background: transparent; }
-  ::-webkit-scrollbar-thumb  { background: #d1d5db; border-radius: 2px; }
-  ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+/* 2. Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* ----------------------------------------------------------
-   3. COMPONENT LAYER
-   ---------------------------------------------------------- */
-@layer components {
-
-  /* ── Card ─────────────────────────────────────────────── */
-  .card {
-    border: 1px solid var(--color-border);
-    border-radius: 0.5rem;
-    background-color: var(--color-surface);
-    padding: 1.5rem;
-  }
-
-  .card-sm {
-    border: 1px solid var(--color-border);
-    border-radius: 0.5rem;
-    background-color: var(--color-surface);
-    padding: 1rem;
-  }
-
-  /* ── Form Controls ────────────────────────────────────── */
-  .form-input {
-    width: 100%;
-    border: 1px solid var(--color-border);
-    border-radius: 0.125rem;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.875rem;
-    color: var(--color-text-primary);
-    background-color: var(--color-surface);
-    caret-color: currentColor;
-  }
-
-  .form-input:focus {
-    outline: none;
-    border-color: #6b7280; /* muted dark */
-  }
-
-  .form-select {
-    appearance: none;
-    cursor: pointer;
-  }
-
-  .form-label {
-    display: block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--color-text-secondary);
-    margin-bottom: 0.25rem;
-  }
-
-  .form-label-required::after {
-    content: " *";
-    color: var(--color-text-subtle);
-  }
-
-  /* ── Buttons ──────────────────────────────────────────── */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    border-radius: 0.125rem;
-    border: 1px solid transparent;
-    transition: background-color 100ms;
-  }
-
-  .btn-primary {
-    border-color: #9ca3af;
-    background-color: #e5e7eb;
-    color: var(--color-text-primary);
-  }
-
-  .btn-primary:hover { background-color: #d1d5db; }
-
-  .btn-secondary {
-    border-color: var(--color-border);
-    background-color: var(--color-surface);
-    color: var(--color-text-secondary);
-  }
-
-  .btn-secondary:hover { background-color: #f9fafb; }
-
-  .btn-ghost {
-    border-color: transparent;
-    background-color: transparent;
-    color: var(--color-text-secondary);
-  }
-
-  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-  /* ── Badge ────────────────────────────────────────────── */
-  .badge {
-    display: inline-block;
-    padding: 0.125rem 0.625rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    border-radius: 0.125rem;
-    border: 1px solid var(--color-border);
-  }
-
-  .badge-default { color: var(--color-text-secondary); background-color: #f8fafc; }
-  .badge-strong { color: var(--color-text-primary); background-color: #f3f4f6; border-color: #9ca3af; }
-
-  /* ── Divider ──────────────────────────────────────────── */
-  .divider { border-top: 1px solid var(--color-border-light); margin: 1rem 0; }
-
-  /* ── Upload Drop Zone ─────────────────────────────────── */
-  .drop-zone {
-    border: 2px dashed var(--color-border);
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: border-color 100ms, background-color 100ms;
-  }
-
-  .drop-zone--active { border-color: #6b7280; background-color: rgba(243,246,255,0.5); }
-
-  /* ── Sidebar Nav Item ─────────────────────────────────── */
-  .nav-item { display:flex; align-items:center; gap:0.75rem; padding:0.5rem 0.75rem; border-radius:0.125rem; font-size:0.875rem; color:var(--color-text-secondary); cursor:pointer; transition: background-color 100ms; }
-  .nav-item:hover { background-color: #f8fafc; color: var(--color-text-primary); }
-  .nav-item--active { background-color: #f3f4f6; color: var(--color-text-primary); font-weight:600; }
-
-  /* ── Page Header ──────────────────────────────────────── */
-  .page-header { margin-bottom: 1.5rem; }
-  .page-title { font-size: 1.125rem; font-weight:600; color: var(--color-text-primary); }
-  .page-subtitle { font-size: 0.875rem; color: var(--color-text-secondary); margin-top: 0.125rem; }
-
-  /* ── Alert / Banner ───────────────────────────────────── */
-  .alert { border: 1px solid var(--color-border); border-radius: 0.125rem; background-color: #f9fafb; padding: 0.75rem 1rem; font-size: 0.875rem; color: var(--color-text-secondary); }
-
-  /* ── Progress Bar ─────────────────────────────────────── */
-  .progress-track { width:100%; height:0.5rem; background-color:#e5e7eb; border-radius:0.125rem; overflow:hidden; }
-  .progress-fill { height:100%; background-color:#111827; border-radius:0.125rem; }
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
 }
 
-/* ----------------------------------------------------------
-   4. UTILITY OVERRIDES
-   ---------------------------------------------------------- */
-@layer utilities {
-  /* Hide scrollbar but keep scrollability */
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Dashed upload border */
-  .border-dashed-upload {
-    border: 2px dashed #d1d5db;
-  }
-
-  /* Truncate with title fallback */
-  .truncate-hint { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: default; }
-
-  /* Animate spin (for loading states) */
-  .spin {
-    animation: spin 0.8s linear infinite;
-  }
-
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-  }
-}
-
-/* ----------------------------------------------------------
-   5. LAYOUT HELPERS (used by DashboardLayout)
-   ---------------------------------------------------------- */
-.layout-dashboard {
-  display: grid;
-  grid-template-columns: var(--sidebar-width) 1fr;
-  grid-template-rows: var(--topbar-height) 1fr;
-  min-height: 100vh;
+body {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
   background-color: var(--color-bg);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
-.layout-sidebar {
-  grid-row: 1 / -1;
-  grid-column: 1 / 2;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--color-surface);
-  border-right: 1px solid var(--color-border);
-  overflow-y: auto;
+/* 3. Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-text-primary);
 }
 
-.layout-topbar {
-  grid-row: 1 / 2;
-  grid-column: 2 / 3;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
-  padding: 0 1.5rem;
+p {
+  line-height: 1.6;
 }
 
-.layout-main {
-  grid-row: 2 / 3;
-  grid-column: 2 / 3;
-  overflow-y: auto;
-  padding: 1.5rem;
+a {
+  color: var(--color-accent);
+  text-decoration: none;
 }
 
-/* Default (auth/guest) layout */
-.layout-default {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--color-bg);
+a:hover {
+  text-decoration: underline;
+}
+
+/* 4. Form resets */
+input,
+select,
+textarea,
+button {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* 5. Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* 6. Focus ring */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }

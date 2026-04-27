@@ -1,15 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-// layouts
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import DashboardLayout from '@/layouts/DashboardLayout.vue'
-
-// views
 import LandingPage from '@/views/LandingPage.vue'
 import AnalysisView from '@/views/AnalysisView.vue'
 
 const routes = [
-  // Landing
+  // Landing (DefaultLayout handles its own chrome)
   {
     path: '/',
     component: DefaultLayout,
@@ -22,17 +18,11 @@ const routes = [
     ],
   },
 
-  // Dashboard (Analysis)
+  // Analysis — DashboardLayout is wrapped directly inside AnalysisView
   {
     path: '/analysis',
-    component: DashboardLayout,
-    children: [
-      {
-        path: '',
-        name: 'Analysis',
-        component: AnalysisView,
-      },
-    ],
+    name: 'Analysis',
+    component: AnalysisView,
   },
 ]
 
