@@ -7,6 +7,11 @@
     @dragover.prevent
     @drop.prevent="onDrop"
     @click="triggerInput"
+    role="button"
+    tabindex="0"
+    @keydown.enter="triggerInput"
+    @keydown.space.prevent="triggerInput"
+    aria-label="Upload foto air"
   >
     <input
       ref="inputRef"
@@ -15,15 +20,17 @@
       class="uploader__input"
       @change="onFileChange"
     />
+
     <div class="uploader__body">
-      <svg class="uploader__icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40"
-        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+      <svg class="uploader__icon" xmlns="http://www.w3.org/2000/svg"
+        width="36" height="36" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor" stroke-width="1.5">
         <path stroke-linecap="round" stroke-linejoin="round"
           d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5
              m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
       </svg>
       <p class="uploader__label">Klik untuk upload atau drag &amp; drop</p>
-      <p class="uploader__hint">PNG, JPG, JPEG (Maks. 5MB)</p>
+      <p class="uploader__hint">PNG, JPG, JPEG &nbsp;·&nbsp; Maks. 5MB</p>
     </div>
   </div>
 </template>
@@ -42,8 +49,7 @@ function triggerInput() {
 function onFileChange(e) {
   const f = e.target.files?.[0]
   if (f) emit('file-selected', f)
-  // reset so same file can be re-selected
-  e.target.value = ''
+  e.target.value = '' // allow re-selecting same file
 }
 
 function onDrop(e) {
@@ -55,23 +61,32 @@ function onDrop(e) {
 
 <style scoped>
 .uploader {
-  border: 1.5px dashed #b0b0b0;
-  border-radius: 4px;
-  padding: 48px 24px;
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 6px;
+  padding: 40px 24px;
   cursor: pointer;
   text-align: center;
-  background: #fafafa;
+  background: #f8fafc;
   transition: border-color 0.15s, background 0.15s;
   user-select: none;
+  outline: none;
 }
-.uploader--drag,
-.uploader:hover {
-  border-color: #666;
-  background: #f0f0f0;
+
+.uploader:hover,
+.uploader:focus-visible {
+  border-color: #94a3b8;
+  background: #f1f5f9;
 }
+
+.uploader--drag {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+
 .uploader__input {
   display: none;
 }
+
 .uploader__body {
   display: flex;
   flex-direction: column;
@@ -79,17 +94,19 @@ function onDrop(e) {
   gap: 8px;
   pointer-events: none;
 }
+
 .uploader__icon {
-  color: #888;
+  color: #94a3b8;
 }
+
 .uploader__label {
   font-size: 14px;
-  color: #444;
-  margin: 0;
+  color: #475569;
+  font-weight: 500;
 }
+
 .uploader__hint {
   font-size: 12px;
-  color: #999;
-  margin: 0;
+  color: #94a3b8;
 }
 </style>
