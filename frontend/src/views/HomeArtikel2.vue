@@ -1,156 +1,157 @@
 <template>
-  <div class="page">
-    <div class="container">
+  <div class="article-page">
+    <div class="article-container">
       
-      <!-- HEADER -->
-      <div class="header">
-        <div class="meta">
-          <span class="kategori">Kesehatan & Lingkungan</span>
-          <span class="tanggal">12 Maret 2026 · 7 menit membaca</span>
+      <!-- ========== HEADER ARTIKEL ========== -->
+      <div class="article-header">
+        <div class="header-meta">
+          <span class="category-tag health">Kesehatan & Lingkungan</span>
+          <span class="reading-time">10 Maret 2026 · 8 menit membaca</span>
         </div>
-        <h1>Dampak Pencemaran Air bagi Kesehatan: Ancaman Tersembunyi yang Perlu Diwaspadai</h1>
-        <div class="penulis">
-          Tim Pakar PAKAR-AIR | Sumber: WHO, Kementerian Kesehatan RI
+        <h1 class="article-title">Dampak Pencemaran Air bagi Kesehatan: Ancaman Tersembunyi yang Mengintai Setiap Hari</h1>
+        <div class="author-credit">
+          <span class="author">Tim Pakar PAKAR-AIR</span>
+          <span class="separator">—</span>
+          <span class="source">Sumber: World Health Organization & Kementerian Kesehatan RI</span>
         </div>
       </div>
 
-      <!-- GAMBAR -->
-      <div class="gambar">
-        <img src="https://placehold.co/900x450/e0d6cd/5a4a3a?text=Pencemaran+Air" alt="Pencemaran air">
-        <p class="caption">Air yang tercemar dapat menyebabkan berbagai penyakit serius bagi manusia</p>
+      <!-- ========== COVER GAMBAR ========== -->
+      <div class="cover-container">
+        <img 
+          :src="coverImage" 
+          alt="Ilustrasi pencemaran air" 
+          class="cover-image"
+          @error="handleImageError"
+        >
+        <p class="cover-caption">
+          Pencemaran air dapat menyebabkan berbagai penyakit serius, mulai dari diare akut hingga kanker | Ilustrasi: PAKAR-AIR
+        </p>
       </div>
 
-      <!-- KONTEN UTAMA -->
-      <div class="konten">
+      <!-- ========== KONTEN ARTIKEL ========== -->
+      <div class="article-body">
         
         <!-- Lead -->
-        <p class="lead">
-          <strong>Jakarta, PAKAR-AIR</strong> — Organisasi Kesehatan Dunia (WHO) melaporkan bahwa sekitar 
-          <strong>80% penyakit di negara berkembang</strong> berkaitan erat dengan kualitas air yang buruk. 
-          Setiap tahun, lebih dari <strong>3,4 juta orang meninggal</strong> akibat penyakit yang ditularkan 
-          melalui air yang tercemar. Sebagian besar korban adalah anak-anak di bawah usia 5 tahun.
+        <p class="lead-paragraph">
+          <strong>Jakarta, PAKAR-AIR</strong> — Organisasi Kesehatan Dunia (WHO) melaporkan bahwa 
+          sekitar <strong>80% penyakit di negara berkembang</strong> berkaitan erat dengan kualitas air yang buruk. 
+          Setiap tahun, lebih dari <strong>3,4 juta orang meninggal</strong> akibat penyakit yang ditularkan melalui 
+          air yang tercemar, dan sebagian besar korban adalah anak-anak di bawah usia 5 tahun.
         </p>
 
         <p>
-          Pencemaran air bukan sekadar masalah lingkungan, melainkan <strong>darurat kesehatan masyarakat</strong> 
-          yang membutuhkan perhatian serius. Berbagai kontaminan dalam air—mulai dari bakteri hingga logam berat—
-          dapat menyebabkan penyakit akut maupun kronis. Memahami risiko ini adalah langkah pertama untuk 
-          melindungi diri sendiri, keluarga, dan lingkungan sekitar.
+          Pencemaran air bukan sekadar masalah lingkungan — ini adalah <strong>darurat kesehatan masyarakat</strong> 
+          yang membutuhkan perhatian serius dari semua pihak. Berbagai kontaminan dalam air, mulai dari 
+          bakteri patogen hingga logam berat beracun, dapat menyebabkan penyakit akut yang muncul dalam 
+          hitungan jam, maupun penyakit kronis yang baru terdeteksi setelah bertahun-tahun.
         </p>
 
-        <!-- Bagian 1: Jenis Pencemar -->
-        <h2>1. Jenis Pencemar Air Berdasarkan Sumbernya</h2>
+        <!-- Bagian 1: Jenis Pencemar Air -->
+        <h2 class="section-title">1. Klasifikasi Pencemar Air Berdasarkan Sumber dan Jenisnya</h2>
         <p>
-          Pencemaran air dapat berasal dari berbagai sumber. Berikut adalah empat kategori utama pencemar air 
-          beserta dampaknya terhadap kesehatan:
+          Memahami jenis-jenis pencemar air adalah langkah awal untuk mengidentifikasi risiko kesehatan 
+          yang mungkin ditimbulkan. Berikut adalah empat kategori utama pencemar air:
         </p>
 
-        <div class="grid-dua">
-          <div class="kartu">
-            <div class="kartu-judul">Pencemar Biologis</div>
-            <div class="kartu-isi">
+        <div class="card-grid">
+          <div class="info-card-compact">
+            <div class="card-icon">B</div>
+            <div class="card-title">Pencemar Biologis</div>
+            <div class="card-desc">
               <strong>Sumber:</strong> Kotoran manusia, hewan, limbah rumah tangga<br>
-              <strong>Jenis:</strong> Bakteri E.coli, Salmonella, Vibrio cholerae, virus Hepatitis A, parasit Giardia<br>
+              <strong>Jenis:</strong> Bakteri E.coli, Salmonella typhi, Vibrio cholerae, Virus Hepatitis A, Parasit Giardia lamblia<br>
               <strong>Dampak:</strong> Diare, kolera, tifoid, hepatitis A, disentri
             </div>
           </div>
-          <div class="kartu">
-            <div class="kartu-judul">Pencemar Kimiawi</div>
-            <div class="kartu-isi">
+          <div class="info-card-compact">
+            <div class="card-icon">K</div>
+            <div class="card-title">Pencemar Kimiawi</div>
+            <div class="card-desc">
               <strong>Sumber:</strong> Limbah industri, pertanian (pupuk, pestisida), limbah rumah tangga<br>
-              <strong>Jenis:</strong> Logam berat (timbal, merkuri, kadmium, arsenik), nitrat, pestisida<br>
-              <strong>Dampak:</strong> Gagal ginjal, kanker, gangguan saraf, gangguan hormon
+              <strong>Jenis:</strong> Logam berat (timbal, merkuri, kadmium, arsenik), nitrat, pestisida, herbisida<br>
+              <strong>Dampak:</strong> Gagal ginjal, kanker, gangguan saraf, gangguan hormon, kerusakan hati
             </div>
           </div>
-          <div class="kartu">
-            <div class="kartu-judul">Pencemar Fisik</div>
-            <div class="kartu-isi">
-              <strong>Sumber:</strong> Erosi tanah, limbah konstruksi, sampah plastik<br>
-              <strong>Jenis:</strong> Lumpur, sedimen, mikroplastik, partikel tersuspensi<br>
-              <strong>Dampak:</strong> Gangguan pencernaan, akumulasi mikroplastik dalam tubuh
+          <div class="info-card-compact">
+            <div class="card-icon">F</div>
+            <div class="card-title">Pencemar Fisik</div>
+            <div class="card-desc">
+              <strong>Sumber:</strong> Erosi tanah, limbah konstruksi, sampah plastik, sedimentasi<br>
+              <strong>Jenis:</strong> Lumpur, sedimen, mikroplastik, partikel tersuspensi, serat tekstil<br>
+              <strong>Dampak:</strong> Gangguan pencernaan, akumulasi mikroplastik dalam jaringan tubuh, iritasi saluran cerna
             </div>
           </div>
-          <div class="kartu">
-            <div class="kartu-judul">Pencemar Radioaktif</div>
-            <div class="kartu-isi">
-              <strong>Sumber:</strong> Limbah industri nuklir, pertambangan uranium, fasilitas medis<br>
-              <strong>Jenis:</strong> Radium, uranium, radon<br>
-              <strong>Dampak:</strong> Kanker, kerusakan sumsum tulang, cacat lahir
+          <div class="info-card-compact">
+            <div class="card-icon">R</div>
+            <div class="card-title">Pencemar Radioaktif</div>
+            <div class="card-desc">
+              <strong>Sumber:</strong> Limbah industri nuklir, pertambangan uranium, fasilitas medis, pembangkit listrik tenaga nuklir<br>
+              <strong>Jenis:</strong> Radium-226, Uranium-238, Radon-222, Strontium-90<br>
+              <strong>Dampak:</strong> Kanker, kerusakan sumsum tulang, cacat lahir, mutasi genetik
             </div>
           </div>
         </div>
 
         <!-- Bagian 2: Penyakit Akut -->
-        <h2>2. Penyakit Akut (Jangka Pendek)</h2>
+        <h2 class="section-title">2. Penyakit Akut yang Muncul dalam Hitungan Jam hingga Hari</h2>
         <p>
-          Paparan air tercemar dalam waktu singkat (hitungan jam hingga hari) dapat menyebabkan 
-          penyakit akut yang memerlukan penanganan medis segera. Berikut adalah penyakit-penyakit 
-          yang paling sering terjadi di masyarakat:
+          Paparan air tercemar dalam waktu singkat dapat menyebabkan penyakit akut yang memerlukan 
+          penanganan medis segera. Berikut adalah penyakit-penyakit yang paling sering terjadi di masyarakat:
         </p>
 
-        <div class="tabel-wrapper">
-          <table class="tabel">
-            <thead>
-              <tr>
-                <th>Penyakit</th>
-                <th>Penyebab</th>
-                <th>Gejala Utama</th>
-                <th>Masa Inkubasi</th>
-                <th>Kelompok Rentan</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Diare / Kolera</strong></td>
-                <td>Vibrio cholerae, E. coli</td>
-                <td>Dehidrasi parah, muntah, BAB lebih dari 3 kali per hari</td>
-                <td>2-5 hari</td>
-                <td>Balita, lansia, ibu hamil</td>
-              </tr>
-              <tr>
-                <td><strong>Demam Tifoid (Tipes)</strong></td>
-                <td>Salmonella typhi</td>
-                <td>Demam tinggi hingga 40°C, sakit perut, lemas</td>
-                <td>7-14 hari</td>
-                <td>Semua usia, terutama anak-anak</td>
-              </tr>
-              <tr>
-                <td><strong>Hepatitis A</strong></td>
-                <td>Virus HAV</td>
-                <td>Kulit menguning (jaundice), lemas, urine berwarna gelap</td>
-                <td>15-50 hari</td>
-                <td>Anak-anak dan remaja</td>
-              </tr>
-              <tr>
-                <td><strong>Disentri</strong></td>
-                <td>Shigella, Entamoeba histolytica</td>
-                <td>BAB berdarah berlendir, demam tinggi, kram perut hebat</td>
-                <td>1-7 hari</td>
-                <td>Daerah dengan sanitasi buruk</td>
-              </tr>
-              <tr>
-                <td><strong>Leptospirosis</strong></td>
-                <td>Bakteri Leptospira (dari urine tikus)</td>
-                <td>Demam tinggi, nyeri otot terutama betis, mata merah</td>
-                <td>5-14 hari</td>
-                <td>Wilayah banjir, petani, peternak</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="disease-table">
+          <div class="disease-header">
+            <div class="col-disease">Penyakit</div>
+            <div class="col-cause">Penyebab</div>
+            <div class="col-symptom">Gejala Utama</div>
+            <div class="col-risk">Kelompok Rentan</div>
+          </div>
+          <div class="disease-row">
+            <div class="col-disease"><strong>Diare / Kolera</strong></div>
+            <div class="col-cause">Vibrio cholerae, E.coli patogen</div>
+            <div class="col-symptom">Dehidrasi parah, muntah, BAB lebih dari 3 kali per hari, lemas ekstrem</div>
+            <div class="col-risk">Balita, lansia, ibu hamil, imunokompromais</div>
+          </div>
+          <div class="disease-row">
+            <div class="col-disease"><strong>Demam Tifoid (Tipes)</strong></div>
+            <div class="col-cause">Salmonella typhi</div>
+            <div class="col-symptom">Demam tinggi hingga 40°C, sakit perut, sembelit atau diare, bercak kemerahan di perut</div>
+            <div class="col-risk">Semua usia, terutama anak-anak dan remaja</div>
+          </div>
+          <div class="disease-row">
+            <div class="col-disease"><strong>Hepatitis A</strong></div>
+            <div class="col-cause">Virus Hepatitis A (HAV)</div>
+            <div class="col-symptom">Kulit menguning (jaundice), lemas, mual, urine berwarna gelap seperti teh</div>
+            <div class="col-risk">Anak-anak dan remaja, daerah dengan sanitasi buruk</div>
+          </div>
+          <div class="disease-row">
+            <div class="col-disease"><strong>Disentri</strong></div>
+            <div class="col-cause">Shigella dysenteriae, Entamoeba histolytica</div>
+            <div class="col-symptom">BAB berdarah berlendir, demam tinggi, kram perut hebat, tenesmus</div>
+            <div class="col-risk">Daerah dengan sanitasi buruk, daya tahan tubuh lemah</div>
+          </div>
+          <div class="disease-row">
+            <div class="col-disease"><strong>Leptospirosis</strong></div>
+            <div class="col-cause">Bakteri Leptospira interrogans (dari urine tikus)</div>
+            <div class="col-symptom">Demam tinggi, nyeri otot terutama betis, mata merah, sakit kepala hebat</div>
+            <div class="col-risk">Wilayah banjir, petani, peternak, pekerja tambang</div>
+          </div>
         </div>
 
-        <div class="kotak-peringatan">
-          <span class="peringatan-icon">!</span>
-          <div>
-            <strong>Data WHO (2025):</strong> Setiap hari, lebih dari 800 anak di bawah usia 5 tahun 
-            meninggal akibat diare yang terkait dengan air kotor, sanitasi buruk, dan kebersihan yang 
-            tidak memadai. Ini berarti satu anak meninggal setiap 2 menit—kematian yang sebenarnya 
-            dapat dicegah dengan akses air bersih.
+        <div class="alert-box">
+          <div class="alert-icon">!</div>
+          <div class="alert-content">
+            <strong>Data Darurat WHO (2025)</strong>
+            <p>Setiap hari, lebih dari <strong>800 anak di bawah usia 5 tahun</strong> meninggal akibat diare yang 
+            terkait dengan air kotor, sanitasi buruk, dan kebersihan yang tidak memadai. 
+            Ini berarti <strong>satu anak meninggal setiap 2 menit</strong> — kematian yang sebenarnya 
+            dapat dicegah dengan akses air bersih dan sanitasi yang layak.</p>
           </div>
         </div>
 
         <!-- Bagian 3: Penyakit Kronis -->
-        <h2>3. Penyakit Kronis (Jangka Panjang)</h2>
+        <h2 class="section-title">3. Penyakit Kronis yang Muncul Setelah Bertahun-tahun Terpapar</h2>
         <p>
           Yang lebih mengkhawatirkan adalah dampak jangka panjang dari paparan air tercemar. 
           Kontaminan seperti logam berat dan bahan kimia beracun dapat terakumulasi dalam tubuh 
@@ -158,159 +159,163 @@
           sudah parah dan tidak dapat dipulihkan.
         </p>
 
-        <div class="daftar-penyakit">
-          <div class="item-penyakit">
-            <div class="nomor">1</div>
-            <div class="detail">
-              <strong>Gagal Ginjal Kronis</strong><br>
-              Logam berat seperti kadmium, timbal, dan merkuri masuk ke aliran darah melalui air minum, 
-              lalu disaring oleh ginjal. Seiring waktu, logam ini merusak nefron (unit penyaring ginjal) 
-              secara perlahan hingga fungsi ginjal menurun drastis. Pasien cuci darah di Indonesia 
-              meningkat 10 kali lipat dalam satu dekade terakhir, sebagian besar terkait paparan air 
-              tercemar dari limbah industri.
+        <div class="chronic-list">
+          <div class="chronic-item">
+            <div class="chronic-number">1</div>
+            <div class="chronic-content">
+              <strong>Gagal Ginjal Kronis</strong>
+              <p>Logam berat seperti kadmium (Cd), timbal (Pb), dan merkuri (Hg) masuk ke aliran darah 
+              melalui air minum, lalu disaring oleh ginjal. Seiring waktu, logam ini merusak nefron 
+              (unit penyaring ginjal) secara perlahan hingga fungsi ginjal menurun drastis di bawah 15%. 
+              Pasien cuci darah (hemodialisis) di Indonesia meningkat <strong>10 kali lipat</strong> dalam satu dekade 
+              terakhir, dengan biaya pengobatan mencapai Rp 50-100 juta per pasien per tahun.</p>
             </div>
           </div>
-          <div class="item-penyakit">
-            <div class="nomor">2</div>
-            <div class="detail">
-              <strong>Gangguan Perkembangan Saraf pada Anak</strong><br>
-              Paparan timbal (plumbum) dari pipa tua, limbah baterai, atau industri peleburan logam 
-              mengganggu pembentukan sinapsis di otak anak yang sedang berkembang. Kerusakan ini bersifat 
-              ireversibel (tidak dapat dipulihkan) dan menyebabkan penurunan IQ (rata-rata turun 5-10 poin), 
-              hiperaktif (ADHD), gangguan konsentrasi, dan keterlambatan bicara.
+          <div class="chronic-item">
+            <div class="chronic-number">2</div>
+            <div class="chronic-content">
+              <strong>Gangguan Perkembangan Saraf pada Anak</strong>
+              <p>Paparan timbal (plumbum) dari pipa tua, limbah baterai, atau industri peleburan logam 
+              mengganggu pembentukan sinapsis (koneksi antar sel saraf) di otak anak yang sedang berkembang. 
+              Kerusakan ini bersifat <strong>ireversibel (tidak dapat dipulihkan)</strong> dan menyebabkan penurunan 
+              IQ (rata-rata turun 5-10 poin), hiperaktif (ADHD), gangguan konsentrasi, keterlambatan bicara, 
+              dan perilaku agresif. WHO menyatakan <strong>tidak ada ambang batas aman</strong> untuk timbal pada anak-anak.</p>
             </div>
           </div>
-          <div class="item-penyakit">
-            <div class="nomor">3</div>
-            <div class="detail">
-              <strong>Kanker</strong><br>
-              Arsenik dalam air tanah—yang banyak ditemukan di berbagai wilayah Asia, termasuk Indonesia— 
-              menyebabkan kanker kulit, paru-paru, dan kandung kemih setelah konsumsi 5-15 tahun. 
-              Paparan pestisida dalam jangka panjang juga terkait dengan kanker darah (leukemia) pada 
-              anak-anak serta kanker payudara dan prostat pada dewasa.
+          <div class="chronic-item">
+            <div class="chronic-number">3</div>
+            <div class="chronic-content">
+              <strong>Kanker</strong>
+              <p>Arsenik (As) dalam air tanah — yang banyak ditemukan di berbagai wilayah Asia, termasuk 
+              Indonesia bagian timur — menyebabkan <strong>kanker kulit, paru-paru, dan kandung kemih</strong> setelah 
+              konsumsi 5-15 tahun. Paparan pestisida dalam jangka panjang juga terkait dengan  
+              <strong>kanker darah (leukemia) pada anak-anak</strong> serta kanker payudara dan prostat pada dewasa. 
+              Senyawa Trihalomethane (THM) yang terbentuk dari klorinasi air juga bersifat karsinogenik.</p>
             </div>
           </div>
-          <div class="item-penyakit">
-            <div class="nomor">4</div>
-            <div class="detail">
-              <strong>Gangguan Hormon dan Sistem Reproduksi</strong><br>
-              Pestisida dan mikroplastik mengandung senyawa pengganggu endokrin (EDC). Pada pria, 
-              senyawa ini menyebabkan penurunan kualitas sperma dan infertilitas (mandul). Pada wanita, 
-              menyebabkan gangguan siklus menstruasi, pubertas dini, endometriosis, dan peningkatan 
-              risiko keguguran. Pada janin, dapat menyebabkan cacat lahir dan berat badan lahir rendah.
+          <div class="chronic-item">
+            <div class="chronic-number">4</div>
+            <div class="chronic-content">
+              <strong>Gangguan Hormon dan Sistem Reproduksi</strong>
+              <p>Pestisida dan mikroplastik mengandung <strong>senyawa pengganggu endokrin (EDC)</strong>. Pada pria, 
+              senyawa ini menyebabkan penurunan kualitas sperma (jumlah, motilitas, morfologi), 
+              infertilitas (mandul), dan peningkatan risiko kanker testis. Pada wanita, menyebabkan 
+              gangguan siklus menstruasi, pubertas dini pada anak perempuan, endometriosis, sindrom ovarium polikistik (PCOS), 
+              dan peningkatan risiko keguguran. Pada janin, dapat menyebabkan cacat lahir dan berat badan lahir rendah.</p>
             </div>
           </div>
-          <div class="item-penyakit">
-            <div class="nomor">5</div>
-            <div class="detail">
-              <strong>Gangguan Tiroid dan Metabolisme</strong><br>
-              Perklorat (dari propelan roket dan kembang api) dan nitrat (dari pupuk pertanian) yang 
+          <div class="chronic-item">
+            <div class="chronic-number">5</div>
+            <div class="chronic-content">
+              <strong>Gangguan Tiroid dan Metabolisme</strong>
+              <p>Perklorat (dari propelan roket dan kembang api) dan nitrat (dari pupuk pertanian) yang 
               mencemari air tanah menghambat penyerapan yodium oleh kelenjar tiroid. Akibatnya, 
-              produksi hormon tiroid terganggu, menyebabkan hipotiroidisme (kelelahan kronis, 
-              kenaikan berat badan, depresi) dan gangguan pertumbuhan pada anak.
+              produksi hormon tiroid (T3 dan T4) terganggu, menyebabkan <strong>hipotiroidisme</strong> (kelelahan 
+              kronis, kenaikan berat badan, depresi, gangguan memori), gangguan pertumbuhan pada anak, 
+              dan pada ibu hamil dapat menyebabkan kerusakan otak janin (kretinisme).</p>
             </div>
           </div>
         </div>
 
-        <!-- Bagian 4: Data Indonesia -->
-        <h2>4. Fakta Pencemaran Air di Indonesia</h2>
+        <!-- Bagian 4: Statistik Indonesia -->
+        <h2 class="section-title">4. Fakta Pencemaran Air di Indonesia</h2>
         <p>
           Indonesia menghadapi krisis kualitas air yang serius. Berdasarkan data dari berbagai sumber 
           resmi, kondisi pencemaran air di Indonesia sangat memprihatinkan:
         </p>
 
-        <div class="grid-tiga">
-          <div class="statistik">
-            <div class="statistik-angka">70%</div>
-            <div class="statistik-label">sungai di Jawa tercemar berat</div>
-            <div class="statistik-sumber">Sumber: Kementerian LHK, 2025</div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number">70%</div>
+            <div class="stat-label">sungai di Jawa tercemar berat</div>
+            <div class="stat-source">Sumber: Kementerian LHK, 2025</div>
           </div>
-          <div class="statistik">
-            <div class="statistik-angka">1 dari 3</div>
-            <div class="statistik-label">sumur warga di perkotaan mengandung E.coli</div>
-            <div class="statistik-sumber">Sumber: Kemenkes RI, 2024</div>
+          <div class="stat-card">
+            <div class="stat-number">1 dari 3</div>
+            <div class="stat-label">sumur warga di perkotaan mengandung E.coli</div>
+            <div class="stat-source">Sumber: Kementerian Kesehatan RI, 2024</div>
           </div>
-          <div class="statistik">
-            <div class="statistik-angka">Rp 15 Triliun</div>
-            <div class="statistik-label">biaya pengobatan penyakit air-borne per tahun</div>
-            <div class="statistik-sumber">Sumber: BPJS Kesehatan, 2024</div>
+          <div class="stat-card">
+            <div class="stat-number">Rp 15 Triliun</div>
+            <div class="stat-label">biaya pengobatan penyakit air-borne per tahun</div>
+            <div class="stat-source">Sumber: BPJS Kesehatan, 2024</div>
           </div>
-          <div class="statistik">
-            <div class="statistik-angka">54%</div>
-            <div class="statistik-label">akses air minum rumah tangga tidak memenuhi syarat</div>
-            <div class="statistik-sumber">Sumber: BPS & Kemenkes, 2025</div>
+          <div class="stat-card">
+            <div class="stat-number">54%</div>
+            <div class="stat-label">akses air minum rumah tangga tidak memenuhi syarat kesehatan</div>
+            <div class="stat-source">Sumber: BPS & Kemenkes RI, 2025</div>
           </div>
-          <div class="statistik">
-            <div class="statistik-angka">89%</div>
-            <div class="statistik-label">rumah tangga di Jakarta menggunakan air kemasan/isi ulang</div>
-            <div class="statistik-sumber">Sumber: Jakstranas, 2024</div>
+          <div class="stat-card">
+            <div class="stat-number">89%</div>
+            <div class="stat-label">rumah tangga di Jakarta menggunakan air kemasan atau isi ulang</div>
+            <div class="stat-source">Sumber: Jakstranas Penyediaan Jaringan Pipa, 2024</div>
           </div>
-          <div class="statistik">
-            <div class="statistik-angka">35%</div>
-            <div class="statistik-label">air minum isi ulang tidak memenuhi syarat mikrobiologi</div>
-            <div class="statistik-sumber">Sumber: Balai POM, 2024</div>
+          <div class="stat-card">
+            <div class="stat-number">35%</div>
+            <div class="stat-label">air minum isi ulang tidak memenuhi syarat mikrobiologi</div>
+            <div class="stat-source">Sumber: Badan POM, 2024</div>
           </div>
         </div>
 
         <!-- Bagian 5: Tindakan Pencegahan -->
-        <h2>5. Tindakan Pencegahan yang Dapat Dilakukan</h2>
+        <h2 class="section-title">5. Tindakan Pencegahan yang Dapat Dilakukan</h2>
         <p>
           Meskipun masalah pencemaran air tampak besar, ada banyak langkah konkret yang dapat 
-          Anda lakukan untuk melindungi diri dan keluarga:
+          Anda lakukan untuk melindungi diri dan keluarga dari risiko kesehatan akibat air tercemar:
         </p>
 
-        <div class="daftar-pencegahan">
-          <div class="item-pencegahan">
-            <div class="pencegahan-nomor">1</div>
-            <div class="pencegahan-isi">
-              <strong>Skrining rutin dengan PAKAR-AIR</strong><br>
-              Lakukan analisis awal kualitas air setiap 3 bulan, terutama jika sumber air Anda berada 
+        <div class="prevention-list">
+          <div class="prevention-item">
+            <div class="prevention-number">1</div>
+            <div class="prevention-content">
+              <strong>Skrining rutin dengan PAKAR-AIR</strong>
+              <p>Lakukan analisis awal kualitas air setiap 3 bulan, terutama jika sumber air Anda berada 
               di dekat kawasan industri, pertanian intensif, atau pemukiman padat dengan sanitasi buruk. 
-              PAKAR-AIR dapat memberikan peringatan dini sebelum dampak kesehatan terjadi.
+              PAKAR-AIR dapat memberikan peringatan dini sebelum dampak kesehatan terjadi.</p>
             </div>
           </div>
-          <div class="item-pencegahan">
-            <div class="pencegahan-nomor">2</div>
-            <div class="pencegahan-isi">
-              <strong>Rebus air hingga mendidih</strong><br>
-              Rebus air hingga mendidih selama minimal 10 menit. Ini efektif untuk membunuh bakteri, 
+          <div class="prevention-item">
+            <div class="prevention-number">2</div>
+            <div class="prevention-content">
+              <strong>Rebus air hingga mendidih</strong>
+              <p>Rebus air hingga mendidih selama minimal 10 menit. Ini efektif untuk membunuh bakteri, 
               virus, dan parasit penyebab diare, tifoid, dan kolera. Namun perlu diingat: perebusan 
-              tidak menghilangkan logam berat, pestisida, atau mikroplastik.
+              <strong>tidak menghilangkan logam berat, pestisida, atau mikroplastik</strong>.</p>
             </div>
           </div>
-          <div class="item-pencegahan">
-            <div class="pencegahan-nomor">3</div>
-            <div class="pencegahan-isi">
-              <strong>Gunakan filter air yang tepat</strong><br>
-              Filter keramik atau karbon aktif dapat menyaring partikel, kaporit, dan sebagian logam berat. 
+          <div class="prevention-item">
+            <div class="prevention-number">3</div>
+            <div class="prevention-content">
+              <strong>Gunakan filter air yang tepat</strong>
+              <p>Filter keramik atau karbon aktif dapat menyaring partikel, kaporit, dan sebagian logam berat. 
               Untuk kontaminan yang lebih serius seperti arsenik atau logam berat tinggi, pertimbangkan 
-              teknologi reverse osmosis (RO) atau distilasi.
+              teknologi <strong>reverse osmosis (RO)</strong> atau distilasi. Pastikan filter dibersihkan secara rutin.</p>
             </div>
           </div>
-          <div class="item-pencegahan">
-            <div class="pencegahan-nomor">4</div>
-            <div class="pencegahan-isi">
-              <strong>Lindungi sumber air dari pencemaran</strong><br>
-              Jangan buang sampah atau limbah rumah tangga ke sungai, danau, atau sumur. Pastikan septic tank 
+          <div class="prevention-item">
+            <div class="prevention-number">4</div>
+            <div class="prevention-content">
+              <strong>Lindungi sumber air dari pencemaran</strong>
+              <p>Jangan buang sampah atau limbah rumah tangga ke sungai, danau, atau sumur. Pastikan septic tank 
               kedap air dan berjarak minimal 10 meter dari sumur. Hindari penggunaan pupuk dan pestisida 
-              berlebihan di sekitar sumber air.
+              berlebihan di sekitar sumber air. Buatlah sumur resapan untuk mengurangi limpasan air hujan.</p>
             </div>
           </div>
-          <div class="item-pencegahan">
-            <div class="pencegahan-nomor">5</div>
-            <div class="pencegahan-isi">
-              <strong>Lakukan uji laboratorium jika diperlukan</strong><br>
-              Jika hasil PAKAR-AIR menunjukkan kategori "Berpotensi Tercemar" atau confidence score rendah, 
+          <div class="prevention-item">
+            <div class="prevention-number">5</div>
+            <div class="prevention-content">
+              <strong>Lakukan uji laboratorium jika diperlukan</strong>
+              <p>Jika hasil PAKAR-AIR menunjukkan kategori <strong>"Berpotensi Tercemar"</strong> atau confidence score rendah, 
               segera bawa sampel air ke laboratorium kesehatan lingkungan atau balai teknis kesehatan 
-              lingkungan (BTKL) terdekat untuk uji fisik, kimia, dan mikrobiologi lengkap.
+              lingkungan (BTKL) terdekat untuk uji fisik, kimia, dan mikrobiologi lengkap.</p>
             </div>
           </div>
         </div>
 
         <!-- Bagian 6: Kesimpulan -->
-        <h2>6. Kesimpulan</h2>
+        <h2 class="section-title">6. Kesimpulan</h2>
         <p>
-          Akses terhadap air bersih dan sanitasi yang layak adalah hak asasi manusia yang dijamin dalam 
+          Akses terhadap air bersih dan sanitasi yang layak adalah <strong>hak asasi manusia</strong> yang dijamin dalam 
           Sustainable Development Goal 6 (SDG 6). Sayangnya, jutaan orang di Indonesia masih belum 
           menikmati hak ini. Akibatnya, penyakit-penyakit yang sebenarnya dapat dicegah terus merenggut 
           nyawa, terutama anak-anak.
@@ -321,32 +326,42 @@
           sejak dini, Anda dapat mengambil tindakan pencegahan sebelum dampak kesehatan terjadi.
         </p>
         <p>
-          Ingatlah: setiap tetes air yang Anda gunakan mempengaruhi kesehatan Anda dan keluarga. 
-          Jangan anggap remeh kualitas air di sekitar Anda.
+          Ingatlah: <strong>setiap tetes air yang Anda gunakan mempengaruhi kesehatan Anda dan keluarga</strong>. 
+          Jangan anggap remeh kualitas air di sekitar Anda. Lakukan pengecekan, lakukan pencegahan, 
+          dan sebarkan kesadaran ini kepada orang-orang di sekitar Anda.
         </p>
 
         <!-- Referensi -->
-        <div class="referensi">
-          <strong>Referensi</strong><br>
-          World Health Organization (WHO) — Guidelines for Drinking-water Quality, 4th Edition (2024)<br>
-          Kementerian Kesehatan Republik Indonesia — Profil Kesehatan Indonesia Tahun 2024<br>
-          Kementerian Lingkungan Hidup dan Kehutanan — Laporan Status Lingkungan Hidup Indonesia (SLHI) 2025<br>
-          Badan Pusat Statistik (BPS) — Statistik Lingkungan Hidup Indonesia 2025<br>
-          United Nations — Sustainable Development Goal 6: Clean Water and Sanitation, Progress Report 2025
+        <div class="reference-section">
+          <h3>Referensi</h3>
+          <ul>
+            <li>World Health Organization (WHO) — Guidelines for Drinking-water Quality, 4th Edition incorporating the 1st and 2nd addenda (2022)</li>
+            <li>Kementerian Kesehatan Republik Indonesia — Profil Kesehatan Indonesia Tahun 2024</li>
+            <li>Kementerian Lingkungan Hidup dan Kehutanan — Laporan Status Lingkungan Hidup Indonesia (SLHI) 2025</li>
+            <li>Badan Pusat Statistik (BPS) — Statistik Lingkungan Hidup Indonesia 2025</li>
+            <li>United Nations — Sustainable Development Goal 6: Clean Water and Sanitation, Progress Report 2024</li>
+            <li>Jurnal Kesehatan Lingkungan Indonesia, Vol. 23 No. 2 (2024) — "Analisis Kualitas Air Tanah di Wilayah Industri"</li>
+            <li>BPJS Kesehatan — Data Klaim Pengobatan Penyakit Berbasis Lingkungan Tahun 2024</li>
+          </ul>
         </div>
 
-        <p class="penutup">
-          <strong>Pesan PAKAR-AIR:</strong> Kesehatan Anda dimulai dari air yang Anda konsumsi. 
-          Jangan tunggu sampai sakit. Lakukan skrining rutin, terapkan langkah pencegahan, dan 
-          jadilah bagian dari solusi untuk menciptakan akses air bersih bagi semua.
-        </p>
+        <!-- Penutup -->
+        <div class="closing-statement">
+          <p>
+            <strong>Pesan PAKAR-AIR</strong><br>
+            Kesehatan Anda dimulai dari air yang Anda konsumsi. Jangan tunggu sampai sakit. 
+            Lakukan skrining rutin, terapkan langkah pencegahan, dan jadilah bagian dari solusi 
+            untuk menciptakan akses air bersih bagi semua.
+          </p>
+          <p class="hashtag">#AirBersihUntukSemua #SDG6 #PAKARAIR #KesehatanLingkungan</p>
+        </div>
 
       </div>
 
-      <!-- FOOTER TOMBOL -->
-      <div class="footer">
-        <button class="btn-kembali" @click="kembali">← Kembali ke Halaman Edukasi</button>
-        <button class="btn-cek" @click="cekAir">Cek Kualitas Air Anda →</button>
+      <!-- ========== FOOTER TOMBOL ========== -->
+      <div class="article-footer">
+        <button class="btn-outline" @click="goBack">← Kembali ke Halaman Edukasi</button>
+        <button class="btn-primary" @click="goToAnalysis">Cek Kualitas Air Anda →</button>
       </div>
 
     </div>
@@ -355,13 +370,26 @@
 
 <script>
 export default {
-  name: 'ArtikelKesehatan',
+  name: 'HomeArticle2',
+  data() {
+    return {
+      coverImagePath: require('@/assets/images/cover-pencemaran.jpg')
+    };
+  },
+  computed: {
+    coverImage() {
+      return this.coverImagePath;
+    }
+  },
   methods: {
-    kembali() {
-      this.$router.back();
+    handleImageError() {
+      this.coverImagePath = 'https://placehold.co/860x450/e8e2d8/8b7355?text=Cover+Pencemaran+Air';
     },
-    cekAir() {
-      this.$router.push('/analisis');
+    goBack() {
+      this.$router.push('/edukasi');
+    },
+    goToAnalysis() {
+      this.$router.push('/dashboard');
     }
   }
 };
@@ -374,338 +402,405 @@ export default {
   box-sizing: border-box;
 }
 
-.page {
-  background: #f5f3ef;
+.article-page {
+  background: #f5f2ed;
   min-height: 100vh;
-  padding: 40px 20px;
-  font-family: 'Inter', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  padding: 40px 24px;
+  font-family: 'Inter', -apple-system, 'Segoe UI', 'Roboto', 'Georgia', serif;
 }
 
-.container {
+.article-container {
   max-width: 880px;
   margin: 0 auto;
   background: #ffffff;
   border-radius: 20px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
   overflow: hidden;
 }
 
-/* Header */
-.header {
-  padding: 32px 36px 0 36px;
+/* ========== HEADER ========== */
+.article-header {
+  padding: 44px 52px 0 52px;
 }
 
-.meta {
+.header-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   font-size: 13px;
-}
-
-.kategori {
-  background: #f0ebe3;
-  color: #8b7355;
-  padding: 4px 12px;
-  border-radius: 20px;
   font-weight: 500;
 }
 
-.tanggal {
-  color: #9aa6b5;
+.category-tag {
+  background: #eae4da;
+  color: #6b5a4a;
+  padding: 5px 14px;
+  border-radius: 30px;
+  font-size: 12px;
 }
 
-h1 {
-  font-size: 28px;
+.category-tag.health {
+  background: #f0e0d8;
+  color: #a06a5a;
+}
+
+.reading-time {
+  color: #9a8e82;
+}
+
+.article-title {
+  font-size: 34px;
   line-height: 1.3;
   font-weight: 600;
-  color: #5c3f2a;
+  color: #5a3a3a;
+  margin-bottom: 18px;
+  letter-spacing: -0.4px;
+}
+
+.author-credit {
+  font-size: 13px;
+  color: #7e8c7e;
+  border-top: 1px solid #e8e0d6;
+  padding-top: 18px;
+}
+
+.separator {
+  margin: 0 10px;
+  color: #c0b4a4;
+}
+
+/* ========== COVER GAMBAR ========== */
+.cover-container {
+  padding: 30px 52px 0 52px;
+}
+
+.cover-image {
+  width: 100%;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+.cover-caption {
+  font-size: 12px;
+  color: #a89888;
+  text-align: center;
+  margin-top: 12px;
+  font-style: italic;
+}
+
+/* ========== KONTEN ========== */
+.article-body {
+  padding: 24px 52px 48px 52px;
+}
+
+.lead-paragraph {
+  font-size: 17px;
+  line-height: 1.65;
+  color: #4a5a4a;
+  margin-bottom: 28px;
+  border-left: 3px solid #b8a88a;
+  padding-left: 22px;
+}
+
+.article-body p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #3a4a3c;
+  margin-bottom: 18px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #5a3a3a;
+  margin: 40px 0 20px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e0d6cc;
+}
+
+/* Card Grid */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.info-card-compact {
+  background: #f8f6f2;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #e0d6cc;
+}
+
+.card-icon {
+  width: 32px;
+  height: 32px;
+  background: #4a6a4a;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
   margin-bottom: 12px;
 }
 
-.penulis {
-  font-size: 12px;
-  color: #7c8b9c;
-  border-top: 1px solid #edebe6;
-  padding-top: 14px;
-}
-
-/* Gambar */
-.gambar {
-  padding: 24px 36px 0 36px;
-}
-
-.gambar img {
-  width: 100%;
-  border-radius: 14px;
-}
-
-.caption {
-  font-size: 11px;
-  color: #a8b3c0;
-  text-align: center;
-  margin-top: 8px;
-}
-
-/* Konten */
-.konten {
-  padding: 16px 36px 32px 36px;
-}
-
-.lead {
-  font-size: 16px;
-  line-height: 1.6;
-  color: #4b5c6e;
-  margin-bottom: 20px;
-  border-left: 3px solid #c9a87b;
-  padding-left: 18px;
-}
-
-p {
-  font-size: 15px;
-  line-height: 1.7;
-  color: #3a4a5c;
-  margin-bottom: 16px;
-}
-
-h2 {
-  font-size: 22px;
+.card-title {
   font-weight: 600;
-  color: #5c3f2a;
-  margin: 32px 0 16px 0;
-  padding-bottom: 6px;
-  border-bottom: 2px solid #e8e2d8;
+  font-size: 15px;
+  color: #5a3a3a;
+  margin-bottom: 8px;
 }
 
-/* Grid dua kolom untuk kartu */
-.grid-dua {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin: 16px 0;
+.card-desc {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #6a7a6a;
 }
 
-.kartu {
-  background: #f8f6f2;
+/* Disease Table */
+.disease-table {
+  margin: 20px 0;
+  border: 1px solid #e0d6cc;
   border-radius: 12px;
-  border: 1px solid #ece6df;
   overflow: hidden;
 }
 
-.kartu-judul {
-  background: #ece4d8;
-  padding: 10px 14px;
-  font-weight: 600;
-  font-size: 15px;
-  color: #5c3f2a;
-}
-
-.kartu-isi {
-  padding: 12px 14px;
-  font-size: 13px;
-  line-height: 1.55;
-  color: #5a6a7a;
-}
-
-/* Tabel */
-.tabel-wrapper {
-  overflow-x: auto;
-  margin: 16px 0;
-}
-
-.tabel {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-}
-
-.tabel th, .tabel td {
-  border: 1px solid #e8e2d8;
-  padding: 10px 12px;
-  text-align: left;
-  vertical-align: top;
-}
-
-.tabel th {
-  background: #f6f3ef;
-  font-weight: 600;
-  color: #5c4a3a;
-}
-
-/* Kotak peringatan */
-.kotak-peringatan {
-  background: #fef6f0;
-  border-left: 4px solid #d4a373;
-  padding: 16px;
-  border-radius: 12px;
-  margin: 20px 0;
+.disease-header {
   display: flex;
-  gap: 12px;
-  font-size: 14px;
-  line-height: 1.55;
+  background: #e8e0d6;
+  font-weight: 600;
+  font-size: 13px;
 }
 
-.peringatan-icon {
-  background: #d4a373;
-  color: white;
+.disease-row {
+  display: flex;
+  border-bottom: 1px solid #e0d6cc;
+}
+
+.disease-row:last-child {
+  border-bottom: none;
+}
+
+.col-disease, .col-cause, .col-symptom, .col-risk {
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.col-disease { width: 18%; background: #f8f6f2; font-weight: 500; }
+.col-cause { width: 22%; }
+.col-symptom { width: 35%; }
+.col-risk { width: 25%; }
+
+/* Alert Box */
+.alert-box {
+  background: #fef6e8;
+  border-left: 4px solid #d4a06a;
+  padding: 18px 22px;
+  border-radius: 14px;
+  margin: 28px 0;
+  display: flex;
+  gap: 16px;
+}
+
+.alert-icon {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  flex-shrink: 0;
-}
-
-/* Daftar penyakit kronis */
-.daftar-penyakit {
-  margin: 16px 0;
-}
-
-.item-penyakit {
-  display: flex;
-  gap: 14px;
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #ece6df;
-}
-
-.nomor {
-  width: 32px;
-  height: 32px;
-  background: #d4a373;
+  background: #d4a06a;
   color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
+}
+
+.alert-content strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #a06a3a;
+}
+
+.alert-content p {
+  margin: 0;
   font-size: 14px;
-  flex-shrink: 0;
 }
 
-.detail {
-  font-size: 14px;
-  line-height: 1.6;
-  color: #4a5a6a;
-}
-
-.detail strong {
-  color: #5c3f2a;
-}
-
-/* Grid tiga untuk statistik */
-.grid-tiga {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 16px;
+/* Chronic List */
+.chronic-list {
   margin: 20px 0;
 }
 
-.statistik {
+.chronic-item {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e0d6cc;
+}
+
+.chronic-number {
+  width: 32px;
+  height: 32px;
+  background: #d4a06a;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.chronic-content strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #5a3a3a;
+}
+
+.chronic-content p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.stat-card {
   background: #f8f6f2;
-  padding: 16px 12px;
+  padding: 16px;
   border-radius: 12px;
   text-align: center;
 }
 
-.statistik-angka {
-  font-size: 26px;
+.stat-number {
+  font-size: 28px;
   font-weight: 700;
-  color: #d4a373;
+  color: #d4a06a;
   margin-bottom: 8px;
 }
 
-.statistik-label {
+.stat-label {
   font-size: 12px;
-  color: #5a6a7a;
+  color: #6a7a6a;
   margin-bottom: 6px;
 }
 
-.statistik-sumber {
+.stat-source {
   font-size: 10px;
-  color: #a8b3c0;
+  color: #b0a090;
 }
 
-/* Daftar pencegahan */
-.daftar-pencegahan {
-  margin: 16px 0;
+/* Prevention List */
+.prevention-list {
+  margin: 20px 0;
 }
 
-.item-pencegahan {
+.prevention-item {
   display: flex;
   gap: 14px;
   margin-bottom: 16px;
+  padding: 14px;
+  background: #f8f6f2;
+  border-radius: 12px;
 }
 
-.pencegahan-nomor {
+.prevention-number {
   width: 30px;
   height: 30px;
-  background: #6b8c6b;
+  background: #6a9a6a;
   color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  font-size: 14px;
   flex-shrink: 0;
 }
 
-.pencegahan-isi {
-  font-size: 14px;
-  line-height: 1.6;
-  color: #4a5a6a;
-}
-
-.pencegahan-isi strong {
+.prevention-content strong {
+  display: block;
+  margin-bottom: 6px;
   color: #4a6a4a;
 }
 
-/* Referensi */
-.referensi {
+.prevention-content p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* Reference */
+.reference-section {
   background: #f8f6f2;
-  padding: 16px 20px;
-  border-radius: 12px;
-  font-size: 11px;
-  line-height: 1.6;
-  color: #7a8a7a;
-  margin: 24px 0 16px 0;
+  padding: 20px 24px;
+  border-radius: 14px;
+  margin: 36px 0 24px 0;
 }
 
-.referensi strong {
+.reference-section h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #6b5a4a;
+  margin-bottom: 12px;
+}
+
+.reference-section ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.reference-section li {
   font-size: 12px;
-  color: #8b7355;
-  display: block;
-  margin-bottom: 8px;
+  color: #7e8c7e;
+  margin-bottom: 6px;
 }
 
-/* Penutup */
-.penutup {
+/* Closing */
+.closing-statement {
+  background: #faf6f0;
+  padding: 24px 28px;
+  border-radius: 14px;
+  margin-top: 32px;
+}
+
+.closing-statement p {
+  margin-bottom: 12px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: #5a6a5a;
   font-style: italic;
-  background: #faf7f2;
-  padding: 16px 20px;
-  border-radius: 12px;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #6a7a6a;
-  margin-top: 20px;
+}
+
+.hashtag {
+  font-size: 12px;
+  color: #b0a090;
+  text-align: center;
+  margin-top: 12px;
+  font-style: normal;
 }
 
 /* Footer */
-.footer {
-  padding: 16px 36px 32px 36px;
-  border-top: 1px solid #ece6df;
+.article-footer {
+  padding: 20px 52px 44px 52px;
+  border-top: 1px solid #e8e0d6;
   display: flex;
   justify-content: space-between;
-  gap: 16px;
+  gap: 20px;
   background: #fefcf9;
 }
 
-.btn-kembali, .btn-cek {
-  padding: 10px 24px;
+.btn-outline, .btn-primary {
+  padding: 12px 28px;
   border-radius: 40px;
   font-size: 14px;
   font-weight: 500;
@@ -714,61 +809,57 @@ h2 {
   transition: all 0.2s;
 }
 
-.btn-kembali {
+.btn-outline {
   background: transparent;
-  border: 1px solid #d4cbbc;
-  color: #8b7355;
+  border: 1px solid #d0c0b0;
+  color: #6b5a4a;
 }
 
-.btn-kembali:hover {
-  background: #f5f0e8;
+.btn-outline:hover {
+  background: #f0ece4;
 }
 
-.btn-cek {
-  background: #b85c5c;
+.btn-primary {
+  background: #a06a5a;
   border: none;
   color: white;
 }
 
-.btn-cek:hover {
-  background: #9a4a4a;
+.btn-primary:hover {
+  background: #8a5a4a;
 }
 
-/* Responsif */
+/* Responsive */
 @media (max-width: 700px) {
-  .header, .gambar, .konten, .footer {
-    padding-left: 20px;
-    padding-right: 20px;
+  .article-header, .cover-container, .article-body, .article-footer {
+    padding-left: 24px;
+    padding-right: 24px;
   }
   
-  h1 {
-    font-size: 22px;
+  .article-title {
+    font-size: 24px;
   }
   
-  .grid-dua, .grid-tiga {
+  .header-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .card-grid, .stats-grid {
     grid-template-columns: 1fr;
   }
   
-  .meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-  
-  .footer {
+  .disease-header, .disease-row {
     flex-direction: column;
   }
   
-  .btn-kembali, .btn-cek {
-    text-align: center;
+  .col-disease, .col-cause, .col-symptom, .col-risk {
+    width: 100%;
   }
   
-  .tabel {
-    font-size: 11px;
-  }
-  
-  .tabel th, .tabel td {
-    padding: 6px 8px;
+  .article-footer {
+    flex-direction: column;
   }
 }
 </style>
