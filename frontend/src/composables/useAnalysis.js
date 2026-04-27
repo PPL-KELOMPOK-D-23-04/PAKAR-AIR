@@ -1,50 +1,96 @@
 import { ref } from 'vue'
-import { useAnalysisStore } from '../stores/analysisStore'
-import { submitAnalysis } from '../api/analysis'
-
-const REQUIRED_FIELDS = [
-  'ph', 'hardness', 'solids', 'chloramines', 'sulfate',
-  'conductivity', 'organic_carbon', 'trihalomethanes', 'turbidity',
-]
+import { useAnalysisStore } from '@/stores/analysisStore'
+import { submitAnalysis, getAnalysisResult } from '@/api/analysis'
 
 export function useAnalysis() {
   const store = useAnalysisStore()
   const loading = ref(false)
-  const error = ref('')
+  const error = ref(null)
 
-  async function submit() {
-    error.value = ''
+  const isEmpty = (v) => v === null || v === undefined || v === ''
+  const isInvalidNumber = (v) => isNaN(Number(v))
 
-    // 1. Validate image
-    if (!store.image) {
-      error.value = 'Foto air wajib diupload.'
-      return false
+  const validateField = (key, value) => {
+    if (isEmpty(value)) return `Field ${key} belum diisi`
+    if (isInvalidNumber(value)) return `Field ${key} harus berupa angka`
+
+    const num = Number(value)
+
+    if (key === 'ph' && (num < 0 || num > 14)) {
+      return 'pH harus antara 0 - 14'
     }
 
-    // 2. Validate all 9 manual fields are filled
-    const missing = REQUIRED_FIELDS.filter(
-      (k) => store.manualData[k] === null || store.manualData[k] === '' || store.manualData[k] === undefined
-    )
-    if (missing.length > 0) {
-      error.value = `Semua parameter analisis wajib diisi (${missing.join(', ')}).`
-      return false
+    if (num < 0) return `Field ${key} tidak boleh negatif`
+
+    return null
+  }
+
+  const validateData = () => {
+    if (!store.image) return 'Gambar belum diupload'
+
+    for (const [key, value] of Object.entries(store.manualData)) {
+      const error = validateField(key, value)
+      if (error) return error
     }
 
-    // 3. Call API and save result
+    return null
+  }
+
+  const delay = (ms) => new Promise(res => setTimeout(res, ms))
+
+  const fetchResultWithRetry = async (analysisId) => {
+    let attempts = 0
+
+    while (attempts < 3) {
+      try {
+        const result = await getAnalysisResult(analysisId)
+        if (result) return result
+      } catch (_) {}
+
+      await delay(1000)
+      attempts++
+    }
+
+    throw new Error('RESULT_NOT_READY')
+  }
+
+  const handleError = (err) => {
+    if (err.message === 'RESULT_NOT_READY') {
+      return 'Hasil belum siap, coba lagi'
+    }
+
+    if (!err.response) {
+      return 'Gagal terhubung ke server'
+    }
+
+    return err.response?.data?.detail || 'Proses analisis gagal'
+  }
+
+  const analyze = async () => {
+    error.value = null
+    const validationError = validateData()
+    if (validationError) {
+      error.value = validationError
+      return
+    }
+
+    loading.value = true
     try {
-      loading.value = true
-      const result = await submitAnalysis(store.image, store.manualData)
-      store.setResult(result)
-      return true
+      store.resetResult()
+      const analysisId = await submitAnalysis(store.manualData, store.image)
+      const result = await fetchResultWithRetry(analysisId)
+      store.result = result
     } catch (err) {
-      error.value =
-        err?.response?.data?.message ||
-        'Terjadi kesalahan saat memproses analisis. Silakan coba lagi.'
-      return false
+      error.value = handleError(err)
     } finally {
       loading.value = false
     }
   }
 
-  return { loading, error, submit }
+  return {
+    loading,
+    error,
+    analyze,
+    validateData,
+  }
 }
