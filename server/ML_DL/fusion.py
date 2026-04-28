@@ -11,21 +11,6 @@ THRESHOLD = 0.5
 
 
 def fuse_results(dl_result: dict, ml_result: dict) -> dict:
-    """
-    Combine DL and ML results into a final classification.
-
-    Args:
-        dl_result: {"category": str, "confidence": float, "detections": [...]}
-        ml_result: {"category": str, "confidence": float, "feature_importance": {...}}
-
-    Returns:
-        {
-            "category": "layak" | "tidak_layak",
-            "confidence": float,
-            "explanation": str,
-            "recommendation": str
-        }
-    """
     # Convert categories to scores
     dl_score = _category_to_score(dl_result.get("category"), dl_result.get("confidence", 0.0))
     ml_score = _category_to_score(ml_result.get("category"), ml_result.get("confidence", 0.0))

@@ -23,6 +23,7 @@ class ManualInputData(BaseModel):
 class DetectionItem(BaseModel):
     label: str       # e.g. "air_keruh", "sampah"
     confidence: float  # 0.0 – 1.0
+    bbox: Optional[List[float]] = None  # [x1, y1, x2, y2]
 
 
 # ─── Analysis Result Response ────────────────────────────────────

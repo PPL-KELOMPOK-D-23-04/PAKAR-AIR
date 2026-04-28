@@ -1,25 +1,13 @@
-"""
-YOLOv8 inference wrapper for water image analysis.
-Detects objects/conditions in water images:
-  0: air_jernih, 1: air_keruh, 2: air_berwarna,
-  3: sampah, 4: alga, 5: busa, 6: minyak
-"""
 import os
 import logging
 
 logger = logging.getLogger(__name__)
 
-MODEL_PATH = os.path.join("ml", "saved_models", "water_yolo.pt")
+MODEL_PATH = os.path.join("ML_DL", "saved_models", "water_yolo.pt")
 
-# Class labels and whether they indicate positive (layak) or negative
+# Class labels for YOLOv8 model (based on notebook/data.yaml)
 CLASS_LABELS = {
-    0: {"label": "air_jernih", "positive": True},
-    1: {"label": "air_keruh", "positive": False},
-    2: {"label": "air_berwarna", "positive": False},
-    3: {"label": "sampah", "positive": False},
-    4: {"label": "alga", "positive": False},
-    5: {"label": "busa", "positive": False},
-    6: {"label": "minyak", "positive": False},
+    0: {"label": "floater", "positive": False},
 }
 
 
@@ -40,6 +28,8 @@ def predict_image(image_path: str) -> dict:
         from ultralytics import YOLO
 
         model = YOLO(MODEL_PATH)
+        # Debug: Print actual model class names to terminal
+        print(f"DEBUG: Model classes -> {model.names}")
         results = model(image_path, verbose=False)
 
         detections = []
@@ -52,9 +42,13 @@ def predict_image(image_path: str) -> dict:
                 conf = float(box.conf[0])
                 class_info = CLASS_LABELS.get(cls_id, {"label": f"unknown_{cls_id}", "positive": False})
 
+                # Extract bounding box coordinates (x1, y1, x2, y2)
+                bbox = [round(float(x), 2) for x in box.xyxy[0]]
+
                 detections.append({
                     "label": class_info["label"],
                     "confidence": round(conf, 4),
+                    "bbox": bbox,
                 })
 
                 if class_info["positive"]:

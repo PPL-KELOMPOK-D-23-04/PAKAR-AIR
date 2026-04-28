@@ -1,18 +1,19 @@
 from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from app.utils.db import get_db
 from app.utils.supabase import get_supabase
 from app.models.models import Profile
 from supabase import Client
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+security = HTTPBearer()
 
 async def get_current_user(
-    token: str = Depends(oauth2_scheme),
+    auth: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db),
     supabase: Client = Depends(get_supabase)
 ):
+    token = auth.credentials
     try:
         # Verify token with Supabase
         user_response = supabase.auth.get_user(token)
@@ -27,8 +28,6 @@ async def get_current_user(
         profile = db.query(Profile).filter(Profile.id == user_id).first()
         
         if not profile:
-            # Option: Create profile on the fly if it doesn't exist?
-            # For now, we expect the DB trigger or registration logic to have created it.
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="User profile not found",

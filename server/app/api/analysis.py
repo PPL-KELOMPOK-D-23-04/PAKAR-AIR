@@ -1,24 +1,20 @@
-"""
-Analysis API Router — /api/analysis/*
-Handles: POST submit analysis, GET analysis result
-"""
 import json
 from fastapi import APIRouter, Depends, UploadFile, File, Form
 from sqlalchemy.orm import Session
+from uuid import UUID
+from supabase import Client
 
 from app.api.deps import get_current_user
 from app.utils.db import get_db
-from app.utils.file_handler import save_upload_image
+from app.utils.supabase import get_supabase
+from app.utils.file_handler import upload_to_supabase
 from app.models.models import Profile
 from app.schemas.analysis_schema import (
-    AnalysisSubmitResponse, AnalysisDetailResponse, AnalysisResultResponse,
+    AnalysisSubmitResponse, AnalysisDetailResponse, AnalysisResultResponse, HistoryResponse
 )
 from app.services import analysis_service
-from app.config import settings
-from uuid import UUID
 
 router = APIRouter()
-
 
 @router.post("", response_model=AnalysisSubmitResponse)
 async def submit_analysis(
@@ -26,35 +22,42 @@ async def submit_analysis(
     manual_data: str = Form(..., description="JSON string of manual input data"),
     current_user: Profile = Depends(get_current_user),
     db: Session = Depends(get_db),
+    supabase: Client = Depends(get_supabase),
 ):
     """
     KF-03 + KF-04 + KF-05: Submit analysis.
     Uploads image + manual data → runs DL + ML → returns result.
 
     manual_data should be a JSON string with fields:
-    - water_color: jernih / kuning / coklat / hijau / putih
-    - water_smell: tidak_berbau / sedikit / menyengat
-    - water_source: sumur / sungai / PDAM / mata_air / danau
-    - environment_condition: bersih / cukup_bersih / kotor
-    - water_ph: float (optional, default 7.0)
-    - water_temperature: float (optional, default 25.0)
-    - additional_notes: string (optional)
+    - ph: float (0 - 14)
+    - Hardness: float
+    - Solids: float
+    - Chloramines: float
+    - Sulfate: float
+    - Conductivity: float
+    - Organic_carbon: float
+    - Trihalomethanes: float
+    - Turbidity: float
     """
-    # Parse manual data JSON
     try:
         manual_dict = json.loads(manual_data)
     except json.JSONDecodeError:
         from fastapi import HTTPException
         raise HTTPException(status_code=400, detail="Invalid JSON in manual_data")
 
-    # Save image
-    file_info = await save_upload_image(image, upload_folder=settings.UPLOAD_FOLDER)
+    # Save image to Supabase Bucket 'analyses'
+    public_url = await upload_to_supabase(
+        file=image,
+        supabase=supabase,
+        bucket_name="analyses",
+        folder=str(current_user.id)
+    )
 
     # Create analysis record
     analysis = analysis_service.create_analysis(
         user=current_user,
-        image_path=file_info["image_path"],
-        original_filename=file_info["original_filename"],
+        image_path=public_url,
+        original_filename=image.filename,
         manual_data=manual_dict,
         db=db,
     )
@@ -67,6 +70,43 @@ async def submit_analysis(
         status="completed",
         message="Analisis berhasil diselesaikan",
     )
+
+
+@router.get("/history", response_model=HistoryResponse)
+async def get_history(
+    page: int = 1,
+    per_page: int = 10,
+    current_user: Profile = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    KF-07: Get analysis history for current user.
+    """
+    items, total, total_pages = analysis_service.get_user_history(
+        current_user.id, page, per_page, db
+    )
+    
+    # Map models to Summary schema
+    history_items = []
+    for a in items:
+        history_items.append({
+            "id": a.id,
+            "status": a.status.value if a.status else "unknown",
+            "created_at": a.created_at,
+            "category": a.result.category if a.result else None,
+            "confidence": a.result.confidence if a.result else None,
+            "image_path": a.image_input.image_path if a.image_input else None,
+            "water_color": a.manual_input.data_json.get("water_color") if a.manual_input else None,
+            "water_source": a.manual_input.data_json.get("water_source") if a.manual_input else None,
+        })
+
+    return {
+        "items": history_items,
+        "total": total,
+        "page": page,
+        "per_page": per_page,
+        "total_pages": total_pages
+    }
 
 
 @router.get("/{analysis_id}")
