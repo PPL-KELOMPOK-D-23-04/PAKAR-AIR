@@ -1,69 +1,92 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
 
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import LandingPage from '@/views/LandingPage.vue'
+import AnalysisView from '@/views/AnalysisView.vue'
+
+const routes = [
+  // Landing
+  {
+    path: '/',
+    component: DefaultLayout,
+    children: [
+      {
+        path: '',
+        name: 'landing',
+        component: LandingPage,
+      },
+    ],
+  },
+
+  // Auth & Dashboard
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/LoginPage.vue'),
+    meta: { guestOnly: true },
+  },
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: () => import('@/views/DashboardPage.vue'),
+    meta: { requiresAuth: true },
+  },
+
+  // Analysis (pakai view lu)
+  {
+    path: '/analysis',
+    name: 'analysis',
+    component: AnalysisView,
+    meta: { requiresAuth: true },
+  },
+
+  // Edukasi & Artikel
+  {
+    path: '/edukasi',
+    name: 'edukasi',
+    component: () => import('@/views/EdukasiView.vue'),
+  },
+  {
+    path: '/artikel',
+    name: 'artikel1',
+    component: () => import('@/views/HomeArtikel.vue'),
+  },
+  {
+    path: '/artikel2',
+    name: 'artikel2',
+    component: () => import('@/views/HomeArtikel2.vue'),
+  },
+  {
+    path: '/artikel3',
+    name: 'artikel3',
+    component: () => import('@/views/HomeArtikel3.vue'),
+  },
+
+  // Profile
+  {
+    path: '/profile',
+    name: 'profile',
+    component: () => import('@/views/ProfileView.vue'),
+    meta: { requiresAuth: true },
+  },
+]
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'landing',
-      component: () => import('../views/LandingPage.vue'),
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('../views/LoginPage.vue'),
-      meta: { guestOnly: true },
-    },
-    {
-      path: '/dashboard',
-      name: 'dashboard',
-      component: () => import('../views/DashboardPage.vue'),
-      meta: { requiresAuth: true },
-    },
-    {
-    path: '/edukasi',
-    name: 'Edukasi',
-    component: () => import('../views/EdukasiView.vue')
-    },
-    {
-      path: '/artikel',
-      name: 'Artikel1',
-      component: () => import('../views/HomeArtikel.vue')
-    },
-    {
-      path: '/artikel2',
-      name: 'Artikel2',
-      component: () => import('../views/HomeArtikel2.vue')
-    },
-    {
-      path: '/artikel3',
-      name: 'Artikel3',
-      component: () => import('../views/HomeArtikel3.vue')
-    },
-    // ========== HALAMAN PROFILE ==========
-    {
-      path: '/profile',
-      name: 'Profile',
-      component: () => import('../views/ProfileView.vue')
-    }
-  ]
-  
-  })
+  routes,
+})
 
 // Navigation Guard
 router.beforeEach((to) => {
   const authStore = useAuthStore()
 
-  // Initialize auth (set axios header if token exists)
   authStore.initAuth()
 
-  // Route requires login → redirect to /login
   if (to.meta.requiresAuth && !authStore.isLoggedIn) {
     return { name: 'login' }
   }
 
-  // Route is guest-only (e.g. login) → redirect to dashboard if already logged in
   if (to.meta.guestOnly && authStore.isLoggedIn) {
     return { name: 'dashboard' }
   }
