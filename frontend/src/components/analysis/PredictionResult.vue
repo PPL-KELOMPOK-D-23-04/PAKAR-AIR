@@ -53,7 +53,9 @@ const props = defineProps({
   },
 })
 
-const isLayak = computed(() => props.result.category === 'layak')
+// FIX: gunakan strict equality, bukan .includes('layak')
+// "tidak_layak".includes('layak') === true → bug: air tidak layak ikut dianggap layak
+const isLayak = computed(() => props.result?.category === 'layak')
 
 const resultClass = computed(() =>
   isLayak.value ? 'result-card--success' : 'result-card--danger'
@@ -82,13 +84,8 @@ const categoryLabel = computed(() =>
   box-shadow: 0 1px 3px rgba(0,0,0,.06);
 }
 
-.result-card--success {
-  border-color: #bbf7d0;
-}
-
-.result-card--danger {
-  border-color: #fecaca;
-}
+.result-card--success { border-color: #bbf7d0; }
+.result-card--danger  { border-color: #fecaca; }
 
 /* Header */
 .result-card__header {
@@ -99,13 +96,8 @@ const categoryLabel = computed(() =>
   gap: 12px;
 }
 
-.result-card--success .result-card__header {
-  background: #f0fdf4;
-}
-
-.result-card--danger .result-card__header {
-  background: #fef2f2;
-}
+.result-card--success .result-card__header { background: #f0fdf4; }
+.result-card--danger  .result-card__header { background: #fef2f2; }
 
 .result-card__header-left {
   display: flex;
@@ -113,13 +105,8 @@ const categoryLabel = computed(() =>
   gap: 8px;
 }
 
-.result-card--success .result-card__header-left svg {
-  color: #16a34a;
-}
-
-.result-card--danger .result-card__header-left svg {
-  color: #dc2626;
-}
+.result-card--success .result-card__header-left svg { color: #16a34a; }
+.result-card--danger  .result-card__header-left svg { color: #dc2626; }
 
 .result-card__title {
   font-size: 14px;
@@ -202,11 +189,6 @@ const categoryLabel = computed(() =>
   border-color: #fecaca;
 }
 
-.result-section--rec-success .result-section__label {
-  color: #15803d;
-}
-
-.result-section--rec-danger .result-section__label {
-  color: #b91c1c;
-}
+.result-section--rec-success .result-section__label { color: #15803d; }
+.result-section--rec-danger  .result-section__label { color: #b91c1c; }
 </style>
