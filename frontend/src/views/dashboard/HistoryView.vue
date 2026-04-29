@@ -9,6 +9,51 @@
         </p>
       </div>
 
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <!-- Search -->
+        <div class="filter-item filter-item--search">
+          <svg class="filter-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+          </svg>
+          <input
+            v-model="searchQuery"
+            type="text"
+            class="filter-input"
+            placeholder="Cari sumber air..."
+            @input="handleFilter"
+          />
+        </div>
+
+        <!-- Kategori -->
+        <div class="filter-item">
+          <select v-model="filterCategory" class="filter-select" @change="handleFilter">
+            <option value="">Semua Kategori</option>
+            <option value="layak">Layak</option>
+            <option value="tidak_layak">Tidak Layak</option>
+          </select>
+        </div>
+
+        <!-- Tanggal -->
+        <div class="filter-item">
+          <input
+            v-model="filterDate"
+            type="date"
+            class="filter-input filter-input--date"
+            @change="handleFilter"
+          />
+        </div>
+
+        <!-- Reset -->
+        <button
+          v-if="searchQuery || filterCategory || filterDate"
+          class="btn btn--secondary filter-reset"
+          @click="resetFilter"
+        >
+          Reset
+        </button>
+      </div>
+
       <!-- Loading State -->
       <div v-if="loading" class="loading-state">
         <div class="spinner"></div>
@@ -77,11 +122,20 @@ const error = ref(null)
 const currentPage = ref(1)
 const totalPages = ref(1)
 
+// Filter state
+const searchQuery = ref('')
+const filterCategory = ref('')
+const filterDate = ref('')
+
 async function fetchHistory() {
   loading.value = true
   error.value = null
   try {
-    const data = await getAnalysisHistory(currentPage.value)
+    const data = await getAnalysisHistory(currentPage.value, {
+      search: searchQuery.value || undefined,
+      category: filterCategory.value || undefined,
+      date: filterDate.value || undefined,
+    })
     history.value = data.items
     totalPages.value = data.total_pages
   } catch (err) {
@@ -90,6 +144,18 @@ async function fetchHistory() {
   } finally {
     loading.value = false
   }
+}
+
+function handleFilter() {
+  currentPage.value = 1
+  fetchHistory()
+}
+
+function resetFilter() {
+  searchQuery.value = ''
+  filterCategory.value = ''
+  filterDate.value = ''
+  handleFilter()
 }
 
 function viewDetail(id) {
@@ -227,4 +293,93 @@ onMounted(fetchHistory)
 .btn--primary { background: #3b82f6; color: #fff; text-decoration: none; }
 .btn--secondary { background: #fff; border-color: #e2e8f0; color: #64748b; }
 .btn--secondary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ===== Filter Bar ===== */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 16px;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.filter-item--search {
+  flex: 1;
+  min-width: 180px;
+}
+
+.filter-icon {
+  position: absolute;
+  left: 10px;
+  color: #94a3b8;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.filter-input {
+  width: 100%;
+  padding: 8px 12px 8px 34px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #1a202c;
+  background: #f8fafc;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.filter-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  background: #fff;
+}
+
+.filter-input--date {
+  padding-left: 12px;
+  cursor: pointer;
+}
+
+.filter-select {
+  padding: 8px 32px 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #1a202c;
+  background: #f8fafc;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.filter-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  background-color: #fff;
+}
+
+.filter-reset {
+  font-size: 13px;
+  padding: 8px 14px;
+  white-space: nowrap;
+  color: #ef4444;
+  border-color: #fca5a5;
+}
+
+.filter-reset:hover {
+  background: #fef2f2;
+}
 </style>

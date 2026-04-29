@@ -84,18 +84,18 @@ const router = createRouter({
 })
 
 // Navigation Guard
-router.beforeEach((to) => {
-  const authStore = useAuthStore()
+// router.beforeEach((to) => {
+//   const authStore = useAuthStore()
 
-  authStore.initAuth()
+//   authStore.initAuth()
 
-  if (to.meta.requiresAuth && !authStore.isLoggedIn) {
-    return { name: 'login' }
-  }
+//   if (to.meta.requiresAuth && !authStore.isLoggedIn) {
+//     return { name: 'login' }
+//   }
 
-  if (to.meta.guestOnly && authStore.isLoggedIn) {
-    return { name: 'dashboard' }
-  }
-})
+//   if (to.meta.guestOnly && authStore.isLoggedIn) {
+//     return { name: 'dashboard' }
+//   }
+// })
 
 export default router
