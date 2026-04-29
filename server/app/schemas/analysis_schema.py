@@ -54,7 +54,7 @@ class AnalysisResultResponse(BaseModel):
 # ─── Analysis Summary (for history list) ─────────────────────────
 
 class AnalysisSummary(BaseModel):
-    """One item in GET /api/history list."""
+    """One item in the history list summary."""
     id: UUID
     status: str
     created_at: datetime
@@ -62,8 +62,6 @@ class AnalysisSummary(BaseModel):
     category: Optional[str] = None
     confidence: Optional[float] = None
     image_path: Optional[str] = None
-    water_color: Optional[str] = None
-    water_source: Optional[str] = None
 
 
 # ─── Full Analysis Detail ────────────────────────────────────────
