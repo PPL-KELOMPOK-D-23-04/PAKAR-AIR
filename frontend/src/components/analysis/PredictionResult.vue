@@ -23,19 +23,19 @@
       <!-- Confidence -->
       <div class="result-section">
         <p class="result-section__label">Tingkat Kepercayaan Model</p>
-        <ConfidenceGauge :value="result.confidence" :category="result.category" />
+        <ConfidenceGauge :value="analysisResult.confidence" :category="analysisResult.category" />
       </div>
 
       <!-- Explanation -->
       <div class="result-section">
         <p class="result-section__label">Penjelasan Analisis</p>
-        <p class="result-section__text">{{ result.explanation }}</p>
+        <p class="result-section__text">{{ analysisResult.explanation }}</p>
       </div>
 
       <!-- Recommendation -->
       <div class="result-section result-section--recommendation" :class="recClass">
         <p class="result-section__label">Rekomendasi Tindak Lanjut</p>
-        <p class="result-section__text">{{ result.recommendation }}</p>
+        <p class="result-section__text">{{ analysisResult.recommendation }}</p>
       </div>
 
     </div>
@@ -53,9 +53,10 @@ const props = defineProps({
   },
 })
 
-// FIX: gunakan strict equality, bukan .includes('layak')
-// "tidak_layak".includes('layak') === true → bug: air tidak layak ikut dianggap layak
-const isLayak = computed(() => props.result?.category === 'layak')
+// Shortcut ke data hasil (mendukung objek utuh atau objek hasil saja)
+const analysisResult = computed(() => props.result?.result || props.result || {})
+
+const isLayak = computed(() => analysisResult.value?.category === 'layak')
 
 const resultClass = computed(() =>
   isLayak.value ? 'result-card--success' : 'result-card--danger'
