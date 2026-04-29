@@ -5,7 +5,7 @@ export const useAnalysisStore = defineStore('analysis', {
     /** @type {File|null} */
     image: null,
 
-    /** 9 RF numeric parameters (stored in lowercase, mapped to backend casing in API layer) */
+    /** 9 parameter RF — disimpan lowercase, di-map ke PascalCase saat kirim ke API */
     manualData: {
       ph: null,
       hardness: null,
@@ -19,9 +19,9 @@ export const useAnalysisStore = defineStore('analysis', {
     },
 
     /**
-     * Result from fusion pipeline (fuse_results in fusion.py):
+     * Hasil dari fusion pipeline:
      * { category, confidence, explanation, recommendation }
-     * @type {null|{ category: string, confidence: number, explanation: string, recommendation: string }}
+     * @type {null|Object}
      */
     result: null,
   }),
@@ -37,6 +37,11 @@ export const useAnalysisStore = defineStore('analysis', {
 
     setResult(result) {
       this.result = result
+    },
+
+    // FIX: tambahkan resetResult agar useAnalysis bisa clear result tanpa reset semua field
+    resetResult() {
+      this.result = null
     },
 
     reset() {
