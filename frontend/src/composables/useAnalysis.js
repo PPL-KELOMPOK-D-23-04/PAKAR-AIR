@@ -7,6 +7,7 @@ export function useAnalysis() {
   const loading = ref(false)
   const error = ref(null)
 
+  // ─── Validators ─────────────────────────────────────────────
   const isEmpty = (v) => v === null || v === undefined || v === ''
   const isInvalidNumber = (v) => isNaN(Number(v))
 
@@ -29,45 +30,44 @@ export function useAnalysis() {
     if (!store.image) return 'Gambar belum diupload'
 
     for (const [key, value] of Object.entries(store.manualData)) {
-      const error = validateField(key, value)
-      if (error) return error
+      const fieldError = validateField(key, value)
+      if (fieldError) return fieldError
     }
 
     return null
   }
 
-  const delay = (ms) => new Promise(res => setTimeout(res, ms))
+  // ─── Helpers ─────────────────────────────────────────────────
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms))
 
-  const fetchResultWithRetry = async (analysisId) => {
-    let attempts = 0
-
-    while (attempts < 3) {
+  const fetchResultWithRetry = async (analysisId, maxAttempts = 5) => {
+    for (let i = 0; i < maxAttempts; i++) {
       try {
         const result = await getAnalysisResult(analysisId)
         if (result) return result
-      } catch (_) {}
-
-      await delay(1000)
-      attempts++
+      } catch (_) {
+        // masih loading, coba lagi
+      }
+      await delay(1500)
     }
-
     throw new Error('RESULT_NOT_READY')
   }
 
   const handleError = (err) => {
     if (err.message === 'RESULT_NOT_READY') {
-      return 'Hasil belum siap, coba lagi'
+      return 'Hasil belum siap setelah beberapa percobaan. Coba refresh halaman.'
     }
-
     if (!err.response) {
-      return 'Gagal terhubung ke server'
+      return 'Gagal terhubung ke server. Pastikan backend sedang berjalan.'
     }
-
     return err.response?.data?.detail || 'Proses analisis gagal'
   }
 
-  const analyze = async () => {
+  // ─── Main submit ─────────────────────────────────────────────
+  // FIX: fungsi ini di-export sebagai 'submit' agar konsisten dengan AnalysisView.vue
+  const submit = async () => {
     error.value = null
+
     const validationError = validateData()
     if (validationError) {
       error.value = validationError
@@ -76,10 +76,12 @@ export function useAnalysis() {
 
     loading.value = true
     try {
+      // FIX: gunakan store.resetResult() bukan store.resetResult yang tidak ada
       store.resetResult()
+
       const analysisId = await submitAnalysis(store.manualData, store.image)
       const result = await fetchResultWithRetry(analysisId)
-      store.result = result
+      store.setResult(result)
     } catch (err) {
       error.value = handleError(err)
     } finally {
@@ -90,7 +92,7 @@ export function useAnalysis() {
   return {
     loading,
     error,
-    analyze,
+    submit,       // FIX: ekspor sebagai 'submit' bukan 'analyze'
     validateData,
   }
 }

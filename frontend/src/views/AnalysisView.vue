@@ -1,6 +1,5 @@
 <template>
   <DashboardLayout>
-
     <div class="analysis-view">
 
       <!-- Page Header -->
@@ -55,11 +54,10 @@
         </button>
       </div>
 
-      <!-- Result (conditional — only shown after API returns) -->
+      <!-- Result — hanya muncul setelah API return -->
       <PredictionResult v-if="store.result" :result="store.result" />
 
     </div>
-
   </DashboardLayout>
 </template>
 
@@ -72,6 +70,8 @@ import { useAnalysisStore } from '../stores/analysisStore'
 import { useAnalysis } from '../composables/useAnalysis'
 
 const store = useAnalysisStore()
+
+// FIX: destruktur 'submit' — sekarang ada di useAnalysis
 const { loading, error: submitError, submit } = useAnalysis()
 
 async function handleSubmit() {
@@ -85,16 +85,13 @@ function handleReset() {
 
 <style scoped>
 .analysis-view {
-  max-width: null;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
 /* Page Header */
-.page-header {
-  margin-bottom: 4px;
-}
+.page-header { margin-bottom: 4px; }
 
 .page-header__title {
   font-size: 22px;
@@ -147,10 +144,7 @@ function handleReset() {
   transition: background 0.15s, border-color 0.15s, opacity 0.15s, box-shadow 0.15s;
 }
 
-.btn:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
 .btn--primary {
   flex: 1;
@@ -176,10 +170,7 @@ function handleReset() {
   border-color: #9ca3af;
 }
 
-/* Spinner animation */
-.btn__spin {
-  animation: spin 0.8s linear infinite;
-}
+.btn__spin { animation: spin 0.8s linear infinite; }
 
 @keyframes spin {
   from { transform: rotate(0deg); }
