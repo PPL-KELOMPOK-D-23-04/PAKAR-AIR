@@ -1,53 +1,56 @@
-import api from './axios'
+import axios from 'axios'
 
 /**
- * Map store's lowercase keys → backend's expected casing (per rf_classifier.py).
- * @param {Object} manualData
- */
-function toBackendKeys(manualData) {
-  return {
-    ph: manualData.ph,
-    Hardness: manualData.hardness,
-    Solids: manualData.solids,
-    Chloramines: manualData.chloramines,
-    Sulfate: manualData.sulfate,
-    Conductivity: manualData.conductivity,
-    Organic_carbon: manualData.organic_carbon,
-    Trihalomethanes: manualData.trihalomethanes,
-    Turbidity: manualData.turbidity,
-  }
-}
-
-/**
- * PKD20TPA-5: Step 1 — Submit image + manual data.
- * POST /api/analysis
- * Returns { analysis_id, status, message }
- *
+ * Submit analisis ke backend.
+ * Maps lowercase store keys → PascalCase backend keys.
+ * @param {Object} manualData - dari analysisStore.manualData
  * @param {File} image
- * @param {Object} manualData  store shape (lowercase keys)
- * @returns {Promise<{ analysis_id: string, status: string, message: string }>}
+ * @returns {string} analysis_id
  */
-export async function submitAnalysis(image, manualData) {
+export async function submitAnalysis(manualData, image) {
   const formData = new FormData()
   formData.append('image', image)
-  formData.append('manual_data', JSON.stringify(toBackendKeys(manualData)))
 
-  const response = await api.post('/api/analysis', formData, {
+  // FIX: Store pakai lowercase, RF classifier butuh PascalCase
+  const mappedData = {
+    ph:               Number(manualData.ph),
+    Hardness:         Number(manualData.hardness),
+    Solids:           Number(manualData.solids),
+    Chloramines:      Number(manualData.chloramines),
+    Sulfate:          Number(manualData.sulfate),
+    Conductivity:     Number(manualData.conductivity),
+    Organic_carbon:   Number(manualData.organic_carbon),
+    Trihalomethanes:  Number(manualData.trihalomethanes),
+    Turbidity:        Number(manualData.turbidity),
+  }
+
+  formData.append('manual_data', JSON.stringify(mappedData))
+
+  const res = await axios.post('/api/analysis', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   })
 
-  return response.data
+  return res.data.analysis_id
 }
 
 /**
- * PKD20TPA-6: Step 2 — Fetch fused result by analysis_id.
- * GET /api/analysis/{analysis_id}
- * Returns { category, confidence, explanation, recommendation, ... }
- *
+ * Ambil hasil analisis lengkap dari backend.
  * @param {string} analysisId
- * @returns {Promise<{ category: string, confidence: number, explanation: string, recommendation: string }>}
+ * @returns {Object|null} result object atau null kalau belum ada
  */
 export async function getAnalysisResult(analysisId) {
-  const response = await api.get(`/api/analysis/${analysisId}`)
-  return response.data
+  const res = await axios.get(`/api/analysis/${analysisId}`)
+  return res.data.result ?? null
+}
+
+/**
+ * Ambil riwayat analisis user (paginated).
+ * @param {number} page
+ * @param {number} perPage
+ */
+export async function getAnalysisHistory(page = 1, perPage = 10) {
+  const res = await axios.get('/api/analysis/history', {
+    params: { page, per_page: perPage },
+  })
+  return res.data
 }
