@@ -96,8 +96,6 @@ async def get_history(
             "category": a.result.category if a.result else None,
             "confidence": a.result.confidence if a.result else None,
             "image_path": a.image_input.image_path if a.image_input else None,
-            "water_color": a.manual_input.data_json.get("water_color") if a.manual_input else None,
-            "water_source": a.manual_input.data_json.get("water_source") if a.manual_input else None,
         })
 
     return {
