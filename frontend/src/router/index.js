@@ -26,6 +26,13 @@ const routes = [
     component: () => import('@/views/auth/LoginPage.vue'),
     meta: { guestOnly: true },
   },
+  // Auth & Dashboard
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/views/auth/RegisterPage.vue'),
+    meta: { guestOnly: true },
+  },
   {
     path: '/dashboard',
     name: 'dashboard',
