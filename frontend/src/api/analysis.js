@@ -44,13 +44,24 @@ export async function getAnalysisResult(analysisId) {
 }
 
 /**
- * Ambil riwayat analisis user (paginated).
- * @param {number} page
- * @param {number} perPage
+ * Ambil riwayat analisis user (paginated) dengan filter opsional.
+ * @param {number} page - Halaman saat ini
+ * @param {Object} [filters={}] - Filter opsional
+ * @param {string} [filters.search]   - Kata kunci pencarian sumber air
+ * @param {string} [filters.category] - "layak" | "tidak_layak"
+ * @param {string} [filters.date]     - Format YYYY-MM-DD
+ * @param {number} [perPage=10]       - Jumlah item per halaman
  */
-export async function getAnalysisHistory(page = 1, perPage = 10) {
+export async function getAnalysisHistory(page = 1, filters = {}, perPage = 10) {
+  const { search, category, date } = filters
   const res = await axios.get('/api/analysis/history', {
-    params: { page, per_page: perPage },
+    params: {
+      page,
+      per_page: perPage,
+      search,    // undefined → tidak dikirim Axios secara otomatis
+      category,
+      date,
+    },
   })
   return res.data
 }

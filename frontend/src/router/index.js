@@ -26,6 +26,13 @@ const routes = [
     component: () => import('@/views/auth/LoginPage.vue'),
     meta: { guestOnly: true },
   },
+  // Auth & Dashboard
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/views/auth/RegisterPage.vue'),
+    meta: { guestOnly: true },
+  },
   {
     path: '/dashboard',
     name: 'dashboard',
@@ -84,18 +91,18 @@ const router = createRouter({
 })
 
 // Navigation Guard
-router.beforeEach((to) => {
-  const authStore = useAuthStore()
+// router.beforeEach((to) => {
+//   const authStore = useAuthStore()
 
-  authStore.initAuth()
+//   authStore.initAuth()
 
-  if (to.meta.requiresAuth && !authStore.isLoggedIn) {
-    return { name: 'login' }
-  }
+//   if (to.meta.requiresAuth && !authStore.isLoggedIn) {
+//     return { name: 'login' }
+//   }
 
-  if (to.meta.guestOnly && authStore.isLoggedIn) {
-    return { name: 'dashboard' }
-  }
-})
+//   if (to.meta.guestOnly && authStore.isLoggedIn) {
+//     return { name: 'dashboard' }
+//   }
+// })
 
 export default router
