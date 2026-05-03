@@ -1,10 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore'
+
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import LandingPage from '@/views/public/LandingPage.vue'
 import AnalysisView from '@/views/dashboard/AnalysisView.vue'
+import AdminLayout from '@/layouts/AdminLayout.vue'
 
 const routes = [
-  // ── Public ──────────────────────────────────────────────────
+  // Landing
   {
     path: '/',
     component: DefaultLayout,
@@ -17,48 +20,42 @@ const routes = [
     ],
   },
 
-  // ── Auth ─────────────────────────────────────────────────────
+  // Auth & Dashboard
   {
     path: '/login',
     name: 'login',
     component: () => import('@/views/auth/LoginPage.vue'),
     meta: { guestOnly: true },
   },
+  // Auth & Dashboard
   {
     path: '/register',
     name: 'register',
     component: () => import('@/views/auth/RegisterPage.vue'),
     meta: { guestOnly: true },
   },
-
-  // ── User Dashboard ───────────────────────────────────────────
   {
     path: '/dashboard',
     name: 'dashboard',
     component: () => import('@/views/dashboard/DashboardPage.vue'),
-    meta: { requiresAuth: true, userOnly: true },
+    meta: { requiresAuth: true },
   },
+  // Analysis
   {
     path: '/analysis',
     name: 'analysis',
     component: AnalysisView,
-    meta: { requiresAuth: true, userOnly: true },
+    meta: { requiresAuth: true },
   },
+  // History
   {
     path: '/history',
     alias: ['/riwayat'],
     name: 'history',
     component: () => import('@/views/dashboard/HistoryView.vue'),
-    meta: { requiresAuth: true, userOnly: true },
+    meta: { requiresAuth: true },
   },
-  {
-    path: '/profile',
-    name: 'profile',
-    component: () => import('@/views/dashboard/ProfileView.vue'),
-    meta: { requiresAuth: true, userOnly: true },
-  },
-
-  // ── Edukasi (public) ─────────────────────────────────────────
+  // Edukasi & Artikel
   {
     path: '/education',
     alias: ['/edukasi'],
@@ -80,11 +77,17 @@ const routes = [
     name: 'artikel3',
     component: () => import('@/views/edukasi/HomeArtikel3.vue'),
   },
-
-  // ── Admin Panel ──────────────────────────────────────────────
+  // Profile
+  {
+    path: '/profile',
+    name: 'profile',
+    component: () => import('@/views/dashboard/ProfileView.vue'),
+    meta: { requiresAuth: true },
+  },
+  // Admin Panel
   {
     path: '/admin',
-    component: () => import('@/layouts/AdminLayout.vue'),
+    component: AdminLayout,
     meta: { requiresAuth: true, requiresAdmin: true },
     children: [
       {
@@ -104,13 +107,6 @@ const routes = [
       },
     ],
   },
-
-  // ── 404 ──────────────────────────────────────────────────────
-  {
-    path: '/:pathMatch(.*)*',
-    name: 'not-found',
-    component: () => import('@/views/dashboard/DashboardPage.vue'),
-  },
 ]
 
 const router = createRouter({
@@ -118,14 +114,12 @@ const router = createRouter({
   routes,
 })
 
-// ── Navigation Guard ─────────────────────────────────────────────
+// Navigation Guard
 router.beforeEach((to) => {
-  // Baca token & user dari localStorage
   const token = localStorage.getItem('token') || localStorage.getItem('pakar_air_token')
+  const isLoggedIn = !!token
 
-  let isLoggedIn = !!token
   let isAdmin = false
-
   try {
     const user = JSON.parse(localStorage.getItem('pakar_air_user') || '{}')
     isAdmin = !!user.is_admin
@@ -133,18 +127,17 @@ router.beforeEach((to) => {
     isAdmin = false
   }
 
-  // Halaman butuh login
+  // Halaman yang butuh login
   if (to.meta.requiresAuth && !isLoggedIn) {
     return { name: 'login' }
   }
 
-  // Halaman khusus admin
+  // Halaman khusus admin — user biasa tidak boleh masuk
   if (to.meta.requiresAdmin && !isAdmin) {
     return { name: 'dashboard' }
   }
 
-  // Halaman khusus user biasa (bukan admin)
-  // Admin tetap bisa akses, tapi redirect-nya ke admin dashboard
+  // Halaman guest-only (login/register) — jika sudah login, redirect
   if (to.meta.guestOnly && isLoggedIn) {
     return isAdmin ? { name: 'admin-dashboard' } : { name: 'dashboard' }
   }
