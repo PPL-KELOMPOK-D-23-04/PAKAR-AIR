@@ -16,23 +16,21 @@
       <!-- Form -->
       <form class="login-form" @submit.prevent="handleLogin">
 
-       <!-- Email -->
-      <div class="form-group">
-        <label class="form-label">Email</label>
-        <div class="input-wrapper">
-          <span class="material-icons input-icon">mail</span>
-          <input
-            v-model="form.email"
-            type="email"
-            placeholder="contoh@email.com"
-            class="input"
-            :class="{ 'input-error': errors.email }"
-          />
+        <!-- Email -->
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <div class="input-wrapper">
+            <span class="material-icons input-icon">mail</span>
+            <input
+              v-model="form.email"
+              type="email"
+              placeholder="contoh@email.com"
+              class="input"
+              :class="{ 'input-error': errors.email }"
+            />
+          </div>
+          <span v-if="errors.email" class="error-text">{{ errors.email }}</span>
         </div>
-        <span v-if="errors.email" class="error-text">
-          {{ errors.email }}
-        </span>
-      </div>
 
         <!-- Password -->
         <div class="form-group">
@@ -47,9 +45,7 @@
               :class="{ 'input-error': errors.password }"
             />
           </div>
-          <span v-if="errors.password" class="error-text">
-            {{ errors.password }}
-          </span>
+          <span v-if="errors.password" class="error-text">{{ errors.password }}</span>
         </div>
 
         <!-- Global Error -->
@@ -82,11 +78,12 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios' // 1. Import axios
+import { useAuthStore } from '@/stores/authStore'
 
 const router = useRouter()
+const authStore = useAuthStore()
+
 const isLoading = ref(false)
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000' // 2. Gunakan URL backend
 
 const form = reactive({
   email: '',
@@ -106,7 +103,8 @@ function validate() {
   let valid = true
 
   if (!form.email) {
-  errors.email = 'Email wajib diisi'
+    errors.email = 'Email wajib diisi'
+    valid = false
   }
   if (!form.password) {
     errors.password = 'Password wajib diisi'
@@ -122,19 +120,20 @@ async function handleLogin() {
   errors.global = ''
 
   try {
-    const res = await axios.post(`${API_BASE}/api/auth/login`, {
-      // Backend kamu minta 'email', bukan 'email' berdasarkan error tersebut
-      email: form.email, // Masukkan input email ke field email
-      password: form.password
-    })
+    const result = await authStore.login(form.email, form.password)
 
-    if (res.data.access_token) {
-      localStorage.setItem('token', res.data.access_token)
-      router.push('/dashboard')
+    if (result.success) {
+      // Redirect admin ke panel admin, user biasa ke dashboard
+      if (result.isAdmin) {
+        router.push('/admin')
+      } else {
+        router.push('/dashboard')
+      }
+    } else {
+      errors.global = result.message
     }
   } catch (err) {
-    // Menampilkan pesan error detail dari backend jika ada
-    errors.global = err.response?.data?.detail || 'Gagal login. Cek kembali email/password.'
+    errors.global = 'Gagal login. Cek kembali email/password.'
   } finally {
     isLoading.value = false
   }
@@ -142,9 +141,7 @@ async function handleLogin() {
 </script>
 
 <style scoped>
-/* ===============================
-   PAGE
-=============================== */
+/* Styles sama persis dengan LoginPage asli supaya tidak berubah */
 .login-page {
   min-height: 100vh;
   display: flex;
@@ -154,46 +151,31 @@ async function handleLogin() {
   padding: 16px;
 }
 
-/* ===============================
-   CARD
-=============================== */
 .login-card {
   width: 100%;
   max-width: 380px;
   background: #F1F1F1;
   border-radius: 16px;
   padding: 30px 26px 24px;
-
-  box-shadow:
-    0 20px 40px rgba(0,0,0,0.2);
-
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
   text-align: center;
 }
 
-/* ===============================
-   HEADER
-=============================== */
-.login-header {
-  margin-bottom: 20px;
-}
+.login-header { margin-bottom: 20px; }
 
 .logo-icon {
   width: 54px;
   height: 54px;
   background: #1A1953;
   border-radius: 12px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   margin: 0 auto 16px;
   color: white;
 }
 
-.material-icons {
-  font-size: 26px;
-}
+.material-icons { font-size: 26px; }
 
 .title {
   font-size: 20px;
@@ -202,18 +184,9 @@ async function handleLogin() {
   color: #071952;
 }
 
-.subtitle {
-  font-size: 13px;
-  color: #4b5563;
-}
+.subtitle { font-size: 13px; color: #4b5563; }
 
-/* ===============================
-   FORM
-=============================== */
-.login-form {
-  display: flex;
-  flex-direction: column;
-}
+.login-form { display: flex; flex-direction: column; }
 
 .form-group {
   text-align: left;
@@ -224,11 +197,10 @@ async function handleLogin() {
   font-size: 13px;
   margin-bottom: 6px;
   color: #374151;
+  display: block;
 }
 
-.input-wrapper {
-  position: relative;
-}
+.input-wrapper { position: relative; }
 
 .input-icon {
   position: absolute;
@@ -242,10 +214,8 @@ async function handleLogin() {
 .input {
   width: 100%;
   padding: 12px 12px 12px 38px;
-
   border: none;
   border-radius: 10px;
-
   background: #ffffff;
   font-size: 14px;
 }
@@ -255,17 +225,9 @@ async function handleLogin() {
   box-shadow: 0 0 0 2px rgba(26,25,83,0.15);
 }
 
-.input-error {
-  background: #fdeeee;
-}
+.input-error { background: #fdeeee; }
 
-/* ===============================
-   ERROR
-=============================== */
-.error-text {
-  font-size: 12px;
-  color: #b42318;
-}
+.error-text { font-size: 12px; color: #b42318; }
 
 .error-box {
   margin-top: 12px;
@@ -277,34 +239,23 @@ async function handleLogin() {
   font-size: 13px;
 }
 
-/* ===============================
-   BUTTON
-=============================== */
 .btn-login {
   width: 100%;
   margin-top: 20px;
   padding: 12px;
-
   background: #1A1953;
   color: white;
-
   border: none;
   border-radius: 10px;
-
   font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s;
 }
 
-.btn-login:hover {
-  background: #071952;
-}
+.btn-login:hover { background: #071952; }
+.btn-login:disabled { opacity: 0.7; cursor: not-allowed; }
 
-.btn-login:disabled {
-  opacity: 0.7;
-}
-
-/* ===============================
-   FOOTER
-=============================== */
 .login-footer {
   margin-top: 20px;
   font-size: 13px;
@@ -315,10 +266,7 @@ async function handleLogin() {
   color: #6b7280;
 }
 
-.login-footer a {
-  color: #1A1953;
-  font-weight: 500;
-}
+.login-footer a { color: #1A1953; font-weight: 500; }
 
 .back-link {
   display: block;
