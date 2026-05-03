@@ -130,7 +130,25 @@ async function handleLogin() {
 
     if (res.data.access_token) {
       localStorage.setItem('token', res.data.access_token)
-      router.push('/dashboard')
+
+      // Simpan info user ke localStorage agar guard bisa baca is_admin
+      // (authStore.login() sudah handle ini, tapi LoginPage ini bypass authStore)
+      const { user_id, full_name, is_admin } = res.data
+      const userObj = {
+        id: user_id,
+        email: form.email,
+        full_name: full_name || form.email,
+        is_admin: is_admin || false,
+      }
+      localStorage.setItem('pakar_air_token', res.data.access_token)
+      localStorage.setItem('pakar_air_user', JSON.stringify(userObj))
+
+      // Redirect berdasarkan role
+      if (is_admin) {
+        router.push('/admin')
+      } else {
+        router.push('/dashboard')
+      }
     }
   } catch (err) {
     // Menampilkan pesan error detail dari backend jika ada

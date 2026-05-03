@@ -6,7 +6,7 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: JSON.parse(localStorage.getItem('pakar_air_user') || 'null'),
-    token: localStorage.getItem('pakar_air_token') || null,
+    token: localStorage.getItem('pakar_air_token') || localStorage.getItem('token') || null,
     refreshToken: localStorage.getItem('pakar_air_refresh_token') || null,
     isLoading: false,
     error: null,
@@ -15,6 +15,7 @@ export const useAuthStore = defineStore('auth', {
   getters: {
     isLoggedIn: (state) => !!state.token,
     currentUser: (state) => state.user,
+    isAdmin: (state) => !!state.user?.is_admin,
   },
 
   actions: {
@@ -31,8 +32,14 @@ export const useAuthStore = defineStore('auth', {
 
         this.token = access_token
         this.refreshToken = refresh_token
-        this.user = user || { email }
+        this.user = {
+          id: user_id,
+          email,
+          full_name: full_name || email,
+          is_admin: is_admin || false,
+        }
 
+        localStorage.setItem('token', access_token)
         localStorage.setItem('pakar_air_token', access_token)
         localStorage.setItem('pakar_air_refresh_token', refresh_token)
         localStorage.setItem('pakar_air_user', JSON.stringify(this.user))
@@ -40,7 +47,7 @@ export const useAuthStore = defineStore('auth', {
         // Set default auth header for future requests
         axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`
 
-        return { success: true }
+        return { success: true, isAdmin: is_admin || false }
       } catch (err) {
         const message =
           err.response?.data?.detail ||
@@ -76,6 +83,7 @@ export const useAuthStore = defineStore('auth', {
       this.token = null
       this.refreshToken = null
       this.error = null
+      localStorage.removeItem('token')
       localStorage.removeItem('pakar_air_token')
       localStorage.removeItem('pakar_air_refresh_token')
       localStorage.removeItem('pakar_air_user')

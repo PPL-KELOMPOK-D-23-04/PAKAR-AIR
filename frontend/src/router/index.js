@@ -4,6 +4,7 @@ import { useAuthStore } from '@/stores/authStore'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import LandingPage from '@/views/public/LandingPage.vue'
 import AnalysisView from '@/views/dashboard/AnalysisView.vue'
+import AdminLayout from '@/layouts/AdminLayout.vue'
 
 const routes = [
   // Landing
@@ -83,6 +84,29 @@ const routes = [
     component: () => import('@/views/dashboard/ProfileView.vue'),
     meta: { requiresAuth: true },
   },
+  // Admin Panel
+  {
+    path: '/admin',
+    component: AdminLayout,
+    meta: { requiresAuth: true, requiresAdmin: true },
+    children: [
+      {
+        path: '',
+        name: 'admin-dashboard',
+        component: () => import('@/views/admin/AdminDashboard.vue'),
+      },
+      {
+        path: 'users',
+        name: 'admin-users',
+        component: () => import('@/views/admin/AdminUsers.vue'),
+      },
+      {
+        path: 'reports',
+        name: 'admin-reports',
+        component: () => import('@/views/admin/AdminReports.vue'),
+      },
+    ],
+  },
 ]
 
 const router = createRouter({
@@ -91,18 +115,32 @@ const router = createRouter({
 })
 
 // Navigation Guard
-// router.beforeEach((to) => {
-//   const authStore = useAuthStore()
+router.beforeEach((to) => {
+  const token = localStorage.getItem('token') || localStorage.getItem('pakar_air_token')
+  const isLoggedIn = !!token
 
-//   authStore.initAuth()
+  let isAdmin = false
+  try {
+    const user = JSON.parse(localStorage.getItem('pakar_air_user') || '{}')
+    isAdmin = !!user.is_admin
+  } catch {
+    isAdmin = false
+  }
 
-//   if (to.meta.requiresAuth && !authStore.isLoggedIn) {
-//     return { name: 'login' }
-//   }
+  // Halaman yang butuh login
+  if (to.meta.requiresAuth && !isLoggedIn) {
+    return { name: 'login' }
+  }
 
-//   if (to.meta.guestOnly && authStore.isLoggedIn) {
-//     return { name: 'dashboard' }
-//   }
-// })
+  // Halaman khusus admin — user biasa tidak boleh masuk
+  if (to.meta.requiresAdmin && !isAdmin) {
+    return { name: 'dashboard' }
+  }
+
+  // Halaman guest-only (login/register) — jika sudah login, redirect
+  if (to.meta.guestOnly && isLoggedIn) {
+    return isAdmin ? { name: 'admin-dashboard' } : { name: 'dashboard' }
+  }
+})
 
 export default router
