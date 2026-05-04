@@ -131,7 +131,8 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import axios from 'axios'
 import { useRouter } from 'vue-router'
 import {
   LayoutDashboardIcon,
@@ -153,16 +154,41 @@ const sidebarCollapsed = ref(false)
 const showLogoutModal = ref(false)
 
 const userDisplayName = computed(() => {
-  const user = authStore.currentUser
-  return user?.full_name || user?.email?.split('@')[0] || 'Pengguna'
+  // Baca langsung dari localStorage karena authStore mungkin belum sync
+  try {
+    const stored = JSON.parse(localStorage.getItem('pakar_air_user') || '{}')
+    return stored?.full_name || stored?.email?.split('@')[0] || authStore.currentUser?.full_name || 'Pengguna'
+  } catch {
+    return authStore.currentUser?.full_name || 'Pengguna'
+  }
 })
 const userInitial = computed(() => userDisplayName.value.charAt(0).toUpperCase())
 
-const stats = [
+const stats = ref([
   { label: 'Total Analisis', value: '0', icon: FlaskConicalIcon, bg: 'rgba(59,130,246,0.1)', color: '#3b82f6' },
   { label: 'Air Aman', value: '0', icon: DropletIcon, bg: 'rgba(16,185,129,0.1)', color: '#10b981' },
   { label: 'Perlu Perhatian', value: '0', icon: ClipboardCheckIcon, bg: 'rgba(245,158,11,0.1)', color: '#f59e0b' },
-]
+])
+
+async function fetchStats() {
+  try {
+    const res = await axios.get('/api/analysis/history', {
+      params: { page: 1, per_page: 999 }
+    })
+    const items = res.data.items || []
+    const total = res.data.total || items.length
+    const aman = items.filter(i => i.category === 'layak').length
+    const perhatian = items.filter(i => i.category === 'tidak_layak').length
+
+    stats.value[0].value = String(total)
+    stats.value[1].value = String(aman)
+    stats.value[2].value = String(perhatian)
+  } catch {
+    // Biarkan tetap 0 kalau gagal
+  }
+}
+
+onMounted(fetchStats)
 
 const steps = [
   { title: 'Upload Foto Air', desc: 'Ambil foto sampel air langsung dari kamera atau galeri.', icon: UploadIcon },
