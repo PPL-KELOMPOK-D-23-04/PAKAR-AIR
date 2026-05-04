@@ -101,7 +101,7 @@ const statCards = computed(() => {
   return [
     {
       label: 'Total Pengguna',
-      value: s.total_users ?? '-',
+      value: s.users?.total ?? s.total_users ?? '-',
       emoji: '👥',
       iconBg: '#eff6ff',
       iconColor: '#2563eb',
@@ -111,7 +111,7 @@ const statCards = computed(() => {
     },
     {
       label: 'Pengguna Aktif',
-      value: s.active_users ?? '-',
+      value: s.users?.active ?? s.active_users ?? '-',
       emoji: '✅',
       iconBg: '#f0fdf4',
       iconColor: '#16a34a',
@@ -121,7 +121,7 @@ const statCards = computed(() => {
     },
     {
       label: 'Total Analisis',
-      value: s.total_analyses ?? '-',
+      value: s.analyses?.total ?? s.total_analyses ?? '-',
       emoji: '🔬',
       iconBg: '#faf5ff',
       iconColor: '#7c3aed',
@@ -131,7 +131,11 @@ const statCards = computed(() => {
     },
     {
       label: 'Rata-rata Akurasi',
-      value: s.avg_confidence ? `${(s.avg_confidence * 100).toFixed(1)}%` : '-',
+      value: s.avg_confidence
+        ? `${(s.avg_confidence * 100).toFixed(1)}%`
+        : s.analyses?.total
+          ? `${Math.round((s.results?.layak ?? 0) / s.analyses.total * 100)}%`
+          : '-',
       emoji: '📊',
       iconBg: '#fff7ed',
       iconColor: '#c2410c',
@@ -145,12 +149,28 @@ const statCards = computed(() => {
 async function fetchStats() {
   isLoading.value = true
   try {
+    const token = localStorage.getItem('pakar_air_token') || localStorage.getItem('token')
     const res = await axios.get(`${API_BASE}/api/admin/dashboard/stats`, {
-      headers: { Authorization: `Bearer ${getToken()}` }
+      headers: { Authorization: `Bearer ${token}` }
     })
     stats.value = res.data
   } catch (err) {
-    errorMsg.value = err.response?.data?.detail || 'Gagal memuat statistik.'
+    // Kalau endpoint stats gagal, coba hitung manual dari list user
+    try {
+      const token = localStorage.getItem('pakar_air_token') || localStorage.getItem('token')
+      const usersRes = await axios.get(`${API_BASE}/api/admin/users`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      const users = usersRes.data || []
+      stats.value = {
+        total_users: users.length,
+        active_users: users.filter(u => u.is_active).length,
+        total_analyses: '-',
+        avg_confidence: null,
+      }
+    } catch {
+      errorMsg.value = 'Gagal memuat statistik.'
+    }
   } finally {
     isLoading.value = false
   }
