@@ -93,10 +93,10 @@
           </button>
 
           <div class="topbar__profile">
-            <div class="topbar__avatar">KD</div>
+            <div class="topbar__avatar">{{ userInitial }}</div>
             <div class="topbar__user-info">
-              <span class="topbar__user-name">Kelompok D</span>
-              <span class="topbar__user-role">Pakar Air Kelompok D</span>
+              <span class="topbar__user-name">{{ userName }}</span>
+              <span class="topbar__user-role">{{ userRole }}</span>
             </div>
             <svg width="14" height="14" fill="none" viewBox="0 0 24 24"
               stroke="currentColor" stroke-width="2">
@@ -118,6 +118,19 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
+
+const user = computed(() => {
+  try {
+    return JSON.parse(localStorage.getItem('pakar_air_user') || '{}')
+  } catch {
+    return {}
+  }
+})
+
+const userName = computed(() => user.value?.full_name || user.value?.email?.split('@')[0] || 'Pengguna')
+const userRole = computed(() => user.value?.is_admin ? 'Administrator' : 'Pengguna')
+const userInitial = computed(() => userName.value.charAt(0).toUpperCase())
 </script>
 
 <style scoped>

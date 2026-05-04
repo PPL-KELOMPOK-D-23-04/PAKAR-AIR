@@ -87,8 +87,45 @@ def login_user(data: LoginRequest, supabase: Client, db: Session) -> dict:
         session = auth_response.session
         user = auth_response.user
 
-        # Fetch profile to get is_admin and full_name
+        # Fetch profile to get is_admin, is_active, and full_name
         profile = db.query(Profile).filter(Profile.id == user.id).first()
+
+        # ── FIX: Jika profile belum ada (trigger Supabase belum jalan),
+        #         buat otomatis dari data Supabase Auth ──────────────────
+        if not profile:
+            meta = user.user_metadata or {}
+            username = meta.get("username") or data.email.split("@")[0]
+            full_name = meta.get("full_name") or username
+
+            # Pastikan username unik — tambah suffix jika sudah ada
+            existing_username = db.query(Profile).filter(
+                Profile.username == username
+            ).first()
+            if existing_username:
+                username = f"{username}_{str(user.id)[:6]}"
+
+            profile = Profile(
+                id=user.id,
+                full_name=full_name,
+                username=username,
+                is_admin=False,
+                is_active=True,
+            )
+            db.add(profile)
+            db.commit()
+            db.refresh(profile)
+
+        # ── FIX: Cek is_active — blokir login jika akun dinonaktifkan ──
+        if not profile.is_active:
+            # Sign out dari Supabase agar session tidak menggantung
+            try:
+                supabase.auth.sign_out()
+            except Exception:
+                pass
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Akun Anda telah dinonaktifkan oleh admin. Hubungi administrator untuk informasi lebih lanjut."
+            )
 
         return {
             "access_token": session.access_token,
@@ -96,8 +133,8 @@ def login_user(data: LoginRequest, supabase: Client, db: Session) -> dict:
             "token_type": "bearer",
             "user_id": str(user.id),
             "email": user.email,
-            "full_name": profile.full_name if profile else None,
-            "is_admin": profile.is_admin if profile else False,
+            "full_name": profile.full_name,
+            "is_admin": profile.is_admin,
         }
 
     except HTTPException:
@@ -133,6 +170,13 @@ def refresh_token(refresh_token_str: str, supabase: Client, db: Session) -> dict
         session = auth_response.session
         user = auth_response.user
         profile = db.query(Profile).filter(Profile.id == user.id).first()
+
+        # Cek is_active juga saat refresh token
+        if profile and not profile.is_active:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Akun Anda telah dinonaktifkan oleh admin."
+            )
 
         return {
             "access_token": session.access_token,
