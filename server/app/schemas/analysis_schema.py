@@ -62,6 +62,10 @@ class AnalysisSummary(BaseModel):
     category: Optional[str] = None
     confidence: Optional[float] = None
     image_path: Optional[str] = None
+    # Display fields from manual input
+    water_source: Optional[str] = None
+    water_color: Optional[str] = None
+    ph: Optional[float] = None
 
 
 # ─── Full Analysis Detail ────────────────────────────────────────

@@ -4,6 +4,7 @@ import { useAuthStore } from '@/stores/authStore'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import LandingPage from '@/views/public/LandingPage.vue'
 import AnalysisView from '@/views/dashboard/AnalysisView.vue'
+import AdminLayout from '@/layouts/AdminLayout.vue'
 
 const routes = [
   // Landing
@@ -24,6 +25,13 @@ const routes = [
     path: '/login',
     name: 'login',
     component: () => import('@/views/auth/LoginPage.vue'),
+    meta: { guestOnly: true },
+  },
+  // Auth & Dashboard
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/views/auth/RegisterPage.vue'),
     meta: { guestOnly: true },
   },
   {
@@ -76,13 +84,6 @@ const routes = [
     component: () => import('@/views/dashboard/ProfileView.vue'),
     meta: { requiresAuth: true },
   },
-  // ========== NOTIFIKASI ==========
-  {
-    path: '/notifications',
-    name: 'notifications',
-    component: () => import('@/views/NotificationsPage.vue'),
-    meta: { requiresAuth: true },
-  },
 ]
 
 const router = createRouter({
@@ -92,16 +93,30 @@ const router = createRouter({
 
 // Navigation Guard
 router.beforeEach((to) => {
-  const authStore = useAuthStore()
+  const token = localStorage.getItem('token') || localStorage.getItem('pakar_air_token')
+  const isLoggedIn = !!token
 
-  authStore.initAuth()
+  let isAdmin = false
+  try {
+    const user = JSON.parse(localStorage.getItem('pakar_air_user') || '{}')
+    isAdmin = !!user.is_admin
+  } catch {
+    isAdmin = false
+  }
 
-  if (to.meta.requiresAuth && !authStore.isLoggedIn) {
+  // Halaman yang butuh login
+  if (to.meta.requiresAuth && !isLoggedIn) {
     return { name: 'login' }
   }
 
-  if (to.meta.guestOnly && authStore.isLoggedIn) {
+  // Halaman khusus admin — user biasa tidak boleh masuk
+  if (to.meta.requiresAdmin && !isAdmin) {
     return { name: 'dashboard' }
+  }
+
+  // Halaman guest-only (login/register) — jika sudah login, redirect
+  if (to.meta.guestOnly && isLoggedIn) {
+    return isAdmin ? { name: 'admin-dashboard' } : { name: 'dashboard' }
   }
 })
 

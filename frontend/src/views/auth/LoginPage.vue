@@ -16,23 +16,23 @@
       <!-- Form -->
       <form class="login-form" @submit.prevent="handleLogin">
 
-        <!-- Username -->
-        <div class="form-group">
-          <label class="form-label">Username</label>
-          <div class="input-wrapper">
-            <span class="material-icons input-icon">mail</span>
-            <input
-              v-model="form.username"
-              type="text"
-              placeholder="Username"
-              class="input"
-              :class="{ 'input-error': errors.username }"
-            />
-          </div>
-          <span v-if="errors.username" class="error-text">
-            {{ errors.username }}
-          </span>
+       <!-- Email -->
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <div class="input-wrapper">
+          <span class="material-icons input-icon">mail</span>
+          <input
+            v-model="form.email"
+            type="email"
+            placeholder="contoh@email.com"
+            class="input"
+            :class="{ 'input-error': errors.email }"
+          />
         </div>
+        <span v-if="errors.email" class="error-text">
+          {{ errors.email }}
+        </span>
+      </div>
 
         <!-- Password -->
         <div class="form-group">
@@ -82,51 +82,37 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios' // 1. Import axios
 
 const router = useRouter()
 const isLoading = ref(false)
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000' // 2. Gunakan URL backend
 
 const form = reactive({
-  username: '',
+  email: '',
   password: ''
 })
 
 const errors = reactive({
-  username: '',
+  email: '',
   password: '',
   global: ''
 })
 
 function validate() {
-  errors.username = ''
+  errors.email = ''
   errors.password = ''
   errors.global = ''
-
   let valid = true
 
-  if (!form.username) {
-    errors.username = 'Username wajib diisi'
-    valid = false
+  if (!form.email) {
+  errors.email = 'Email wajib diisi'
   }
-
   if (!form.password) {
     errors.password = 'Password wajib diisi'
     valid = false
   }
-
   return valid
-}
-
-function fakeLoginAPI(username, password) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (username === 'admin' && password === 'admin123') {
-        resolve({ success: true })
-      } else {
-        reject({ message: 'Username atau password tidak valid' })
-      }
-    }, 800)
-  })
 }
 
 async function handleLogin() {
@@ -136,12 +122,37 @@ async function handleLogin() {
   errors.global = ''
 
   try {
-    const res = await fakeLoginAPI(form.username, form.password)
-    if (res.success) {
-      router.push('/dashboard')
+    const res = await axios.post(`${API_BASE}/api/auth/login`, {
+      // Backend kamu minta 'email', bukan 'email' berdasarkan error tersebut
+      email: form.email, // Masukkan input email ke field email
+      password: form.password
+    })
+
+    if (res.data.access_token) {
+      localStorage.setItem('token', res.data.access_token)
+
+      // Simpan info user ke localStorage agar guard bisa baca is_admin
+      // (authStore.login() sudah handle ini, tapi LoginPage ini bypass authStore)
+      const { user_id, full_name, is_admin } = res.data
+      const userObj = {
+        id: user_id,
+        email: form.email,
+        full_name: full_name || form.email,
+        is_admin: is_admin || false,
+      }
+      localStorage.setItem('pakar_air_token', res.data.access_token)
+      localStorage.setItem('pakar_air_user', JSON.stringify(userObj))
+
+      // Redirect berdasarkan role
+      if (is_admin) {
+        router.push('/admin')
+      } else {
+        router.push('/dashboard')
+      }
     }
   } catch (err) {
-    errors.global = err.message
+    // Menampilkan pesan error detail dari backend jika ada
+    errors.global = err.response?.data?.detail || 'Gagal login. Cek kembali email/password.'
   } finally {
     isLoading.value = false
   }
