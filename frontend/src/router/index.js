@@ -6,10 +6,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
 
 // =============================================
-// 2. IMPORT LAYOUTS
+// 2. IMPORT LAYOUTS (SESUAI DENGAN FILE YANG ADA)
 // =============================================
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import DefaultLayoutProfile from '@/layouts/DefaultLayoutProfile.vue'  // ← NAMA YANG BENAR
 
 // =============================================
 // 3. IMPORT PUBLIC VIEWS (Tidak Perlu Login)
@@ -42,17 +42,24 @@ import NotificationsPage from '@/views/NotificationsPage.vue'
 // =============================================
 const routes = [
   // -------------------------------------------------
-  // SECTION A: LANDING PAGE (Tanpa Layout Khusus)
+  // SECTION A: LANDING PAGE (Pakai DefaultLayoutProfile)
   // -------------------------------------------------
   {
     path: '/',
     name: 'landing',
-    component: LandingPage,
+    component: DefaultLayoutProfile,
     meta: {
       guestOnly: true,
       title: 'PAKAR-AIR | Pendeteksi Kualitas Air Berbasis AI',
       requiresAuth: false
-    }
+    },
+    children: [
+      {
+        path: '',
+        name: 'landing-index',
+        component: LandingPage
+      }
+    ]
   },
 
   // -------------------------------------------------
@@ -171,7 +178,7 @@ const routes = [
     path: '/education',
     alias: ['/edukasi'],
     name: 'education',
-    component: DefaultLayout,
+    component: DefaultLayoutProfile,
     meta: {
       title: 'Edukasi Kualitas Air | PAKAR-AIR',
       requiresAuth: false
@@ -187,7 +194,7 @@ const routes = [
   {
     path: '/artikel',
     name: 'artikel1',
-    component: DefaultLayout,
+    component: DefaultLayoutProfile,
     meta: {
       title: 'Parameter Fisik Air Layak Konsumsi | PAKAR-AIR',
       requiresAuth: false
@@ -203,7 +210,7 @@ const routes = [
   {
     path: '/artikel2',
     name: 'artikel2',
-    component: DefaultLayout,
+    component: DefaultLayoutProfile,
     meta: {
       title: 'Dampak Pencemaran Air | PAKAR-AIR',
       requiresAuth: false
@@ -219,7 +226,7 @@ const routes = [
   {
     path: '/artikel3',
     name: 'artikel3',
-    component: DefaultLayout,
+    component: DefaultLayoutProfile,
     meta: {
       title: 'Memahami Hasil Analisis PAKAR-AIR | PAKAR-AIR',
       requiresAuth: false
@@ -239,7 +246,7 @@ const routes = [
   {
     path: '/search',
     name: 'search',
-    component: DefaultLayout,
+    component: DefaultLayoutProfile,
     meta: {
       title: 'Pencarian Artikel | PAKAR-AIR',
       requiresAuth: false
@@ -274,15 +281,12 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    // Smooth scroll ke hash jika ada
     if (to.hash) {
       return { el: to.hash, behavior: 'smooth' }
     }
-    // Kembali ke posisi sebelumnya jika ada
     if (savedPosition) {
       return savedPosition
     }
-    // Default: scroll ke atas
     return { top: 0 }
   }
 })
@@ -316,7 +320,7 @@ router.beforeEach((to, from, next) => {
     authStore.initAuth()
   }
 
-  // ========== RULE 1: Halaman yang butuh login ==========
+  // RULE 1: Halaman yang butuh login
   if (to.meta.requiresAuth && !isLoggedIn) {
     next({ 
       name: 'login', 
@@ -325,21 +329,20 @@ router.beforeEach((to, from, next) => {
     return
   }
 
-  // ========== RULE 2: Halaman khusus admin ==========
+  // RULE 2: Halaman khusus admin
   if (to.meta.requiresAdmin && !isAdmin) {
     next({ name: 'dashboard' })
     return
   }
 
-  // ========== RULE 3: Halaman guest-only (login/register) ==========
-  // Jika sudah login, redirect ke dashboard yang sesuai
+  // RULE 3: Halaman guest-only (login/register)
   if (to.meta.guestOnly && isLoggedIn) {
     const redirectName = isAdmin ? 'admin-dashboard' : 'dashboard'
     next({ name: redirectName })
     return
   }
 
-  // ========== RULE 4: Lanjutkan ==========
+  // RULE 4: Lanjutkan
   next()
 })
 
@@ -347,16 +350,10 @@ router.beforeEach((to, from, next) => {
 // 10. AFTER EACH ROUTE (Set Page Title)
 // =============================================
 router.afterEach((to) => {
-  // Set judul halaman dari meta
   if (to.meta && to.meta.title) {
     document.title = to.meta.title
   } else {
     document.title = 'PAKAR-AIR | Pendeteksi Kualitas Air Berbasis AI'
-  }
-
-  // Scroll ke atas untuk mobile (opsional)
-  if (window.scrollY > 0) {
-    window.scrollTo(0, 0)
   }
 })
 
