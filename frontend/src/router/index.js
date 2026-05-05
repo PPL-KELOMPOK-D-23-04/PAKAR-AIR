@@ -76,6 +76,13 @@ const routes = [
     component: () => import('@/views/dashboard/ProfileView.vue'),
     meta: { requiresAuth: true },
   },
+  // ========== NOTIFIKASI ==========
+  {
+    path: '/notifications',
+    name: 'notifications',
+    component: () => import('@/views/NotificationsPage.vue'),
+    meta: { requiresAuth: true },
+  },
 ]
 
 const router = createRouter({
