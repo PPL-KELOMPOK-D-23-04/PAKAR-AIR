@@ -16,6 +16,8 @@
       <!-- Filter Bar -->
       <div class="filter-bar">
         <!-- Search -->
+        <!-- NOTE: Search hanya bekerja untuk data water_source yang tersimpan di backend.
+             Label fallback "Analisis #N" adalah label frontend saja dan tidak bisa dicari. -->
         <div class="filter-item filter-item--search">
           <svg class="filter-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
@@ -24,7 +26,7 @@
             v-model="searchQuery"
             type="text"
             class="filter-input"
-            placeholder="Cari sumber air..."
+            placeholder="Cari sumber air (sumur, sungai, PDAM...)"
             @input="handleFilter"
           />
         </div>
@@ -94,7 +96,7 @@
       <!-- History List -->
       <div v-else class="history-list">
         <div
-          v-for="item in history"
+          v-for="(item, index) in history"
           :key="item.id"
           class="history-card"
           @click="viewDetail(item.id)"
@@ -122,7 +124,9 @@
                 {{ item.category === 'layak' ? '✅ Layak' : '❌ Tidak Layak' }}
               </span>
             </div>
-            <h3 class="history-card__title">{{ item.water_source || 'Sumber Tidak Diketahui' }}</h3>
+            <!-- Fallback label is frontend-only; number is assigned oldest→newest (#1 = oldest).
+            Search cannot match these generated labels — only real water_source values are searchable. -->
+            <h3 class="history-card__title">{{ item.water_source || `Analisis #${totalItems - (currentPage - 1) * 10 - index}` }}</h3>
             <div class="history-card__meta">
               <span v-if="item.water_color">🎨 {{ item.water_color }}</span>
               <span v-if="item.ph">pH {{ item.ph }}</span>
