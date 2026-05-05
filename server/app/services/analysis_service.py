@@ -8,7 +8,7 @@ Analysis service — orchestrates the full analysis pipeline:
 6. Create notification
 """
 from sqlalchemy.orm import Session
-from sqlalchemy import func, cast, Date
+from sqlalchemy import cast, Date
 from fastapi import HTTPException
 from uuid import UUID
 from typing import Optional
