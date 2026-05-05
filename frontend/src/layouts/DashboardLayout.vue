@@ -59,7 +59,7 @@
 
       <hr class="sidebar__divider sidebar__divider--bottom" />
 
-      <button class="sidebar__item sidebar__item--logout">
+      <button class="sidebar__item sidebar__item--logout" @click="handleLogout">
         <svg width="16" height="16" fill="none" viewBox="0 0 24 24"
           stroke="currentColor" stroke-width="1.8">
           <path stroke-linecap="round" stroke-linejoin="round"
@@ -119,6 +119,26 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+import axios from 'axios'
+
+const router = useRouter()
+
+async function handleLogout() {
+  const token = localStorage.getItem('pakar_air_token') || localStorage.getItem('token')
+  try {
+    const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+    await axios.post(`${API_BASE}/api/auth/logout`, {}, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+  } catch { }
+  localStorage.removeItem('token')
+  localStorage.removeItem('pakar_air_token')
+  localStorage.removeItem('pakar_air_refresh_token')
+  localStorage.removeItem('pakar_air_user')
+  delete axios.defaults.headers.common['Authorization']
+  router.push('/login')
+}
 
 const user = computed(() => {
   try {
