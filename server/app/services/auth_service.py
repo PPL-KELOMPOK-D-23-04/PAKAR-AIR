@@ -90,6 +90,18 @@ def login_user(data: LoginRequest, supabase: Client, db: Session) -> dict:
         # Fetch profile to get is_admin, is_active, and full_name
         profile = db.query(Profile).filter(Profile.id == user.id).first()
 
+        # ── Cek apakah akun sudah dihapus admin ──
+        # Jika tidak ada profile, berarti admin sudah hapus akun ini
+        if not profile:
+            try:
+                supabase.auth.sign_out()
+            except Exception:
+                pass
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Akun Anda tidak ditemukan atau telah dihapus. Hubungi administrator untuk informasi lebih lanjut."
+            )
+
         # ── FIX: Jika profile belum ada (trigger Supabase belum jalan),
         #         buat otomatis dari data Supabase Auth ──────────────────
         if not profile:
