@@ -94,7 +94,7 @@
       <!-- History List -->
       <div v-else class="history-list">
         <div
-          v-for="item in history"
+          v-for="(item, index) in history"
           :key="item.id"
           class="history-card"
           @click="viewDetail(item.id)"
@@ -122,7 +122,7 @@
                 {{ item.category === 'layak' ? '✅ Layak' : '❌ Tidak Layak' }}
               </span>
             </div>
-            <h3 class="history-card__title">{{ item.water_source || 'Sumber Tidak Diketahui' }}</h3>
+            <h3 class="history-card__title">{{ item.water_source || `Analisis #${(currentPage - 1) * 10 + index + 1}` }}</h3>
             <div class="history-card__meta">
               <span v-if="item.water_color">🎨 {{ item.water_color }}</span>
               <span v-if="item.ph">pH {{ item.ph }}</span>
