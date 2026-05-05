@@ -75,25 +75,24 @@
       <!-- TOPBAR (fixed) -->
       <header class="topbar">
         <div class="topbar__breadcrumb">
-          <span>Analisis</span>
-          <svg width="14" height="14" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-          </svg>
-          <span class="topbar__breadcrumb--active">Baru</span>
+          <span>Dashboard</span>
         </div>
 
         <div class="topbar__right">
-          <button class="topbar__icon-btn" aria-label="Notifikasi">
-            <svg width="18" height="18" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor" stroke-width="1.8">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-            </svg>
-          </button>
+          <!-- NOTIFICATION BELL COMPONENT -->
+          <NotificationBell />
 
-          <div class="topbar__profile">
-            <div class="topbar__avatar">{{ userInitial }}</div>
+          <!-- PROFILE DROPDOWN -->
+          <div class="topbar__profile" @click="toggleProfileDropdown">
+            <div class="topbar__avatar">
+              <img 
+                v-if="profileAvatar" 
+                :src="profileAvatar" 
+                :alt="userName"
+                class="avatar-img"
+              />
+              <span v-else>{{ userInitial }}</span>
+            </div>
             <div class="topbar__user-info">
               <span class="topbar__user-name">{{ userName }}</span>
               <span class="topbar__user-role">{{ userRole }}</span>
@@ -108,9 +107,7 @@
 
       <!-- CONTENT (scrolls only here) -->
       <main class="layout-content">
-        <slot>
-          <router-view />
-        </slot>
+        <router-view />
       </main>
 
     </div>
@@ -118,12 +115,45 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
+import NotificationBell from '@/components/NotificationBell.vue'
+import { useAuthStore } from '@/stores/authStore'
+import { useProfileStore } from '@/stores/profileStore'
 
 const router = useRouter()
+const authStore = useAuthStore()
+const profileStore = useProfileStore()
 
+// State untuk dropdown profile
+const showDropdown = ref(false)
+
+// Data user dari auth store
+const user = computed(() => authStore.user || {})
+
+// Nama user
+const userName = computed(() => {
+  return user.value?.full_name || user.value?.fullname || user.value?.nama || user.value?.email?.split('@')[0] || 'Pengguna'
+})
+
+// Role user
+const userRole = computed(() => {
+  return user.value?.role === 'admin' || user.value?.is_admin ? 'Administrator' : 'Pengguna'
+})
+
+// Initial untuk avatar (fallback)
+const userInitial = computed(() => {
+  const name = userName.value
+  return name.charAt(0).toUpperCase()
+})
+
+// Avatar dari profile store
+const profileAvatar = computed(() => {
+  return profileStore.profile?.avatar_url || null
+})
+
+// Fungsi logout
 async function handleLogout() {
   const token = localStorage.getItem('pakar_air_token') || localStorage.getItem('token')
   try {
@@ -132,25 +162,49 @@ async function handleLogout() {
       headers: { Authorization: `Bearer ${token}` }
     })
   } catch { }
+  
+  // Clear storage
   localStorage.removeItem('token')
   localStorage.removeItem('pakar_air_token')
   localStorage.removeItem('pakar_air_refresh_token')
   localStorage.removeItem('pakar_air_user')
+  localStorage.removeItem('user')
+  
   delete axios.defaults.headers.common['Authorization']
+  
+  // Reset stores
+  authStore.logout?.()
+  
   router.push('/login')
 }
 
-const user = computed(() => {
-  try {
-    return JSON.parse(localStorage.getItem('pakar_air_user') || '{}')
-  } catch {
-    return {}
-  }
-})
+// Toggle profile dropdown (opsional, bisa ditambah menu dropdown)
+function toggleProfileDropdown() {
+  // Bisa diisi dengan dropdown menu profile
+  // Contoh: redirect ke profile
+  router.push('/profile')
+}
 
-const userName = computed(() => user.value?.full_name || user.value?.email?.split('@')[0] || 'Pengguna')
-const userRole = computed(() => user.value?.is_admin ? 'Administrator' : 'Pengguna')
-const userInitial = computed(() => userName.value.charAt(0).toUpperCase())
+// Load profile data untuk avatar
+const loadProfileData = async () => {
+  const userId = user.value?.user_id || user.value?.id
+  if (userId && profileStore.profile === null) {
+    try {
+      await profileStore.fetchProfile(userId)
+    } catch (err) {
+      console.error('Gagal load profile:', err)
+    }
+  }
+}
+
+// Watch user change
+watch(user, () => {
+  loadProfileData()
+}, { immediate: true })
+
+onMounted(() => {
+  loadProfileData()
+})
 </script>
 
 <style scoped>
@@ -300,34 +354,16 @@ const userInitial = computed(() => userName.value.charAt(0).toUpperCase())
 .topbar__right {
   display: flex;
   align-items: center;
-  gap: 12px;
-}
-
-.topbar__icon-btn {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: 1px solid var(--color-border, #e2e8f0);
-  background: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #718096;
-  cursor: pointer;
-  transition: background 0.12s;
-}
-
-.topbar__icon-btn:hover {
-  background: #f7fafc;
+  gap: 16px;
 }
 
 .topbar__profile {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 6px;
+  padding: 6px 12px;
+  border-radius: 40px;
   transition: background 0.12s;
 }
 
@@ -336,17 +372,24 @@ const userInitial = computed(() => userName.value.charAt(0).toUpperCase())
 }
 
 .topbar__avatar {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   background: #e2e8f0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   color: #4a5568;
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .topbar__user-info {
@@ -358,11 +401,11 @@ const userInitial = computed(() => userName.value.charAt(0).toUpperCase())
   font-size: 13px;
   font-weight: 600;
   color: #1a202c;
-  line-height: 1.2;
+  line-height: 1.3;
 }
 
 .topbar__user-role {
-  font-size: 11px;
+  font-size: 10px;
   color: #a0aec0;
   line-height: 1.2;
 }
@@ -374,5 +417,49 @@ const userInitial = computed(() => userName.value.charAt(0).toUpperCase())
   padding: 28px;
   background: var(--color-bg, #f3f6fb);
   min-height: 0;
+}
+
+/* Scrollbar styling */
+.layout-content::-webkit-scrollbar {
+  width: 6px;
+}
+.layout-content::-webkit-scrollbar-track {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+.layout-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+.layout-content::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+  }
+  .sidebar__logo-mark,
+  .sidebar__logo-sub,
+  .sidebar__item span {
+    display: none;
+  }
+  .sidebar__item {
+    justify-content: center;
+    padding: 10px;
+  }
+  .layout-right {
+    margin-left: 70px;
+  }
+  .topbar__user-info {
+    display: none;
+  }
+  .topbar {
+    padding: 0 16px;
+  }
+  .layout-content {
+    padding: 20px;
+  }
 }
 </style>
