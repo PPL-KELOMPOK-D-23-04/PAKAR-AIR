@@ -8,8 +8,10 @@ Analysis service — orchestrates the full analysis pipeline:
 6. Create notification
 """
 from sqlalchemy.orm import Session
+from sqlalchemy import func, cast, Date
 from fastapi import HTTPException
 from uuid import UUID
+from typing import Optional
 import json
 
 from app.models.models import (
@@ -127,13 +129,42 @@ def get_analysis_detail(analysis_id: UUID, user_id: UUID, db: Session) -> Analys
     return analysis
 
 
-def get_user_history(user_id: UUID, page: int, per_page: int, db: Session):
-    """Get paginated analysis history for a user."""
+def get_user_history(
+    user_id: UUID,
+    page: int,
+    per_page: int,
+    db: Session,
+    category: Optional[str] = None,
+    date: Optional[str] = None,
+    search: Optional[str] = None,
+):
+    """Get paginated analysis history for a user with optional filters."""
     from app.utils.helpers import paginate
+    from app.models.models import AnalysisResult, ManualInput
 
     query = db.query(Analysis).filter(
         Analysis.user_id == user_id
-    ).order_by(Analysis.created_at.desc())
+    )
+
+    # Filter by category (join to AnalysisResult)
+    if category:
+        query = query.join(AnalysisResult, Analysis.id == AnalysisResult.analysis_id)\
+                     .filter(AnalysisResult.category == category)
+
+    # Filter by date (match created_at date portion)
+    if date:
+        query = query.filter(
+            cast(Analysis.created_at, Date) == date
+        )
+
+    # Filter by search keyword in water_source field inside manual_input data_json
+    if search:
+        query = query.join(ManualInput, Analysis.id == ManualInput.analysis_id, isouter=True)\
+                     .filter(
+                         ManualInput.data_json["water_source"].astext.ilike(f"%{search}%")
+                     )
+
+    query = query.order_by(Analysis.created_at.desc())
 
     items, total, total_pages = paginate(query, page, per_page)
     return items, total, total_pages
