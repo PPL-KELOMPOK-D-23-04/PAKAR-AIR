@@ -1,124 +1,85 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 // =============================================
-// 1. IMPORT STORES (Untuk Navigation Guard)
+// 1. IMPORT STORES
 // =============================================
 import { useAuthStore } from '@/stores/authStore'
 
 // =============================================
-// 2. IMPORT LAYOUTS (SESUAI DENGAN FILE YANG ADA)
+// 2. IMPORT LAYOUTS (Sesuai file yang ada)
 // =============================================
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import DefaultLayoutProfile from '@/layouts/DefaultLayoutProfile.vue'  // ← NAMA YANG BENAR
+import DefaultLayoutProfile from '@/layouts/DefaultLayoutProfile.vue'
 
 // =============================================
-// 3. IMPORT PUBLIC VIEWS (Tidak Perlu Login)
+// 3. IMPORT PUBLIC VIEWS (Landing Page)
 // =============================================
 import LandingPage from '@/views/public/LandingPage.vue'
-import EdukasiView from '@/views/edukasi/EdukasiView.vue'
 
 // =============================================
-// 4. IMPORT ARTIKEL VIEWS (Public)
+// 4. IMPORT EDUKASI VIEWS
 // =============================================
+import EdukasiView from '@/views/edukasi/EdukasiView.vue'
 import HomeArtikel from '@/views/edukasi/HomeArtikel.vue'
 import HomeArtikel2 from '@/views/edukasi/HomeArtikel2.vue'
 import HomeArtikel3 from '@/views/edukasi/HomeArtikel3.vue'
+import SearchView from '@/views/edukasi/SearchView.vue'
 
 // =============================================
-// 5. IMPORT DASHBOARD VIEWS (Perlu Login)
+// 5. IMPORT DASHBOARD VIEWS (Requires Auth)
 // =============================================
 import DashboardPage from '@/views/dashboard/DashboardPage.vue'
 import AnalysisView from '@/views/dashboard/AnalysisView.vue'
 import HistoryView from '@/views/dashboard/HistoryView.vue'
 import ProfileView from '@/views/dashboard/ProfileView.vue'
+import NotificationsPage from '@/views/dashboard/NotificationsPage.vue'
 
 // =============================================
-// 6. IMPORT NOTIFICATIONS & OTHER
-// =============================================
-import NotificationsPage from '@/views/NotificationsPage.vue'
-
-// =============================================
-// 7. DEFINISI ROUTES
+// 6. DEFINISI ROUTES
 // =============================================
 const routes = [
-  // -------------------------------------------------
-  // SECTION A: LANDING PAGE (Pakai DefaultLayoutProfile)
-  // -------------------------------------------------
+  // ========== A. LANDING PAGE ==========
   {
     path: '/',
     name: 'landing',
     component: DefaultLayoutProfile,
-    meta: {
-      guestOnly: true,
-      title: 'PAKAR-AIR | Pendeteksi Kualitas Air Berbasis AI',
-      requiresAuth: false
-    },
+    meta: { guestOnly: true, title: 'PAKAR-AIR | Pendeteksi Kualitas Air' },
     children: [
-      {
-        path: '',
-        name: 'landing-index',
-        component: LandingPage
-      }
+      { path: '', component: LandingPage }
     ]
   },
 
-  // -------------------------------------------------
-  // SECTION B: AUTHENTICATION (Guest Only)
-  // -------------------------------------------------
+  // ========== B. AUTHENTICATION ==========
   {
     path: '/login',
     name: 'login',
     component: () => import('@/views/auth/LoginPage.vue'),
-    meta: {
-      guestOnly: true,
-      title: 'Login | PAKAR-AIR',
-      requiresAuth: false
-    }
+    meta: { guestOnly: true, title: 'Login | PAKAR-AIR' }
   },
   {
     path: '/register',
     name: 'register',
     component: () => import('@/views/auth/RegisterPage.vue'),
-    meta: {
-      guestOnly: true,
-      title: 'Daftar Akun | PAKAR-AIR',
-      requiresAuth: false
-    }
+    meta: { guestOnly: true, title: 'Daftar Akun | PAKAR-AIR' }
   },
 
-  // -------------------------------------------------
-  // SECTION C: DASHBOARD & FITUR UTAMA (Requires Auth)
-  // -------------------------------------------------
+  // ========== C. DASHBOARD & FITUR UTAMA ==========
   {
     path: '/dashboard',
     name: 'dashboard',
     component: DashboardLayout,
-    meta: {
-      requiresAuth: true,
-      title: 'Dashboard | PAKAR-AIR'
-    },
+    meta: { requiresAuth: true, title: 'Dashboard | PAKAR-AIR' },
     children: [
-      {
-        path: '',
-        name: 'dashboard-index',
-        component: DashboardPage
-      }
+      { path: '', component: DashboardPage }
     ]
   },
   {
     path: '/analysis',
     name: 'analysis',
     component: DashboardLayout,
-    meta: {
-      requiresAuth: true,
-      title: 'Analisis Kualitas Air | PAKAR-AIR'
-    },
+    meta: { requiresAuth: true, title: 'Analisis Air | PAKAR-AIR' },
     children: [
-      {
-        path: '',
-        name: 'analysis-index',
-        component: AnalysisView
-      }
+      { path: '', component: AnalysisView }
     ]
   },
   {
@@ -126,156 +87,121 @@ const routes = [
     alias: ['/riwayat'],
     name: 'history',
     component: DashboardLayout,
-    meta: {
-      requiresAuth: true,
-      title: 'Riwayat Analisis | PAKAR-AIR'
-    },
+    meta: { requiresAuth: true, title: 'Riwayat Analisis | PAKAR-AIR' },
     children: [
-      {
-        path: '',
-        name: 'history-index',
-        component: HistoryView
-      }
+      { path: '', component: HistoryView }
     ]
   },
   {
     path: '/profile',
     name: 'profile',
     component: DashboardLayout,
-    meta: {
-      requiresAuth: true,
-      title: 'Profil Saya | PAKAR-AIR'
-    },
+    meta: { requiresAuth: true, title: 'Profil Saya | PAKAR-AIR' },
     children: [
-      {
-        path: '',
-        name: 'profile-index',
-        component: ProfileView
-      }
+      { path: '', component: ProfileView }
     ]
   },
   {
     path: '/notifications',
     name: 'notifications',
     component: DashboardLayout,
-    meta: {
-      requiresAuth: true,
-      title: 'Notifikasi | PAKAR-AIR'
-    },
+    meta: { requiresAuth: true, title: 'Notifikasi | PAKAR-AIR' },
     children: [
-      {
-        path: '',
-        name: 'notifications-index',
-        component: NotificationsPage
-      }
+      { path: '', component: NotificationsPage }
     ]
   },
 
-  // -------------------------------------------------
-  // SECTION D: EDUKASI & ARTIKEL (Public Access)
-  // -------------------------------------------------
+  // ========== D. EDUKASI & ARTIKEL ==========
   {
     path: '/education',
     alias: ['/edukasi'],
     name: 'education',
     component: DefaultLayoutProfile,
-    meta: {
-      title: 'Edukasi Kualitas Air | PAKAR-AIR',
-      requiresAuth: false
-    },
+    meta: { title: 'Edukasi | PAKAR-AIR' },
     children: [
-      {
-        path: '',
-        name: 'education-index',
-        component: EdukasiView
-      }
+      { path: '', component: EdukasiView }
     ]
   },
   {
     path: '/artikel',
     name: 'artikel1',
     component: DefaultLayoutProfile,
-    meta: {
-      title: 'Parameter Fisik Air Layak Konsumsi | PAKAR-AIR',
-      requiresAuth: false
-    },
+    meta: { title: 'Parameter Fisik Air | PAKAR-AIR' },
     children: [
-      {
-        path: '',
-        name: 'artikel1-index',
-        component: HomeArtikel
-      }
+      { path: '', component: HomeArtikel }
     ]
   },
   {
     path: '/artikel2',
     name: 'artikel2',
     component: DefaultLayoutProfile,
-    meta: {
-      title: 'Dampak Pencemaran Air | PAKAR-AIR',
-      requiresAuth: false
-    },
+    meta: { title: 'Dampak Pencemaran Air | PAKAR-AIR' },
     children: [
-      {
-        path: '',
-        name: 'artikel2-index',
-        component: HomeArtikel2
-      }
+      { path: '', component: HomeArtikel2 }
     ]
   },
   {
     path: '/artikel3',
     name: 'artikel3',
     component: DefaultLayoutProfile,
-    meta: {
-      title: 'Memahami Hasil Analisis PAKAR-AIR | PAKAR-AIR',
-      requiresAuth: false
-    },
+    meta: { title: 'Hasil Analisis PAKAR-AIR | PAKAR-AIR' },
     children: [
-      {
-        path: '',
-        name: 'artikel3-index',
-        component: HomeArtikel3
-      }
+      { path: '', component: HomeArtikel3 }
     ]
   },
-
-  // -------------------------------------------------
-  // SECTION E: SEARCH PAGE (Optional)
-  // -------------------------------------------------
   {
     path: '/search',
     name: 'search',
     component: DefaultLayoutProfile,
-    meta: {
-      title: 'Pencarian Artikel | PAKAR-AIR',
-      requiresAuth: false
-    },
+    meta: { title: 'Pencarian Artikel | PAKAR-AIR' },
+    children: [
+      { path: '', component: SearchView }
+    ]
+  },
+
+  // ========== E. ADMIN ROUTES (Opsional) ==========
+  {
+    path: '/admin',
+    name: 'admin',
+    component: () => import('@/layouts/AdminLayout.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true, title: 'Admin Panel | PAKAR-AIR' },
     children: [
       {
+        path: 'dashboard',
+        name: 'admin-dashboard',
+        component: () => import('@/views/admin/AdminDashboard.vue'),
+        meta: { requiresAuth: true, requiresAdmin: true }
+      },
+      {
+        path: 'users',
+        name: 'admin-users',
+        component: () => import('@/views/admin/AdminUsers.vue'),
+        meta: { requiresAuth: true, requiresAdmin: true }
+      },
+      {
+        path: 'analyses',
+        name: 'admin-analyses',
+        component: () => import('@/views/admin/AdminAnalyses.vue'),
+        meta: { requiresAuth: true, requiresAdmin: true }
+      },
+      {
         path: '',
-        name: 'search-index',
-        component: () => import('@/views/edukasi/SearchView.vue')
+        redirect: { name: 'admin-dashboard' }
       }
     ]
   },
 
-  // -------------------------------------------------
-  // SECTION F: 404 NOT FOUND (Harus Paling Akhir)
-  // -------------------------------------------------
+  // ========== F. 404 NOT FOUND ==========
   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('@/views/errors/NotFoundPage.vue'),
-    meta: {
-      title: 'Halaman Tidak Ditemukan | PAKAR-AIR',
-      requiresAuth: false
-    }
+    meta: { title: 'Halaman Tidak Ditemukan | PAKAR-AIR' }
   }
 ]
 
 // =============================================
-// 8. CREATE ROUTER INSTANCE
+// 7. CREATE ROUTER INSTANCE
 // =============================================
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -292,17 +218,16 @@ const router = createRouter({
 })
 
 // =============================================
-// 9. NAVIGATION GUARD (BEFORE EACH ROUTE)
+// 8. NAVIGATION GUARD
 // =============================================
 router.beforeEach((to, from, next) => {
-  // Ambil token dari berbagai kemungkinan storage
   const token = localStorage.getItem('token') || 
                 localStorage.getItem('pakar_air_token') || 
                 sessionStorage.getItem('token')
   
   const isLoggedIn = !!token
 
-  // Ambil data user untuk cek role admin
+  // Cek apakah user admin
   let isAdmin = false
   try {
     const userStr = localStorage.getItem('pakar_air_user') || localStorage.getItem('user')
@@ -342,22 +267,18 @@ router.beforeEach((to, from, next) => {
     return
   }
 
-  // RULE 4: Lanjutkan
   next()
 })
 
 // =============================================
-// 10. AFTER EACH ROUTE (Set Page Title)
+// 9. SET PAGE TITLE
 // =============================================
 router.afterEach((to) => {
   if (to.meta && to.meta.title) {
     document.title = to.meta.title
   } else {
-    document.title = 'PAKAR-AIR | Pendeteksi Kualitas Air Berbasis AI'
+    document.title = 'PAKAR-AIR | Pendeteksi Kualitas Air'
   }
 })
 
-// =============================================
-// 11. EXPORT ROUTER
-// =============================================
 export default router
