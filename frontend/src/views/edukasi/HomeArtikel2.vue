@@ -1,740 +1,588 @@
 <template>
-  <div class="article-page">
-    <div class="article-container">
-      
-      <!-- HEADER ARTIKEL -->
-      <div class="article-header">
-        <div class="header-meta">
-          <span class="category-tag health">Kesehatan & Lingkungan</span>
-          <span class="reading-time">10 Maret 2026 · 8 menit membaca</span>
-        </div>
-        <h1 class="article-title">Dampak Pencemaran Air bagi Kesehatan: Ancaman Tersembunyi yang Mengintai Setiap Hari</h1>
-        <div class="author-credit">
-          <span class="author">Tim Pakar PAKAR-AIR</span>
-          <span class="separator">|</span>
-          <span class="source">Sumber: World Health Organization & Kementerian Kesehatan RI</span>
-        </div>
-      </div>
+  <DashboardLayout>
+    <div class="article-page">
 
-      <!-- COVER GAMBAR (DIPERBAIKI) -->
-      <div class="cover-container">
-        <img 
-          :src="coverImage" 
-          alt="Ilustrasi pencemaran air" 
-          class="cover-image"
-        >
-        <p class="cover-caption">
-          Pencemaran air dapat menyebabkan berbagai penyakit serius, mulai dari diare akut hingga kanker | Ilustrasi: PAKAR-AIR
-        </p>
-      </div>
+      <!-- PROGRESS -->
+      <div class="progress-bar" :style="{ width: readProgress + '%' }"></div>
 
-      <!-- KONTEN ARTIKEL -->
-      <div class="article-body">
-        
-        <p class="lead-paragraph">
-          <strong>Jakarta, PAKAR-AIR</strong> — Organisasi Kesehatan Dunia (WHO) melaporkan bahwa 
-          sekitar <strong>80% penyakit di negara berkembang</strong> berkaitan erat dengan kualitas air yang buruk. 
-          Setiap tahun, lebih dari <strong>3,4 juta orang meninggal</strong> akibat penyakit yang ditularkan melalui 
-          air yang tercemar, dan sebagian besar korban adalah anak-anak di bawah usia 5 tahun.
-        </p>
+      <div class="article-layout">
 
-        <p>
-          Pencemaran air bukan sekadar masalah lingkungan — ini adalah <strong>darurat kesehatan masyarakat</strong> 
-          yang membutuhkan perhatian serius dari semua pihak. Berbagai kontaminan dalam air, mulai dari 
-          bakteri patogen hingga logam berat beracun, dapat menyebabkan penyakit akut yang muncul dalam 
-          hitungan jam, maupun penyakit kronis yang baru terdeteksi setelah bertahun-tahun.
-        </p>
+        <!-- MAIN -->
+        <div class="article-main">
 
-        <h2 class="section-title">1. Klasifikasi Pencemar Air</h2>
-        <div class="card-grid">
-          <div class="info-card-compact">
-            <div class="card-icon">B</div>
-            <div class="card-title">Pencemar Biologis</div>
-            <div class="card-desc">
-              <strong>Sumber:</strong> Kotoran manusia, hewan, limbah rumah tangga<br>
-              <strong>Jenis:</strong> Bakteri E.coli, Salmonella typhi, Vibrio cholerae<br>
-              <strong>Dampak:</strong> Diare, kolera, tifoid, hepatitis A
+          <!-- BACK -->
+          <button class="back-btn" @click="goBack">
+            ← Kembali ke Edukasi
+          </button>
+
+          <!-- META -->
+          <div class="meta">
+            <span class="tag">{{ article.category }}</span>
+            <span>·</span>
+            <span>{{ article.readTime }}</span>
+            <span>·</span>
+            <span>{{ article.updated }}</span>
+          </div>
+
+          <!-- TITLE -->
+          <h1 class="title">{{ article.title }}</h1>
+
+          <p class="subtitle">{{ article.subtitle }}</p>
+
+          <!-- AUTHOR -->
+          <div class="author-card">
+            <div class="avatar">PA</div>
+            <div>
+              <p class="name">Tim Pakar PAKAR-AIR</p>
+              <p class="desc">Berdasarkan WHO, Kemenkes RI & UNICEF 2023</p>
             </div>
           </div>
-          <div class="info-card-compact">
-            <div class="card-icon">K</div>
-            <div class="card-title">Pencemar Kimiawi</div>
-            <div class="card-desc">
-              <strong>Sumber:</strong> Limbah industri, pertanian, rumah tangga<br>
-              <strong>Jenis:</strong> Logam berat (timbal, merkuri), pestisida<br>
-              <strong>Dampak:</strong> Gagal ginjal, kanker, gangguan saraf
-            </div>
+
+          <!-- CONTENT -->
+          <div class="content">
+            <template v-for="(block, i) in article.content" :key="i">
+
+              <!-- SECTION -->
+              <section v-if="block.type === 'section'" :id="block.id">
+                <h2>{{ block.title }}</h2>
+              </section>
+
+              <!-- PARAGRAPH -->
+              <p v-if="block.type === 'text'">{{ block.text }}</p>
+
+              <!-- LIST -->
+              <ul v-if="block.type === 'list'">
+                <li v-for="(item, j) in block.items" :key="j">{{ item }}</li>
+              </ul>
+
+              <!-- INFO -->
+              <div v-if="block.type === 'info'" class="info">
+                {{ block.text }}
+              </div>
+
+              <!-- WARNING -->
+              <div v-if="block.type === 'warning'" class="warning">
+                {{ block.text }}
+              </div>
+
+              <!-- IMAGE -->
+              <img v-if="block.type === 'image'" :src="block.src" :alt="block.alt || ''" />
+
+            </template>
           </div>
-          <div class="info-card-compact">
-            <div class="card-icon">F</div>
-            <div class="card-title">Pencemar Fisik</div>
-            <div class="card-desc">
-              <strong>Sumber:</strong> Erosi tanah, limbah konstruksi, sampah plastik<br>
-              <strong>Jenis:</strong> Lumpur, sedimen, mikroplastik<br>
-              <strong>Dampak:</strong> Gangguan pencernaan, iritasi saluran cerna
-            </div>
+
+          <!-- FOOTER -->
+          <div class="footer">
+            <button class="btn-secondary" @click="goBack">Kembali</button>
+            <button class="btn-primary" @click="goToAnalysis">Mulai Analisis →</button>
           </div>
-          <div class="info-card-compact">
-            <div class="card-icon">R</div>
-            <div class="card-title">Pencemar Radioaktif</div>
-            <div class="card-desc">
-              <strong>Sumber:</strong> Limbah industri nuklir, pertambangan<br>
-              <strong>Jenis:</strong> Radium, Uranium, Radon<br>
-              <strong>Dampak:</strong> Kanker, kerusakan sumsum tulang
-            </div>
-          </div>
+
         </div>
 
-        <h2 class="section-title">2. Penyakit Akut (Jangka Pendek)</h2>
-        <div class="disease-table">
-          <div class="disease-header">
-            <div class="col-disease">Penyakit</div>
-            <div class="col-cause">Penyebab</div>
-            <div class="col-symptom">Gejala Utama</div>
-          </div>
-          <div class="disease-row">
-            <div class="col-disease"><strong>Diare / Kolera</strong></div>
-            <div class="col-cause">Vibrio cholerae</div>
-            <div class="col-symptom">Dehidrasi parah, muntah, BAB >3x/hari</div>
-          </div>
-          <div class="disease-row">
-            <div class="col-disease"><strong>Demam Tifoid</strong></div>
-            <div class="col-cause">Salmonella typhi</div>
-            <div class="col-symptom">Demam tinggi hingga 40°C, sakit perut</div>
-          </div>
-          <div class="disease-row">
-            <div class="col-disease"><strong>Hepatitis A</strong></div>
-            <div class="col-cause">Virus HAV</div>
-            <div class="col-symptom">Kulit menguning, lemas, urine gelap</div>
-          </div>
-          <div class="disease-row">
-            <div class="col-disease"><strong>Leptospirosis</strong></div>
-            <div class="col-cause">Bakteri Leptospira</div>
-            <div class="col-symptom">Demam tinggi, nyeri otot betis, mata merah</div>
-          </div>
-        </div>
-
-        <div class="alert-box">
-          <div class="alert-icon">!</div>
-          <div class="alert-content">
-            <strong>Data Darurat WHO</strong>
-            <p>Setiap hari, lebih dari <strong>800 anak di bawah 5 tahun</strong> meninggal akibat diare yang 
-            terkait dengan air kotor dan sanitasi buruk. Kematian ini sebenarnya dapat dicegah.</p>
-          </div>
-        </div>
-
-        <h2 class="section-title">3. Penyakit Kronis (Jangka Panjang)</h2>
-        <div class="chronic-list">
-          <div class="chronic-item">
-            <div class="chronic-number">1</div>
-            <div class="chronic-content">
-              <strong>Gagal Ginjal Kronis</strong>
-              <p>Logam berat seperti kadmium, timbal, dan merkuri terakumulasi di ginjal. Pasien cuci darah di Indonesia meningkat 10 kali lipat dalam satu dekade.</p>
+        <!-- SIDEBAR -->
+        <aside class="article-sidebar">
+          <div class="toc-card">
+            <p class="toc-title">Daftar Isi</p>
+            <a
+              v-for="sec in sections"
+              :key="sec.id"
+              :href="'#' + sec.id"
+              :class="{ active: activeSection === sec.id }"
+              @click.prevent="scrollTo(sec.id)"
+            >
+              {{ sec.title }}
+            </a>
+            <div class="progress-mini">
+              <div :style="{ width: readProgress + '%' }"></div>
             </div>
+            <p class="progress-text">{{ Math.round(readProgress) }}% dibaca</p>
           </div>
-          <div class="chronic-item">
-            <div class="chronic-number">2</div>
-            <div class="chronic-content">
-              <strong>Gangguan Saraf pada Anak</strong>
-              <p>Paparan timbal menurunkan IQ, menyebabkan ADHD, dan gangguan perilaku permanen. Kerusakan ini tidak dapat dipulihkan.</p>
-            </div>
-          </div>
-          <div class="chronic-item">
-            <div class="chronic-number">3</div>
-            <div class="chronic-content">
-              <strong>Kanker</strong>
-              <p>Arsenik dalam air tanah menyebabkan kanker kulit, paru-paru, dan kandung kemih setelah konsumsi 5-15 tahun.</p>
-            </div>
-          </div>
-          <div class="chronic-item">
-            <div class="chronic-number">4</div>
-            <div class="chronic-content">
-              <strong>Gangguan Hormon & Reproduksi</strong>
-              <p>Pestisida dan mikroplastik menyebabkan infertilitas, pubertas dini, dan kelainan janin.</p>
-            </div>
-          </div>
-        </div>
-
-        <h2 class="section-title">4. Fakta Pencemaran Air di Indonesia</h2>
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-number">70%</div>
-            <div class="stat-label">sungai di Jawa tercemar berat</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">1/3</div>
-            <div class="stat-label">sumur warga mengandung E.coli</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">Rp 15 T</div>
-            <div class="stat-label">biaya pengobatan per tahun</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">54%</div>
-            <div class="stat-label">akses air minum tak memenuhi syarat</div>
-          </div>
-        </div>
-
-        <h2 class="section-title">5. Tindakan Pencegahan</h2>
-        <div class="prevention-list">
-          <div class="prevention-item">
-            <div class="prevention-number">1</div>
-            <div class="prevention-content">
-              <strong>Skrining rutin dengan PAKAR-AIR</strong>
-              <p>Lakukan analisis awal setiap 3 bulan, terutama jika sumber air dekat industri.</p>
-            </div>
-          </div>
-          <div class="prevention-item">
-            <div class="prevention-number">2</div>
-            <div class="prevention-content">
-              <strong>Rebus air hingga mendidih</strong>
-              <p>Rebus minimal 10 menit untuk membunuh bakteri dan virus.</p>
-            </div>
-          </div>
-          <div class="prevention-item">
-            <div class="prevention-number">3</div>
-            <div class="prevention-content">
-              <strong>Gunakan filter air</strong>
-              <p>Filter keramik atau karbon aktif dapat menyaring partikel dan sebagian logam.</p>
-            </div>
-          </div>
-          <div class="prevention-item">
-            <div class="prevention-number">4</div>
-            <div class="prevention-content">
-              <strong>Lindungi sumber air</strong>
-              <p>Jangan buang sampah ke sungai. Pastikan septic tank kedap air.</p>
-            </div>
-          </div>
-          <div class="prevention-item">
-            <div class="prevention-number">5</div>
-            <div class="prevention-content">
-              <strong>Uji laboratorium</strong>
-              <p>Jika PAKAR-AIR menunjukkan "Tercemar", segera uji lab.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="reference-section">
-          <h3>Referensi</h3>
-          <ul>
-            <li>World Health Organization (WHO) — Guidelines for Drinking-water Quality</li>
-            <li>Kementerian Kesehatan RI — Profil Kesehatan Indonesia 2024</li>
-            <li>United Nations — Sustainable Development Goal 6: Clean Water and Sanitation</li>
-          </ul>
-        </div>
-
-        <div class="closing-statement">
-          <p><strong>Pesan PAKAR-AIR</strong></p>
-          <p>Air bersih adalah hak setiap orang. Lakukan skrining rutin, terapkan pencegahan, dan lindungi keluarga dari risiko penyakit yang dapat dicegah.</p>
-        </div>
+        </aside>
 
       </div>
-
-      <!-- FOOTER TOMBOL -->
-      <div class="article-footer">
-        <button class="btn-outline" @click="goBack">← Kembali ke Edukasi</button>
-        <button class="btn-primary" @click="goToAnalysis">Cek Kualitas Air →</button>
-      </div>
-
     </div>
-  </div>
+  </DashboardLayout>
 </template>
 
-<script>
-export default {
-  name: 'HomeArticle2',
-  data() {
-    return {
-      coverImagePath: ''
-    }
-  },
-  computed: {
-    coverImage() {
-      if (this.coverImagePath) {
-        return this.coverImagePath
-      }
-      // Fallback ke placeholder jika gambar tidak ditemukan
-      return 'https://placehold.co/860x450/e0d6cc/8b7355?text=Pencemaran+Air'
-    }
-  },
-  mounted() {
-    // Mencoba load gambar dari berbagai kemungkinan path
-    const possiblePaths = [
-      '@/assets/images/cover-pencemaran.jpg',
-      '../assets/images/cover-pencemaran.jpg',
-      './assets/images/cover-pencemaran.jpg'
-    ]
-    
-    // Coba satu per satu
-    for (const path of possiblePaths) {
-      try {
-        const imgPath = require(path)
-        this.coverImagePath = imgPath
-        break
-      } catch (e) {
-        // Lanjut ke path berikutnya
-      }
-    }
-  },
-  methods: {
-    goBack() {
-      this.$router.push('/edukasi')
+<script setup>
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import DashboardLayout from '@/layouts/DashboardLayout.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+/* ================= DATA ================= */
+const article = ref({
+  title: 'Ancaman Tersembunyi di Setiap Tegukan',
+  category: 'Kesehatan & Lingkungan',
+  readTime: '10 menit baca',
+  updated: '10 Maret 2026',
+  subtitle:
+    'Air tercemar menyebabkan lebih dari 2 juta kematian setiap tahun, namun ancamannya sering tidak kasat mata. Pelajari jenis-jenis kontaminan, dampaknya terhadap kesehatan, dan cara melindungi diri Anda.',
+
+  content: [
+
+    // ──────────────── SECTION 1 ────────────────
+    { type: 'section', id: 'realita', title: 'Realita Air di Sekitar Kita' },
+    {
+      type: 'text',
+      text: 'Menurut laporan UNICEF dan WHO tahun 2023, sekitar 2,2 miliar orang di seluruh dunia masih tidak memiliki akses terhadap air minum yang aman. Di Indonesia sendiri, survei Kementerian Kesehatan menunjukkan bahwa lebih dari 70% sumber air sumur di kawasan perkotaan padat mengandung bakteri coliform melebihi ambang batas yang ditetapkan Permenkes No. 2 Tahun 2023.'
     },
-    goToAnalysis() {
-      this.$router.push('/dashboard')
+    {
+      type: 'info',
+      text: '🌍 Fakta WHO 2023: Penyakit diare akibat air tercemar merenggut nyawa lebih dari 485.000 jiwa setiap tahun — setara dengan satu kematian setiap 65 detik. Sebagian besar korban adalah anak di bawah usia 5 tahun.'
+    },
+    {
+      type: 'text',
+      text: 'Yang membuat situasi ini semakin mengkhawatirkan adalah sifat kontaminan itu sendiri: sebagian besar tidak berwarna, tidak berbau, dan tidak berasa. Air yang tampak jernih sempurna bisa saja mengandung arsenik, timbal, atau bakteri E. coli dalam konsentrasi yang membahayakan jiwa.'
+    },
+
+    // ──────────────── SECTION 2 ────────────────
+    { type: 'section', id: 'jenis', title: 'Jenis-Jenis Pencemar Air' },
+    {
+      type: 'text',
+      text: 'Para ilmuwan lingkungan mengelompokkan pencemar air menjadi tiga kategori utama berdasarkan sifat dan mekanisme dampaknya. Memahami ketiga kategori ini adalah langkah pertama untuk mengenali risiko di sekitar Anda.'
+    },
+    {
+      type: 'list',
+      items: [
+        '🦠 Biologis — Bakteri patogen (E. coli, Salmonella, Vibrio cholerae), virus (Hepatitis A, Norovirus), dan protozoa (Giardia, Cryptosporidium). Ini adalah penyebab paling umum penyakit bawaan air di negara berkembang.',
+        '⚗️ Kimia — Logam berat (timbal/Pb, arsenik/As, merkuri/Hg, kadmium/Cd), nitrat dari pupuk pertanian, pestisida organoklorin, dan senyawa PFAS ("forever chemicals"). Bersifat akumulatif dalam tubuh dan tidak terurai secara alami.',
+        '🪨 Fisik — Partikel tersuspensi (lumpur, tanah liat, koloid), kekeruhan (turbidity), warna, bau, rasa, suhu berlebih, dan radioaktivitas dari aktivitas pertambangan atau industri nuklir.'
+      ]
+    },
+    {
+      type: 'warning',
+      text: '⚠️ Pencemar kimia bersifat kumulatif: paparan kecil yang terus-menerus selama bertahun-tahun bisa menyebabkan kerusakan organ permanen. Timbal bahkan dalam dosis serendah 5 µg/dL dapat menurunkan IQ anak secara permanen — dan tidak ada ambang batas aman yang dikenal untuk arsenik.'
+    },
+
+    // ──────────────── SECTION 3 ────────────────
+    { type: 'section', id: 'sumber', title: 'Dari Mana Kontaminan Berasal?' },
+    {
+      type: 'text',
+      text: 'Kontaminasi air jarang terjadi dari satu sumber tunggal. Dalam kebanyakan kasus, ia merupakan hasil akumulasi dari berbagai titik pencemaran yang saling berinteraksi. Memahami jalur masuk kontaminan membantu kita menentukan langkah mitigasi yang tepat.'
+    },
+    {
+      type: 'list',
+      items: [
+        '🏭 Limbah Industri — Pabrik tekstil, elektroplating, dan pertambangan membuang logam berat langsung ke badan air. Di beberapa kawasan industri Jawa Barat, kadar kromium hexavalen di sungai terdekat mencapai 40× batas aman.',
+        '🌾 Limpasan Pertanian — Pupuk nitrogen dan fosfor yang tidak terserap tanaman hanyut ke sungai dan akuifer, memicu ledakan alga (algal bloom) dan kontaminasi nitrat pada air tanah dangkal.',
+        '🚽 Sanitasi Buruk — Jarak antara septic tank dan sumur yang kurang dari 10 meter (standar SNI) menyebabkan infiltrasi bakteri feses ke dalam air tanah — kondisi yang sangat umum di kawasan padat penduduk.',
+        '🔧 Infrastruktur Pipa Tua — Pipa PDAM berusia >30 tahun dapat melepaskan partikel timbal dan besi ke dalam air bersih yang sudah diolah. Air "bersih" di IPAM bisa terkontaminasi kembali sebelum mencapai keran Anda.',
+        '🌧️ Perubahan Iklim — Curah hujan ekstrem mempercepat limpasan permukaan, membawa sedimen, pupuk, dan patogen langsung ke sumber air tanpa sempat disaring secara alami oleh lapisan tanah.'
+      ]
+    },
+
+    // ──────────────── SECTION 4 ────────────────
+    { type: 'section', id: 'penyakit', title: 'Dampak Kesehatan yang Perlu Diwaspadai' },
+    {
+      type: 'text',
+      text: 'Dampak kesehatan dari air tercemar terbagi menjadi dua kelompok: akut (muncul dalam jam atau hari) dan kronis (berkembang selama bulan hingga dekade). Kedua jenis ini sama-sama berbahaya, namun dampak kronis sering luput dari perhatian karena tidak terasa langsung.'
+    },
+    {
+      type: 'info',
+      text: '📋 Penyakit Akut dari Kontaminan Biologis: Kolera (Vibrio cholerae) — dehidrasi parah dalam hitungan jam; Tifoid (Salmonella typhi) — demam tinggi, perforasi usus; Hepatitis A — kerusakan hati akut; Disentri Amuba — luka berdarah pada usus besar; Gastroenteritis Norovirus — muntah massal, sangat menular.'
+    },
+    {
+      type: 'list',
+      items: [
+        '🔴 Arsenik (As) kronis — keratosis kulit, kanker kandung kemih, paru, dan ginjal. Paparan >10 µg/L selama >5 tahun meningkatkan risiko kanker hingga 3×.',
+        '🔴 Timbal (Pb) — kerusakan neurokognitif ireversibel pada anak, hipertensi, dan penyakit ginjal kronis pada orang dewasa. Tidak ada dosis aman yang diketahui ilmu pengetahuan.',
+        '🟡 Nitrat berlebih — methemoglobinemia ("blue baby syndrome") pada bayi <6 bulan; potensi karsinogenik pada paparan panjang orang dewasa.',
+        '🟡 Fluoride berlebih (>1,5 mg/L) — fluorosis gigi dan tulang, kelainan sendi pada paparan jangka panjang.',
+        '🟠 PFAS ("forever chemicals") — gangguan sistem imun, tiroid, dan kesuburan. Tidak terurai di lingkungan maupun dalam tubuh manusia.'
+      ]
+    },
+    {
+      type: 'warning',
+      text: '⚠️ Kelompok Paling Rentan: Ibu hamil, janin, bayi di bawah 1 tahun, lansia >65 tahun, dan individu dengan kondisi imunokompromais (penderita HIV, pasien kemoterapi) menghadapi risiko komplikasi hingga 10× lebih tinggi dari rata-rata populasi.'
+    },
+
+    // ──────────────── SECTION 5 ────────────────
+    { type: 'section', id: 'deteksi', title: 'Cara Mendeteksi Air Tercemar' },
+    {
+      type: 'text',
+      text: 'Deteksi kontaminan memerlukan pendekatan berlapis — mulai dari inspeksi visual sederhana yang bisa dilakukan siapa saja, hingga uji laboratorium terakreditasi. Tidak ada metode tunggal yang mampu mendeteksi semua jenis pencemar sekaligus.'
+    },
+    {
+      type: 'list',
+      items: [
+        '👁️ Inspeksi Visual — Periksa warna (harus jernih), kekeruhan, endapan, dan lapisan berminyak di permukaan. Lakukan di bawah cahaya alami menggunakan gelas bening. Dokumentasikan dengan foto untuk memantau perubahan dari waktu ke waktu.',
+        '👃 Uji Organoleptik — Deteksi bau: telur busuk (H₂S), amis (organik/alga), kimia/bensin (hidrokarbon), atau klorin berlebih. Tutup gelas selama 30 detik lalu buka dan cium langsung.',
+        '🧪 Test Kit Rumahan — Tersedia di toko online; mampu mendeteksi pH, klorin, nitrat, besi, dan kekeruhan. Akurasi ±85%, cocok untuk pemantauan rutin. Harga berkisar Rp 50.000–200.000 per kit.',
+        '🔬 Uji Laboratorium Terakreditasi — Standar emas untuk konfirmasi. Wajib untuk mendeteksi logam berat, bakteri patogen, dan senyawa organik berbahaya. Biaya Rp 300.000–1.500.000 tergantung parameter yang diuji.',
+        '📱 Aplikasi & Sensor IoT — Teknologi terbaru memungkinkan pemantauan real-time parameter fisik-kimia (pH, TDS, turbidity, suhu) menggunakan probe yang terhubung ke smartphone.'
+      ]
+    },
+    {
+      type: 'info',
+      text: '💡 Tips Pengambilan Sampel: Gunakan botol kaca atau plastik PE steril 500 ml. Biarkan air mengalir 2–3 menit sebelum mengambil sampel (untuk membilas pipa). Kirim ke laboratorium dalam ≤6 jam untuk parameter biologis. Minta sertifikat akreditasi KAN dari laboratorium pilihan Anda.'
+    },
+
+    // ──────────────── SECTION 6 ────────────────
+    { type: 'section', id: 'pencegahan', title: 'Strategi Pencegahan & Perlindungan' },
+    {
+      type: 'text',
+      text: 'Pencegahan kontaminasi air adalah tanggung jawab bersama antara individu, komunitas, dan pemerintah. Pada level rumah tangga, ada serangkaian tindakan konkret yang dapat Anda ambil hari ini untuk mengurangi paparan secara signifikan.'
+    },
+    {
+      type: 'list',
+      items: [
+        '🔥 Rebus Air dengan Benar — Didihkan penuh (100°C) selama minimal 1 menit; di ketinggian >2.000 m dpl, tambah menjadi 3 menit. Membunuh 99,99% bakteri dan virus patogen. Catatan: tidak efektif untuk logam berat dan senyawa kimia.',
+        '🚰 Pasang Filter Berlapis — Sistem terbaik menggabungkan: (1) pre-filter sedimen 5 mikron, (2) karbon aktif granular untuk kimia organik & klorin, (3) membran RO atau UF untuk logam berat & bakteri, (4) UV untuk sterilisasi akhir. Pastikan tersertifikasi NSF/ANSI 42, 53, atau 58.',
+        '📏 Jarak Aman Sumur — Pertahankan jarak minimal 10 m antara sumur dan septic tank, 15 m dari kandang hewan, dan 50 m dari sumber pencemar industri. Lindungi dinding sumur dengan cincin beton sedalam ≥3 m.',
+        '🧴 Disinfeksi Darurat — Jika filter tidak tersedia: tambahkan 2 tetes larutan klorin 5% per liter air, aduk, diamkan 30 menit. Atau gunakan tablet Aquatabs (NaDCC) sesuai dosis. Efektif terhadap patogen biologis.',
+        '🏡 Jaga Lingkungan Sumber Air — Tidak membuang sampah, detergen, atau oli bekas di sekitar sumur. Tanam tanaman penyerap polutan (vetiver, bambu) sebagai barrier alami di sekitar sumber air.',
+        '📋 Uji Rutin Berkala — Jadwalkan uji laboratorium setiap 6 bulan untuk parameter biologis dan tahunan untuk parameter kimia. Simpan rekam jejak hasil uji sebagai referensi tren kualitas air dari waktu ke waktu.'
+      ]
+    },
+    {
+      type: 'warning',
+      text: '🚫 Mitos yang Harus Dihindari: (1) "Air dari gunung pasti bersih" — bisa mengandung fluoride alami berlebih atau tercemar aktivitas hulu. (2) "Air yang sudah lama mengendap jadi bersih" — bakteri justru berkembang biak. (3) "Direbus sudah cukup untuk semua kontaminan" — merebus tidak menghilangkan logam berat, arsenik, atau nitrat.'
+    },
+
+    // ──────────────── SECTION 7 ────────────────
+    { type: 'section', id: 'tindakan', title: 'Protokol Darurat Jika Air Sudah Tercemar' },
+    {
+      type: 'text',
+      text: 'Jika Anda menduga air sudah terkontaminasi — berdasarkan hasil uji, perubahan mendadak, atau laporan dari tetangga — berikut protokol yang harus diikuti secara berurutan tanpa penundaan:'
+    },
+    {
+      type: 'list',
+      items: [
+        '1️⃣ Hentikan konsumsi segera — termasuk untuk memasak, membuat susu formula bayi, dan menyikat gigi. Beralih ke air kemasan tersertifikasi BPOM sementara waktu.',
+        '2️⃣ Ambil sampel sebelum membersihkan — kumpulkan 2× 500 ml air dalam botol steril berbeda untuk uji biologis dan kimia. Label dengan tanggal, waktu, dan titik pengambilan.',
+        '3️⃣ Laporkan ke otoritas terkait — hubungi PDAM (untuk air perpipaan), Dinas Kesehatan setempat, atau BPLHD untuk pencemaran yang melibatkan industri. Catat nama petugas dan nomor laporan.',
+        '4️⃣ Identifikasi sumber masalah — periksa apakah ada pembangunan baru, kebocoran tangki, atau hujan lebat baru-baru ini yang bisa menjadi pemicu.',
+        '5️⃣ Edukasi anggota rumah tangga — pastikan semua anggota keluarga, termasuk anak-anak dan asisten rumah tangga, mengetahui bahwa air tidak aman digunakan sementara waktu.'
+      ]
+    },
+    {
+      type: 'info',
+      text: '📞 Kontak Penting: Hotline Kemenkes: 1500-567 | BPOM: 1500-533 | PDAM (variatif per daerah) | Pusat Pengendalian Penyakit (P2P) Dinkes setempat. Simpan nomor-nomor ini di ponsel Anda sekarang — saat keadaan darurat, Anda tidak punya waktu untuk mencari.'
+    }
+  ]
+})
+
+/* ================= COMPUTED ================= */
+const sections = computed(() =>
+  article.value.content.filter(b => b.type === 'section')
+)
+
+/* ================= STATE ================= */
+const readProgress = ref(0)
+const activeSection = ref('')
+
+/* ================= METHODS ================= */
+function goBack() {
+  router.push('/edukasi')
+}
+
+function goToAnalysis() {
+  router.push('/analysis')
+}
+
+function scrollTo(id) {
+  const el = document.getElementById(id)
+  if (el) {
+    window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' })
+  }
+}
+
+function handleScroll() {
+  const doc = document.documentElement
+  readProgress.value = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100
+
+  for (const sec of sections.value) {
+    const el = document.getElementById(sec.id)
+    if (el && el.getBoundingClientRect().top < 120) {
+      activeSection.value = sec.id
     }
   }
 }
+
+/* ================= LIFECYCLE ================= */
+onMounted(() => window.addEventListener('scroll', handleScroll))
+onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 </script>
 
 <style scoped>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* ===== LAYOUT ===== */
 .article-page {
-  background: #f5f2ed;
-  min-height: 100vh;
-  padding: 40px 24px;
-  font-family: 'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: #f9fafb;
+  padding: 32px;
 }
 
-.article-container {
-  max-width: 880px;
-  margin: 0 auto;
-  background: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-}
-
-/* HEADER */
-.article-header {
-  padding: 44px 52px 0 52px;
-}
-
-.header-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.category-tag {
-  background: #eae4da;
-  color: #6b5a4a;
-  padding: 5px 14px;
-  border-radius: 30px;
-  font-size: 12px;
-}
-
-.category-tag.health {
-  background: #f0e0d8;
-  color: #a06a5a;
-}
-
-.reading-time {
-  color: #9a8e82;
-}
-
-.article-title {
-  font-size: 34px;
-  line-height: 1.3;
-  font-weight: 600;
-  color: #5a3a3a;
-  margin-bottom: 18px;
-}
-
-.author-credit {
-  font-size: 13px;
-  color: #7e8c7e;
-  border-top: 1px solid #e8e0d6;
-  padding-top: 18px;
-}
-
-.separator {
-  margin: 0 10px;
-  color: #c0b4a4;
-}
-
-/* COVER */
-.cover-container {
-  padding: 30px 52px 0 52px;
-}
-
-.cover-image {
-  width: 100%;
-  border-radius: 16px;
-  object-fit: cover;
-}
-
-.cover-caption {
-  font-size: 12px;
-  color: #a89888;
-  text-align: center;
-  margin-top: 12px;
-  font-style: italic;
-}
-
-/* KONTEN */
-.article-body {
-  padding: 24px 52px 48px 52px;
-}
-
-.lead-paragraph {
-  font-size: 17px;
-  line-height: 1.65;
-  color: #4a5a4a;
-  margin-bottom: 28px;
-  border-left: 3px solid #b8a88a;
-  padding-left: 22px;
-}
-
-.article-body p {
-  font-size: 16px;
-  line-height: 1.7;
-  color: #3a4a3c;
-  margin-bottom: 18px;
-}
-
-.section-title {
-  font-size: 24px;
-  font-weight: 600;
-  color: #5a3a3a;
-  margin: 40px 0 20px 0;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #e0d6cc;
-}
-
-/* Card Grid */
-.card-grid {
+.article-layout {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  margin: 20px 0;
+  grid-template-columns: 1fr 260px;
+  gap: 40px;
+  max-width: 1100px;
+  margin: auto;
 }
 
-.info-card-compact {
-  background: #f8f6f2;
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid #e0d6cc;
-}
-
-.card-icon {
-  width: 32px;
-  height: 32px;
-  background: #4a6a4a;
-  color: white;
-  border-radius: 50%;
-  display: flex;
+/* ===== BACK ===== */
+.back-btn {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  margin-bottom: 12px;
-}
-
-.card-title {
-  font-weight: 600;
-  font-size: 15px;
-  color: #5a3a3a;
-  margin-bottom: 8px;
-}
-
-.card-desc {
-  font-size: 12px;
-  line-height: 1.5;
-  color: #6a7a6a;
-}
-
-/* Disease Table */
-.disease-table {
-  margin: 20px 0;
-  border: 1px solid #e0d6cc;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.disease-header {
-  display: flex;
-  background: #e8e0d6;
-  font-weight: 600;
-  font-size: 13px;
-}
-
-.disease-row {
-  display: flex;
-  border-bottom: 1px solid #e0d6cc;
-}
-
-.disease-row:last-child {
-  border-bottom: none;
-}
-
-.col-disease, .col-cause, .col-symptom {
-  padding: 12px;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.col-disease { width: 25%; background: #f8f6f2; font-weight: 500; }
-.col-cause { width: 35%; }
-.col-symptom { width: 40%; }
-
-/* Alert Box */
-.alert-box {
-  background: #fef6e8;
-  border-left: 4px solid #d4a06a;
-  padding: 18px 22px;
-  border-radius: 14px;
-  margin: 28px 0;
-  display: flex;
-  gap: 16px;
-}
-
-.alert-icon {
-  width: 28px;
-  height: 28px;
-  background: #d4a06a;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  flex-shrink: 0;
-}
-
-.alert-content strong {
-  display: block;
-  margin-bottom: 6px;
-  color: #a06a3a;
-}
-
-.alert-content p {
-  margin: 0;
+  gap: 6px;
   font-size: 14px;
-}
-
-/* Chronic List */
-.chronic-list {
-  margin: 20px 0;
-}
-
-.chronic-item {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #e0d6cc;
-}
-
-.chronic-number {
-  width: 32px;
-  height: 32px;
-  background: #d4a06a;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  flex-shrink: 0;
-}
-
-.chronic-content strong {
-  display: block;
-  margin-bottom: 6px;
-  color: #5a3a3a;
-}
-
-.chronic-content p {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.55;
-}
-
-/* Stats Grid */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  margin: 24px 0;
-}
-
-.stat-card {
-  background: #f8f6f2;
-  padding: 16px;
-  border-radius: 12px;
-  text-align: center;
-}
-
-.stat-number {
-  font-size: 28px;
-  font-weight: 700;
-  color: #d4a06a;
-  margin-bottom: 8px;
-}
-
-.stat-label {
-  font-size: 12px;
-  color: #6a7a6a;
-}
-
-/* Prevention List */
-.prevention-list {
-  margin: 20px 0;
-}
-
-.prevention-item {
-  display: flex;
-  gap: 14px;
-  margin-bottom: 12px;
-  padding: 12px;
-  background: #f8f6f2;
-  border-radius: 12px;
-}
-
-.prevention-number {
-  width: 30px;
-  height: 30px;
-  background: #6a9a6a;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  flex-shrink: 0;
-}
-
-.prevention-content strong {
-  display: block;
-  margin-bottom: 4px;
-  color: #4a6a4a;
-}
-
-.prevention-content p {
-  margin: 0;
-  font-size: 13px;
-}
-
-/* Reference */
-.reference-section {
-  background: #f8f6f2;
-  padding: 20px 24px;
-  border-radius: 14px;
-  margin: 36px 0 24px 0;
-}
-
-.reference-section h3 {
-  font-size: 15px;
-  font-weight: 600;
-  color: #6b5a4a;
-  margin-bottom: 12px;
-}
-
-.reference-section ul {
-  margin: 0;
-  padding-left: 20px;
-}
-
-.reference-section li {
-  font-size: 12px;
-  color: #7e8c7e;
-  margin-bottom: 6px;
-}
-
-/* Closing */
-.closing-statement {
-  background: #faf6f0;
-  padding: 24px 28px;
-  border-radius: 14px;
-  margin-top: 32px;
-}
-
-.closing-statement p {
-  margin-bottom: 12px;
-  font-size: 15px;
-  line-height: 1.6;
-  color: #5a6a5a;
-}
-
-/* Footer */
-.article-footer {
-  padding: 20px 52px 44px 52px;
-  border-top: 1px solid #e8e0d6;
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  background: #fefcf9;
-}
-
-.btn-outline, .btn-primary {
-  padding: 12px 28px;
-  border-radius: 40px;
-  font-size: 14px;
-  font-weight: 500;
+  color: #6b7280;
+  background: none;
+  border: none;
   cursor: pointer;
-  font-family: inherit;
-  transition: all 0.2s;
+  padding: 0;
+  margin-bottom: 24px;
+  transition: color 0.2s;
+}
+.back-btn:hover { color: #111827; }
+
+/* ===== META ===== */
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.tag {
+  background: #dcfce7;
+  color: #166534;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
-.btn-outline {
-  background: transparent;
-  border: 1px solid #d0c0b0;
-  color: #6b5a4a;
+/* ===== TITLE ===== */
+.title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1.25;
+  letter-spacing: -0.5px;
+  margin: 0 0 14px;
 }
 
-.btn-outline:hover {
-  background: #f0ece4;
+.subtitle {
+  font-size: 16px;
+  color: #4b5563;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+/* ===== AUTHOR ===== */
+.author-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  margin-bottom: 32px;
+}
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #dcfce7;
+  color: #166534;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.name { font-size: 14px; font-weight: 600; color: #111827; margin: 0 0 2px; }
+.desc { font-size: 12px; color: #6b7280; margin: 0; }
+
+/* ===== CONTENT ===== */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+section {
+  scroll-margin-top: 80px;
+}
+
+section h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+  margin: 24px 0 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.content p {
+  font-size: 15px;
+  color: #374151;
+  line-height: 1.75;
+  margin: 0;
+}
+
+.content ul {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.content li {
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.7;
+}
+
+/* ===== BLOCKS ===== */
+.info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-left: 4px solid #3b82f6;
+  padding: 14px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #1e40af;
+  line-height: 1.65;
+}
+
+.warning {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-left: 4px solid #f97316;
+  padding: 14px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #9a3412;
+  line-height: 1.65;
+}
+
+/* ===== SIDEBAR ===== */
+.article-sidebar {
+  position: sticky;
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toc-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  padding: 18px;
+  border-radius: 14px;
+}
+
+.toc-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin: 0 0 12px;
+}
+
+.toc-card a {
+  display: block;
+  padding: 6px 0;
+  font-size: 13px;
+  color: #6b7280;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: color 0.2s;
+}
+
+.toc-card a:hover { color: #111827; }
+.toc-card a.active { color: #16a34a; font-weight: 600; }
+
+/* ===== PROGRESS ===== */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #16a34a, #4ade80);
+  z-index: 100;
+  transition: width 0.1s linear;
+}
+
+.progress-mini {
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 99px;
+  margin-top: 12px;
+  overflow: hidden;
+}
+
+.progress-mini div {
+  height: 100%;
+  background: #16a34a;
+  border-radius: 99px;
+  transition: width 0.2s;
+}
+
+.progress-text {
+  font-size: 11px;
+  color: #9ca3af;
+  margin: 6px 0 0;
+  text-align: right;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
+  gap: 12px;
 }
 
 .btn-primary {
-  background: #a06a5a;
-  border: none;
+  background: #16a34a;
   color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
 }
+.btn-primary:hover { background: #15803d; }
 
-.btn-primary:hover {
-  background: #8a5a4a;
+.btn-secondary {
+  border: 1px solid #e5e7eb;
+  background: none;
+  color: #374151;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
 }
+.btn-secondary:hover { background: #f3f4f6; }
 
-/* Responsive */
-@media (max-width: 700px) {
-  .article-header, .cover-container, .article-body, .article-footer {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-  
-  .article-title {
-    font-size: 24px;
-  }
-  
-  .header-meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-  
-  .card-grid, .stats-grid {
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .article-layout {
     grid-template-columns: 1fr;
   }
-  
-  .disease-header, .disease-row {
-    flex-direction: column;
+  .article-sidebar {
+    display: none;
   }
-  
-  .col-disease, .col-cause, .col-symptom {
-    width: 100%;
+  .article-page {
+    padding: 20px 16px;
   }
-  
-  .article-footer {
-    flex-direction: column;
+  .title {
+    font-size: 24px;
   }
 }
 </style>
