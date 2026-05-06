@@ -59,13 +59,25 @@
 
       <hr class="sidebar__divider sidebar__divider--bottom" />
 
-      <!-- ✅ LOGOUT (FIXED) -->
-      <button class="sidebar__item sidebar__item--logout">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="1.8">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M17 16l4-4-4-4m4 4H9m8 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h8a2 2 0 012 2v1" />
+      <button
+        class="sidebar__item sidebar__item--logout"
+        @click="handleLogout"
+      >
+        <svg
+          width="16"
+          height="16"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="1.8"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M17 16l4-4-4-4m4 4H9m8 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h8a2 2 0 012 2v1"
+          />
         </svg>
+
         Keluar
       </button>
     </aside>
@@ -88,10 +100,10 @@
           </button>
 
           <div class="topbar__profile">
-            <div class="topbar__avatar">KD</div>
+            <div class="topbar__avatar">{{ userInitial }}</div>
             <div class="topbar__user-info">
-              <span class="topbar__user-name">Kelompok D</span>
-              <span class="topbar__user-role">Pakar Air Kelompok D</span>
+              <span class="topbar__user-name">{{ userName }}</span>
+              <span class="topbar__user-role">{{ userRole }}</span>
             </div>
             <svg width="14" height="14" fill="none" viewBox="0 0 24 24"
               stroke="currentColor" stroke-width="2">
@@ -113,6 +125,39 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+import axios from 'axios'
+
+const router = useRouter()
+
+async function handleLogout() {
+  const token = localStorage.getItem('pakar_air_token') || localStorage.getItem('token')
+  try {
+    const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+    await axios.post(`${API_BASE}/api/auth/logout`, {}, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+  } catch { }
+  localStorage.removeItem('token')
+  localStorage.removeItem('pakar_air_token')
+  localStorage.removeItem('pakar_air_refresh_token')
+  localStorage.removeItem('pakar_air_user')
+  delete axios.defaults.headers.common['Authorization']
+  router.push('/login')
+}
+
+const user = computed(() => {
+  try {
+    return JSON.parse(localStorage.getItem('pakar_air_user') || '{}')
+  } catch {
+    return {}
+  }
+})
+
+const userName = computed(() => user.value?.full_name || user.value?.email?.split('@')[0] || 'Pengguna')
+const userRole = computed(() => user.value?.is_admin ? 'Administrator' : 'Pengguna')
+const userInitial = computed(() => userName.value.charAt(0).toUpperCase())
 </script>
 
 <style scoped>

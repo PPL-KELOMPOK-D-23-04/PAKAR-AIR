@@ -86,6 +86,7 @@ import { useAuthStore } from '@/stores/authStore'
 
 const router = useRouter()
 const authStore = useAuthStore()
+
 const isLoading = ref(false)
 
 const form = reactive({
@@ -103,16 +104,19 @@ function validate() {
   errors.email = ''
   errors.password = ''
   errors.global = ''
+
   let valid = true
 
   if (!form.email) {
     errors.email = 'Email wajib diisi'
     valid = false
   }
+
   if (!form.password) {
     errors.password = 'Password wajib diisi'
     valid = false
   }
+
   return valid
 }
 
@@ -123,15 +127,29 @@ async function handleLogin() {
   errors.global = ''
 
   try {
-    const result = await authStore.login(form.email, form.password)
+    const result = await authStore.login(
+      form.email,
+      form.password
+    )
+
     if (result.success) {
-      router.push('/dashboard')
+      if (authStore.currentUser?.is_admin) {
+        router.push('/admin')
+      } else {
+        router.push('/dashboard')
+      }
+
       return
     }
 
-    errors.global = result.message || 'Gagal login. Cek kembali email/password.'
+    errors.global =
+      result.message ||
+      'Gagal login. Cek kembali email/password.'
+
   } catch (err) {
-    errors.global = err.response?.data?.detail || 'Gagal login. Cek kembali email/password.'
+    errors.global =
+      err.response?.data?.detail ||
+      'Gagal login. Cek kembali email/password.'
   } finally {
     isLoading.value = false
   }

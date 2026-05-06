@@ -66,7 +66,11 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+
 import DashboardLayout from '../../layouts/DashboardLayout.vue'
+
 import {
   FlaskConicalIcon,
   DropletIcon,
@@ -76,11 +80,60 @@ import {
   CheckCircleIcon
 } from 'lucide-vue-next'
 
-const stats = [
-  { label: 'Total Analisis', value: 0, icon: FlaskConicalIcon, bg: '#eef2ff' },
-  { label: 'Air Aman', value: 0, icon: DropletIcon, bg: '#ecfdf5' },
-  { label: 'Perlu Perhatian', value: 0, icon: ClipboardCheckIcon, bg: '#fffbeb' }
-]
+const stats = ref([
+  {
+    label: 'Total Analisis',
+    value: '0',
+    icon: FlaskConicalIcon,
+    bg: 'rgba(59,130,246,0.1)',
+    color: '#3b82f6'
+  },
+  {
+    label: 'Air Aman',
+    value: '0',
+    icon: DropletIcon,
+    bg: 'rgba(16,185,129,0.1)',
+    color: '#10b981'
+  },
+  {
+    label: 'Perlu Perhatian',
+    value: '0',
+    icon: ClipboardCheckIcon,
+    bg: 'rgba(245,158,11,0.1)',
+    color: '#f59e0b'
+  },
+])
+
+async function fetchStats() {
+  try {
+    const res = await axios.get('/api/analysis/history', {
+      params: {
+        page: 1,
+        per_page: 999
+      }
+    })
+
+    const items = res.data.items || []
+    const total = res.data.total || items.length
+
+    const aman = items.filter(
+      i => i.category === 'layak'
+    ).length
+
+    const perhatian = items.filter(
+      i => i.category === 'tidak_layak'
+    ).length
+
+    stats.value[0].value = String(total)
+    stats.value[1].value = String(aman)
+    stats.value[2].value = String(perhatian)
+
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+onMounted(fetchStats)
 
 const steps = [
   { title: 'Upload Foto Air', desc: 'Ambil foto air.', icon: UploadIcon },
