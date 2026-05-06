@@ -10,7 +10,7 @@
       <!-- Header -->
       <div class="register-header">
         <RouterLink to="/" class="logo-link">
-          <div class="logo-icon">💧</div>
+          <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" alt="PAKAR-AIR logo" class="logo-img" />
           <span class="logo-text">PAKAR-AIR</span>
         </RouterLink>
         <h1 class="register-title">Buat Akun Baru</h1>
@@ -154,7 +154,7 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
+import { useAuthStore } from '@/stores/authStore'
 import {
   UserIcon,
   AtSignIcon,
@@ -227,6 +227,8 @@ function validate() {
   return valid
 }
 
+const authStore = useAuthStore()
+
 async function handleRegister() {
   errorMessage.value = ''
   successMessage.value = ''
@@ -234,23 +236,24 @@ async function handleRegister() {
 
   isLoading.value = true
   try {
-    await axios.post(`${API_BASE}/api/auth/register`, {
+    const payload = {
       email: form.email,
       password: form.password,
       full_name: form.full_name,
       username: form.username,
-    })
+    }
 
-    successMessage.value = 'Akun berhasil dibuat! Mengarahkan ke halaman login...'
-    setTimeout(() => {
-      router.push('/login')
-    }, 2000)
-
+    const res = await authStore.register(payload)
+    if (res.success) {
+      successMessage.value = 'Akun berhasil dibuat! Mengarahkan ke halaman login...'
+      setTimeout(() => {
+        router.push('/login')
+      }, 1200)
+    } else {
+      errorMessage.value = res.message || 'Gagal mendaftar. Silakan coba lagi.'
+    }
   } catch (err) {
-    errorMessage.value =
-      err.response?.data?.detail ||
-      err.response?.data?.message ||
-      'Gagal mendaftar. Silakan coba lagi.'
+    errorMessage.value = 'Gagal mendaftar. Silakan coba lagi.'
   } finally {
     isLoading.value = false
   }

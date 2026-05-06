@@ -82,11 +82,11 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios' // 1. Import axios
+import { useAuthStore } from '@/stores/authStore'
 
 const router = useRouter()
+const authStore = useAuthStore()
 const isLoading = ref(false)
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000' // 2. Gunakan URL backend
 
 const form = reactive({
   email: '',
@@ -106,7 +106,8 @@ function validate() {
   let valid = true
 
   if (!form.email) {
-  errors.email = 'Email wajib diisi'
+    errors.email = 'Email wajib diisi'
+    valid = false
   }
   if (!form.password) {
     errors.password = 'Password wajib diisi'
@@ -122,18 +123,14 @@ async function handleLogin() {
   errors.global = ''
 
   try {
-    const res = await axios.post(`${API_BASE}/api/auth/login`, {
-      // Backend kamu minta 'email', bukan 'email' berdasarkan error tersebut
-      email: form.email, // Masukkan input email ke field email
-      password: form.password
-    })
-
-    if (res.data.access_token) {
-      localStorage.setItem('token', res.data.access_token)
+    const result = await authStore.login(form.email, form.password)
+    if (result.success) {
       router.push('/dashboard')
+      return
     }
+
+    errors.global = result.message || 'Gagal login. Cek kembali email/password.'
   } catch (err) {
-    // Menampilkan pesan error detail dari backend jika ada
     errors.global = err.response?.data?.detail || 'Gagal login. Cek kembali email/password.'
   } finally {
     isLoading.value = false

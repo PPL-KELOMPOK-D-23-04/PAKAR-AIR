@@ -11,7 +11,7 @@ const apiClient = axios.create({
 // Request interceptor — attach JWT token
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('access_token')
+    const token = localStorage.getItem('pakar_air_token') || localStorage.getItem('access_token')
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
@@ -25,6 +25,7 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
+      localStorage.removeItem('pakar_air_token')
       localStorage.removeItem('access_token')
       window.location.href = '/login'
     }

@@ -18,6 +18,20 @@ export const useAuthStore = defineStore('auth', {
   },
 
   actions: {
+    async register(data) {
+      this.isLoading = true
+      this.error = null
+      try {
+        const response = await axios.post(`${API_BASE}/api/auth/register`, data)
+        return { success: true, message: response.data?.message || 'Registration successful' }
+      } catch (err) {
+        const message = err.response?.data?.detail || err.response?.data?.message || 'Pendaftaran gagal. Silakan coba lagi.'
+        this.error = message
+        return { success: false, message }
+      } finally {
+        this.isLoading = false
+      }
+    },
     async login(email, password) {
       this.isLoading = true
       this.error = null
