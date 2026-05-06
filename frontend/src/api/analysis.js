@@ -1,4 +1,4 @@
-import axios from 'axios'
+import apiClient from '@/api/axios'
 
 /**
  * Submit analisis ke backend.
@@ -26,7 +26,7 @@ export async function submitAnalysis(manualData, image) {
 
   formData.append('manual_data', JSON.stringify(mappedData))
 
-  const res = await axios.post('/api/analysis', formData, {
+  const res = await apiClient.post('/api/analysis', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   })
 
@@ -39,7 +39,7 @@ export async function submitAnalysis(manualData, image) {
  * @returns {Object|null} result object atau null kalau belum ada
  */
 export async function getAnalysisResult(analysisId) {
-  const res = await axios.get(`/api/analysis/${analysisId}`)
+  const res = await apiClient.get(`/api/analysis/${analysisId}`)
   return res.data.result ?? null
 }
 
@@ -54,7 +54,7 @@ export async function getAnalysisResult(analysisId) {
  */
 export async function getAnalysisHistory(page = 1, filters = {}, perPage = 10) {
   const { search, category, date } = filters
-  const res = await axios.get('/api/analysis/history', {
+  const res = await apiClient.get('/api/analysis/history', {
     params: {
       page,
       per_page: perPage,

@@ -1,6 +1,6 @@
 import { ref } from 'vue'
-import { useAnalysisStore } from '@/stores/analysisStore'
-import { submitAnalysis, getAnalysisResult } from '@/api/analysis'
+import { useAnalysisStore } from '../stores/analysisStore'
+import { submitAnalysis, getAnalysisResult } from '../api/analysis'
 
 export function useAnalysis() {
   const store = useAnalysisStore()
