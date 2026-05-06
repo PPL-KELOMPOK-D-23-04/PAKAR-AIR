@@ -59,11 +59,12 @@
 
       <hr class="sidebar__divider sidebar__divider--bottom" />
 
+      <!-- ✅ LOGOUT (FIXED) -->
       <button class="sidebar__item sidebar__item--logout">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="1.8">
           <path stroke-linecap="round" stroke-linejoin="round"
-            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            d="M17 16l4-4-4-4m4 4H9m8 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h8a2 2 0 012 2v1" />
         </svg>
         Keluar
       </button>
@@ -75,12 +76,6 @@
       <!-- TOPBAR (fixed) -->
       <header class="topbar">
         <div class="topbar__breadcrumb">
-          <span>Analisis</span>
-          <svg width="14" height="14" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-          </svg>
-          <span class="topbar__breadcrumb--active">Baru</span>
         </div>
 
         <div class="topbar__right">
@@ -215,14 +210,21 @@
   color: #2563eb;
 }
 
+/* ✅ LOGOUT FIX */
 .sidebar__item--logout {
-  margin: 0 10px;
-  color: #718096;
+  /* penting: NO margin */
+  margin: 3%;
+
+  /* sama persis dengan item lain */
+  padding: 9px 12px;
+  width: 95%;
+
+  color: #c53030;
+  background: #fff5f5;
 }
 
 .sidebar__item--logout:hover {
-  background: #fff5f5;
-  color: #c53030;
+  background: #fed7d7;
 }
 
 /* ── Right area ── */

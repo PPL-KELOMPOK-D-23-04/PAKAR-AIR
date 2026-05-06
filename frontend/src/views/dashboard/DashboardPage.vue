@@ -1,183 +1,260 @@
 <template>
-  <div class="dashboard-root">
-    <!-- Sidebar -->
-    <aside class="sidebar" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
-      <div class="sidebar-header">
-        <div class="sidebar-logo">
-          <div class="logo-icon">💧</div>
-          <span class="logo-text" v-show="!sidebarCollapsed">PAKAR-AIR</span>
-        </div>
-        <button class="collapse-btn" @click="sidebarCollapsed = !sidebarCollapsed" aria-label="Toggle Sidebar">
-          <ChevronLeftIcon class="collapse-icon" :class="{ 'rotated': sidebarCollapsed }" />
-        </button>
+  <DashboardLayout>
+    <div class="dashboard-view">
+
+      <!-- HEADER -->
+      <div class="page-header">
+        <h1 class="page-header__title">Dashboard</h1>
+        <p class="page-header__desc">
+          Selamat datang! Lihat ringkasan analisis air Anda
+        </p>
       </div>
 
-      <nav class="sidebar-nav">
-        <RouterLink to="/dashboard" class="nav-item active-item" id="nav-dashboard">
-          <LayoutDashboardIcon class="nav-icon" />
-          <span v-show="!sidebarCollapsed">Dashboard</span>
-        </RouterLink>
-        <RouterLink to="/analysis" class="nav-item" id="nav-analysis">
-          <FlaskConicalIcon class="nav-icon" />
-          <span v-show="!sidebarCollapsed">Analisis Air</span>
-        </RouterLink>
-        <RouterLink to="/history" class="nav-item" id="nav-history">
-          <HistoryIcon class="nav-icon" />
-          <span v-show="!sidebarCollapsed">Riwayat</span>
-        </RouterLink>
-      </nav>
-
-      <div class="sidebar-footer">
-        <button id="btn-logout" class="logout-btn" @click="handleLogout" :disabled="authStore.isLoading">
-          <span v-if="authStore.isLoading" class="logout-spinner">
-            <span class="spinner-sm"></span>
-          </span>
-          <LogOutIcon v-else class="nav-icon" />
-          <span v-show="!sidebarCollapsed">{{ authStore.isLoading ? 'Keluar...' : 'Keluar' }}</span>
-        </button>
-      </div>
-    </aside>
-
-    <!-- Main -->
-    <div class="main-wrapper">
-      <!-- Topbar -->
-      <header class="topbar">
-        <div class="topbar-left">
-          <h1 class="page-title">Dashboard</h1>
-          <p class="page-subtitle">Selamat datang, <strong>{{ userDisplayName }}</strong>!</p>
-        </div>
-        <div class="topbar-right">
-          <div class="user-badge">
-            <div class="avatar">{{ userInitial }}</div>
-            <span class="user-email">{{ authStore.currentUser?.email }}</span>
-          </div>
-        </div>
-      </header>
-
-      <!-- Content -->
-      <main class="main-content">
-        <!-- Stats row -->
-        <div class="stats-grid">
-          <div class="stat-card" v-for="stat in stats" :key="stat.label">
-            <div class="stat-icon-wrap" :style="{ background: stat.bg }">
-              <component :is="stat.icon" class="stat-icon" :style="{ color: stat.color }" />
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="stat-card" v-for="stat in stats" :key="stat.label">
+          <div class="stat-left">
+            <div class="stat-icon" :style="{ background: stat.bg }">
+              <component :is="stat.icon" />
             </div>
+
             <div>
               <div class="stat-value">{{ stat.value }}</div>
               <div class="stat-label">{{ stat.label }}</div>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- CTA card -->
-        <div class="cta-card">
-          <div class="cta-content">
-            <div class="cta-badge">✨ Siap Digunakan</div>
-            <h2 class="cta-title">Mulai Analisis Kualitas Air</h2>
-            <p class="cta-desc">
-              Upload foto sampel air dan isi data pendukung untuk mendapatkan hasil analisis AI yang akurat dan rekomendasi kesehatan secara instan.
-            </p>
-            <RouterLink to="/analysis" id="btn-start-analysis" class="cta-btn">
-              <FlaskConicalIcon class="cta-btn-icon" />
-              Mulai Analisis Sekarang
-            </RouterLink>
-          </div>
-          <div class="cta-visual">
-            <div class="water-orb">💧</div>
-            <div class="orb-ring ring-1"></div>
-            <div class="orb-ring ring-2"></div>
-            <div class="orb-ring ring-3"></div>
-          </div>
-        </div>
+      <!-- CTA -->
+      <div class="cta-card">
+        <div class="cta-content">
+          <span class="cta-badge">Siap Digunakan</span>
+          <h2 class="cta-title">Mulai Analisis Kualitas Air</h2>
+          <p class="cta-desc">
+            Upload foto air dan dapatkan hasil analisis dalam hitungan detik
+          </p>
 
-        <!-- How it works -->
-        <div class="section-header">
-          <h2 class="section-title">Cara Penggunaan</h2>
-          <p class="section-sub">Tiga langkah mudah untuk menganalisis air Anda</p>
-        </div>
-        <div class="steps-grid">
-          <div class="step-card" v-for="(step, i) in steps" :key="i">
-            <div class="step-number">{{ i + 1 }}</div>
-            <div class="step-icon-wrap">
-              <component :is="step.icon" class="step-icon" />
-            </div>
-            <h3 class="step-title">{{ step.title }}</h3>
-            <p class="step-desc">{{ step.desc }}</p>
-          </div>
-        </div>
-      </main>
-    </div>
-
-    <!-- Logout Confirm Modal -->
-    <Transition name="modal-fade">
-      <div v-if="showLogoutModal" class="modal-overlay" @click.self="showLogoutModal = false">
-        <div class="modal-card">
-          <div class="modal-icon">👋</div>
-          <h3 class="modal-title">Keluar dari Akun?</h3>
-          <p class="modal-desc">Anda akan keluar dari sesi ini. Pastikan data Anda sudah tersimpan.</p>
-          <div class="modal-actions">
-            <button class="modal-cancel" @click="showLogoutModal = false">Batal</button>
-            <button id="btn-confirm-logout" class="modal-confirm" @click="confirmLogout" :disabled="authStore.isLoading">
-              <span v-if="authStore.isLoading">
-                <span class="spinner-sm white"></span> Keluar...
-              </span>
-              <span v-else>Ya, Keluar</span>
-            </button>
-          </div>
+          <RouterLink to="/analysis" class="cta-btn">
+            <FlaskConicalIcon width="16" />
+            Mulai Analisis
+          </RouterLink>
         </div>
       </div>
-    </Transition>
-  </div>
+
+      <!-- STEPS -->
+      <div class="section-header">
+        <h2>Cara Penggunaan</h2>
+        <p>Tiga langkah mudah untuk menganalisis air</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card" v-for="(step, i) in steps" :key="i">
+          <div class="step-number">{{ i + 1 }}</div>
+
+          <div class="step-icon">
+            <component :is="step.icon" />
+          </div>
+
+          <h3>{{ step.title }}</h3>
+          <p>{{ step.desc }}</p>
+        </div>
+      </div>
+
+    </div>
+  </DashboardLayout>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import DashboardLayout from '../../layouts/DashboardLayout.vue'
 import {
-  LayoutDashboardIcon,
   FlaskConicalIcon,
-  HistoryIcon,
-  LogOutIcon,
-  ChevronLeftIcon,
   DropletIcon,
   ClipboardCheckIcon,
   UploadIcon,
   BeakerIcon,
-  CheckCircleIcon,
+  CheckCircleIcon
 } from 'lucide-vue-next'
-import { useAuthStore } from '@/stores/authStore'
-
-const router = useRouter()
-const authStore = useAuthStore()
-const sidebarCollapsed = ref(false)
-const showLogoutModal = ref(false)
-
-const userDisplayName = computed(() => {
-  const user = authStore.currentUser
-  return user?.full_name || user?.email?.split('@')[0] || 'Pengguna'
-})
-const userInitial = computed(() => userDisplayName.value.charAt(0).toUpperCase())
 
 const stats = [
-  { label: 'Total Analisis', value: '0', icon: FlaskConicalIcon, bg: 'rgba(59,130,246,0.1)', color: '#3b82f6' },
-  { label: 'Air Aman', value: '0', icon: DropletIcon, bg: 'rgba(16,185,129,0.1)', color: '#10b981' },
-  { label: 'Perlu Perhatian', value: '0', icon: ClipboardCheckIcon, bg: 'rgba(245,158,11,0.1)', color: '#f59e0b' },
+  { label: 'Total Analisis', value: 0, icon: FlaskConicalIcon, bg: '#eef2ff' },
+  { label: 'Air Aman', value: 0, icon: DropletIcon, bg: '#ecfdf5' },
+  { label: 'Perlu Perhatian', value: 0, icon: ClipboardCheckIcon, bg: '#fffbeb' }
 ]
 
 const steps = [
-  { title: 'Upload Foto Air', desc: 'Ambil foto sampel air langsung dari kamera atau galeri.', icon: UploadIcon },
-  { title: 'Isi Data Pendukung', desc: 'Lengkapi info warna, bau, dan sumber air untuk akurasi lebih tinggi.', icon: BeakerIcon },
-  { title: 'Dapatkan Hasil Instan', desc: 'AI menganalisis dan memberikan rekomendasi kesehatan.', icon: CheckCircleIcon },
+  { title: 'Upload Foto Air', desc: 'Ambil foto air.', icon: UploadIcon },
+  { title: 'Isi Data', desc: 'Lengkapi data.', icon: BeakerIcon },
+  { title: 'Hasil Instan', desc: 'AI menganalisis.', icon: CheckCircleIcon }
 ]
-
-function handleLogout() {
-  showLogoutModal.value = true
-}
-
-async function confirmLogout() {
-  await authStore.logout()
-  router.push('/')
-}
 </script>
 
-<style scoped src="@/assets/styles/pages/dashboard.css"></style>
+<style scoped>
+
+/* ROOT */
+.dashboard-view {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* HEADER */
+.page-header__title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.page-header__desc {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* STATS */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.stat-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.stat-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* CTA */
+.cta-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.cta-content {
+  max-width: 600px;
+}
+
+.cta-badge {
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.cta-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin-top: 4px;
+}
+
+.cta-desc {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 6px 0 12px;
+}
+
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #1f2937;
+  color: #ffffff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.cta-btn:hover {
+  background: #111827;
+}
+
+/* SECTION */
+.section-header h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.section-header p {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* STEPS */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.step-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+}
+
+.step-number {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.step-icon {
+  margin: 10px auto;
+  width: 34px;
+  height: 34px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-card h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.step-card p {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+</style>

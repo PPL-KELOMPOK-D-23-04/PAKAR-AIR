@@ -33,8 +33,8 @@
         <div class="filter-item">
           <select v-model="filterCategory" class="filter-select" @change="handleFilter">
             <option value="">Semua Kategori</option>
-            <option value="layak">✅ Layak</option>
-            <option value="tidak_layak">❌ Tidak Layak</option>
+            <option value="layak">Layak</option>
+            <option value="tidak_layak">Tidak Layak</option>
           </select>
         </div>
 
@@ -69,14 +69,23 @@
 
       <!-- Error State -->
       <div v-else-if="error" class="state-box state-box--error">
-        <div class="state-icon">⚠️</div>
+        <div class="state-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 9v4m0 4h.01M10.29 3.86l-7.29 12.64A2 2 0 004.71 19h14.58a2 2 0 001.71-2.5L13.71 3.86a2 2 0 00-3.42 0z"/>
+          </svg>
+        </div>
         <p class="state-text">{{ error }}</p>
         <button @click="fetchHistory" class="btn btn--secondary">Coba Lagi</button>
       </div>
 
       <!-- Empty State -->
       <div v-else-if="history.length === 0" class="state-box">
-        <div class="state-icon">📊</div>
+        <div class="state-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 3v18h18"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 13V7m6 10v-6m6 0v-4"/>
+          </svg>
+        </div>
         <h3 class="state-title">
           {{ searchQuery || filterCategory || filterDate ? 'Tidak Ada Hasil' : 'Belum Ada Riwayat' }}
         </h3>
@@ -119,12 +128,12 @@
                 {{ formatDate(item.created_at) }}
               </span>
               <span class="status-badge" :class="'status--' + item.category">
-                {{ item.category === 'layak' ? '✅ Layak' : '❌ Tidak Layak' }}
+                {{ item.category === 'layak' ? 'Layak' : 'Tidak Layak' }}
               </span>
             </div>
             <h3 class="history-card__title">{{ item.water_source || 'Sumber Tidak Diketahui' }}</h3>
             <div class="history-card__meta">
-              <span v-if="item.water_color">🎨 {{ item.water_color }}</span>
+              <span v-if="item.water_color">{{ item.water_color }}</span>
               <span v-if="item.ph">pH {{ item.ph }}</span>
             </div>
           </div>
