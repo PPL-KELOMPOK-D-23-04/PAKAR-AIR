@@ -8,14 +8,16 @@ from datetime import datetime
 # ─── Manual Input Data ────────────────────────────────────────────
 
 class ManualInputData(BaseModel):
-    """Data manual kualitas air dari form user (KF-04)."""
-    water_color: str = Field(..., description="jernih / kuning / coklat / hijau / putih")
-    water_smell: str = Field(..., description="tidak_berbau / sedikit / menyengat")
-    water_source: str = Field(..., description="sumur / sungai / PDAM / mata_air / danau")
-    environment_condition: str = Field(..., description="bersih / cukup_bersih / kotor")
-    water_ph: Optional[float] = Field(7.0, ge=0, le=14, description="pH air, default 7.0")
-    water_temperature: Optional[float] = Field(25.0, description="Suhu air °C, default 25.0")
-    additional_notes: Optional[str] = None
+    """Data manual kualitas air (Parameter Kimia) untuk model Random Forest."""
+    ph: float = Field(7.0, ge=0, le=14, description="Derajat keasaman")
+    Hardness: float = Field(..., description="Tingkat kesadahan air")
+    Solids: float = Field(..., description="Total padatan terlarut (TDS)")
+    Chloramines: float = Field(..., description="Kandungan kloramin")
+    Sulfate: float = Field(..., description="Kandungan sulfat")
+    Conductivity: float = Field(..., description="Daya hantar listrik")
+    Organic_carbon: float = Field(..., description="Kandungan karbon organik")
+    Trihalomethanes: float = Field(..., description="Kandungan trihalometana")
+    Turbidity: float = Field(..., description="Tingkat kekeruhan")
 
 
 # ─── DL Detection Item ───────────────────────────────────────────
@@ -54,18 +56,17 @@ class AnalysisResultResponse(BaseModel):
 # ─── Analysis Summary (for history list) ─────────────────────────
 
 class AnalysisSummary(BaseModel):
-    """One item in the history list summary."""
+    """Ringkasan satu item riwayat analisis."""
     id: UUID
     status: str
     created_at: datetime
-    # Inline result summary
+    # Ringkasan hasil
     category: Optional[str] = None
     confidence: Optional[float] = None
     image_path: Optional[str] = None
-    # Display fields from manual input
-    water_source: Optional[str] = None
-    water_color: Optional[str] = None
+    # Parameter kunci yang ditampilkan di daftar
     ph: Optional[float] = None
+    turbidity: Optional[float] = Field(None, alias="Turbidity")
 
 
 # ─── Full Analysis Detail ────────────────────────────────────────

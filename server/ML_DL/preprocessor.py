@@ -31,33 +31,21 @@ def resize_image(image_path: str, max_size: int = 640) -> str:
 
 def validate_manual_data(data: dict) -> dict:
     """
-    Validate and normalize manual input data.
-    Returns cleaned data dict.
+    Validate and normalize manual input data for Random Forest model.
+    Features: [ph, Hardness, Solids, Chloramines, Sulfate, 
+               Conductivity, Organic_carbon, Trihalomethanes, Turbidity]
     """
-    valid_colors = {"jernih", "kuning", "coklat", "hijau", "putih"}
-    valid_smells = {"tidak_berbau", "sedikit", "menyengat"}
-    valid_sources = {"sumur", "sungai", "PDAM", "mata_air", "danau"}
-    valid_envs = {"bersih", "cukup_bersih", "kotor"}
-
     cleaned = {}
-    cleaned["water_color"] = data.get("water_color", "jernih")
-    if cleaned["water_color"] not in valid_colors:
-        cleaned["water_color"] = "jernih"
-
-    cleaned["water_smell"] = data.get("water_smell", "tidak_berbau")
-    if cleaned["water_smell"] not in valid_smells:
-        cleaned["water_smell"] = "tidak_berbau"
-
-    cleaned["water_source"] = data.get("water_source", "sumur")
-    if cleaned["water_source"] not in valid_sources:
-        cleaned["water_source"] = "sumur"
-
-    cleaned["environment_condition"] = data.get("environment_condition", "bersih")
-    if cleaned["environment_condition"] not in valid_envs:
-        cleaned["environment_condition"] = "bersih"
-
-    cleaned["water_ph"] = float(data.get("water_ph", 7.0))
-    cleaned["water_temperature"] = float(data.get("water_temperature", 25.0))
-    cleaned["additional_notes"] = data.get("additional_notes", "")
+    
+    # Required fields with default values if missing
+    cleaned["ph"] = float(data.get("ph", 7.0))
+    cleaned["Hardness"] = float(data.get("Hardness", 0.0))
+    cleaned["Solids"] = float(data.get("Solids", 0.0))
+    cleaned["Chloramines"] = float(data.get("Chloramines", 0.0))
+    cleaned["Sulfate"] = float(data.get("Sulfate", 0.0))
+    cleaned["Conductivity"] = float(data.get("Conductivity", 0.0))
+    cleaned["Organic_carbon"] = float(data.get("Organic_carbon", 0.0))
+    cleaned["Trihalomethanes"] = float(data.get("Trihalomethanes", 0.0))
+    cleaned["Turbidity"] = float(data.get("Turbidity", 0.0))
 
     return cleaned

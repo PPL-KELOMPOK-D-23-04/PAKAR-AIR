@@ -157,11 +157,12 @@ def get_user_history(
             cast(Analysis.created_at, Date) == date
         )
 
-    # Filter by search keyword in water_source field inside manual_input data_json
+    # Filter by search keyword in original filename
     if search:
-        query = query.join(ManualInput, Analysis.id == ManualInput.analysis_id, isouter=True)\
+        from app.models.models import ImageInput
+        query = query.join(ImageInput, Analysis.id == ImageInput.analysis_id, isouter=True)\
                      .filter(
-                         ManualInput.data_json["water_source"].astext.ilike(f"%{search}%")
+                         ImageInput.original_filename.ilike(f"%{search}%")
                      )
 
     query = query.order_by(Analysis.created_at.desc())
