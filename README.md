@@ -27,7 +27,7 @@ Arsitektur berikut hanyalah gambaran besar, bisa berubah kapan saja sesuai kebut
 | KF-01 | Registrasi Pengguna | Form registrasi (nama, username, password) dengan validasi |
 | KF-02 | Login & Logout | Autentikasi JWT, redirect ke dashboard |
 | KF-03 | Unggah Citra Air | Upload foto air untuk dianalisis oleh YOLO |
-| KF-04 | Input Data Manual | Form parameter: warna, bau, sumber air, kondisi lingkungan, pH, suhu |
+| KF-04 | Input Data Manual | Form parameter kimia: pH, Hardness, Solids, Chloramines, Sulfate, Conductivity, Organic carbon, Trihalomethanes, Turbidity |
 | KF-05 | Analisis & Prediksi | Gabungan DL (YOLO) + ML (Random Forest) → klasifikasi akhir |
 | KF-06 | Tampilan Hasil | Kategori, confidence score, penjelasan DL+ML, rekomendasi |
 | KF-07 | Riwayat Analisis | Histori semua analisis per user |
@@ -126,7 +126,7 @@ Arsitektur berikut hanyalah gambaran besar, bisa berubah kapan saja sesuai kebut
 ```
 PROYEK_PAKAR-AIR/
 │
-├── client/                          # 🖥️ FRONTEND (Vue 3 + Vite)
+├── frontend/                        # 🖥️ FRONTEND (Vue 3 + Vite)
 │   ├── public/
 │   │   └── favicon.ico
 │   ├── src/
@@ -251,7 +251,7 @@ PROYEK_PAKAR-AIR/
 │   │       ├── validators.py
 │   │       └── helpers.py
 │   │
-│   ├── ml/                          # 🤖 ML/DL INFERENCE ENGINE
+│   ├── ML_DL/                       # 🤖 ML/DL INFERENCE ENGINE
 │   │   ├── __init__.py
 │   │   ├── yolo_detector.py         #   YOLOv8 inference wrapper
 │   │   ├── rf_classifier.py         #   Random Forest inference wrapper
@@ -259,9 +259,9 @@ PROYEK_PAKAR-AIR/
 │   │   ├── preprocessor.py          #   Image & data preprocessing
 │   │   │
 │   │   └── saved_models/            #   Pre-trained model files
-│   │       ├── water_yolo.pt        #     YOLOv8 model (train terpisah)
-│   │       ├── water_rf.pkl         #     Random Forest model
-│   │       └── label_encoder.pkl    #     Label encoder for features
+│   │       ├── water_yolo.pt        #     YOLOv8 model
+│   │       ├── random_forest_model.pkl #  Random Forest model
+│   │       └── scaler.pkl           #     Standard scaler for features
 │   │
 │   ├── migrations/                  # Alembic DB migrations
 │   ├── uploads/                     # Uploaded images storage
@@ -309,7 +309,7 @@ PROYEK_PAKAR-AIR/
     │                               │                              │
     │                               │         6b. RF Inference     │
     │                               │         ┌──────────────────┐ │
-    │                               │         │ Input: form data │ │
+    │                               │         │ Input: kimia data│ │
     │                               │         │ Output:          │ │
     │                               │         │ → tidak_layak    │ │
     │                               │         │   (conf: 91%)    │ │
@@ -335,9 +335,9 @@ PROYEK_PAKAR-AIR/
     │  │ Hasil: ❌ Tidak Layak  │   │                              │
     │  │ Confidence: 87%        │   │                              │
     │  │                        │   │                              │
-    │  │ DL: air keruh + sampah │   │                              │
-    │  │ ML: warna coklat, bau  │   │                              │
-    │  │     menyengat          │   │                              │
+    │  │ DL: floater terdeteksi │   │                              │
+    │  │ ML: pH 3.5, Turbidity  │   │                              │
+    │  │     tinggi             │   │                              │
     │  │                        │   │                              │
     │  │ Rekomendasi: Jangan    │   │                              │
     │  │ konsumsi langsung...   │   │                              │
@@ -352,30 +352,27 @@ YOLO mendeteksi kondisi visual air dari gambar yang diunggah:
 
 | Class | Label | Pengaruh | Deskripsi |
 |-------|-------|----------|-----------|
-| 0 | `air_jernih` | ✅ Positif | Air bersih, transparan |
-| 1 | `air_keruh` | ❌ Negatif | Air keruh/berlumpur |
-| 2 | `air_berwarna` | ❌ Negatif | Warna abnormal (hijau/kuning/coklat) |
-| 3 | `sampah` | ❌ Negatif | Objek sampah terdeteksi |
-| 4 | `alga` | ❌ Negatif | Pertumbuhan alga/lumut |
-| 5 | `busa` | ❌ Negatif | Busa/buih di permukaan |
-| 6 | `minyak` | ❌ Negatif | Lapisan minyak di permukaan |
+| 0 | `floater` | ❌ Negatif | Sampah/objek terapung terdeteksi |
 
-**File model**: `server/ml/saved_models/water_yolo.pt`
+**File model**: `server/ML_DL/saved_models/water_yolo.pt`
 
 #### 🌲 Machine Learning — Random Forest (Classification)
 
 RF mengklasifikasi berdasarkan data manual yang diisi user:
 
-| Fitur | Tipe Input | Encoding |
-|-------|------------|----------|
-| Warna Air | jernih / kuning / coklat / hijau / putih | One-hot |
-| Bau Air | tidak berbau / sedikit / menyengat | Ordinal (0,1,2) |
-| Sumber Air | sumur / sungai / PDAM / mata air / danau | One-hot |
-| Kondisi Lingkungan | bersih / cukup bersih / kotor | Ordinal (0,1,2) |
-| pH | angka desimal (opsional, default 7.0) | Numeric |
-| Suhu | angka desimal (opsional, default 25.0) | Numeric |
+| Fitur | Deskripsi | Tipe |
+|-------|-----------|------|
+| ph | Derajat keasaman (0-14) | Numeric |
+| Hardness | Tingkat kesadahan air | Numeric |
+| Solids | Total padatan terlarut (TDS) | Numeric |
+| Chloramines | Kandungan kloramin | Numeric |
+| Sulfate | Kandungan sulfat | Numeric |
+| Conductivity | Daya hantar listrik | Numeric |
+| Organic carbon | Kandungan karbon organik | Numeric |
+| Trihalomethanes| Kandungan trihalometana | Numeric |
+| Turbidity | Tingkat kekeruhan | Numeric |
 
-**File model**: `server/ml/saved_models/water_rf.pkl`
+**File model**: `server/ML_DL/saved_models/random_forest_model.pkl`
 
 #### ⚡ Fusion Layer — Penggabungan Hasil
 
@@ -438,10 +435,10 @@ education_articles (standalone)
 | POST | `/api/analysis` | Submit analisis baru (gambar + form) | ✅ User |
 | GET | `/api/analysis/:id` | Ambil hasil analisis | ✅ User |
 
-### History (`/api/history`)
+### History (`/api/analysis/history`)
 | Method | Endpoint | Deskripsi | Auth |
 |--------|----------|-----------|------|
-| GET | `/api/history` | Daftar riwayat analisis user | ✅ User |
+| GET | `/api/analysis/history` | Daftar riwayat analisis user | ✅ User |
 | | `?page=1&per_page=10` | Pagination support | |
 
 ### Notifications (`/api/notifications`)
@@ -512,7 +509,7 @@ cd PROYEK_PAKAR-AIR
 
 ### 2. Setup Frontend
 ```bash
-cd client
+cd frontend
 npm install
 npm run dev          # → http://localhost:5173
 ```
@@ -530,10 +527,10 @@ python run.py                  # → http://localhost:5000
 ### 4. Tambahkan Model Files
 Letakkan file model yang sudah di-training ke:
 ```
-server/ml/saved_models/
+server/ML_DL/saved_models/
 ├── water_yolo.pt         # YOLOv8 trained model
-├── water_rf.pkl          # Random Forest model
-└── label_encoder.pkl     # Label encoder
+├── random_forest_model.pkl # Random Forest model
+└── scaler.pkl            # Standard Scaler
 ```
 
 ---
