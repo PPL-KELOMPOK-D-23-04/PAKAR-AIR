@@ -1,154 +1,28 @@
 <template>
   <div class="profile-page">
-    <!-- NAVBAR (Terhubung ke semua halaman) -->
-    <nav class="navbar">
-      <div class="nav-container">
-        <div class="logo">
-          <router-link to="/" class="logo-link">
-            <span class="logo-icon">💧</span>
-            <span class="logo-text">PAKAR-AIR</span>
-          </router-link>
-        </div>
-        <div class="nav-links">
-          <router-link to="/" class="nav-link">Beranda</router-link>
-          <router-link to="/edukasi" class="nav-link">Edukasi</router-link>
-          <router-link to="/dashboard" class="nav-link">Analisis</router-link>
-          <router-link to="/profile" class="nav-link active">Profil</router-link>
-          <button @click="handleLogout" class="logout-btn" :disabled="authStore.isLoading">
-            {{ authStore.isLoading ? 'Keluar...' : 'Keluar' }}
-          </button>
-        </div>
-      </div>
-    </nav>
+    <div class="profile-card">
+      <h1>Profil Saya</h1>
 
-    <!-- MAIN CONTENT -->
-    <div class="profile-container">
-      <div class="profile-card">
-        <h1 class="page-title">👤 Profil Saya</h1>
+      <div class="profile-form">
+        <label>Nama</label>
+        <input type="text" placeholder="Masukkan nama" />
 
-        <!-- ========== UPDATE FOTO (PKD20TPA-29) ========== -->
-        <div class="photo-section">
-          <div class="avatar-wrapper">
-            <img 
-              :src="previewFoto || fotoProfil || defaultAvatar" 
-              alt="Foto Profil"
-              class="avatar"
-            />
-            <label class="upload-btn">
-              <span>📷</span>
-              <input 
-                type="file" 
-                @change="handleUploadFoto" 
-                accept="image/jpeg,image/png,image/jpg"
-                style="display: none"
-              />
-            </label>
-          </div>
-          <p class="photo-hint">Klik ikon kamera untuk ganti foto (max 2MB)</p>
-        </div>
+        <label>Username</label>
+        <input type="text" placeholder="Masukkan username" />
 
-        <!-- ========== UPDATE NAMA & USERNAME (PKD20TPA-28) ========== -->
-        <div class="form-section">
-          <div class="form-group">
-            <label>Nama Lengkap</label>
-            <input 
-              v-model="formData.nama" 
-              type="text"
-              placeholder="Masukkan nama lengkap"
-              class="form-input"
-            />
-          </div>
+        <label>Password Baru</label>
+        <input type="password" placeholder="Masukkan password baru" />
 
-          <div class="form-group">
-            <label>Username</label>
-            <input 
-              v-model="formData.username" 
-              type="text"
-              placeholder="Masukkan username"
-              class="form-input"
-            />
-          </div>
-
-          <div class="form-group">
-            <label>Email</label>
-            <input 
-              v-model="formData.email" 
-              type="email"
-              placeholder="Masukkan email"
-              class="form-input"
-              disabled
-            />
-          </div>
-
-          <div class="form-group">
-            <label>Tanggal Bergabung</label>
-            <input 
-              :value="joinDate" 
-              type="text"
-              class="form-input"
-              disabled
-            />
-          </div>
-
-          <button 
-            @click="updateProfil" 
-            :disabled="loading"
-            class="save-btn"
-          >
-            {{ loading ? 'Menyimpan...' : '💾 Simpan Perubahan' }}
-          </button>
-        </div>
-
-        <!-- PESAN NOTIFIKASI -->
-        <div v-if="message" :class="['message', messageType]">
-          {{ message }}
-        </div>
+        <button>Simpan</button>
       </div>
     </div>
-
-    <!-- FOOTER (Terhubung ke semua halaman) -->
-    <footer class="footer">
-      <div class="footer-container">
-        <div class="footer-logo">
-          <span class="logo-icon">💧</span>
-          <span>PAKAR-AIR</span>
-          <p>Pendeteksi Kualitas Air Berbasis AI</p>
-        </div>
-        <div class="footer-links">
-          <div class="footer-column">
-            <h4>Menu</h4>
-            <router-link to="/">Beranda</router-link>
-            <router-link to="/edukasi">Edukasi</router-link>
-            <router-link to="/dashboard">Analisis</router-link>
-            <router-link to="/profile">Profil</router-link>
-          </div>
-          <div class="footer-column">
-            <h4>Edukasi</h4>
-            <router-link to="/artikel">Parameter Air</router-link>
-            <router-link to="/artikel2">Pencemaran Air</router-link>
-            <router-link to="/artikel3">Teknologi Air</router-link>
-          </div>
-          <div class="footer-column">
-            <h4>Akun</h4>
-            <button @click="handleLogout" class="footer-logout-btn" :disabled="authStore.isLoading">
-              {{ authStore.isLoading ? 'Keluar...' : 'Keluar' }}
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2026 PAKAR-AIR. All rights reserved.</p>
-      </div>
-    </footer>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
 
-const router = useRouter()
 const authStore = useAuthStore()
 
 // ========== STATE ==========
@@ -166,12 +40,6 @@ const formData = ref({
 })
 
 const joinDate = ref('22 April 2026')
-
-// ========== LOGOUT ==========
-const handleLogout = async () => {
-  await authStore.logout()
-  router.push('/login')
-}
 
 // ========== LOAD DATA SAAT HALAMAN DIBUKA ==========
 onMounted(() => {
