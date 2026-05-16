@@ -17,6 +17,9 @@ class Settings(BaseSettings):
     # Storage
     UPLOAD_FOLDER: str = "uploads"
     
+    # Google AI (Gemini)
+    GEMINI_API_KEY: str = ""
+    
     class Config:
         env_file = ".env"
 

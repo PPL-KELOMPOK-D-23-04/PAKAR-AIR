@@ -45,6 +45,8 @@ class Profile(Base):
                             cascade="all, delete-orphan")
     notifications = relationship("Notification", back_populates="user",
                                  cascade="all, delete-orphan")
+    chat_sessions = relationship("ChatSession", back_populates="user",
+                                 cascade="all, delete-orphan")
 
 
 # ─── Analysis ────────────────────────────────────────────────────
@@ -152,3 +154,44 @@ class Notification(Base):
 
 # Catatan: Education articles di-hardcode di services/education_service.py,
 # tidak disimpan di database.
+
+
+# ─── Chat Session (AI Chatbot) ───────────────────────────────────
+
+class ChatSession(Base):
+    __tablename__ = "chat_sessions"
+
+    id = Column(UUID(as_uuid=True), primary_key=True,
+                server_default=text("gen_random_uuid()"))
+    user_id = Column(UUID(as_uuid=True),
+                     ForeignKey("profiles.id", ondelete="CASCADE"),
+                     nullable=False)
+    title = Column(String(200), default="Chat Baru")
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime(timezone=True), default=datetime.datetime.utcnow)
+    updated_at = Column(DateTime(timezone=True), default=datetime.datetime.utcnow,
+                        onupdate=datetime.datetime.utcnow)
+
+    # Relationships
+    user = relationship("Profile", back_populates="chat_sessions")
+    messages = relationship("ChatMessage", back_populates="session",
+                            cascade="all, delete-orphan",
+                            order_by="ChatMessage.created_at")
+
+
+# ─── Chat Message (AI Chatbot) ───────────────────────────────────
+
+class ChatMessage(Base):
+    __tablename__ = "chat_messages"
+
+    id = Column(UUID(as_uuid=True), primary_key=True,
+                server_default=text("gen_random_uuid()"))
+    session_id = Column(UUID(as_uuid=True),
+                        ForeignKey("chat_sessions.id", ondelete="CASCADE"),
+                        nullable=False)
+    role = Column(String(20), nullable=False)  # 'user' or 'assistant'
+    content = Column(Text, nullable=False)
+    created_at = Column(DateTime(timezone=True), default=datetime.datetime.utcnow)
+
+    # Relationships
+    session = relationship("ChatSession", back_populates="messages")
