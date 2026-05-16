@@ -2,35 +2,39 @@
 Chatbot Service — Google Gemini AI Integration + Chat CRUD.
 Handles communication with Google AI Studio (Gemini) API
 and persists chat history to the database.
-Uses the new google.genai SDK (replaces deprecated google.generativeai).
+Supports Function Calling (Tools) to access database metrics.
 """
 from google import genai
 from google.genai import types
 from sqlalchemy.orm import Session
 from uuid import UUID
 from typing import List, Optional
+import json
 
 from app.config import settings
 from app.models.models import ChatSession, ChatMessage
+from app.services import chatbot_tools
 
-# ─── System Prompt (Domain Context) ──────────────────────────────
+# ─── System Prompt (Updated with Data Access) ────────────────────
 
 SYSTEM_PROMPT = (
     "Kamu adalah asisten AI untuk sistem PAKAR-AIR, sebuah platform analisis "
     "kualitas air yang menggunakan Machine Learning (Random Forest) dan "
     "Deep Learning (YOLOv8). \n\n"
-    "Tugasmu:\n"
+    "KEMAMPUAN KHUSUS:\n"
+    "- Kamu memiliki akses ke data statistik sistem (jumlah user, analisis, dll) melalui fungsi yang disediakan.\n"
+    "- Jika admin bertanya tentang jumlah data, status sistem, atau laporan terbaru, gunakan fungsi tersebut.\n"
+    "- Jangan pernah katakan 'Saya tidak punya akses ke database' jika pertanyaan bisa dijawab lewat fungsi.\n\n"
+    "Tugas Utama:\n"
     "- Membantu admin memahami data dan laporan analisis kualitas air.\n"
-    "- Menjelaskan parameter kualitas air seperti pH, Hardness, Solids, "
-    "Chloramines, Sulfate, Conductivity, Organic Carbon, Trihalomethanes, "
-    "dan Turbidity.\n"
-    "- Memberikan rekomendasi terkait sanitasi air.\n"
-    "- Menjawab pertanyaan umum tentang kualitas air dan sistem PAKAR-AIR.\n\n"
-    "Jawab dalam Bahasa Indonesia kecuali diminta bahasa lain. "
-    "Berikan jawaban yang informatif, ringkas, dan mudah dipahami."
+    "- Menjelaskan parameter kualitas air (pH, Hardness, Turbidity, dll).\n"
+    "- Memberikan rekomendasi sanitasi.\n\n"
+    "Aturan Jawaban:\n"
+    "- Jawab dalam Bahasa Indonesia.\n"
+    "- Berikan jawaban yang informatif, ringkas, dan berbasis data jika tersedia."
 )
 
-# Model name
+# Model name (Instruction: DO NOT CHANGE)
 GEMINI_MODEL = "gemini-2.5-flash"
 
 
@@ -42,10 +46,7 @@ def _get_client():
 
 
 def _build_chat_history(messages: List[ChatMessage]) -> list:
-    """
-    Convert DB messages to Gemini's chat history format.
-    google.genai expects Content objects with role 'user' or 'model'.
-    """
+    """Convert DB messages to Gemini's chat history format."""
     history = []
     for msg in messages:
         role = "model" if msg.role == "assistant" else "user"
@@ -99,7 +100,7 @@ def get_session_messages(session_id: UUID, db: Session) -> List[ChatMessage]:
 
 
 def delete_session(session_id: UUID, user_id: UUID, db: Session) -> bool:
-    """Delete a chat session (cascades to messages). Returns True if deleted."""
+    """Delete a chat session."""
     session = get_session(session_id, user_id, db)
     if not session:
         return False
@@ -108,7 +109,7 @@ def delete_session(session_id: UUID, user_id: UUID, db: Session) -> bool:
     return True
 
 
-# ─── AI Chat ─────────────────────────────────────────────────────
+# ─── AI Chat with Tools ──────────────────────────────────────────
 
 def send_message(
     session_id: UUID,
@@ -117,40 +118,40 @@ def send_message(
     db: Session,
 ) -> tuple:
     """
-    Send a user message to Gemini and save both messages to the database.
-
-    Returns:
-        tuple: (user_msg_record, ai_msg_record) -- both ChatMessage objects
-
-    Raises:
-        ValueError: if session not found or doesn't belong to user
-        Exception: if Gemini API call fails
+    Send a user message to Gemini, handle function calling for DB data,
+    and save both messages to the database.
     """
-    # 1. Verify session ownership
+    # 1. Verify session
     session = get_session(session_id, user_id, db)
     if not session:
         raise ValueError("Chat session not found or access denied")
 
     # 2. Save user message to DB
-    user_msg = ChatMessage(
-        session_id=session_id,
-        role="user",
-        content=user_message,
-    )
+    user_msg = ChatMessage(session_id=session_id, role="user", content=user_message)
     db.add(user_msg)
-    db.flush()  # Get ID without committing yet
+    db.flush()
 
-    # 3. Load chat history for context
+    # 3. Load chat history
     existing_messages = get_session_messages(session_id, db)
-    # Exclude the message we just added (it's flushed but we send it separately)
     history_messages = [m for m in existing_messages if m.id != user_msg.id]
     chat_history = _build_chat_history(history_messages)
 
-    # 4. Call Gemini API using new google.genai SDK
+    # 4. Prepare Tools
+    # We define local wrappers that have access to the 'db' session
+    def tool_get_system_stats():
+        return chatbot_tools.get_system_stats(db)
+
+    def tool_get_water_quality_summary():
+        return chatbot_tools.get_water_quality_summary(db)
+
+    def tool_get_latest_analyses_brief(limit: int = 5):
+        return chatbot_tools.get_latest_analyses_brief(db, limit)
+
+    # 5. Call Gemini with Automatic Function Calling
     try:
         client = _get_client()
-
-        # Build the full contents: history + current user message
+        
+        # Prepare content list
         contents = chat_history + [
             types.Content(
                 role="user",
@@ -158,30 +159,34 @@ def send_message(
             )
         ]
 
+        # Call Gemini with tool configuration
         response = client.models.generate_content(
             model=GEMINI_MODEL,
             contents=contents,
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_PROMPT,
-                max_output_tokens=2048,
-                temperature=0.7,
+                tools=[
+                    tool_get_system_stats,
+                    tool_get_water_quality_summary,
+                    tool_get_latest_analyses_brief
+                ],
+                # Automatic function calling loop
+                automatic_function_calling=types.AutomaticFunctionCallingConfig(
+                    disable=False
+                ),
+                temperature=0.3, # Lower temperature for data-heavy tasks
             ),
         )
         ai_text = response.text
     except Exception as e:
-        # Rollback user message if AI fails
         db.rollback()
-        raise Exception(f"Gemini API error: {str(e)}")
+        raise Exception(f"AI service error: {str(e)}")
 
-    # 5. Save AI response to DB
-    ai_msg = ChatMessage(
-        session_id=session_id,
-        role="assistant",
-        content=ai_text,
-    )
+    # 6. Save AI response
+    ai_msg = ChatMessage(session_id=session_id, role="assistant", content=ai_text)
     db.add(ai_msg)
 
-    # 6. Auto-update session title from first user message
+    # 7. Update session title if first chat
     if len(history_messages) == 0:
         session.title = user_message[:100] + ("..." if len(user_message) > 100 else "")
 
