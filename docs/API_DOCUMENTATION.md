@@ -1,5 +1,5 @@
 # 📘 PAKAR-AIR — API Documentation
-**Last Updated:** 13 Mei 2026
+**Last Updated:** 16 Mei 2026
 
 Dokumentasi endpoint backend untuk **Frontend Developer**.
 
@@ -18,8 +18,9 @@ Dokumentasi endpoint backend untuk **Frontend Developer**.
 - [4. History (Riwayat)](#4-history)
 - [5. Admin (Manajemen & Kontrol)](#5-admin)
 - [6. Notifications (PBI-08)](#6-notifications)
-- [7. Export Data](#7-export-data)
-- [8. Frontend Integration Guide](#8-frontend-integration-guide)
+- [7. AI Chatbot (Admin Only)](#7-ai-chatbot)
+- [8. Export Data](#8-export-data)
+- [9. Frontend Integration Guide](#9-frontend-integration-guide)
 
 ---
 
@@ -140,7 +141,25 @@ Daftar riwayat analisis user (Paginated).
 
 ---
 
-## 5. Frontend Integration Guide
+## 7. AI Chatbot (Admin Only)
+
+Endpoint untuk fitur asisten AI Gemini (Hanya untuk Role Admin).
+
+### POST `/api/admin/chatbot/sessions`
+Membuat sesi chat baru.
+**Response:** `{"id": "uuid", "title": "Chat Baru", ...}`
+
+### GET `/api/admin/chatbot/sessions`
+Daftar semua sesi chat milik admin tersebut.
+
+### POST `/api/admin/chatbot/sessions/{session_id}/messages`
+Kirim pesan ke AI.
+**Request Body:** `{"message": "Isi pesan Anda"}`
+**Response:** `{"user_message": {...}, "ai_message": {...}}`
+
+---
+
+## 8. Frontend Integration Guide
 
 ### A. Mengirim Data Multipart (Upload)
 Karena kita mengirim File + JSON secara bersamaan, gunakan `FormData`.
