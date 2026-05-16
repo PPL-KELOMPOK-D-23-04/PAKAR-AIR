@@ -31,7 +31,7 @@ SYSTEM_PROMPT = (
 )
 
 # Model name
-GEMINI_MODEL = "gemini-2.0-flash"
+GEMINI_MODEL = "gemini-2.5-flash"
 
 
 # ─── Gemini Client ───────────────────────────────────────────────
