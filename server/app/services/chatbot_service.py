@@ -9,7 +9,6 @@ from google.genai import types
 from sqlalchemy.orm import Session
 from uuid import UUID
 from typing import List, Optional
-import json
 
 from app.config import settings
 from app.models.models import ChatSession, ChatMessage
