@@ -83,7 +83,6 @@
       <table class="users-table">
         <thead>
           <tr>
-            <th>#</th>
             <th>Pengguna</th>
             <th>Username</th>
             <th>Role</th>
@@ -93,9 +92,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(user, index) in filteredUsers" :key="user.id" :class="{ 'row-inactive': !user.is_active }">
-            <!-- Nomor urut -->
-            <td><span style="color:#94a3b8; font-size:12px;">{{ index + 1 }}</span></td>
+          <tr v-for="user in filteredUsers" :key="user.id" :class="{ 'row-inactive': !user.is_active }">
             <!-- Avatar + Name -->
             <td>
               <div class="user-cell">
@@ -265,9 +262,7 @@ const activeCount = computed(() => users.value.filter(u => u.is_active).length)
 const inactiveCount = computed(() => users.value.filter(u => !u.is_active).length)
 
 const filteredUsers = computed(() => {
-  return [...users.value].sort((a, b) => 
-    new Date(a.created_at) - new Date(b.created_at)
-  ).filter(u => {
+  return users.value.filter(u => {
     const q = searchQuery.value.toLowerCase()
     const matchSearch =
       u.full_name.toLowerCase().includes(q) ||
