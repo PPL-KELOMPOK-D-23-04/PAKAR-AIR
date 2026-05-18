@@ -4,7 +4,7 @@ import { useAuthStore } from '@/stores/authStore'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import LandingPage from '@/views/public/LandingPage.vue'
 import AnalysisView from '@/views/dashboard/AnalysisView.vue'
-
+import AdminLayout from '@/layouts/AdminLayout.vue'
 import ProfileView from '@/views/dashboard/ProfileView.vue'
 import NotificationView from '@/views/dashboard/NotificationView.vue'
 
@@ -58,38 +58,32 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: '/dashboard/history/:id',
+    path: '/history/:id',
     name: 'history-detail',
     component: () => import('@/views/dashboard/HistoryDetailView.vue'),
     meta: { requiresAuth: true },
   },
-  // Edukasi & Artikel (Wrapped in DefaultLayout)
+  // Edukasi & Artikel
   {
-    path: '/edukasi-layout',
-    component: DefaultLayout,
-    children: [
-      {
-        path: '/education',
-        alias: ['/edukasi'],
-        name: 'education',
-        component: () => import('@/views/edukasi/EdukasiView.vue'),
-      },
-      {
-        path: '/artikel',
-        name: 'artikel1',
-        component: () => import('@/views/edukasi/HomeArtikel.vue'),
-      },
-      {
-        path: '/artikel2',
-        name: 'artikel2',
-        component: () => import('@/views/edukasi/HomeArtikel2.vue'),
-      },
-      {
-        path: '/artikel3',
-        name: 'artikel3',
-        component: () => import('@/views/edukasi/HomeArtikel3.vue'),
-      },
-    ],
+    path: '/education',
+    alias: ['/edukasi'],
+    name: 'education',
+    component: () => import('@/views/edukasi/EdukasiView.vue'),
+  },
+  {
+    path: '/artikel',
+    name: 'artikel1',
+    component: () => import('@/views/edukasi/HomeArtikel.vue'),
+  },
+  {
+    path: '/artikel2',
+    name: 'artikel2',
+    component: () => import('@/views/edukasi/HomeArtikel2.vue'),
+  },
+  {
+    path: '/artikel3',
+    name: 'artikel3',
+    component: () => import('@/views/edukasi/HomeArtikel3.vue'),
   },
   // Profile
 {
@@ -108,7 +102,7 @@ const routes = [
   // Admin Panel
   {
     path: '/admin',
-    component: () => import('@/layouts/DashboardLayout.vue'),
+    component: AdminLayout,
     meta: { requiresAuth: true, requiresAdmin: true },
     children: [
       {
