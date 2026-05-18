@@ -262,7 +262,7 @@ function resetFilter() {
 }
 
 function viewDetail(id) {
-  router.push(`/dashboard/history/${id}`)
+  router.push(`/history/${id}`)
 }
 
 function formatDate(dateStr) {
