@@ -55,6 +55,12 @@ const routes = [
     component: () => import('@/views/dashboard/HistoryView.vue'),
     meta: { requiresAuth: true },
   },
+  {
+    path: '/history/:id',
+    name: 'history-detail',
+    component: () => import('@/views/dashboard/HistoryDetailView.vue'),
+    meta: { requiresAuth: true },
+  },
   // Edukasi & Artikel
   {
     path: '/education',
