@@ -121,22 +121,37 @@ async def get_history(
         "total_pages": total_pages
     }
 
-@router.get("/export/csv")
+@router.get("/export/csv", summary="Export riwayat analisis ke CSV")
 async def export_history_csv(
-    category: str = Query(None, description="Filter: layak / tidak_layak"),
-    date: str = Query(None, description="Filter tanggal YYYY-MM-DD"),
+    category: str = Query(None, description="Filter hasil: layak / tidak_layak"),
+    date: str = Query(None, description="Filter tanggal format YYYY-MM-DD"),
     search: str = Query(None, description="Kata kunci sumber air"),
     current_user: Profile = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
+    """
+    KF-08: Export seluruh riwayat analisis user sebagai file CSV siap unduh.
+
+    - Mendukung filter kategori, tanggal, dan kata kunci sumber air.
+    - Kolom: No, Tanggal, Sumber Air, Warna Air, pH, Turb., Hasil, Confidence (%), Status.
+    - Nama file otomatis menyertakan username dan tanggal ekspor.
+    - Response header X-Total-Count berisi jumlah baris data yang diekspor.
+    """
     items, total, _ = analysis_service.get_user_history(
         current_user.id, page=1, per_page=10000, db=db,
-        category=category, date=date, search=search,
+        category=category,
+        date=date,
+        search=search,
     )
+
     output = io.StringIO()
-    fieldnames = ["No", "Tanggal", "Sumber Air", "Warna Air", "pH", "Hasil", "Confidence (%)", "Status"]
+    fieldnames = [
+        "No", "Tanggal", "Sumber Air", "Warna Air", "pH", "Turbidity",
+        "Hasil", "Confidence (%)", "Status"
+    ]
     writer = csv.DictWriter(output, fieldnames=fieldnames)
     writer.writeheader()
+
     for idx, a in enumerate(items, start=1):
         manual_data = a.manual_input.data_json if a.manual_input else {}
         category_val = a.result.category if a.result else "N/A"
@@ -147,16 +162,26 @@ async def export_history_csv(
             "Sumber Air": manual_data.get("water_source", "N/A"),
             "Warna Air": manual_data.get("water_color", "N/A"),
             "pH": manual_data.get("water_ph", "N/A"),
+            "Turbidity": manual_data.get("Turbidity", "N/A"),
             "Hasil": "Layak" if category_val == "layak" else ("Tidak Layak" if category_val == "tidak_layak" else "N/A"),
             "Confidence (%)": f"{confidence_val * 100:.1f}" if confidence_val is not None else "N/A",
             "Status": a.status.value if a.status else "N/A",
         })
+
     output.seek(0)
-    filename = f"riwayat_analisis_{current_user.username}.csv"
+
+    from datetime import date as dt_date
+    today = dt_date.today().strftime("%Y%m%d")
+    filename = f"riwayat_analisis_{current_user.username}_{today}.csv"
+
     return StreamingResponse(
         output,
         media_type="text/csv; charset=utf-8",
-        headers={"Content-Disposition": f"attachment; filename={filename}"},
+        headers={
+            "Content-Disposition": f"attachment; filename={filename}",
+            "X-Total-Count": str(total),
+            "Access-Control-Expose-Headers": "X-Total-Count",
+        },
     )
 
 
