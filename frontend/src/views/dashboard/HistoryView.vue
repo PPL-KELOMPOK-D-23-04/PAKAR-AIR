@@ -115,13 +115,19 @@
           v-for="(item, index) in history"
           :key="item.id"
           class="history-card"
+          :class="item.category === 'layak' ? 'history-card--layak' : 'history-card--tidak'"
           @click="viewDetail(item.id)"
         >
+          <!-- Nomor urut -->
+          <div class="history-card__number">
+            {{ totalItems - (currentPage - 1) * 10 - index }}
+          </div>
+
           <!-- Image -->
           <div class="history-card__image">
             <img v-if="item.image_path" :src="item.image_path" alt="Sampel air" />
             <div v-else class="no-image">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
             </div>
@@ -130,28 +136,43 @@
           <!-- Info -->
           <div class="history-card__info">
             <div class="history-card__top">
-              <span class="history-card__date">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                {{ formatDate(item.created_at) }}
-              </span>
+              <h3 class="history-card__title">
+                {{ item.water_source || `Analisis #${totalItems - (currentPage - 1) * 10 - index}` }}
+              </h3>
               <span class="status-badge" :class="'status--' + item.category">
                 {{ item.category === 'layak' ? '✅ Layak' : '❌ Tidak Layak' }}
               </span>
             </div>
-            <!-- Fallback label is frontend-only; number is assigned oldest→newest (#1 = oldest).
-            Search cannot match these generated labels — only real water_source values are searchable. -->
-            <h3 class="history-card__title">{{ item.water_source || `Analisis #${totalItems - (currentPage - 1) * 10 - index}` }}</h3>
+
+            <!-- Meta info -->
             <div class="history-card__meta">
-              <span v-if="item.water_color">🎨 {{ item.water_color }}</span>
-              <span v-if="item.ph">pH {{ item.ph }}</span>
+              <span class="meta-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                {{ formatDate(item.created_at) }}
+              </span>
+              <span v-if="item.water_color" class="meta-item">🎨 {{ item.water_color }}</span>
+              <span v-if="item.ph" class="meta-item">⚗️ pH {{ item.ph }}</span>
+            </div>
+
+            <!-- Confidence bar -->
+            <div v-if="item.confidence != null" class="confidence-row">
+              <span class="confidence-label">Kepercayaan model</span>
+              <div class="confidence-track">
+                <div
+                  class="confidence-fill"
+                  :class="item.category === 'layak' ? 'confidence-fill--layak' : 'confidence-fill--tidak'"
+                  :style="{ width: (item.confidence * 100).toFixed(0) + '%' }"
+                ></div>
+              </div>
+              <span class="confidence-value">{{ (item.confidence * 100).toFixed(0) }}%</span>
             </div>
           </div>
 
           <!-- Arrow -->
           <div class="history-card__action">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
           </div>
@@ -381,19 +402,32 @@ onMounted(fetchHistory)
 
 .history-card {
   display: flex; align-items: center;
-  background: #fff; border: 1.5px solid #e2e8f0;
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-left: 4px solid #e2e8f0;
   border-radius: 14px; padding: 14px 16px;
-  gap: 16px; cursor: pointer;
+  gap: 14px; cursor: pointer;
   transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
 }
 .history-card:hover {
-  border-color: #93c5fd;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(59,130,246,0.08);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+}
+.history-card--layak { border-left-color: #22c55e; }
+.history-card--layak:hover { border-color: #86efac; border-left-color: #22c55e; }
+.history-card--tidak { border-left-color: #ef4444; }
+.history-card--tidak:hover { border-color: #fca5a5; border-left-color: #ef4444; }
+
+/* Nomor urut */
+.history-card__number {
+  width: 28px; height: 28px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: #f1f5f9; border-radius: 50%;
+  font-size: 11px; font-weight: 700; color: #94a3b8;
 }
 
 .history-card__image {
-  width: 76px; height: 76px;
+  width: 68px; height: 68px;
   border-radius: 10px; overflow: hidden;
   background: #f1f5f9; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
@@ -403,28 +437,46 @@ onMounted(fetchHistory)
 
 .history-card__info { flex: 1; min-width: 0; }
 .history-card__top {
-  display: flex; align-items: center;
-  justify-content: space-between; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;
+  display: flex; align-items: flex-start;
+  justify-content: space-between; margin-bottom: 5px; flex-wrap: wrap; gap: 6px;
 }
-.history-card__date {
-  display: flex; align-items: center; gap: 4px;
-  font-size: 12px; color: #94a3b8;
+.history-card__title {
+  font-size: 14px; font-weight: 700; color: #1a202c;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 240px;
 }
 .status-badge {
   font-size: 11px; font-weight: 700;
-  padding: 3px 10px; border-radius: 20px;
+  padding: 3px 10px; border-radius: 20px; white-space: nowrap;
 }
 .status--layak { background: #dcfce7; color: #16a34a; }
 .status--tidak_layak { background: #fee2e2; color: #dc2626; }
 
-.history-card__title { font-size: 15px; font-weight: 600; color: #1a202c; margin-bottom: 4px; }
 .history-card__meta {
-  display: flex; gap: 12px;
-  font-size: 12px; color: #94a3b8;
+  display: flex; flex-wrap: wrap; gap: 8px;
+  font-size: 11px; color: #94a3b8; margin-bottom: 8px;
 }
+.meta-item { display: flex; align-items: center; gap: 3px; }
+
+/* Confidence bar */
+.confidence-row {
+  display: flex; align-items: center; gap: 8px;
+}
+.confidence-label { font-size: 10px; color: #94a3b8; white-space: nowrap; }
+.confidence-track {
+  flex: 1; height: 5px; background: #f1f5f9;
+  border-radius: 99px; overflow: hidden;
+}
+.confidence-fill {
+  height: 100%; border-radius: 99px;
+  transition: width 0.4s ease;
+}
+.confidence-fill--layak { background: linear-gradient(90deg, #86efac, #22c55e); }
+.confidence-fill--tidak { background: linear-gradient(90deg, #fca5a5, #ef4444); }
+.confidence-value { font-size: 11px; font-weight: 700; color: #475569; white-space: nowrap; }
 
 .history-card__action { color: #cbd5e1; flex-shrink: 0; }
-.history-card:hover .history-card__action { color: #93c5fd; }
+.history-card:hover .history-card__action { color: #94a3b8; }
 
 /* ── Pagination ── */
 .pagination {
