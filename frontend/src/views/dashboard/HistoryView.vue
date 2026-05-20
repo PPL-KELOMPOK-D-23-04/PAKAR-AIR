@@ -8,10 +8,26 @@
           <h1 class="page-header__title">Riwayat Analisis</h1>
           <p class="page-header__desc">Daftar hasil analisis kualitas air yang telah Anda lakukan sebelumnya.</p>
         </div>
-        <div class="page-header__badge" v-if="!loading && !error">
+        <div class="page-header__right" v-if="!loading && !error">
           <span class="total-badge">{{ totalItems }} Analisis</span>
+          <button class="btn-export" @click="showExportModal = true" :disabled="totalItems === 0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Ekspor
+          </button>
         </div>
       </div>
+
+      <!-- Export Modal -->
+      <ExportModal
+        v-if="showExportModal"
+        :total-items="totalItems"
+        :active-filters="{ search: searchQuery, category: filterCategory, date: filterDate }"
+        @close="showExportModal = false"
+      />
 
       <!-- Filter Bar -->
       <div class="filter-bar">
@@ -175,6 +191,7 @@
 import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
+import ExportModal from '@/components/analysis/ExportModal.vue'
 import { getAnalysisHistory } from '@/api/analysis'
 
 const router = useRouter()
@@ -184,6 +201,7 @@ const error = ref(null)
 const currentPage = ref(1)
 const totalPages = ref(1)
 const totalItems = ref(0)
+const showExportModal = ref(false)
 
 // Filter state
 const searchQuery = ref('')
@@ -258,6 +276,22 @@ onMounted(fetchHistory)
 }
 .page-header__title { font-size: 22px; font-weight: 700; color: #1a202c; margin-bottom: 4px; }
 .page-header__desc { font-size: 14px; color: #64748b; }
+.page-header__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-export {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px;
+  font-size: 13px; font-weight: 600;
+  border-radius: 8px; cursor: pointer;
+  background: #fff; color: #3b82f6;
+  border: 1.5px solid #93c5fd;
+  transition: background 0.15s, border-color 0.15s;
+}
+.btn-export:hover:not(:disabled) { background: #eff6ff; border-color: #3b82f6; }
+.btn-export:disabled { opacity: 0.4; cursor: not-allowed; }
 .total-badge {
   background: #eff6ff; color: #3b82f6;
   font-size: 12px; font-weight: 700;
