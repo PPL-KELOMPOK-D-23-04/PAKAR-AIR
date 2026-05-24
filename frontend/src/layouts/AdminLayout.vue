@@ -134,11 +134,11 @@ const isMobile = ref(window.innerWidth < 640)
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
 
-const token = computed(() => localStorage.getItem('token'))
+const token = computed(() => sessionStorage.getItem('token'))
 
 const userName = computed(() => {
   try {
-    const user = JSON.parse(localStorage.getItem('pakar_air_user') || '{}')
+    const user = JSON.parse(sessionStorage.getItem('pakar_air_user') || '{}')
     return user.full_name || user.username || user.email || 'Admin'
   } catch {
     return 'Admin'
@@ -170,10 +170,10 @@ async function handleLogout() {
   } catch {
     // Tetap logout meski gagal
   } finally {
-    localStorage.removeItem('token')
-    localStorage.removeItem('pakar_air_token')
-    localStorage.removeItem('pakar_air_refresh_token')
-    localStorage.removeItem('pakar_air_user')
+    sessionStorage.removeItem('token')
+    sessionStorage.removeItem('pakar_air_token')
+    sessionStorage.removeItem('pakar_air_refresh_token')
+    sessionStorage.removeItem('pakar_air_user')
     delete axios.defaults.headers.common['Authorization']
     isLoggingOut.value = false
     router.push('/login')

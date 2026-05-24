@@ -180,7 +180,7 @@ const chatInput = ref(null)
 
 const userInitial = computed(() => {
   try {
-    const user = JSON.parse(localStorage.getItem('pakar_air_user') || '{}')
+    const user = JSON.parse(sessionStorage.getItem('pakar_air_user') || '{}')
     const name = user.full_name || user.username || 'A'
     return name.charAt(0).toUpperCase()
   } catch {
