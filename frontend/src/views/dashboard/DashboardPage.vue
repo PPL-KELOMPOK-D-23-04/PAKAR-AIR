@@ -79,6 +79,25 @@ import {
   BeakerIcon,
   CheckCircleIcon
 } from 'lucide-vue-next'
+<<<<<<< HEAD
+=======
+import { useAuthStore } from '@/stores/authStore'
+
+const router = useRouter()
+const authStore = useAuthStore()
+const sidebarCollapsed = ref(false)
+const showLogoutModal = ref(false)
+
+const userDisplayName = computed(() => {
+  try {
+    const stored = JSON.parse(sessionStorage.getItem('pakar_air_user') || '{}')
+    return stored?.full_name || stored?.email?.split('@')[0] || authStore.currentUser?.full_name || 'Pengguna'
+  } catch {
+    return authStore.currentUser?.full_name || 'Pengguna'
+  }
+})
+const userInitial = computed(() => userDisplayName.value.charAt(0).toUpperCase())
+>>>>>>> origin/main
 
 const stats = ref([
   {

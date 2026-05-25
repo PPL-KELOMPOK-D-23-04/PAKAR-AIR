@@ -114,6 +114,11 @@ const routes = [
         name: 'admin-reports',
         component: () => import('@/views/admin/AdminReports.vue'),
       },
+      {
+        path: 'chatbot',
+        name: 'admin-chatbot',
+        component: () => import('@/views/admin/AdminChatbot.vue'),
+      },
     ],
   },
 ]

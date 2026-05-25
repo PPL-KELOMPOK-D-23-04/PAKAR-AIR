@@ -1,5 +1,8 @@
 import json
-from fastapi import APIRouter, Depends, UploadFile, File, Form
+import csv
+import io
+from fastapi import APIRouter, Depends, UploadFile, File, Form, Query
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 from uuid import UUID
 from supabase import Client
@@ -105,9 +108,8 @@ async def get_history(
             "category": a.result.category if a.result else None,
             "confidence": a.result.confidence if a.result else None,
             "image_path": a.image_input.image_path if a.image_input else None,
-            "water_source": manual_data.get("water_source"),
-            "water_color": manual_data.get("water_color"),
-            "ph": manual_data.get("water_ph"),
+            "ph": manual_data.get("ph"),
+            "Turbidity": manual_data.get("Turbidity"),
         })
 
     return {
@@ -118,6 +120,109 @@ async def get_history(
         "total_pages": total_pages
     }
 
+@router.get("/export/csv", summary="Export riwayat analisis ke CSV")
+async def export_history_csv(
+    category: str = Query(None, description="Filter hasil: layak / tidak_layak"),
+    date: str = Query(None, description="Filter tanggal format YYYY-MM-DD"),
+    search: str = Query(None, description="Kata kunci sumber air"),
+    current_user: Profile = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    KF-08: Export seluruh riwayat analisis user sebagai file CSV siap unduh.
+
+    - Mendukung filter kategori, tanggal, dan kata kunci sumber air.
+    - Kolom: No, Tanggal, Sumber Air, Warna Air, pH, Turb., Hasil, Confidence (%), Status.
+    - Nama file otomatis menyertakan username dan tanggal ekspor.
+    - Response header X-Total-Count berisi jumlah baris data yang diekspor.
+    """
+    items, total, _ = analysis_service.get_user_history(
+        current_user.id, page=1, per_page=10000, db=db,
+        category=category,
+        date=date,
+        search=search,
+    )
+
+    output = io.StringIO()
+    fieldnames = [
+        "No", "Tanggal", "Sumber Air", "Warna Air", "pH", "Turbidity",
+        "Hasil", "Confidence (%)", "Status"
+    ]
+    writer = csv.DictWriter(output, fieldnames=fieldnames)
+    writer.writeheader()
+
+    for idx, a in enumerate(items, start=1):
+        manual_data = a.manual_input.data_json if a.manual_input else {}
+        category_val = a.result.category if a.result else "N/A"
+        confidence_val = a.result.confidence if a.result else None
+        writer.writerow({
+            "No": idx,
+            "Tanggal": a.created_at.strftime("%d/%m/%Y %H:%M") if a.created_at else "",
+            "Sumber Air": manual_data.get("water_source", "N/A"),
+            "Warna Air": manual_data.get("water_color", "N/A"),
+            "pH": manual_data.get("water_ph", "N/A"),
+            "Turbidity": manual_data.get("Turbidity", "N/A"),
+            "Hasil": "Layak" if category_val == "layak" else ("Tidak Layak" if category_val == "tidak_layak" else "N/A"),
+            "Confidence (%)": f"{confidence_val * 100:.1f}" if confidence_val is not None else "N/A",
+            "Status": a.status.value if a.status else "N/A",
+        })
+
+    output.seek(0)
+
+    from datetime import date as dt_date
+    today = dt_date.today().strftime("%Y%m%d")
+    filename = f"riwayat_analisis_{current_user.username}_{today}.csv"
+
+    return StreamingResponse(
+        output,
+        media_type="text/csv; charset=utf-8",
+        headers={
+            "Content-Disposition": f"attachment; filename={filename}",
+            "X-Total-Count": str(total),
+            "Access-Control-Expose-Headers": "X-Total-Count",
+        },
+    )
+
+
+@router.get("/export/{analysis_id}/detail")
+async def export_single_analysis(
+    analysis_id: UUID,
+    current_user: Profile = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    analysis = analysis_service.get_analysis_detail(
+        analysis_id, current_user.id, db
+    )
+    manual = analysis.manual_input.data_json if analysis.manual_input else {}
+    result = analysis.result
+    return {
+        "id": str(analysis.id),
+        "created_at": analysis.created_at.isoformat() if analysis.created_at else None,
+        "user": {
+            "full_name": analysis.owner.full_name if analysis.owner else current_user.full_name,
+            "username": analysis.owner.username if analysis.owner else current_user.username,
+        },
+        "manual_input": {
+            "water_source": manual.get("water_source", "N/A"),
+            "water_color": manual.get("water_color", "N/A"),
+            "water_smell": manual.get("water_smell", "N/A"),
+            "water_ph": manual.get("water_ph", "N/A"),
+            "water_temperature": manual.get("water_temperature", "N/A"),
+            "environment_condition": manual.get("environment_condition", "N/A"),
+            "additional_notes": manual.get("additional_notes", ""),
+        },
+        "result": {
+            "category": result.category if result else None,
+            "confidence": result.confidence if result else None,
+            "dl_category": result.dl_category if result else None,
+            "dl_confidence": result.dl_confidence if result else None,
+            "ml_category": result.ml_category if result else None,
+            "ml_confidence": result.ml_confidence if result else None,
+            "explanation": result.explanation if result else None,
+            "recommendation": result.recommendation if result else None,
+        } if result else None,
+        "image_path": analysis.image_input.image_path if analysis.image_input else None,
+    }
 
 @router.get("/{analysis_id}")
 async def get_analysis(

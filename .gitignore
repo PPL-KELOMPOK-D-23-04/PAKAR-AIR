@@ -7,3 +7,20 @@ __pycache__/
 *.pkl
 *.pt
 server/venv/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+
+# Env
+.env
+.env.local
+
+# Build
+dist/
+build/

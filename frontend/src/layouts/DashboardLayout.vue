@@ -132,24 +132,24 @@ import axios from 'axios'
 const router = useRouter()
 
 async function handleLogout() {
-  const token = localStorage.getItem('pakar_air_token') || localStorage.getItem('token')
+  const token = sessionStorage.getItem('pakar_air_token') || sessionStorage.getItem('token')
   try {
     const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
     await axios.post(`${API_BASE}/api/auth/logout`, {}, {
       headers: { Authorization: `Bearer ${token}` }
     })
   } catch { }
-  localStorage.removeItem('token')
-  localStorage.removeItem('pakar_air_token')
-  localStorage.removeItem('pakar_air_refresh_token')
-  localStorage.removeItem('pakar_air_user')
+  sessionStorage.removeItem('token')
+  sessionStorage.removeItem('pakar_air_token')
+  sessionStorage.removeItem('pakar_air_refresh_token')
+  sessionStorage.removeItem('pakar_air_user')
   delete axios.defaults.headers.common['Authorization']
   router.push('/login')
 }
 
 const user = computed(() => {
   try {
-    return JSON.parse(localStorage.getItem('pakar_air_user') || '{}')
+    return JSON.parse(sessionStorage.getItem('pakar_air_user') || '{}')
   } catch {
     return {}
   }

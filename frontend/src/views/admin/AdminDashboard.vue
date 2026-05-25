@@ -92,7 +92,7 @@ const isLoading = ref(false)
 const errorMsg = ref('')
 
 function getToken() {
-  return localStorage.getItem('token') || localStorage.getItem('pakar_air_token') || ''
+  return sessionStorage.getItem('token') || sessionStorage.getItem('pakar_air_token') || ''
 }
 
 const statCards = computed(() => {
@@ -149,7 +149,7 @@ const statCards = computed(() => {
 async function fetchStats() {
   isLoading.value = true
   try {
-    const token = localStorage.getItem('pakar_air_token') || localStorage.getItem('token')
+    const token = sessionStorage.getItem('pakar_air_token') || sessionStorage.getItem('token')
     const res = await axios.get(`${API_BASE}/api/admin/dashboard/stats`, {
       headers: { Authorization: `Bearer ${token}` }
     })
@@ -157,7 +157,7 @@ async function fetchStats() {
   } catch (err) {
     // Kalau endpoint stats gagal, coba hitung manual dari list user
     try {
-      const token = localStorage.getItem('pakar_air_token') || localStorage.getItem('token')
+      const token = sessionStorage.getItem('pakar_air_token') || sessionStorage.getItem('token')
       const usersRes = await axios.get(`${API_BASE}/api/admin/users`, {
         headers: { Authorization: `Bearer ${token}` }
       })
