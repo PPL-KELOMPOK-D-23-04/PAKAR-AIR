@@ -1,134 +1,221 @@
 <template>
   <div class="profile-page">
+
     <div class="profile-card">
-      <h1>Profil Saya</h1>
 
-      <div class="profile-form">
-        <label>Nama</label>
-        <input type="text" placeholder="Masukkan nama" />
+      <h1 class="title">Profil Saya</h1>
 
-        <label>Username</label>
-        <input type="text" placeholder="Masukkan username" />
+      <!-- FOTO PROFILE -->
+      <div class="photo-section">
 
-        <label>Password Baru</label>
-        <input type="password" placeholder="Masukkan password baru" />
+        <img
+          :src="previewImage || form.foto"
+          class="profile-image"
+        />
 
-        <button>Simpan</button>
+        <input
+          type="file"
+          accept="image/png,image/jpeg,image/jpg"
+          @change="handleImageUpload"
+        />
+
       </div>
+
+      <!-- FORM PROFILE -->
+      <div class="form-section">
+
+        <div class="form-group">
+          <label>Nama Lengkap</label>
+
+          <input
+            type="text"
+            v-model="form.nama"
+            placeholder="Masukkan nama"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Username</label>
+
+          <input
+            type="text"
+            v-model="form.username"
+            placeholder="Masukkan username"
+          />
+        </div>
+
+        <button
+          class="save-btn"
+          @click="updateProfile"
+        >
+          Simpan Perubahan
+        </button>
+
+      </div>
+
+      <!-- NOTIFIKASI -->
+      <div
+        v-if="message"
+        class="message"
+      >
+        {{ message }}
+      </div>
+
     </div>
+
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useAuthStore } from '@/stores/authStore'
+import { ref } from 'vue'
 
-const authStore = useAuthStore()
+const previewImage = ref(null)
 
-// ========== STATE ==========
-const loading = ref(false)
 const message = ref('')
-const messageType = ref('success')
-const previewFoto = ref(null)
-const fotoProfil = ref(null)
-const defaultAvatar = 'https://ui-avatars.com/api/?background=0D8ABC&color=fff&bold=true&size=120'
 
-const formData = ref({
-  nama: '',
-  username: '',
-  email: ''
+const form = ref({
+  nama: 'Pricenza',
+  username: 'alexie',
+  foto: 'https://ui-avatars.com/api/?name=User'
 })
 
-const joinDate = ref('22 April 2026')
 
-// ========== LOAD DATA SAAT HALAMAN DIBUKA ==========
-onMounted(() => {
-  if (!authStore.isLoggedIn) {
-    router.push('/login')
-    return
-  }
-  loadUserData()
-})
+// UPLOAD FOTO
+const handleImageUpload = (event) => {
 
-// ========== AMBIL DATA USER ==========
-const loadUserData = () => {
-  const user = authStore.currentUser
-  if (user) {
-    formData.value = {
-      nama: user.full_name || user.nama || user.name || '',
-      username: user.username || '',
-      email: user.email || ''
-    }
-    fotoProfil.value = user.foto_profil || null
-  }
-}
-
-// ========== UPDATE FOTO + VALIDASI ==========
-const handleUploadFoto = (event) => {
   const file = event.target.files[0]
+
   if (!file) return
-  
-  const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg']
+
+  // VALIDASI TYPE
+  const allowedTypes = [
+    'image/png',
+    'image/jpeg',
+    'image/jpg'
+  ]
+
   if (!allowedTypes.includes(file.type)) {
-    showNotification('❌ Format file harus JPG, JPEG, atau PNG', 'error')
+    message.value = 'Format gambar harus PNG/JPG/JPEG'
     return
   }
-  
+
+  // VALIDASI SIZE
   if (file.size > 2 * 1024 * 1024) {
-    showNotification('❌ Ukuran file maksimal 2MB', 'error')
+    message.value = 'Ukuran gambar maksimal 2MB'
     return
   }
-  
+
   const reader = new FileReader()
+
   reader.onload = (e) => {
-    previewFoto.value = e.target.result
+    previewImage.value = e.target.result
   }
+
   reader.readAsDataURL(file)
-  
-  uploadFotoKeServer(file)
+
+  message.value = 'Foto berhasil dipilih'
 }
 
-const uploadFotoKeServer = async (file) => {
-  loading.value = true
-  // Simulasi upload (ganti dengan API real saat backend siap)
-  setTimeout(() => {
-    fotoProfil.value = previewFoto.value
-    showNotification('✅ Foto profil berhasil diupdate!', 'success')
-    loading.value = false
-  }, 500)
-}
 
-// ========== UPDATE PROFIL + VALIDASI ==========
-const updateProfil = async () => {
-  if (!formData.value.nama || formData.value.nama.trim().length < 3) {
-    showNotification('❌ Nama harus diisi minimal 3 karakter', 'error')
-    return
-  }
-  
-  if (!formData.value.username || formData.value.username.trim().length < 3) {
-    showNotification('❌ Username harus diisi minimal 3 karakter', 'error')
-    return
-  }
-  
-  const usernameRegex = /^[a-zA-Z0-9_]+$/
-  if (!usernameRegex.test(formData.value.username)) {
-    showNotification('❌ Username hanya boleh huruf, angka, dan underscore (_)', 'error')
-    return
-  }
-  
-  loading.value = true
-  // Simulasi simpan (ganti dengan API real saat backend siap)
-  setTimeout(() => {
-    showNotification('✅ Profil berhasil diperbarui!', 'success')
-    loading.value = false
-  }, 500)
-}
+// UPDATE PROFILE
+const updateProfile = async () => {
 
-const showNotification = (msg, type) => {
-  message.value = msg
-  messageType.value = type
-  setTimeout(() => { message.value = '' }, 3000)
+  // VALIDASI NAMA
+  if (form.value.nama.length < 3) {
+    message.value = 'Nama minimal 3 karakter'
+    return
+  }
+
+  // VALIDASI USERNAME
+  if (form.value.username.length < 3) {
+    message.value = 'Username minimal 3 karakter'
+    return
+  }
+
+  // REGEX USERNAME
+  const regex = /^[a-zA-Z0-9_]+$/
+
+  if (!regex.test(form.value.username)) {
+    message.value =
+      'Username hanya boleh huruf, angka, underscore'
+    return
+  }
+
+  try {
+
+    // SIMULASI API
+    console.log('DATA PROFILE:', form.value)
+
+    message.value = 'Profile berhasil diperbarui'
+
+  } catch (error) {
+
+    message.value = 'Terjadi kesalahan'
+
+  }
 }
 </script>
 
-<style scoped src="@/assets/styles/pages/profile.css"></style>
+<style scoped>
+
+.profile-page {
+  padding: 24px;
+}
+
+.profile-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.title {
+  margin-bottom: 24px;
+}
+
+.photo-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group input {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.save-btn {
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #0ea5e9;
+  color: white;
+  cursor: pointer;
+}
+
+.message {
+  margin-top: 20px;
+  color: green;
+}
+
+</style>
