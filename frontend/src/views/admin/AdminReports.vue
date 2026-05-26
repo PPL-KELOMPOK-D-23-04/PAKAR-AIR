@@ -103,7 +103,7 @@ const filters = ref({
 })
 
 function getToken() {
-  return localStorage.getItem('token') || localStorage.getItem('pakar_air_token') || ''
+  return sessionStorage.getItem('token') || sessionStorage.getItem('pakar_air_token') || ''
 }
 
 function authHeaders() {

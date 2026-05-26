@@ -38,6 +38,7 @@ Arsitektur berikut hanyalah gambaran besar, bisa berubah kapan saja sesuai kebut
 | KF-12 | Laporan Analisis (Admin) | Filter & export data (CSV/PDF) |
 | KF-13 | Notifikasi | Pemberitahuan hasil analisis |
 | KF-14 | Edukasi Kualitas Air | Artikel & panduan kualitas air |
+| KF-15 | AI Chatbot (Admin) | Asisten AI (Gemini) untuk monitoring & analisis data real-time |
 
 ---
 
@@ -49,6 +50,7 @@ Arsitektur berikut hanyalah gambaran besar, bisa berubah kapan saja sesuai kebut
 | **Backend** | FastAPI (Python), python-jose (JWT), SQLAlchemy, Pydantic |
 | **Deep Learning** | YOLOv8 (Ultralytics) — deteksi objek pada citra air |
 | **Machine Learning** | Random Forest (scikit-learn) — klasifikasi data manual |
+| **AI Chatbot** | Google Gemini 2.0/2.5 Flash — asisten monitoring berbasis data |
 | **Database** | Supabase (PostgreSQL) |
 | **File Storage** | Supabase Storage (gambar upload) |
 | **Deployment** | Docker + Nginx + Uvicorn |
@@ -464,6 +466,11 @@ education_articles (standalone)
 | GET | `/api/admin/analysis/stats` | Statistik analisis | ✅ Admin |
 | GET | `/api/admin/reports` | Data laporan (filterable) | ✅ Admin |
 | GET | `/api/admin/reports/export` | Export CSV/PDF | ✅ Admin |
+| POST | `/api/admin/chatbot/sessions` | Buat sesi chat baru | ✅ Admin |
+| GET | `/api/admin/chatbot/sessions` | Daftar semua sesi chat | ✅ Admin |
+| DELETE | `/api/admin/chatbot/sessions/:id` | Hapus sesi chat | ✅ Admin |
+| POST | `/api/admin/chatbot/sessions/:id/messages` | Kirim pesan ke AI Chatbot | ✅ Admin |
+| GET | `/api/admin/chatbot/sessions/:id/messages` | Ambil riwayat pesan sesi | ✅ Admin |
 
 ---
 
@@ -482,6 +489,7 @@ education_articles (standalone)
 | `/admin` | Admin Dashboard | Admin only | Admin | KF-09, KF-11 |
 | `/admin/users` | Kelola User | Admin only | Admin | KF-10 |
 | `/admin/reports` | Laporan | Admin only | Admin | KF-12 |
+| `/admin/chatbot` | AI Chatbot | Admin only | Admin | KF-15 |
 
 ### Layout System
 
@@ -521,7 +529,16 @@ python -m venv venv
 venv\Scripts\activate          # Windows
 # source venv/bin/activate     # Linux/Mac
 pip install -r requirements.txt
-python run.py                  # → http://localhost:5000
+python run.py                  # → http://localhost:8000
+```
+
+### 5. Setup Environment (.env)
+Pastikan file `.env` di folder `server` sudah berisi:
+```env
+DATABASE_URL=your_supabase_db_url
+SUPABASE_URL=your_supabase_url
+SUPABASE_KEY=your_supabase_key
+GEMINI_API_KEY=your_google_gemini_api_key
 ```
 
 ### 4. Tambahkan Model Files

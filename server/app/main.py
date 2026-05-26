@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import os
 
-from app.api import auth, users, analysis, notifications, admin
+from app.api import auth, users, analysis, notifications, admin, chatbot
 
 app = FastAPI(
     title="PAKAR-AIR API",
@@ -46,3 +46,4 @@ app.include_router(users.router,         prefix="/api/users",         tags=["Use
 app.include_router(analysis.router,      prefix="/api/analysis",      tags=["Analysis"])
 app.include_router(notifications.router, prefix="/api/notifications", tags=["Notifications"])
 app.include_router(admin.router,         prefix="/api/admin",         tags=["Admin"])
+app.include_router(chatbot.router,       prefix="/api/admin/chatbot", tags=["Chatbot"])

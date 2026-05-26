@@ -5,9 +5,9 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    user: JSON.parse(localStorage.getItem('pakar_air_user') || 'null'),
-    token: localStorage.getItem('pakar_air_token') || localStorage.getItem('token') || null,
-    refreshToken: localStorage.getItem('pakar_air_refresh_token') || null,
+    user: JSON.parse(sessionStorage.getItem('pakar_air_user') || 'null'),
+    token: sessionStorage.getItem('pakar_air_token') || sessionStorage.getItem('token') || null,
+    refreshToken: sessionStorage.getItem('pakar_air_refresh_token') || null,
     isLoading: false,
     error: null,
   }),
@@ -28,21 +28,21 @@ export const useAuthStore = defineStore('auth', {
           password,
         })
 
-        const { access_token, refresh_token, user } = response.data
+        const { access_token, refresh_token, user_id, email: user_email, full_name, is_admin } = response.data
 
         this.token = access_token
         this.refreshToken = refresh_token
         this.user = {
           id: user_id,
-          email,
-          full_name: full_name || email,
+          email: user_email || email,
+          full_name: full_name || user_email || email,
           is_admin: is_admin || false,
         }
 
-        localStorage.setItem('token', access_token)
-        localStorage.setItem('pakar_air_token', access_token)
-        localStorage.setItem('pakar_air_refresh_token', refresh_token)
-        localStorage.setItem('pakar_air_user', JSON.stringify(this.user))
+        sessionStorage.setItem('token', access_token)
+        sessionStorage.setItem('pakar_air_token', access_token)
+        sessionStorage.setItem('pakar_air_refresh_token', refresh_token)
+        sessionStorage.setItem('pakar_air_user', JSON.stringify(this.user))
 
         // Set default auth header for future requests
         axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`
@@ -83,10 +83,10 @@ export const useAuthStore = defineStore('auth', {
       this.token = null
       this.refreshToken = null
       this.error = null
-      localStorage.removeItem('token')
-      localStorage.removeItem('pakar_air_token')
-      localStorage.removeItem('pakar_air_refresh_token')
-      localStorage.removeItem('pakar_air_user')
+      sessionStorage.removeItem('token')
+      sessionStorage.removeItem('pakar_air_token')
+      sessionStorage.removeItem('pakar_air_refresh_token')
+      sessionStorage.removeItem('pakar_air_user')
       delete axios.defaults.headers.common['Authorization']
     },
 

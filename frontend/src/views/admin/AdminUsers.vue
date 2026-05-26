@@ -83,6 +83,7 @@
       <table class="users-table">
         <thead>
           <tr>
+            <th>#</th>
             <th>Pengguna</th>
             <th>Username</th>
             <th>Role</th>
@@ -92,7 +93,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in filteredUsers" :key="user.id" :class="{ 'row-inactive': !user.is_active }">
+          <tr v-for="(user, index) in filteredUsers" :key="user.id" :class="{ 'row-inactive': !user.is_active }">
+            <!-- Nomor urut -->
+            <td><span style="color:#94a3b8; font-size:12px;">{{ index + 1 }}</span></td>
             <!-- Avatar + Name -->
             <td>
               <div class="user-cell">
@@ -262,7 +265,9 @@ const activeCount = computed(() => users.value.filter(u => u.is_active).length)
 const inactiveCount = computed(() => users.value.filter(u => !u.is_active).length)
 
 const filteredUsers = computed(() => {
-  return users.value.filter(u => {
+  return [...users.value].sort((a, b) => 
+    new Date(a.created_at) - new Date(b.created_at)
+  ).filter(u => {
     const q = searchQuery.value.toLowerCase()
     const matchSearch =
       u.full_name.toLowerCase().includes(q) ||
@@ -277,7 +282,7 @@ const filteredUsers = computed(() => {
 
 // ── Helpers ────────────────────────────────────────────────────
 function getToken() {
-  return localStorage.getItem('token') || localStorage.getItem('pakar_air_token') || ''
+  return sessionStorage.getItem('token') || sessionStorage.getItem('pakar_air_token') || ''
 }
 
 function authHeaders() {

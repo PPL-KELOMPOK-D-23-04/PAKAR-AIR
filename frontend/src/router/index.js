@@ -105,6 +105,11 @@ const routes = [
         name: 'admin-reports',
         component: () => import('@/views/admin/AdminReports.vue'),
       },
+      {
+        path: 'chatbot',
+        name: 'admin-chatbot',
+        component: () => import('@/views/admin/AdminChatbot.vue'),
+      },
     ],
   },
 ]
@@ -116,12 +121,12 @@ const router = createRouter({
 
 // Navigation Guard
 router.beforeEach((to) => {
-  const token = localStorage.getItem('token') || localStorage.getItem('pakar_air_token')
+  const token = sessionStorage.getItem('token') || sessionStorage.getItem('pakar_air_token')
   const isLoggedIn = !!token
 
   let isAdmin = false
   try {
-    const user = JSON.parse(localStorage.getItem('pakar_air_user') || '{}')
+    const user = JSON.parse(sessionStorage.getItem('pakar_air_user') || '{}')
     isAdmin = !!user.is_admin
   } catch {
     isAdmin = false

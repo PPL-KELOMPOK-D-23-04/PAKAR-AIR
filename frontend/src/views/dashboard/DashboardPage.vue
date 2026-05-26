@@ -154,9 +154,8 @@ const sidebarCollapsed = ref(false)
 const showLogoutModal = ref(false)
 
 const userDisplayName = computed(() => {
-  // Baca langsung dari localStorage karena authStore mungkin belum sync
   try {
-    const stored = JSON.parse(localStorage.getItem('pakar_air_user') || '{}')
+    const stored = JSON.parse(sessionStorage.getItem('pakar_air_user') || '{}')
     return stored?.full_name || stored?.email?.split('@')[0] || authStore.currentUser?.full_name || 'Pengguna'
   } catch {
     return authStore.currentUser?.full_name || 'Pengguna'

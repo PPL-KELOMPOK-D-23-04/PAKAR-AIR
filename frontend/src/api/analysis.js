@@ -44,6 +44,34 @@ export async function getAnalysisResult(analysisId) {
 }
 
 /**
+ * Export riwayat analisis user sebagai file CSV.
+ */
+export async function exportHistoryCSV(filters = {}) {
+  const { search, category, date } = filters
+  const res = await axios.get('/api/analysis/export/csv', {
+    params: { search, category, date },
+    responseType: 'blob',
+  })
+  const url = window.URL.createObjectURL(new Blob([res.data]))
+  const link = document.createElement('a')
+  link.href = url
+  const now = new Date().toISOString().slice(0, 10)
+  link.setAttribute('download', `riwayat_analisis_${now}.csv`)
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+  window.URL.revokeObjectURL(url)
+}
+
+/**
+ * Ambil data lengkap satu analisis untuk di-render sebagai PDF di frontend.
+ */
+export async function getAnalysisExportDetail(analysisId) {
+  const res = await axios.get(`/api/analysis/export/${analysisId}/detail`)
+  return res.data
+}
+
+/**
  * Ambil riwayat analisis user (paginated) dengan filter opsional.
  * @param {number} page - Halaman saat ini
  * @param {Object} [filters={}] - Filter opsional
