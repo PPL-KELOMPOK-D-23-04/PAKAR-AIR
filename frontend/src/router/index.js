@@ -5,6 +5,8 @@ import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import LandingPage from '@/views/public/LandingPage.vue'
 import AnalysisView from '@/views/dashboard/AnalysisView.vue'
 import AdminLayout from '@/layouts/AdminLayout.vue'
+import ProfileView from '@/views/dashboard/ProfileView.vue'
+import NotificationView from '@/views/dashboard/NotificationView.vue'
 
 const routes = [
   // Landing
@@ -26,7 +28,7 @@ const routes = [
     name: 'login',
     component: () => import('@/views/auth/LoginPage.vue'),
     meta: { guestOnly: true },
-  },
+  },  
   // Auth & Dashboard
   {
     path: '/register',
@@ -78,12 +80,19 @@ const routes = [
     component: () => import('@/views/edukasi/HomeArtikel3.vue'),
   },
   // Profile
-  {
-    path: '/profile',
-    name: 'profile',
-    component: () => import('@/views/dashboard/ProfileView.vue'),
-    meta: { requiresAuth: true },
-  },
+{
+  path: '/profile',
+  name: 'profile',
+  component: ProfileView,
+  meta: { requiresAuth: true },
+},
+  // Notifications
+{
+  path: '/notifications',
+  name: 'notifications',
+  component: NotificationView,
+  meta: { requiresAuth: true },
+},
   // Admin Panel
   {
     path: '/admin',

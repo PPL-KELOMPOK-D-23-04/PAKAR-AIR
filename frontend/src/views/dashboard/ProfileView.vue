@@ -1,266 +1,221 @@
 <template>
   <div class="profile-page">
-    <!-- NAVBAR (Terhubung ke semua halaman) -->
-    <nav class="navbar">
-      <div class="nav-container">
-        <div class="logo">
-          <router-link to="/" class="logo-link">
-            <span class="logo-icon">💧</span>
-            <span class="logo-text">PAKAR-AIR</span>
-          </router-link>
-        </div>
-        <div class="nav-links">
-          <router-link to="/" class="nav-link">Beranda</router-link>
-          <router-link to="/edukasi" class="nav-link">Edukasi</router-link>
-          <router-link to="/dashboard" class="nav-link">Analisis</router-link>
-          <router-link to="/profile" class="nav-link active">Profil</router-link>
-          <button @click="handleLogout" class="logout-btn" :disabled="authStore.isLoading">
-            {{ authStore.isLoading ? 'Keluar...' : 'Keluar' }}
-          </button>
-        </div>
+
+    <div class="profile-card">
+
+      <h1 class="title">Profil Saya</h1>
+
+      <!-- FOTO PROFILE -->
+      <div class="photo-section">
+
+        <img
+          :src="previewImage || form.foto"
+          class="profile-image"
+        />
+
+        <input
+          type="file"
+          accept="image/png,image/jpeg,image/jpg"
+          @change="handleImageUpload"
+        />
+
       </div>
-    </nav>
 
-    <!-- MAIN CONTENT -->
-    <div class="profile-container">
-      <div class="profile-card">
-        <h1 class="page-title">👤 Profil Saya</h1>
+      <!-- FORM PROFILE -->
+      <div class="form-section">
 
-        <!-- ========== UPDATE FOTO (PKD20TPA-29) ========== -->
-        <div class="photo-section">
-          <div class="avatar-wrapper">
-            <img 
-              :src="previewFoto || fotoProfil || defaultAvatar" 
-              alt="Foto Profil"
-              class="avatar"
-            />
-            <label class="upload-btn">
-              <span>📷</span>
-              <input 
-                type="file" 
-                @change="handleUploadFoto" 
-                accept="image/jpeg,image/png,image/jpg"
-                style="display: none"
-              />
-            </label>
-          </div>
-          <p class="photo-hint">Klik ikon kamera untuk ganti foto (max 2MB)</p>
+        <div class="form-group">
+          <label>Nama Lengkap</label>
+
+          <input
+            type="text"
+            v-model="form.nama"
+            placeholder="Masukkan nama"
+          />
         </div>
 
-        <!-- ========== UPDATE NAMA & USERNAME (PKD20TPA-28) ========== -->
-        <div class="form-section">
-          <div class="form-group">
-            <label>Nama Lengkap</label>
-            <input 
-              v-model="formData.nama" 
-              type="text"
-              placeholder="Masukkan nama lengkap"
-              class="form-input"
-            />
-          </div>
+        <div class="form-group">
+          <label>Username</label>
 
-          <div class="form-group">
-            <label>Username</label>
-            <input 
-              v-model="formData.username" 
-              type="text"
-              placeholder="Masukkan username"
-              class="form-input"
-            />
-          </div>
-
-          <div class="form-group">
-            <label>Email</label>
-            <input 
-              v-model="formData.email" 
-              type="email"
-              placeholder="Masukkan email"
-              class="form-input"
-              disabled
-            />
-          </div>
-
-          <div class="form-group">
-            <label>Tanggal Bergabung</label>
-            <input 
-              :value="joinDate" 
-              type="text"
-              class="form-input"
-              disabled
-            />
-          </div>
-
-          <button 
-            @click="updateProfil" 
-            :disabled="loading"
-            class="save-btn"
-          >
-            {{ loading ? 'Menyimpan...' : '💾 Simpan Perubahan' }}
-          </button>
+          <input
+            type="text"
+            v-model="form.username"
+            placeholder="Masukkan username"
+          />
         </div>
 
-        <!-- PESAN NOTIFIKASI -->
-        <div v-if="message" :class="['message', messageType]">
-          {{ message }}
-        </div>
+        <button
+          class="save-btn"
+          @click="updateProfile"
+        >
+          Simpan Perubahan
+        </button>
+
       </div>
+
+      <!-- NOTIFIKASI -->
+      <div
+        v-if="message"
+        class="message"
+      >
+        {{ message }}
+      </div>
+
     </div>
 
-    <!-- FOOTER (Terhubung ke semua halaman) -->
-    <footer class="footer">
-      <div class="footer-container">
-        <div class="footer-logo">
-          <span class="logo-icon">💧</span>
-          <span>PAKAR-AIR</span>
-          <p>Pendeteksi Kualitas Air Berbasis AI</p>
-        </div>
-        <div class="footer-links">
-          <div class="footer-column">
-            <h4>Menu</h4>
-            <router-link to="/">Beranda</router-link>
-            <router-link to="/edukasi">Edukasi</router-link>
-            <router-link to="/dashboard">Analisis</router-link>
-            <router-link to="/profile">Profil</router-link>
-          </div>
-          <div class="footer-column">
-            <h4>Edukasi</h4>
-            <router-link to="/artikel">Parameter Air</router-link>
-            <router-link to="/artikel2">Pencemaran Air</router-link>
-            <router-link to="/artikel3">Teknologi Air</router-link>
-          </div>
-          <div class="footer-column">
-            <h4>Akun</h4>
-            <button @click="handleLogout" class="footer-logout-btn" :disabled="authStore.isLoading">
-              {{ authStore.isLoading ? 'Keluar...' : 'Keluar' }}
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2026 PAKAR-AIR. All rights reserved.</p>
-      </div>
-    </footer>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/authStore'
+import { ref } from 'vue'
 
-const router = useRouter()
-const authStore = useAuthStore()
+const previewImage = ref(null)
 
-// ========== STATE ==========
-const loading = ref(false)
 const message = ref('')
-const messageType = ref('success')
-const previewFoto = ref(null)
-const fotoProfil = ref(null)
-const defaultAvatar = 'https://ui-avatars.com/api/?background=0D8ABC&color=fff&bold=true&size=120'
 
-const formData = ref({
-  nama: '',
-  username: '',
-  email: ''
+const form = ref({
+  nama: 'Pricenza',
+  username: 'alexie',
+  foto: 'https://ui-avatars.com/api/?name=User'
 })
 
-const joinDate = ref('22 April 2026')
 
-// ========== LOGOUT ==========
-const handleLogout = async () => {
-  await authStore.logout()
-  router.push('/login')
-}
+// UPLOAD FOTO
+const handleImageUpload = (event) => {
 
-// ========== LOAD DATA SAAT HALAMAN DIBUKA ==========
-onMounted(() => {
-  if (!authStore.isLoggedIn) {
-    router.push('/login')
-    return
-  }
-  loadUserData()
-})
-
-// ========== AMBIL DATA USER ==========
-const loadUserData = () => {
-  const user = authStore.currentUser
-  if (user) {
-    formData.value = {
-      nama: user.full_name || user.nama || user.name || '',
-      username: user.username || '',
-      email: user.email || ''
-    }
-    fotoProfil.value = user.foto_profil || null
-  }
-}
-
-// ========== UPDATE FOTO + VALIDASI ==========
-const handleUploadFoto = (event) => {
   const file = event.target.files[0]
+
   if (!file) return
-  
-  const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg']
+
+  // VALIDASI TYPE
+  const allowedTypes = [
+    'image/png',
+    'image/jpeg',
+    'image/jpg'
+  ]
+
   if (!allowedTypes.includes(file.type)) {
-    showNotification('❌ Format file harus JPG, JPEG, atau PNG', 'error')
+    message.value = 'Format gambar harus PNG/JPG/JPEG'
     return
   }
-  
+
+  // VALIDASI SIZE
   if (file.size > 2 * 1024 * 1024) {
-    showNotification('❌ Ukuran file maksimal 2MB', 'error')
+    message.value = 'Ukuran gambar maksimal 2MB'
     return
   }
-  
+
   const reader = new FileReader()
+
   reader.onload = (e) => {
-    previewFoto.value = e.target.result
+    previewImage.value = e.target.result
   }
+
   reader.readAsDataURL(file)
-  
-  uploadFotoKeServer(file)
+
+  message.value = 'Foto berhasil dipilih'
 }
 
-const uploadFotoKeServer = async (file) => {
-  loading.value = true
-  // Simulasi upload (ganti dengan API real saat backend siap)
-  setTimeout(() => {
-    fotoProfil.value = previewFoto.value
-    showNotification('✅ Foto profil berhasil diupdate!', 'success')
-    loading.value = false
-  }, 500)
-}
 
-// ========== UPDATE PROFIL + VALIDASI ==========
-const updateProfil = async () => {
-  if (!formData.value.nama || formData.value.nama.trim().length < 3) {
-    showNotification('❌ Nama harus diisi minimal 3 karakter', 'error')
-    return
-  }
-  
-  if (!formData.value.username || formData.value.username.trim().length < 3) {
-    showNotification('❌ Username harus diisi minimal 3 karakter', 'error')
-    return
-  }
-  
-  const usernameRegex = /^[a-zA-Z0-9_]+$/
-  if (!usernameRegex.test(formData.value.username)) {
-    showNotification('❌ Username hanya boleh huruf, angka, dan underscore (_)', 'error')
-    return
-  }
-  
-  loading.value = true
-  // Simulasi simpan (ganti dengan API real saat backend siap)
-  setTimeout(() => {
-    showNotification('✅ Profil berhasil diperbarui!', 'success')
-    loading.value = false
-  }, 500)
-}
+// UPDATE PROFILE
+const updateProfile = async () => {
 
-const showNotification = (msg, type) => {
-  message.value = msg
-  messageType.value = type
-  setTimeout(() => { message.value = '' }, 3000)
+  // VALIDASI NAMA
+  if (form.value.nama.length < 3) {
+    message.value = 'Nama minimal 3 karakter'
+    return
+  }
+
+  // VALIDASI USERNAME
+  if (form.value.username.length < 3) {
+    message.value = 'Username minimal 3 karakter'
+    return
+  }
+
+  // REGEX USERNAME
+  const regex = /^[a-zA-Z0-9_]+$/
+
+  if (!regex.test(form.value.username)) {
+    message.value =
+      'Username hanya boleh huruf, angka, underscore'
+    return
+  }
+
+  try {
+
+    // SIMULASI API
+    console.log('DATA PROFILE:', form.value)
+
+    message.value = 'Profile berhasil diperbarui'
+
+  } catch (error) {
+
+    message.value = 'Terjadi kesalahan'
+
+  }
 }
 </script>
 
-<style scoped src="@/assets/styles/pages/profile.css"></style>
+<style scoped>
+
+.profile-page {
+  padding: 24px;
+}
+
+.profile-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.title {
+  margin-bottom: 24px;
+}
+
+.photo-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group input {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.save-btn {
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #0ea5e9;
+  color: white;
+  cursor: pointer;
+}
+
+.message {
+  margin-top: 20px;
+  color: green;
+}
+
+</style>
