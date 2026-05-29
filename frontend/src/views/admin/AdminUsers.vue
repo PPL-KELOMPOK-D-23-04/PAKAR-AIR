@@ -422,14 +422,14 @@ onMounted(fetchUsers)
   margin-bottom: 24px;
 }
 .page-title {
-  font-size: 22px;
+  font-size: var(--font-size-xl);
   font-weight: 700;
-  color: #0f172a;
+  color: var(--color-text-primary);
   margin-bottom: 4px;
 }
 .page-subtitle {
-  font-size: 13px;
-  color: #64748b;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
 }
 .header-stats {
   display: flex;
@@ -442,16 +442,16 @@ onMounted(fetchUsers)
   gap: 6px;
   padding: 6px 14px;
   border-radius: 20px;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   font-weight: 600;
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  color: #475569;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-slate);
 }
 .stat-dot { width: 8px; height: 8px; border-radius: 50%; }
-.stat-dot--blue { background: #3b82f6; }
-.stat-dot--green { background: #22c55e; }
-.stat-dot--red { background: #ef4444; }
+.stat-dot--blue { background: var(--color-accent); }
+.stat-dot--green { background: var(--color-success-text); }
+.stat-dot--red { background: var(--color-danger-text); }
 
 /* ── Toolbar ── */
 .toolbar {
@@ -470,20 +470,20 @@ onMounted(fetchUsers)
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #94a3b8;
+  color: var(--color-text-muted-light);
 }
 .search-input {
   width: 100%;
   padding: 9px 12px 9px 36px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 13px;
-  background: #fff;
-  color: #1e293b;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
   outline: none;
   transition: border-color 0.15s;
 }
-.search-input:focus { border-color: #3b82f6; }
+.search-input:focus { border-color: var(--color-accent); }
 .filter-select {
   padding: 9px 12px;
   border: 1px solid #e2e8f0;
@@ -622,9 +622,9 @@ onMounted(fetchUsers)
   justify-content: center;
   flex-shrink: 0;
 }
-.user-name { font-size: 13px; font-weight: 600; color: #0f172a; }
-.username-text { font-size: 12px; color: #64748b; }
-.date-text { font-size: 12px; color: #94a3b8; }
+.user-name { font-size: var(--font-size-sm); font-weight: 600; color: var(--color-text-primary); }
+.username-text { font-size: var(--font-size-xs); color: var(--color-text-muted); }
+.date-text { font-size: var(--font-size-xs); color: var(--color-text-muted-light); }
 
 /* ── Badges ── */
 .badge {
@@ -637,10 +637,10 @@ onMounted(fetchUsers)
   font-weight: 600;
   white-space: nowrap;
 }
-.badge--admin { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
-.badge--user { background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; }
-.badge--active { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
-.badge--inactive { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+.badge--admin { background: var(--color-info-bg); color: var(--color-accent); border: 1px solid var(--color-info-border); }
+.badge--user { background: var(--color-neutral-bg); color: var(--color-text-muted); border: 1px solid var(--color-border); }
+.badge--active { background: var(--color-success-bg); color: var(--color-success-text); border: 1px solid var(--color-success-border); }
+.badge--inactive { background: var(--color-danger-bg); color: var(--color-danger-text); border: 1px solid var(--color-danger-border); }
 
 .status-dot {
   width: 6px;
@@ -672,28 +672,28 @@ onMounted(fetchUsers)
 }
 .btn-action:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn-action--disable {
-  background: #fef3c7;
-  color: #92400e;
-  border-color: #fde68a;
+  background: var(--color-warning-bg);
+  color: var(--color-warning-text);
+  border-color: var(--color-warning-border);
 }
 .btn-action--disable:hover:not(:disabled) {
-  background: #fde68a;
+  background: var(--color-warning-border);
 }
 .btn-action--enable {
-  background: #f0fdf4;
-  color: #15803d;
-  border-color: #bbf7d0;
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+  border-color: var(--color-success-border);
 }
 .btn-action--enable:hover:not(:disabled) {
-  background: #dcfce7;
+  background: var(--color-success-badge);
 }
 .btn-action--delete {
-  background: #fef2f2;
-  color: #b91c1c;
-  border-color: #fecaca;
+  background: var(--color-danger-bg);
+  color: var(--color-danger-text);
+  border-color: var(--color-danger-border);
 }
 .btn-action--delete:hover:not(:disabled) {
-  background: #fee2e2;
+  background: var(--color-danger-badge);
 }
 
 .protected-label {

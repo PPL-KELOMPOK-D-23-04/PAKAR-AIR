@@ -3,7 +3,9 @@
     <!-- ── Navbar ── -->
     <nav class="navbar">
       <div class="nav-logo">
-        <div class="logo-icon">💧</div>
+        <div class="logo-icon">
+          <DropletIcon size="20" color="#ffffff" />
+        </div>
         <span class="logo-text">PAKAR-AIR</span>
       </div>
       <div class="nav-actions">
@@ -15,8 +17,8 @@
           </button>
         </template>
         <template v-else>
-          <RouterLink to="/login" id="btn-login-nav" class="nav-btn nav-btn-outline">Masuk</RouterLink>
-          <RouterLink to="/login" class="btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.875rem; box-shadow: none;">Daftar</RouterLink>
+          <RouterLink to="/login" id="btn-login-nav" class="btn btn--secondary">Masuk</RouterLink>
+          <RouterLink to="/login" class="btn btn--primary">Daftar</RouterLink>
         </template>
       </div>
     </nav>
@@ -32,7 +34,7 @@
           Deteksi kualitas air secara cepat dan akurat menggunakan teknologi AI untuk kesehatan yang lebih baik.
         </p>
         <div class="hero-cta-group">
-          <RouterLink :to="authStore.isLoggedIn ? '/dashboard' : '/login'" id="btn-start-hero" class="btn-primary">
+          <RouterLink :to="authStore.isLoggedIn ? '/dashboard' : '/login'" id="btn-start-hero" class="btn btn--primary">
             Mulai Analisis <span class="arrow">→</span>
           </RouterLink>
           <a href="#cara-penggunaan" class="btn-ghost">Pelajari Lebih Lanjut</a>
@@ -40,14 +42,16 @@
       </div>
       <div class="hero-visual">
         <div class="float-card card-1">
-          <span class="card-icon">✅</span>
+          <CheckIcon size="16" class="card-icon" />
           <span>Hasil Instan</span>
         </div>
         <div class="float-card card-2">
-          <span class="card-icon">🎯</span>
+          <TargetIcon size="16" class="card-icon" />
           <span>Akurasi Tinggi</span>
         </div>
-        <div class="water-drop-anim">💧</div>
+        <div class="water-drop-anim">
+          <DropletIcon size="100" color="#ffffff" style="opacity: 0.8;" />
+        </div>
       </div>
     </header>
 
@@ -82,7 +86,7 @@
       <div class="cta-box">
         <h2 class="cta-title">Siap Memulai?</h2>
         <p class="cta-desc">Login sekarang dan mulai analisis kualitas air Anda secara gratis.</p>
-        <RouterLink :to="authStore.isLoggedIn ? '/dashboard' : '/login'" id="btn-cta-bottom" class="btn-primary">
+        <RouterLink :to="authStore.isLoggedIn ? '/dashboard' : '/login'" id="btn-cta-bottom" class="btn btn--primary">
           {{ authStore.isLoggedIn ? 'Ke Dashboard' : 'Masuk Sekarang' }}
         </RouterLink>
       </div>
@@ -95,7 +99,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
-import { UploadIcon, BeakerIcon, CheckCircleIcon, LogOutIcon } from 'lucide-vue-next'
+import { UploadIcon, BeakerIcon, CheckCircleIcon, LogOutIcon, DropletIcon, CheckIcon, TargetIcon } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/authStore'
 
 const router = useRouter()

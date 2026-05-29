@@ -1,410 +1,552 @@
 <template>
-  <div class="article-wrapper">
-    <div class="article-container">
+  <DashboardLayout>
+    <div class="article-detail-view">
       
-      <!-- HEADER -->
-      <div class="article-header">
-        <div class="header-meta">
-          <span class="category">Panduan Visual</span>
-          <span class="date">12 Maret 2026 · 4 menit membaca</span>
-        </div>
-        <h1 class="article-title">Parameter Fisik Air Layak Konsumsi: Panduan Mengenali Air Bersih Secara Mandiri</h1>
-        <div class="author-line">
-          <span>Tim Pakar PAKAR-AIR</span>
-          <span class="separator">|</span>
-          <span>Sumber: Kementerian Kesehatan RI & WHO</span>
-        </div>
+      <!-- Back Navigation -->
+      <div class="article-top-nav">
+        <router-link to="/education" class="back-link">
+          <ArrowLeft size="16" />
+          <span>Kembali ke Pusat Edukasi</span>
+        </router-link>
       </div>
 
-      <!-- COVER GAMBAR -->
-      <div class="cover-section">
-        <img :src="coverImage" alt="Air Bersih" class="cover-image">
-        <p class="cover-caption">Kriteria utama air layak konsumsi: tidak berwarna, tidak berbau, dan tidak berasa | Ilustrasi: PAKAR-AIR</p>
-      </div>
-
-      <!-- KONTEN ARTIKEL -->
-      <div class="article-content">
+      <div class="article-grid">
         
-        <p class="lead">
-          <strong>Jakarta, PAKAR-AIR</strong> — Berdasarkan Peraturan Menteri Kesehatan Republik Indonesia 
-          Nomor 492/Menkes/Per/IV/2010 tentang Persyaratan Kualitas Air Minum, air yang layak dikonsumsi 
-          secara fisik harus memenuhi tiga kriteria utama: <strong>tidak berwarna, tidak berbau, dan tidak berasa</strong>. 
-          Ketiga parameter ini menjadi garis depan dalam penilaian awal kualitas air.
-        </p>
+        <!-- LEFT: MAIN ARTICLE CARD -->
+        <div class="article-main-column">
+          <BaseCard class="article-card" padding="none">
+            
+            <div class="article-cover-wrap">
+              <img :src="coverImage" alt="Cover Artikel" class="article-cover" loading="lazy">
+              <div class="cover-overlay">
+                <span class="badge-category">Edukasi Dasar</span>
+              </div>
+            </div>
+            
+            <div class="article-content">
+              <div class="article-header-meta">
+                <div class="meta-left">
+                  <h1 class="article-title">Parameter Fisik Air Layak Konsumsi: Panduan Mengenali Air Bersih Secara Mandiri</h1>
+                  <div class="meta-info">
+                    <span class="meta-item"><Calendar size="14" /> 22 April 2026</span>
+                    <span class="meta-divider">•</span>
+                    <span class="meta-item"><Clock size="14" /> 5 mnt baca</span>
+                    <span class="meta-divider">•</span>
+                    <span class="meta-item"><User size="14" /> Tim Pakar PAKAR-AIR</span>
+                  </div>
+                </div>
+              </div>
 
-        <h2>1. Parameter Warna Air</h2>
-        <p>
-          Air bersih yang layak konsumsi secara visual harus <strong>jernih dan tidak berwarna</strong>. 
-          Berikut adalah panduan interpretasi warna air yang mungkin Anda temui:
-        </p>
-        <ul>
-          <li><strong>Kekuningan atau kecoklatan</strong> — Menandakan adanya zat besi (Fe), mangan (Mn), atau bahan organik dari gambut. Air ini umumnya masih dapat diolah melalui filtrasi.</li>
-          <li><strong>Kehijauan</strong> — Indikasi keberadaan ganggang (alga) yang biasanya dipicu oleh paparan sinar matahari berlebih atau kandungan fosfat tinggi.</li>
-          <li><strong>Keruh keputihan seperti susu</strong> — Dapat disebabkan oleh udara terperangkap (aman dan akan hilang) atau partikel lumpur koloid (membutuhkan pengendapan).</li>
-          <li><strong>Merah atau kecoklatan pekat</strong> — Kemungkinan besar terkontaminasi limbah industri atau korosi pipa besi berkarat. Segera hentikan penggunaan.</li>
-        </ul>
+              <div class="article-body">
+                <p class="lead-text">
+                  Berdasarkan Peraturan Menteri Kesehatan Republik Indonesia Nomor 492/Menkes/Per/IV/2010 tentang Persyaratan Kualitas Air Minum, air yang layak dikonsumsi secara fisik harus memenuhi tiga kriteria utama: <strong>tidak berwarna, tidak berbau, dan tidak berasa</strong>. Ketiga parameter ini menjadi garis depan dalam penilaian awal kualitas air.
+                </p>
 
-        <div class="info-card">
-          <strong>Catatan PAKAR-AIR</strong>
-          <p>Saat mengunggah foto air untuk dianalisis, pastikan pencahayaan cukup dan gunakan latar belakang putih bersih. Ini akan membantu sistem AI menganalisis warna air dengan lebih akurat.</p>
+                <h2>1. Parameter Warna Air</h2>
+                <p>
+                  Air bersih yang layak konsumsi secara visual harus <strong>jernih dan tidak berwarna</strong>. 
+                  Berikut adalah panduan interpretasi warna air yang mungkin Anda temui:
+                </p>
+                <ul class="styled-list">
+                  <li><strong>Kekuningan atau kecoklatan:</strong> Menandakan adanya zat besi (Fe), mangan (Mn), atau bahan organik dari gambut. Air ini umumnya masih dapat diolah melalui filtrasi.</li>
+                  <li><strong>Kehijauan:</strong> Indikasi keberadaan ganggang (alga) yang biasanya dipicu oleh paparan sinar matahari berlebih atau kandungan fosfat tinggi.</li>
+                  <li><strong>Keruh keputihan:</strong> Dapat disebabkan oleh udara terperangkap (aman dan akan hilang) atau partikel lumpur koloid.</li>
+                  <li><strong>Merah pekat:</strong> Kemungkinan besar terkontaminasi limbah industri atau korosi pipa besi. <strong>Segera hentikan penggunaan.</strong></li>
+                </ul>
+
+                <div class="info-callout">
+                  <div class="callout-icon bg-primary-subtle text-primary">
+                    <Info size="20" />
+                  </div>
+                  <div class="callout-content">
+                    <strong>Catatan PAKAR-AIR</strong>
+                    <p>Saat mengunggah foto air untuk dianalisis melalui fitur AI kami, pastikan pencahayaan cukup dan gunakan latar belakang putih bersih agar hasil maksimal.</p>
+                  </div>
+                </div>
+
+                <h2>2. Parameter Bau Air</h2>
+                <p>
+                  Air bersih yang sehat <strong>tidak memiliki bau apapun</strong>. Bau pada air hampir selalu 
+                  mengindikasikan adanya kontaminasi.
+                </p>
+                <ul class="styled-list">
+                  <li><strong>Bau telur busuk (H₂S):</strong> Bakteri anaerob dan dekomposisi organik. <span class="badge badge-danger">Bahaya Tinggi</span></li>
+                  <li><strong>Bau amis atau pesing:</strong> Bahan organik terurai atau kotoran hewan. <span class="badge badge-warning">Bahaya Sedang</span></li>
+                  <li><strong>Bau kaporit/klorin:</strong> Proses desinfeksi PDAM. <span class="badge badge-success">Aman (setelah diangin-anginkan)</span></li>
+                  <li><strong>Bau minyak/bensin:</strong> Cemaran limbah industri. <span class="badge badge-danger">Bahaya Tinggi</span></li>
+                </ul>
+
+                <h2>3. Parameter Rasa Air</h2>
+                
+                <div class="warning-callout">
+                  <div class="callout-icon bg-danger-subtle text-danger">
+                    <AlertTriangle size="20" />
+                  </div>
+                  <div class="callout-content">
+                    <strong>Peringatan Keselamatan</strong>
+                    <p>Jangan pernah mencicipi air yang baunya mencurigakan atau berasal dari sumber yang tidak terjamin kebersihannya.</p>
+                  </div>
+                </div>
+
+                <ul class="styled-list">
+                  <li><strong>Rasa asam:</strong> Kontaminasi limbah kimia industri.</li>
+                  <li><strong>Rasa logam/pahit:</strong> Indikasi keberadaan logam berat seperti timbal (Pb) atau seng.</li>
+                  <li><strong>Rasa asin:</strong> Intrusi air laut atau salinitas tinggi dari tanah.</li>
+                </ul>
+
+                <hr class="article-divider" />
+
+                <div class="reference-section">
+                  <h3 class="reference-title">Daftar Referensi</h3>
+                  <ul class="reference-list">
+                    <li>Peraturan Menteri Kesehatan RI No. 492/Menkes/Per/IV/2010</li>
+                    <li>World Health Organization (WHO) — Guidelines for Drinking-water Quality, 4th Edition</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </BaseCard>
         </div>
 
-        <h2>2. Parameter Bau Air</h2>
-        <p>
-          Air bersih yang sehat <strong>tidak memiliki bau apapun</strong>. Bau pada air hampir selalu 
-          mengindikasikan adanya kontaminasi. Berikut panduan identifikasi bau air:
-        </p>
-        <ul>
-          <li><strong>Bau telur busuk (H₂S)</strong> — Disebabkan oleh bakteri anaerob dan dekomposisi limbah organik. <span class="text-danger">Tingkat bahaya: Tinggi</span></li>
-          <li><strong>Bau amis atau pesing</strong> — Disebabkan oleh bahan organik terurai atau kotoran hewan. <span class="text-warning">Tingkat bahaya: Sedang</span></li>
-          <li><strong>Bau kaporit atau klorin</strong> — Disebabkan oleh proses desinfeksi PDAM berlebih. <span class="text-safe">Tingkat bahaya: Rendah (aman setelah diangin-anginkan)</span></li>
-          <li><strong>Bau minyak atau bensin</strong> — Disebabkan oleh cemaran limbah industri atau bahan bakar. <span class="text-danger">Tingkat bahaya: Tinggi</span></li>
-        </ul>
+        <!-- RIGHT: SIDEBAR -->
+        <div class="article-sidebar">
+          
+          <BaseCard class="action-card" padding="lg">
+            <div class="action-icon-wrap">
+              <Droplet size="24" class="text-primary" />
+            </div>
+            <h3 class="action-title">Cek Kualitas Air Anda</h3>
+            <p class="action-desc">Gunakan AI untuk mendeteksi kontaminan air dalam hitungan detik.</p>
+            <button class="btn btn--primary btn--full" @click="goToAnalisis">
+              Mulai Analisis
+              <ArrowRight size="16" />
+            </button>
+          </BaseCard>
 
-        <h2>3. Parameter Rasa Air</h2>
-        <div class="warning-card">
-          <strong>Peringatan Penting</strong>
-          <p>Jangan pernah mencicipi air yang mencurigakan atau berasal dari sumber yang tidak terjamin kebersihannya.</p>
+          <BaseCard padding="md" class="related-card">
+            <h3 class="sidebar-title">Artikel Terkait</h3>
+            <div class="related-list">
+              <div class="related-item" @click="router.push('/artikel2')">
+                <div class="related-thumb">
+                  <img src="https://images.unsplash.com/photo-1564424224827-cd24b8915874?w=200&q=80" alt="Thumb" loading="lazy">
+                </div>
+                <div class="related-info">
+                  <h4>Dampak Pencemaran Air bagi Kesehatan</h4>
+                  <span class="related-meta">Kesehatan & Lingkungan</span>
+                </div>
+              </div>
+              <div class="related-item" @click="router.push('/artikel3')">
+                <div class="related-thumb">
+                  <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=200&q=80" alt="Thumb" loading="lazy">
+                </div>
+                <div class="related-info">
+                  <h4>Memahami Hasil Analisis AI</h4>
+                  <span class="related-meta">Panduan Pengguna</span>
+                </div>
+              </div>
+            </div>
+          </BaseCard>
+
         </div>
-        <ul>
-          <li><strong>Rasa asam</strong> — Kemungkinan kontaminasi limbah kimia industri atau asam mineral.</li>
-          <li><strong>Rasa pahit atau seperti logam</strong> — Indikasi keberadaan logam berat seperti timbal (plumbum), tembaga, atau seng.</li>
-          <li><strong>Rasa asin</strong> — Intrusi air laut (di daerah pesisir) atau salinitas tinggi dari lapisan tanah.</li>
-          <li><strong>Rasa manis tidak wajar</strong> — Bisa menandakan senyawa organik tertentu atau glikol dari limbah industri.</li>
-        </ul>
-
-        <h2>Kesimpulan</h2>
-        <p>
-          Dengan memahami ketiga parameter fisik ini, Anda dapat melakukan skrining awal terhadap 
-          kualitas air yang digunakan. Untuk analisis yang lebih mendalam dan terintegrasi, 
-          PAKAR-AIR hadir sebagai solusi teknologi yang memanfaatkan kecerdasan buatan untuk 
-          membantu identifikasi kualitas air secara lebih komprehensif.
-        </p>
-
-        <div class="reference-box">
-          <strong>Referensi</strong>
-          <ul>
-            <li>Peraturan Menteri Kesehatan RI No. 492/Menkes/Per/IV/2010</li>
-            <li>World Health Organization (WHO) — Guidelines for Drinking-water Quality, 4th Edition</li>
-            <li>United Nations Sustainable Development Goal 6: Clean Water and Sanitation</li>
-          </ul>
-        </div>
-
-        <p class="closing-note">
-          <strong>Pesan PAKAR-AIR</strong> — Kesehatan Anda dimulai dari air yang Anda konsumsi. 
-          Lakukan skrining rutin dan jadilah bagian dari solusi untuk menciptakan akses air bersih bagi semua.
-        </p>
-
       </div>
-
-      <!-- FOOTER TOMBOL -->
-      <div class="article-footer">
-        <button class="btn-back" @click="goBack">← Kembali ke Halaman Edukasi</button>
-        <button class="btn-primary" @click="goToAnalisis">Mulai Analisis Air →</button>
-      </div>
-
     </div>
-  </div>
+  </DashboardLayout>
 </template>
 
-<script>
-export default {
-  name: 'HomeArticle',
-  computed: {
-    coverImage() {
-      try {
-        return require('@/assets/images/cover-air-bersih.jpg');
-      } catch (e) {
-        return '';
-      }
-    }
-  },
-  methods: {
-    goBack() {
-      this.$router.push('/edukasi');
-    },
-    goToAnalisis() {
-      this.$router.push('/dashboard');
-    }
-  }
-};
+<script setup>
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+import DashboardLayout from '@/layouts/DashboardLayout.vue'
+import BaseCard from '@/components/common/BaseCard.vue'
+import { ArrowLeft, ArrowRight, Calendar, Clock, User, Info, AlertTriangle, Droplet } from 'lucide-vue-next'
+
+const router = useRouter()
+
+const coverImage = computed(() => {
+  return 'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=1200&q=80'
+})
+
+function goToAnalisis() {
+  router.push('/analysis')
+}
 </script>
 
 <style scoped>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.article-wrapper {
-  background: #f7f5f0;
-  min-height: 100vh;
-  padding: 40px 20px;
-  font-family: 'Georgia', 'Times New Roman', 'Inter', -apple-system, 'Segoe UI', Roboto, serif;
-}
-
-.article-container {
-  max-width: 860px;
-  margin: 0 auto;
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
-  overflow: hidden;
-}
-
-/* HEADER */
-.article-header {
-  padding: 40px 48px 0 48px;
-}
-
-.header-meta {
+.article-detail-view {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* Top Nav */
+.article-top-nav {
+  margin-bottom: 24px;
+}
+
+.back-link {
+  display: inline-flex;
   align-items: center;
-  margin-bottom: 20px;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-}
-
-.category {
-  background: #e8e2d8;
-  color: #5c4a3a;
-  padding: 4px 14px;
-  border-radius: 30px;
-  font-size: 12px;
-}
-
-.date {
-  color: #9a8a7a;
-}
-
-.article-title {
-  font-size: 32px;
-  line-height: 1.3;
+  gap: 8px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  text-decoration: none;
   font-weight: 600;
-  color: #2c4a2e;
-  margin-bottom: 16px;
-  letter-spacing: -0.3px;
+  transition: all 0.2s ease;
+  padding: 8px 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
-.author-line {
-  font-size: 13px;
-  color: #7a8a7a;
-  border-top: 1px solid #ece4d8;
-  padding-top: 16px;
+.back-link:hover {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  transform: translateX(-4px);
 }
 
-.separator {
-  margin: 0 10px;
-  color: #c0b0a0;
+/* Grid Layout */
+.article-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: start;
 }
 
-/* COVER GAMBAR */
-.cover-section {
-  padding: 30px 48px 0 48px;
+@media (min-width: 1024px) {
+  .article-grid {
+    grid-template-columns: 1fr 340px;
+  }
 }
 
-.cover-image {
+/* Main Article Card */
+.article-card {
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+}
+
+.article-cover-wrap {
+  position: relative;
   width: 100%;
-  border-radius: 12px;
+  height: 320px;
+  background: var(--color-bg);
+}
+
+.article-cover {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
-.cover-caption {
-  font-size: 11px;
-  color: #b0a090;
-  text-align: center;
-  margin-top: 10px;
-  font-style: italic;
+.cover-overlay {
+  position: absolute;
+  bottom: 0; left: 0; width: 100%;
+  padding: 24px;
+  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  display: flex;
+  align-items: flex-end;
 }
 
-/* KONTEN */
+.badge-category {
+  background: var(--color-primary);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: var(--shadow-sm);
+}
+
 .article-content {
-  padding: 20px 48px 40px 48px;
+  padding: 40px;
 }
 
-.lead {
-  font-size: 17px;
-  line-height: 1.65;
-  color: #4a5a4a;
-  margin-bottom: 28px;
-  border-left: 3px solid #c9b08a;
-  padding-left: 20px;
-  font-style: normal;
+@media (max-width: 768px) {
+  .article-content { padding: 24px; }
 }
 
-h2 {
-  font-size: 22px;
-  font-weight: 600;
-  color: #2c4a2e;
-  margin: 32px 0 16px 0;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #e0d8ce;
+.article-title {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin: 0 0 16px 0;
+  line-height: 1.3;
 }
 
-p {
-  font-size: 16px;
+.meta-info {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.meta-divider {
+  color: var(--color-border-strong);
+}
+
+.article-body {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--color-text-secondary);
+}
+
+.article-body h2 {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 40px 0 16px 0;
+  letter-spacing: -0.01em;
+}
+
+.article-body p {
+  margin-bottom: 24px;
+}
+
+.article-body strong {
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+.lead-text {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
   line-height: 1.7;
-  color: #3a4a3c;
+}
+
+.styled-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px 0;
+}
+
+.styled-list li {
+  position: relative;
+  padding-left: 24px;
   margin-bottom: 16px;
 }
 
-ul {
-  margin: 12px 0 20px 28px;
+.styled-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--color-primary);
+  font-size: 1.5rem;
+  line-height: 1;
+  top: -2px;
 }
 
-li {
-  font-size: 15px;
-  line-height: 1.65;
-  color: #4a5a4a;
-  margin-bottom: 10px;
-}
-
-.text-danger { color: #c46a4a; font-weight: 500; }
-.text-warning { color: #c9a06a; font-weight: 500; }
-.text-safe { color: #6a9a6a; font-weight: 500; }
-
-.info-card {
-  background: #f4f0ea;
-  padding: 16px 20px;
-  border-radius: 12px;
-  margin: 24px 0;
-  border-left: 3px solid #6a9a6a;
-}
-
-.info-card strong {
-  display: block;
-  margin-bottom: 6px;
-  color: #2c4a2e;
-  font-size: 14px;
-}
-
-.info-card p {
-  margin: 0;
-  font-size: 14px;
-}
-
-.warning-card {
-  background: #fef6e8;
-  padding: 14px 18px;
-  border-radius: 12px;
-  margin: 20px 0;
-  border-left: 3px solid #d4a06a;
-}
-
-.warning-card strong {
-  display: block;
-  margin-bottom: 6px;
-  color: #a06a3a;
-  font-size: 14px;
-}
-
-.warning-card p {
-  margin: 0;
-  font-size: 14px;
-}
-
-.reference-box {
-  background: #f4f0ea;
-  padding: 16px 20px;
-  border-radius: 12px;
-  margin: 32px 0 24px 0;
-}
-
-.reference-box strong {
-  display: block;
-  font-size: 13px;
-  color: #6a5a4a;
-  margin-bottom: 8px;
-}
-
-.reference-box ul {
-  margin: 0 0 0 18px;
-}
-
-.reference-box li {
-  font-size: 12px;
-  color: #7a8a7a;
-  margin-bottom: 4px;
-}
-
-.closing-note {
-  background: #faf6f0;
-  padding: 18px 22px;
-  border-radius: 12px;
-  margin-top: 32px;
-  font-size: 15px;
-  line-height: 1.6;
-  color: #5a6a5a;
-  font-style: italic;
-}
-
-/* FOOTER */
-.article-footer {
-  padding: 20px 48px 40px 48px;
-  border-top: 1px solid #ece4d8;
+/* Callouts */
+.info-callout, .warning-callout {
   display: flex;
-  justify-content: space-between;
   gap: 16px;
-  background: #fefcf9;
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  margin: 32px 0;
+  border: 1px solid var(--color-border);
 }
 
-.btn-back, .btn-primary {
-  padding: 10px 24px;
-  border-radius: 40px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  font-family: inherit;
-  transition: all 0.2s;
+.info-callout { background: color-mix(in srgb, var(--color-primary) 3%, transparent); }
+.warning-callout { background: color-mix(in srgb, var(--color-danger) 3%, transparent); }
+
+.callout-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
-.btn-back {
-  background: transparent;
-  border: 1px solid #d0c4b4;
-  color: #6a5a4a;
+.bg-primary-subtle { background: color-mix(in srgb, var(--color-primary) 12%, transparent); }
+.bg-danger-subtle { background: color-mix(in srgb, var(--color-danger) 12%, transparent); }
+.text-primary { color: var(--color-primary); }
+.text-danger { color: var(--color-danger); }
+
+.callout-content {
+  display: flex;
+  flex-direction: column;
 }
 
-.btn-back:hover {
-  background: #f0ece4;
-  border-color: #b8a88a;
+.callout-content strong {
+  font-size: var(--font-size-md);
+  margin-bottom: 4px;
+  color: var(--color-text-primary);
 }
 
-.btn-primary {
-  background: #6a8a6a;
+.callout-content p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+}
+
+/* Badges Inline */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  margin-left: 4px;
+}
+.badge-danger { background: color-mix(in srgb, var(--color-danger) 10%, transparent); color: var(--color-danger); }
+.badge-warning { background: color-mix(in srgb, var(--color-warning) 15%, transparent); color: color-mix(in srgb, var(--color-warning) 80%, black); }
+.badge-success { background: color-mix(in srgb, var(--color-success) 10%, transparent); color: var(--color-success); }
+
+/* References */
+.article-divider {
   border: none;
-  color: white;
+  border-top: 1px solid var(--color-border-light);
+  margin: 48px 0 32px 0;
 }
 
-.btn-primary:hover {
-  background: #4a6a4a;
+.reference-section {
+  background: var(--color-bg);
+  padding: 24px;
+  border-radius: var(--radius-md);
 }
 
-/* RESPONSIF */
-@media (max-width: 680px) {
-  .article-header, .cover-section, .article-content, .article-footer {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-  
-  .article-title {
-    font-size: 24px;
-  }
-  
-  .header-meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-  
-  .article-footer {
-    flex-direction: column;
-  }
-  
-  .btn-back, .btn-primary {
-    text-align: center;
-  }
+.reference-title {
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-muted);
+  margin: 0 0 12px 0;
+  font-weight: 700;
+}
+
+.reference-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+.reference-list li { margin-bottom: 8px; }
+
+/* Sidebar */
+.article-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: sticky;
+  top: 24px;
+}
+
+.action-card {
+  text-align: center;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
+  background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-bg) 100%);
+}
+
+.action-icon-wrap {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-title {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 8px 0;
+}
+
+.action-desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0 0 20px 0;
+}
+
+.btn--full {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.sidebar-title {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 16px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.related-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.related-item {
+  display: flex;
+  gap: 12px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--radius-md);
+  transition: background 0.2s;
+}
+
+.related-item:hover {
+  background: var(--color-bg);
+}
+
+.related-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.related-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.related-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.related-info h4 {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 4px 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.related-meta {
+  font-size: 11px;
+  color: var(--color-primary);
+  font-weight: 600;
+  text-transform: uppercase;
 }
 </style>

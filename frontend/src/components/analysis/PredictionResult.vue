@@ -1,56 +1,59 @@
 <template>
-  <div class="result-card" :class="resultClass">
-    <!-- Header -->
-    <div class="result-card__header">
-      <div class="result-card__header-left">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-          fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-          <path v-if="isLayak" stroke-linecap="round" stroke-linejoin="round"
-            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          <path v-else stroke-linecap="round" stroke-linejoin="round"
-            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-        <p class="result-card__title">Hasil Analisis Kualitas Air</p>
+  <div class="prediction-card" :class="themeClass">
+    
+    <!-- Hero Status Section -->
+    <div class="prediction-hero">
+      <div class="hero-left">
+        <div class="hero-icon-wrap" :class="iconBgClass">
+          <CheckCircle v-if="isLayak" size="28" class="hero-icon" />
+          <AlertTriangle v-else size="28" class="hero-icon" />
+        </div>
+        <div class="hero-text">
+          <p class="hero-subtitle">Hasil Analisis Kualitas Air</p>
+          <h2 class="hero-title">{{ isLayak ? 'Layak Digunakan' : 'Tidak Layak Digunakan' }}</h2>
+        </div>
       </div>
-      <span class="result-badge" :class="badgeClass">{{ categoryLabel }}</span>
-    </div>
-
-    <hr class="result-divider" />
-
-    <!-- Body -->
-    <div class="result-body">
-
-      <!-- Confidence -->
-      <div class="result-section">
-        <p class="result-section__label">Tingkat Kepercayaan Model</p>
-        <ConfidenceGauge :value="analysisResult.confidence" :category="analysisResult.category" />
-      </div>
-
-      <!-- Explanation -->
-      <div class="result-section">
-        <p class="result-section__label">Penjelasan Analisis</p>
-        <p class="result-section__text">{{ analysisResult.explanation }}</p>
-      </div>
-
-      <!-- Recommendation -->
-      <div class="result-section result-section--recommendation" :class="recClass">
-        <p class="result-section__label">Rekomendasi Tindak Lanjut</p>
-        <p class="result-section__text">{{ analysisResult.recommendation }}</p>
-      </div>
-
-      <!-- Export Actions -->
-      <div class="export-bar">
-        <span class="export-bar__label">Simpan hasil ini:</span>
-        <button class="btn-export-pdf" @click="exportPDF">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-          </svg>
-          Ekspor PDF
+      <div class="hero-right">
+        <button class="btn-export" @click="exportPDF">
+          <Download size="16" />
+          <span>Ekspor PDF</span>
         </button>
       </div>
+    </div>
 
+    <!-- Main Content Grid -->
+    <div class="prediction-grid">
+      
+      <!-- Left Column: Confidence Gauge -->
+      <div class="grid-col col-metrics">
+        <div class="content-block">
+          <h3 class="block-title">Akurasi Prediksi</h3>
+          <div class="gauge-container">
+            <ConfidenceGauge :value="analysisResult.confidence" :category="analysisResult.category" />
+          </div>
+          <p class="block-desc">Tingkat kepercayaan sistem (confidence score) terhadap hasil prediksi berdasarkan parameter yang diinput.</p>
+        </div>
+      </div>
+
+      <!-- Right Column: Details -->
+      <div class="grid-col col-details">
+        <div class="content-block">
+          <h3 class="block-title flex-title">
+            <Info size="16" class="title-icon" />
+            Penjelasan Analisis
+          </h3>
+          <p class="block-text">{{ analysisResult.explanation || 'Tidak ada penjelasan detail yang tersedia.' }}</p>
+        </div>
+
+        <div class="content-block recommendation-block" :class="recBgClass">
+          <h3 class="block-title flex-title">
+            <Lightbulb size="16" class="title-icon" />
+            Rekomendasi Tindak Lanjut
+          </h3>
+          <p class="block-text">{{ analysisResult.recommendation || 'Tidak ada rekomendasi khusus.' }}</p>
+        </div>
+      </div>
+      
     </div>
   </div>
 </template>
@@ -58,6 +61,7 @@
 <script setup>
 import { computed } from 'vue'
 import ConfidenceGauge from './ConfidenceGauge.vue'
+import { CheckCircle, AlertTriangle, Download, Info, Lightbulb } from 'lucide-vue-next'
 
 const props = defineProps({
   result: {
@@ -66,26 +70,14 @@ const props = defineProps({
   },
 })
 
-// Shortcut ke data hasil (mendukung objek utuh atau objek hasil saja)
+// Shortcut ke data hasil
 const analysisResult = computed(() => props.result?.result || props.result || {})
-
 const isLayak = computed(() => analysisResult.value?.category === 'layak')
 
-const resultClass = computed(() =>
-  isLayak.value ? 'result-card--success' : 'result-card--danger'
-)
-
-const badgeClass = computed(() =>
-  isLayak.value ? 'result-badge--success' : 'result-badge--danger'
-)
-
-const recClass = computed(() =>
-  isLayak.value ? 'result-section--rec-success' : 'result-section--rec-danger'
-)
-
-const categoryLabel = computed(() =>
-  isLayak.value ? '✓ Layak Digunakan' : '✗ Tidak Layak Digunakan'
-)
+// Styling Themes
+const themeClass = computed(() => isLayak.value ? 'theme-success' : 'theme-danger')
+const iconBgClass = computed(() => isLayak.value ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger')
+const recBgClass = computed(() => isLayak.value ? 'rec-success' : 'rec-danger')
 
 function exportPDF() {
   const r = analysisResult.value
@@ -186,136 +178,212 @@ function exportPDF() {
 </script>
 
 <style scoped>
-/* Card base */
-.result-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
+/* Main Card Container */
+.prediction-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  transition: all 0.3s ease;
 }
 
-.result-card--success { border-color: #bbf7d0; }
-.result-card--danger  { border-color: #fecaca; }
+.theme-success { border-top: 4px solid var(--color-success); }
+.theme-danger { border-top: 4px solid var(--color-danger); }
 
-/* Header */
-.result-card__header {
+/* Hero Section */
+.prediction-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+@media (min-width: 640px) {
+  .prediction-hero {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px 40px;
+  }
+}
+
+.hero-left {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 16px 24px;
-  gap: 12px;
+  gap: 16px;
 }
 
-.result-card--success .result-card__header { background: #f0fdf4; }
-.result-card--danger  .result-card__header { background: #fef2f2; }
-
-.result-card__header-left {
+.hero-icon-wrap {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.bg-success-subtle { background: color-mix(in srgb, var(--color-success) 12%, transparent); }
+.bg-danger-subtle { background: color-mix(in srgb, var(--color-danger) 12%, transparent); }
+.text-success { color: var(--color-success); }
+.text-danger { color: var(--color-danger); }
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+
+.hero-title {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.hero-right {
+  display: flex;
+  align-items: center;
+}
+
+.btn-export {
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-}
-
-.result-card--success .result-card__header-left svg { color: #16a34a; }
-.result-card--danger  .result-card__header-left svg { color: #dc2626; }
-
-.result-card__title {
-  font-size: 14px;
+  padding: 10px 18px;
+  font-size: var(--font-size-sm);
   font-weight: 600;
-  color: #1a202c;
+  color: var(--color-text-secondary);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
 }
 
-/* Badge */
-.result-badge {
-  font-size: 12px;
+.btn-export:hover {
+  background: var(--color-bg);
+  border-color: var(--color-text-muted);
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
+}
+
+/* Grid Content */
+.prediction-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  background: var(--color-surface);
+}
+
+@media (min-width: 820px) {
+  .prediction-grid {
+    grid-template-columns: 320px 1fr;
+  }
+}
+
+.grid-col {
+  padding: 24px;
+}
+
+@media (min-width: 820px) {
+  .grid-col {
+    padding: 32px 40px;
+  }
+}
+
+.col-metrics {
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+@media (min-width: 820px) {
+  .col-metrics {
+    border-bottom: none;
+    border-right: 1px solid var(--color-border-light);
+  }
+}
+
+/* Typography & Blocks */
+.content-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.content-block:last-child {
+  margin-bottom: 0;
+}
+
+.block-title {
+  font-size: var(--font-size-sm);
   font-weight: 700;
-  padding: 4px 12px;
-  border-radius: 20px;
-  white-space: nowrap;
-}
-
-.result-badge--success {
-  background: #dcfce7;
-  color: #15803d;
-  border: 1px solid #bbf7d0;
-}
-
-.result-badge--danger {
-  background: #fee2e2;
-  color: #b91c1c;
-  border: 1px solid #fecaca;
-}
-
-/* Divider */
-.result-divider {
-  border: none;
-  border-top: 1px solid #f1f5f9;
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   margin: 0;
 }
 
-/* Body */
-.result-body {
-  padding: 20px 24px;
+.flex-title {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* Section */
-.result-section {
-  display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 8px;
 }
 
-.result-section__label {
-  font-size: 12px;
-  font-weight: 700;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.title-icon {
+  color: var(--color-text-muted);
 }
 
-.result-section__text {
-  font-size: 13px;
-  color: #374151;
-  line-height: 1.65;
+.block-desc {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin: 0;
 }
 
-/* Recommendation block */
-.result-section--recommendation {
-  padding: 14px 16px;
-  border-radius: 6px;
-  border: 1px solid #e2e8f0;
-  background: #f8fafc;
+.block-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin: 0;
 }
 
-.result-section--rec-success {
-  background: #f0fdf4;
-  border-color: #bbf7d0;
+.gauge-container {
+  padding: 16px 0;
 }
 
-.result-section--rec-danger {
-  background: #fef2f2;
-  border-color: #fecaca;
+/* Recommendation Highlight */
+.recommendation-block {
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  border-left: 4px solid;
 }
 
-.result-section--rec-success .result-section__label { color: #15803d; }
-.result-section--rec-danger  .result-section__label { color: #b91c1c; }
-.export-bar {
-  display: flex; align-items: center; gap: 10px;
-  padding: 14px 24px;
-  border-top: 1px solid #e2e8f0;
-  background: #f8fafc;
+.rec-success {
+  background: color-mix(in srgb, var(--color-success) 4%, var(--color-surface));
+  border-color: var(--color-success);
 }
-.export-bar__label { font-size: 12px; color: #94a3b8; flex: 1; }
-.btn-export-pdf {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 7px 16px; font-size: 13px; font-weight: 600;
-  border-radius: 8px; cursor: pointer;
-  background: #fff; color: #dc2626;
-  border: 1.5px solid #fca5a5;
-  transition: background 0.15s, border-color 0.15s;
+
+.rec-danger {
+  background: color-mix(in srgb, var(--color-danger) 4%, var(--color-surface));
+  border-color: var(--color-danger);
 }
-.btn-export-pdf:hover { background: #fef2f2; border-color: #ef4444; }
+
+.rec-success .block-title { color: color-mix(in srgb, var(--color-success) 80%, black); }
+.rec-danger .block-title { color: color-mix(in srgb, var(--color-danger) 80%, black); }
+.rec-success .title-icon { color: var(--color-success); }
+.rec-danger .title-icon { color: var(--color-danger); }
 </style>

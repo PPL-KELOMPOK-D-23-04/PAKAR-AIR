@@ -242,7 +242,7 @@ function exportPDF() {
 @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
 
 .modal-box {
-  background: #fff;
+  background: var(--color-surface);
   border-radius: 16px;
   width: 100%; max-width: 440px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.18);
@@ -253,25 +253,25 @@ function exportPDF() {
 .modal-header {
   display: flex; align-items: center; justify-content: space-between;
   padding: 18px 20px 14px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--color-border);
 }
 .modal-header__left {
   display: flex; align-items: center; gap: 8px;
-  font-size: 15px; font-weight: 700; color: #1a202c;
+  font-size: 15px; font-weight: 700; color: var(--color-text-primary);
 }
 .modal-close {
   width: 28px; height: 28px;
   border-radius: 6px; border: none;
-  background: #f1f5f9; color: #64748b;
+  background: var(--color-neutral-bg); color: var(--color-text-muted-light);
   cursor: pointer; display: flex; align-items: center; justify-content: center;
   transition: background 0.15s;
 }
-.modal-close:hover { background: #e2e8f0; }
+.modal-close:hover { background: var(--color-border); }
 
 .modal-body { padding: 20px; }
 
 .modal-desc {
-  font-size: 13px; color: #64748b;
+  font-size: var(--font-size-base); color: var(--color-text-muted-light);
   line-height: 1.6; margin-bottom: 18px;
 }
 
@@ -280,18 +280,18 @@ function exportPDF() {
 .format-card {
   display: flex; align-items: center; gap: 14px;
   padding: 14px 16px;
-  border: 2px solid #e2e8f0;
+  border: 2px solid var(--color-border);
   border-radius: 12px;
-  background: #fff;
+  background: var(--color-surface);
   cursor: pointer;
   text-align: left;
   transition: border-color 0.15s, background 0.15s, transform 0.1s;
   width: 100%;
 }
-.format-card:hover { border-color: #93c5fd; background: #f8fafc; }
+.format-card:hover { border-color: var(--color-nav-active); background: var(--color-bg); }
 .format-card--active {
-  border-color: #3b82f6;
-  background: #eff6ff;
+  border-color: var(--color-accent);
+  background: var(--color-info-bg);
 }
 .format-card:active { transform: scale(0.99); }
 
@@ -301,48 +301,36 @@ function exportPDF() {
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
-.format-icon--csv { background: #dcfce7; color: #16a34a; }
-.format-icon--pdf { background: #fee2e2; color: #dc2626; }
+.format-icon--csv { background: var(--color-success-badge); color: var(--color-success-text); }
+.format-icon--pdf { background: var(--color-danger-badge); color: var(--color-danger-text); }
 
 .format-info { flex: 1; }
-.format-name { display: block; font-size: 14px; font-weight: 700; color: #1a202c; margin-bottom: 2px; }
-.format-desc { font-size: 12px; color: #64748b; }
+.format-name { display: block; font-size: var(--font-size-md); font-weight: 700; color: var(--color-text-primary); margin-bottom: 2px; }
+.format-desc { font-size: var(--font-size-sm); color: var(--color-text-muted-light); }
 
 .format-check {
   width: 22px; height: 22px;
   border-radius: 50%;
-  background: #3b82f6;
-  color: #fff;
+  background: var(--color-accent);
+  color: var(--color-surface);
   display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 700;
+  font-size: var(--font-size-sm); font-weight: 700;
   flex-shrink: 0;
 }
 
 .export-error {
   margin-top: 12px;
   padding: 10px 14px;
-  background: #fef2f2; color: #dc2626;
-  border: 1px solid #fca5a5;
-  border-radius: 8px; font-size: 13px;
+  background: var(--color-danger-bg); color: var(--color-danger-text);
+  border: 1px solid var(--color-danger-border);
+  border-radius: var(--radius-lg); font-size: var(--font-size-base);
 }
 
 .modal-footer {
   display: flex; justify-content: flex-end; gap: 10px;
   padding: 14px 20px 18px;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--color-border);
 }
-
-.btn {
-  padding: 9px 20px; font-size: 13px; font-weight: 600;
-  border-radius: 8px; cursor: pointer; border: 1px solid transparent;
-  display: inline-flex; align-items: center; gap: 6px;
-  transition: background 0.15s;
-}
-.btn--primary { background: #3b82f6; color: #fff; border-color: #3b82f6; }
-.btn--primary:hover:not(:disabled) { background: #2563eb; }
-.btn--primary:disabled { opacity: 0.55; cursor: not-allowed; }
-.btn--secondary { background: #fff; border-color: #e2e8f0; color: #64748b; }
-.btn--secondary:hover { background: #f8fafc; }
 
 .btn-spin {
   animation: spin 0.8s linear infinite;

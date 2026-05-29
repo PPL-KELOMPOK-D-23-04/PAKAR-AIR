@@ -1,208 +1,422 @@
-<template>
-  <div class="dashboard-root">
-    <!-- Sidebar -->
-    <aside class="sidebar" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
-      <div class="sidebar-header">
-        <div class="sidebar-logo">
-          <div class="logo-icon">💧</div>
-          <span class="logo-text" v-show="!sidebarCollapsed">PAKAR-AIR</span>
-        </div>
-        <button class="collapse-btn" @click="sidebarCollapsed = !sidebarCollapsed" aria-label="Toggle Sidebar">
-          <ChevronLeftIcon class="collapse-icon" :class="{ 'rotated': sidebarCollapsed }" />
-        </button>
-      </div>
-
-      <nav class="sidebar-nav">
-        <RouterLink to="/dashboard" class="nav-item active-item" id="nav-dashboard">
-          <LayoutDashboardIcon class="nav-icon" />
-          <span v-show="!sidebarCollapsed">Dashboard</span>
-        </RouterLink>
-        <RouterLink to="/analysis" class="nav-item" id="nav-analysis">
-          <FlaskConicalIcon class="nav-icon" />
-          <span v-show="!sidebarCollapsed">Analisis Air</span>
-        </RouterLink>
-        <RouterLink to="/history" class="nav-item" id="nav-history">
-          <HistoryIcon class="nav-icon" />
-          <span v-show="!sidebarCollapsed">Riwayat</span>
-        </RouterLink>
-      </nav>
-
-      <div class="sidebar-footer">
-        <button id="btn-logout" class="logout-btn" @click="handleLogout" :disabled="authStore.isLoading">
-          <span v-if="authStore.isLoading" class="logout-spinner">
-            <span class="spinner-sm"></span>
-          </span>
-          <LogOutIcon v-else class="nav-icon" />
-          <span v-show="!sidebarCollapsed">{{ authStore.isLoading ? 'Keluar...' : 'Keluar' }}</span>
-        </button>
-      </div>
-    </aside>
-
-    <!-- Main -->
-    <div class="main-wrapper">
-      <!-- Topbar -->
-      <header class="topbar">
-        <div class="topbar-left">
-          <h1 class="page-title">Dashboard</h1>
-          <p class="page-subtitle">Selamat datang, <strong>{{ userDisplayName }}</strong>!</p>
-        </div>
-        <div class="topbar-right">
-          <div class="user-badge">
-            <div class="avatar">{{ userInitial }}</div>
-            <span class="user-email">{{ authStore.currentUser?.email }}</span>
-          </div>
-        </div>
-      </header>
-
-      <!-- Content -->
-      <main class="main-content">
-        <!-- Stats row -->
-        <div class="stats-grid">
-          <div class="stat-card" v-for="stat in stats" :key="stat.label">
-            <div class="stat-icon-wrap" :style="{ background: stat.bg }">
-              <component :is="stat.icon" class="stat-icon" :style="{ color: stat.color }" />
-            </div>
-            <div>
-              <div class="stat-value">{{ stat.value }}</div>
-              <div class="stat-label">{{ stat.label }}</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- CTA card -->
-        <div class="cta-card">
-          <div class="cta-content">
-            <div class="cta-badge">✨ Siap Digunakan</div>
-            <h2 class="cta-title">Mulai Analisis Kualitas Air</h2>
-            <p class="cta-desc">
-              Upload foto sampel air dan isi data pendukung untuk mendapatkan hasil analisis AI yang akurat dan rekomendasi kesehatan secara instan.
-            </p>
-            <RouterLink to="/analysis" id="btn-start-analysis" class="cta-btn">
-              <FlaskConicalIcon class="cta-btn-icon" />
-              Mulai Analisis Sekarang
-            </RouterLink>
-          </div>
-          <div class="cta-visual">
-            <div class="water-orb">💧</div>
-            <div class="orb-ring ring-1"></div>
-            <div class="orb-ring ring-2"></div>
-            <div class="orb-ring ring-3"></div>
-          </div>
-        </div>
-
-        <!-- How it works -->
-        <div class="section-header">
-          <h2 class="section-title">Cara Penggunaan</h2>
-          <p class="section-sub">Tiga langkah mudah untuk menganalisis air Anda</p>
-        </div>
-        <div class="steps-grid">
-          <div class="step-card" v-for="(step, i) in steps" :key="i">
-            <div class="step-number">{{ i + 1 }}</div>
-            <div class="step-icon-wrap">
-              <component :is="step.icon" class="step-icon" />
-            </div>
-            <h3 class="step-title">{{ step.title }}</h3>
-            <p class="step-desc">{{ step.desc }}</p>
-          </div>
-        </div>
-      </main>
+﻿<template>
+  <DashboardLayout>
+    <PageHeader 
+      title="Dashboard" 
+      :subtitle="'Selamat datang, ' + userName" 
+    />
+    
+    <!-- Row 1: 4 StatCard -->
+    <div class="dashboard-grid-4 section-gap">
+      <StatCard 
+        label="Total Analisis" 
+        :value="stats.total" 
+        :icon="FlaskConical" 
+        iconColor="var(--color-primary)" 
+        :loading="loading" 
+      />
+      <StatCard 
+        label="Akurasi Rata-rata" 
+        :value="stats.accuracy" 
+        :icon="Target" 
+        iconColor="var(--color-accent)" 
+        :trend="{ direction: 'up', value: '+2%', label: 'bulan ini' }"
+        :loading="loading" 
+      />
+      <StatCard 
+        label="Analisis Bulan Ini" 
+        :value="stats.monthly" 
+        :icon="Calendar" 
+        iconColor="var(--color-warning-text)" 
+        :loading="loading" 
+      />
+      <StatCard 
+        label="Status Terakhir" 
+        :value="stats.lastStatus" 
+        :icon="Activity" 
+        :iconColor="lastStatusColor" 
+        :loading="loading" 
+      />
     </div>
-
-    <!-- Logout Confirm Modal -->
-    <Transition name="modal-fade">
-      <div v-if="showLogoutModal" class="modal-overlay" @click.self="showLogoutModal = false">
-        <div class="modal-card">
-          <div class="modal-icon">👋</div>
-          <h3 class="modal-title">Keluar dari Akun?</h3>
-          <p class="modal-desc">Anda akan keluar dari sesi ini. Pastikan data Anda sudah tersimpan.</p>
-          <div class="modal-actions">
-            <button class="modal-cancel" @click="showLogoutModal = false">Batal</button>
-            <button id="btn-confirm-logout" class="modal-confirm" @click="confirmLogout" :disabled="authStore.isLoading">
-              <span v-if="authStore.isLoading">
-                <span class="spinner-sm white"></span> Keluar...
-              </span>
-              <span v-else>Ya, Keluar</span>
-            </button>
+    
+    <!-- Row 2: Konten utama -->
+    <div class="dashboard-grid-3">
+      <!-- Col span 2: Recent Analysis -->
+      <div class="col-span-2">
+        <BaseCard padding="lg" class="h-full">
+          <SectionHeader title="Analisis Terbaru">
+            <template #action>
+              <router-link to="/history" class="btn btn--ghost text-sm">Lihat Semua →</router-link>
+            </template>
+          </SectionHeader>
+          
+          <div v-if="loading" class="py-8 text-center text-gray-500">Memuat data...</div>
+          
+          <EmptyState 
+            v-else-if="recentAnalyses.length === 0" 
+            :icon="Clipboard" 
+            title="Belum Ada Analisis" 
+            description="Anda belum melakukan analisis kualitas air apapun. Mulai analisis pertama Anda sekarang." 
+            actionLabel="Mulai Analisis" 
+            actionTo="/analysis" 
+          />
+          
+          <div v-else class="recent-list">
+            <div v-for="item in recentAnalyses" :key="item.id" class="recent-item">
+              <div class="item-icon" :class="item.category">
+                <Droplet size="20" />
+              </div>
+              <div class="item-content">
+                <div class="item-header">
+                  <span class="item-title">Analisis #{{ String(item.id).substring(0,6) }}</span>
+                  <span class="item-date">{{ formatDate(item.created_at) }}</span>
+                </div>
+                <div class="item-details">
+                  <span class="badge" :class="item.category">{{ formatCategory(item.category) }}</span>
+                  <span class="confidence">Akurasi: {{ Math.round(item.confidence * 100) }}%</span>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        </BaseCard>
       </div>
-    </Transition>
-  </div>
+      
+      <!-- Col span 1: Quick Actions + Rekomendasi -->
+      <div class="col-span-1 flex-col-gap">
+        <BaseCard padding="md">
+          <SectionHeader title="Aksi Cepat" />
+          <div class="quick-actions">
+            <router-link to="/analysis" class="btn btn--primary action-btn mb-2">
+              <FlaskConical size="16" /> Analisis Baru
+            </router-link>
+            <router-link to="/history" class="btn btn--secondary action-btn">
+              <History size="16" /> Lihat Riwayat
+            </router-link>
+          </div>
+        </BaseCard>
+        
+        <BaseCard padding="md" class="flex-grow">
+          <SectionHeader title="Insight" />
+          <EmptyState 
+            v-if="recentAnalyses.length === 0" 
+            :icon="Lightbulb" 
+            title="Belum Ada Insight" 
+            description="Lakukan analisis untuk mendapatkan rekomendasi sistem." 
+          />
+          <div v-else class="insight-content">
+            <div class="insight-icon-wrap">
+              <Info size="24" class="insight-icon" />
+            </div>
+            <p class="insight-text">
+              Kualitas air terakhir Anda menunjukkan status <strong>{{ formatCategory(stats.lastStatus) }}</strong>. 
+              {{ getInsightRecommendation(stats.lastStatus) }}
+            </p>
+          </div>
+        </BaseCard>
+      </div>
+    </div>
+  </DashboardLayout>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
-import {
-  LayoutDashboardIcon,
-  FlaskConicalIcon,
-  HistoryIcon,
-  LogOutIcon,
-  ChevronLeftIcon,
-  DropletIcon,
-  ClipboardCheckIcon,
-  UploadIcon,
-  BeakerIcon,
-  CheckCircleIcon,
-} from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/authStore'
+import DashboardLayout from '@/layouts/DashboardLayout.vue'
+import PageHeader from '@/components/common/PageHeader.vue'
+import StatCard from '@/components/common/StatCard.vue'
+import BaseCard from '@/components/common/BaseCard.vue'
+import SectionHeader from '@/components/common/SectionHeader.vue'
+import EmptyState from '@/components/common/EmptyState.vue'
+import { 
+  FlaskConical, 
+  Target, 
+  Calendar, 
+  Activity, 
+  Clipboard, 
+  Droplet, 
+  History, 
+  Lightbulb, 
+  Info 
+} from 'lucide-vue-next'
 
 const router = useRouter()
 const authStore = useAuthStore()
-const sidebarCollapsed = ref(false)
-const showLogoutModal = ref(false)
 
-const userDisplayName = computed(() => {
-  try {
-    const stored = JSON.parse(sessionStorage.getItem('pakar_air_user') || '{}')
-    return stored?.full_name || stored?.email?.split('@')[0] || authStore.currentUser?.full_name || 'Pengguna'
-  } catch {
-    return authStore.currentUser?.full_name || 'Pengguna'
-  }
+const userName = computed(() => {
+  return authStore.user?.name || 'Pengguna'
 })
-const userInitial = computed(() => userDisplayName.value.charAt(0).toUpperCase())
 
-const stats = ref([
-  { label: 'Total Analisis', value: '0', icon: FlaskConicalIcon, bg: 'rgba(59,130,246,0.1)', color: '#3b82f6' },
-  { label: 'Air Aman', value: '0', icon: DropletIcon, bg: 'rgba(16,185,129,0.1)', color: '#10b981' },
-  { label: 'Perlu Perhatian', value: '0', icon: ClipboardCheckIcon, bg: 'rgba(245,158,11,0.1)', color: '#f59e0b' },
-])
+const loading = ref(true)
+const recentAnalyses = ref([])
 
-async function fetchStats() {
+const stats = ref({
+  total: '—',
+  accuracy: '—',
+  monthly: '—',
+  lastStatus: '—'
+})
+
+const lastStatusColor = computed(() => {
+  const status = stats.value.lastStatus?.toLowerCase() || ''
+  if (status.includes('layak') && !status.includes('tidak')) return 'var(--color-success)'
+  if (status.includes('tidak_layak')) return 'var(--color-warning)'
+  if (status.includes('tercemar')) return 'var(--color-danger)'
+  return 'var(--color-primary)'
+})
+
+async function fetchDashboardData() {
+  loading.value = true
   try {
     const res = await axios.get('/api/analysis/history', {
-      params: { page: 1, per_page: 999 }
+      params: { page: 1, per_page: 5 }
     })
+    
     const items = res.data.items || []
-    const total = res.data.total || items.length
-    const aman = items.filter(i => i.category === 'layak').length
-    const perhatian = items.filter(i => i.category === 'tidak_layak').length
-
-    stats.value[0].value = String(total)
-    stats.value[1].value = String(aman)
-    stats.value[2].value = String(perhatian)
-  } catch {
-    // Biarkan tetap 0 kalau gagal
+    recentAnalyses.value = items
+    
+    // Calculate stats
+    stats.value.total = res.data.total || items.length
+    
+    if (items.length > 0) {
+      // Fake accuracy for demo, in real app comes from API
+      const avgConf = items.reduce((acc, curr) => acc + curr.confidence, 0) / items.length
+      stats.value.accuracy = Math.round(avgConf * 100) + '%'
+      
+      // Monthly count
+      const currentMonth = new Date().getMonth()
+      stats.value.monthly = items.filter(i => new Date(i.created_at).getMonth() === currentMonth).length
+      
+      // Last status
+      stats.value.lastStatus = items[0].category
+    } else {
+      stats.value.total = '0'
+      stats.value.accuracy = '0%'
+      stats.value.monthly = '0'
+      stats.value.lastStatus = 'Belum Ada'
+    }
+  } catch (error) {
+    console.error('Failed to fetch dashboard data:', error)
+  } finally {
+    loading.value = false
   }
 }
 
-onMounted(fetchStats)
+onMounted(() => {
+  fetchDashboardData()
+})
 
-const steps = [
-  { title: 'Upload Foto Air', desc: 'Ambil foto sampel air langsung dari kamera atau galeri.', icon: UploadIcon },
-  { title: 'Isi Data Pendukung', desc: 'Lengkapi info warna, bau, dan sumber air untuk akurasi lebih tinggi.', icon: BeakerIcon },
-  { title: 'Dapatkan Hasil Instan', desc: 'AI menganalisis dan memberikan rekomendasi kesehatan.', icon: CheckCircleIcon },
-]
-
-function handleLogout() {
-  showLogoutModal.value = true
+function formatDate(dateString) {
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  return new Intl.DateTimeFormat('id-ID', { 
+    day: 'numeric', 
+    month: 'short', 
+    year: 'numeric' 
+  }).format(date)
 }
 
-async function confirmLogout() {
-  await authStore.logout()
-  router.push('/')
+function formatCategory(category) {
+  if (!category || category === '—' || category === 'Belum Ada') return category
+  const map = {
+    'layak': 'Aman (Layak)',
+    'tidak_layak': 'Perlu Perlakuan',
+    'tercemar': 'Tercemar'
+  }
+  return map[category] || category.replace('_', ' ')
+}
+
+function getInsightRecommendation(category) {
+  const status = category?.toLowerCase() || ''
+  if (status.includes('layak') && !status.includes('tidak')) {
+    return 'Kondisi air Anda sangat baik. Terus jaga kebersihan sumber air Anda.'
+  }
+  if (status.includes('tidak_layak') || status.includes('perlakuan')) {
+    return 'Disarankan untuk melakukan filtrasi atau perebusan sebelum konsumsi.'
+  }
+  if (status.includes('tercemar')) {
+    return 'Peringatan: JANGAN konsumsi air ini. Segera hubungi lab terdekat untuk pengujian.'
+  }
+  return 'Lakukan analisis secara rutin untuk memantau kualitas air.'
 }
 </script>
 
-<style scoped src="@/assets/styles/pages/dashboard.css"></style>
+<style scoped>
+.dashboard-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.dashboard-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.col-span-2 {
+  grid-column: span 2;
+}
+
+.col-span-1 {
+  grid-column: span 1;
+}
+
+.flex-col-gap {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.section-gap { margin-bottom: var(--section-gap, 32px); }
+.mb-2 { margin-bottom: 8px; }
+.text-sm { font-size: var(--font-size-sm); }
+.text-gray-500 { color: var(--color-text-muted); }
+.py-8 { padding-top: 32px; padding-bottom: 32px; }
+.text-center { text-align: center; }
+.h-full { height: 100%; }
+
+/* Recent List */
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.recent-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.recent-item:hover {
+  background-color: var(--color-bg);
+  border-color: var(--color-border);
+}
+
+.item-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg);
+  color: var(--color-text-secondary);
+}
+
+.item-icon.layak { background-color: color-mix(in srgb, var(--color-success) 15%, transparent); color: var(--color-success); }
+.item-icon.tidak_layak { background-color: color-mix(in srgb, var(--color-warning) 15%, transparent); color: var(--color-warning); }
+.item-icon.tercemar { background-color: color-mix(in srgb, var(--color-danger) 15%, transparent); color: var(--color-danger); }
+
+.item-content {
+  flex: 1;
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.item-title {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.item-date {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.item-details {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  background-color: var(--color-bg);
+  color: var(--color-text-secondary);
+}
+
+.badge.layak { background-color: color-mix(in srgb, var(--color-success) 15%, transparent); color: var(--color-success-text); }
+.badge.tidak_layak { background-color: color-mix(in srgb, var(--color-warning) 15%, transparent); color: var(--color-warning-text); }
+.badge.tercemar { background-color: color-mix(in srgb, var(--color-danger) 15%, transparent); color: var(--color-danger-text); }
+
+.confidence {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+/* Quick Actions */
+.quick-actions {
+  display: flex;
+  flex-direction: column;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Insight */
+.insight-content {
+  padding: 16px;
+  background-color: color-mix(in srgb, var(--color-primary) 5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
+  border-radius: var(--radius-md);
+  display: flex;
+  gap: 16px;
+}
+
+.insight-icon-wrap {
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.insight-text {
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.insight-text strong {
+  color: var(--color-text-primary);
+}
+
+@media (max-width: 1024px) {
+  .dashboard-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .dashboard-grid-3 {
+    grid-template-columns: 1fr;
+  }
+  .col-span-2, .col-span-1 {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

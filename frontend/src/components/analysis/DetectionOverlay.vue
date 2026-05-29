@@ -74,10 +74,10 @@ const handleImageLoad = () => {
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: var(--color-neutral-bg);
+  border: 1px solid var(--color-border);
 }
 
 .image-wrapper {

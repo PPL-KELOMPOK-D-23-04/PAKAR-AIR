@@ -57,27 +57,39 @@ const routes = [
     component: () => import('@/views/dashboard/HistoryView.vue'),
     meta: { requiresAuth: true },
   },
-  // Edukasi & Artikel
   {
-    path: '/education',
-    alias: ['/edukasi'],
-    name: 'education',
-    component: () => import('@/views/edukasi/EdukasiView.vue'),
+    path: '/dashboard/history/:id',
+    name: 'history-detail',
+    component: () => import('@/views/dashboard/HistoryDetailView.vue'),
+    meta: { requiresAuth: true },
   },
+  // Edukasi & Artikel (Wrapped in DefaultLayout)
   {
-    path: '/artikel',
-    name: 'artikel1',
-    component: () => import('@/views/edukasi/HomeArtikel.vue'),
-  },
-  {
-    path: '/artikel2',
-    name: 'artikel2',
-    component: () => import('@/views/edukasi/HomeArtikel2.vue'),
-  },
-  {
-    path: '/artikel3',
-    name: 'artikel3',
-    component: () => import('@/views/edukasi/HomeArtikel3.vue'),
+    path: '/edukasi-layout',
+    component: DefaultLayout,
+    children: [
+      {
+        path: '/education',
+        alias: ['/edukasi'],
+        name: 'education',
+        component: () => import('@/views/edukasi/EdukasiView.vue'),
+      },
+      {
+        path: '/artikel',
+        name: 'artikel1',
+        component: () => import('@/views/edukasi/HomeArtikel.vue'),
+      },
+      {
+        path: '/artikel2',
+        name: 'artikel2',
+        component: () => import('@/views/edukasi/HomeArtikel2.vue'),
+      },
+      {
+        path: '/artikel3',
+        name: 'artikel3',
+        component: () => import('@/views/edukasi/HomeArtikel3.vue'),
+      },
+    ],
   },
   // Profile
 {

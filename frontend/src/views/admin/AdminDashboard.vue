@@ -103,31 +103,31 @@ const statCards = computed(() => {
       label: 'Total Pengguna',
       value: s.users?.total ?? s.total_users ?? '-',
       emoji: '👥',
-      iconBg: '#eff6ff',
-      iconColor: '#2563eb',
+      iconBg: 'var(--color-info-bg)',
+      iconColor: 'var(--color-accent)',
       badge: 'Pengguna',
-      badgeBg: '#eff6ff',
-      badgeColor: '#2563eb',
+      badgeBg: 'var(--color-info-bg)',
+      badgeColor: 'var(--color-accent)',
     },
     {
       label: 'Pengguna Aktif',
       value: s.users?.active ?? s.active_users ?? '-',
       emoji: '✅',
-      iconBg: '#f0fdf4',
-      iconColor: '#16a34a',
+      iconBg: 'var(--color-success-bg)',
+      iconColor: 'var(--color-success-text)',
       badge: 'Aktif',
-      badgeBg: '#f0fdf4',
-      badgeColor: '#16a34a',
+      badgeBg: 'var(--color-success-bg)',
+      badgeColor: 'var(--color-success-text)',
     },
     {
       label: 'Total Analisis',
       value: s.analyses?.total ?? s.total_analyses ?? '-',
       emoji: '🔬',
-      iconBg: '#faf5ff',
-      iconColor: '#7c3aed',
+      iconBg: 'var(--color-neutral-bg)',
+      iconColor: 'var(--color-text-primary)',
       badge: 'Analisis',
-      badgeBg: '#faf5ff',
-      badgeColor: '#7c3aed',
+      badgeBg: 'var(--color-neutral-bg)',
+      badgeColor: 'var(--color-text-primary)',
     },
     {
       label: 'Rata-rata Akurasi',
@@ -137,11 +137,11 @@ const statCards = computed(() => {
           ? `${Math.round((s.results?.layak ?? 0) / s.analyses.total * 100)}%`
           : '-',
       emoji: '📊',
-      iconBg: '#fff7ed',
-      iconColor: '#c2410c',
+      iconBg: 'var(--color-warning-bg)',
+      iconColor: 'var(--color-warning-text)',
       badge: 'Akurasi',
-      badgeBg: '#fff7ed',
-      badgeColor: '#c2410c',
+      badgeBg: 'var(--color-warning-bg)',
+      badgeColor: 'var(--color-warning-text)',
     },
   ]
 })
@@ -190,23 +190,23 @@ onMounted(fetchStats)
   gap: 16px;
   margin-bottom: 24px;
 }
-.page-title { font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
-.page-subtitle { font-size: 13px; color: #64748b; }
+.page-title { font-size: var(--font-size-xl); font-weight: 700; color: var(--color-text-primary); margin-bottom: 4px; }
+.page-subtitle { font-size: var(--font-size-sm); color: var(--color-text-muted); }
 
 .btn-manage {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 10px 18px;
-  background: #0f172a;
-  color: #fff;
-  border-radius: 8px;
-  font-size: 13px;
+  background: var(--color-text-primary);
+  color: var(--color-surface);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   text-decoration: none;
   transition: background 0.15s;
 }
-.btn-manage:hover { background: #1e293b; text-decoration: none; }
+.btn-manage:hover { background: var(--color-nav-active); text-decoration: none; }
 
 /* Stats */
 .stats-grid {
@@ -216,9 +216,9 @@ onMounted(fetchStats)
   margin-bottom: 28px;
 }
 .stat-card {
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
   padding: 20px;
   display: flex;
   align-items: center;
@@ -228,7 +228,7 @@ onMounted(fetchStats)
 .stat-icon-wrap {
   width: 44px;
   height: 44px;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -236,8 +236,8 @@ onMounted(fetchStats)
 }
 .stat-icon { font-size: 20px; }
 .stat-body { flex: 1; }
-.stat-value { font-size: 22px; font-weight: 800; color: #0f172a; line-height: 1.1; }
-.stat-label { font-size: 12px; color: #64748b; margin-top: 2px; }
+.stat-value { font-size: var(--font-size-xl); font-weight: 800; color: var(--color-text-primary); line-height: 1.1; }
+.stat-label { font-size: var(--font-size-xs); color: var(--color-text-muted); margin-top: 2px; }
 .stat-badge {
   position: absolute;
   top: 14px;
@@ -251,53 +251,53 @@ onMounted(fetchStats)
 
 .stat-skeleton {
   height: 88px;
-  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background: linear-gradient(90deg, var(--color-neutral-bg) 25%, var(--color-border) 50%, var(--color-neutral-bg) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.2s infinite;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
 }
 @keyframes shimmer { to { background-position: -200% 0; } }
 
 /* Quick actions */
 .section-title-row { margin-bottom: 14px; }
-.section-title { font-size: 15px; font-weight: 700; color: #0f172a; }
+.section-title { font-size: var(--font-size-md); font-weight: 700; color: var(--color-text-primary); }
 .quick-actions { display: flex; flex-direction: column; gap: 10px; }
 .action-card {
   display: flex;
   align-items: center;
   gap: 16px;
   padding: 16px 18px;
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   text-decoration: none;
   transition: box-shadow 0.15s, border-color 0.15s;
 }
 .action-card:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-  border-color: #cbd5e1;
+  box-shadow: var(--shadow-card);
+  border-color: var(--color-border-dark);
   text-decoration: none;
 }
 .action-icon {
   width: 44px;
   height: 44px;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 .action-body { flex: 1; }
-.action-title { font-size: 14px; font-weight: 600; color: #0f172a; }
-.action-desc { font-size: 12px; color: #64748b; margin-top: 2px; }
+.action-title { font-size: var(--font-size-sm); font-weight: 600; color: var(--color-text-primary); }
+.action-desc { font-size: var(--font-size-xs); color: var(--color-text-muted); margin-top: 2px; }
 
 .error-banner {
   padding: 12px 16px;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 8px;
-  color: #b91c1c;
-  font-size: 13px;
+  background: var(--color-danger-bg);
+  border: 1px solid var(--color-danger-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-danger-text);
+  font-size: var(--font-size-sm);
   margin-top: 16px;
 }
 </style>

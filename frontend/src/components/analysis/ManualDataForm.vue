@@ -1,20 +1,16 @@
-<template>
-  <div class="form-card">
-    <!-- Header -->
-    <div class="card-header">
-      <div class="card-header__icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-          fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2
-               M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-        </svg>
+﻿<template>
+  <BaseCard padding="md">
+    <template #header>
+      <div class="header-content">
+        <div class="header-icon-wrap">
+          <ClipboardList size="20" />
+        </div>
+        <div>
+          <h3 class="card-title">Parameter Kimia Air</h3>
+          <p class="card-subtitle">Isi 9 parameter kimia air untuk analisis Random Forest.</p>
+        </div>
       </div>
-      <div>
-        <p class="card-header__title">Parameter Kimia Air</p>
-        <p class="card-header__sub">Isi 9 parameter kimia air untuk analisis Random Forest.</p>
-      </div>
-    </div>
+    </template>
 
     <!-- Grid -->
     <div class="form-grid">
@@ -24,23 +20,27 @@
           <span class="form-label__unit">{{ field.unit }}</span>
           <span class="form-label__req" aria-hidden="true">*</span>
         </label>
-        <input
-          :id="'field-' + field.key"
-          class="form-input"
-          type="number"
-          :placeholder="field.placeholder"
-          step="any"
-          min="0"
-          v-model.number="local[field.key]"
-          @input="sync"
-        />
+        <div class="input-wrapper">
+          <input
+            :id="'field-' + field.key"
+            class="form-input"
+            type="number"
+            :placeholder="field.placeholder"
+            step="any"
+            min="0"
+            v-model.number="local[field.key]"
+            @input="sync"
+          />
+        </div>
       </div>
     </div>
-  </div>
+  </BaseCard>
 </template>
 
 <script setup>
 import { reactive } from 'vue'
+import BaseCard from '../common/BaseCard.vue'
+import { ClipboardList } from 'lucide-vue-next'
 import { useAnalysisStore } from '../../stores/analysisStore'
 
 const store = useAnalysisStore()
@@ -75,107 +75,102 @@ function sync() {
 </script>
 
 <style scoped>
-.form-card {
-  background: #ffffff;
-  border: 1px solid var(--color-border, #e2e8f0);
-  border-radius: 8px;
-  padding: 20px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  box-shadow: var(--shadow-card, 0 1px 3px rgba(0,0,0,.06));
-}
-
 /* Header */
-.card-header {
+.header-content {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 16px;
 }
 
-.card-header__icon {
-  width: 34px;
-  height: 34px;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
+.header-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: #64748b;
+  color: var(--color-text-secondary);
 }
 
-.card-header__title {
-  font-size: 14px;
+.card-title {
+  font-size: var(--font-size-md);
   font-weight: 600;
-  color: #1a202c;
-  margin-bottom: 2px;
+  color: var(--color-text-primary);
+  margin: 0 0 4px 0;
 }
 
-.card-header__sub {
-  font-size: 12px;
-  color: #94a3b8;
+.card-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin: 0;
 }
 
 /* Grid */
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px 24px;
+  gap: 20px 24px;
+}
+
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
 }
 
 .form-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: #374151;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-primary);
   display: flex;
-  align-items: baseline;
-  gap: 4px;
+  align-items: center;
 }
 
 .form-label__unit {
-  font-size: 11px;
-  font-weight: 400;
-  color: #94a3b8;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-text-muted-light);
+  margin-left: 4px;
 }
 
 .form-label__req {
-  color: #ef4444;
-  font-size: 11px;
-  margin-left: auto;
+  color: var(--color-danger);
+  font-size: var(--font-size-xs);
+  margin-left: 4px;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
 }
 
 .form-input {
   width: 100%;
-  padding: 8px 11px;
-  font-size: 13px;
-  color: #1a202c;
-  background: #fff;
-  border: 1px solid #cbd5e1;
-  border-radius: 5px;
-  outline: none;
-  box-sizing: border-box;
-  transition: border-color 0.15s, box-shadow 0.15s;
-  -moz-appearance: textfield;
+  padding: 10px 12px;
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.form-input:hover:not(:disabled) {
+  border-color: var(--color-border-strong);
 }
 
 .form-input:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.form-input::placeholder {
-  color: #cbd5e1;
-}
-
-.form-input::-webkit-outer-spin-button,
-.form-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
 }
 </style>

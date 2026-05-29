@@ -1,909 +1,547 @@
 <template>
-  <div class="article-page">
-    <div class="article-container">
+  <DashboardLayout>
+    <div class="article-detail-view">
       
-      <!-- ========== HEADER ARTIKEL ========== -->
-      <div class="article-header">
-        <div class="header-meta">
-          <span class="category-tag ai">Panduan Pengguna AI</span>
-          <span class="reading-time">15 Maret 2026 · 6 menit membaca</span>
-        </div>
-        <h1 class="article-title">Memahami Hasil Analisis PAKAR-AIR: Panduan Lengkap Interpretasi Kualitas Air</h1>
-        <div class="author-credit">
-          <span class="author">Tim Pakar PAKAR-AIR</span>
-          <span class="separator">|</span>
-          <span class="source">Sumber: Dokumentasi Teknis PAKAR-AIR v1.0</span>
-        </div>
+      <!-- Back Navigation -->
+      <div class="article-top-nav">
+        <router-link to="/education" class="back-link">
+          <ArrowLeft size="16" />
+          <span>Kembali ke Pusat Edukasi</span>
+        </router-link>
       </div>
 
-      <!-- ========== COVER GAMBAR ========== -->
-      <div class="cover-container">
-        <img 
-          :src="coverImage" 
-          alt="Hasil Analisis PAKAR-AIR" 
-          class="cover-image"
-          @error="setPlaceholder"
-        >
-        <p class="cover-caption">
-          PAKAR-AIR memberikan hasil analisis air dalam tiga kategori dengan tingkat kepercayaan (confidence score) | Ilustrasi: PAKAR-AIR
-        </p>
-      </div>
-
-      <!-- ========== KONTEN ARTIKEL ========== -->
-      <div class="article-body">
+      <div class="article-grid">
         
-        <!-- Lead / Pembuka -->
-        <p class="lead-paragraph">
-          <strong>Jakarta, PAKAR-AIR</strong> — Setelah Anda melakukan analisis kualitas air menggunakan 
-          PAKAR-AIR, sistem akan menampilkan hasil prediksi yang terdiri dari <strong>tiga komponen utama</strong>: 
-          kategori kualitas air, tingkat kepercayaan (confidence score), dan rekomendasi penggunaan. 
-          Panduan ini akan membantu Anda memahami setiap komponen tersebut secara mendalam, sehingga 
-          Anda dapat mengambil keputusan yang tepat berdasarkan hasil analisis.
-        </p>
-
-        <p>
-          PAKAR-AIR (Pendeteksi Kualitas Air Berbasis Artificial Intelligence dan Rekognisi Citra) 
-          adalah sistem yang dirancang untuk memberikan estimasi awal kualitas air melalui kombinasi 
-          analisis citra air dan data manual yang Anda inputkan. Sebagai <strong>alat bantu (decision support system)</strong>, 
-          PAKAR-AIR membantu Anda mendapatkan gambaran awal tentang kualitas air secara cepat, mudah, 
-          dan terjangkau — sebelum memutuskan untuk melakukan uji laboratorium lebih lanjut jika diperlukan.
-        </p>
-
-        <!-- ========== BAGIAN 1: TIGA KATEGORI ========== -->
-        <h2 class="section-title">1. Tiga Kategori Kualitas Air</h2>
-        <p>
-          Berdasarkan parameter yang dianalisis (warna, kekeruhan, bau, sumber air, kondisi lingkungan, 
-          serta fitur visual dari citra air), PAKAR-AIR mengklasifikasikan kualitas air ke dalam 
-          <strong>tiga kategori utama</strong>. Berikut penjelasan detail setiap kategori:
-        </p>
-
-        <div class="kategori-grid">
-          <!-- Kategori Aman -->
-          <div class="kategori-card aman">
-            <div class="kategori-icon">A</div>
-            <div class="kategori-title">Aman</div>
-            <div class="kategori-badge">Rekomendasi: Dapat Digunakan</div>
-            <p>Air memenuhi standar fisik dan parameter umum yang ditetapkan oleh Peraturan Menteri Kesehatan RI.</p>
-            <div class="kategori-detail">
-              <strong>Karakteristik:</strong>
-              <ul>
-                <li>Tidak berwarna atau sangat jernih</li>
-                <li>Tidak berbau</li>
-                <li>Tidak berasa</li>
-                <li>Tidak ada partikel tersuspensi</li>
-              </ul>
+        <!-- LEFT: MAIN ARTICLE CARD -->
+        <div class="article-main-column">
+          <BaseCard class="article-card" padding="none">
+            
+            <div class="article-cover-wrap">
+              <img :src="coverImage" alt="Cover Artikel" class="article-cover" loading="lazy">
+              <div class="cover-overlay">
+                <span class="badge-category">Panduan Pengguna</span>
+              </div>
             </div>
-            <div class="kategori-action">Tindakan: Rebus hingga mendidih sebelum dikonsumsi.</div>
-          </div>
+            
+            <div class="article-content">
+              <div class="article-header-meta">
+                <div class="meta-left">
+                  <h1 class="article-title">Memahami Hasil Analisis PAKAR-AIR: Panduan Lengkap Interpretasi Kualitas Air</h1>
+                  <div class="meta-info">
+                    <span class="meta-item"><Calendar size="14" /> 15 Maret 2026</span>
+                    <span class="meta-divider">•</span>
+                    <span class="meta-item"><Clock size="14" /> 6 mnt baca</span>
+                    <span class="meta-divider">•</span>
+                    <span class="meta-item"><User size="14" /> Tim Pakar PAKAR-AIR</span>
+                  </div>
+                </div>
+              </div>
 
-          <!-- Kategori Perlu Perlakuan -->
-          <div class="kategori-card perlu">
-            <div class="kategori-icon">P</div>
-            <div class="kategori-title">Perlu Perlakuan</div>
-            <div class="kategori-badge">Rekomendasi: Harus Diolah</div>
-            <p>Terdeteksi adanya kekeruhan, bau ringan, warna mencurigakan, atau indikasi awal kontaminasi.</p>
-            <div class="kategori-detail">
-              <strong>Karakteristik:</strong>
-              <ul>
-                <li>Sedikit keruh atau berwarna (kekuningan/kehijauan)</li>
-                <li>Bau amis atau tanah (tidak menyengat)</li>
-                <li>Mungkin mengandung partikel tersuspensi</li>
-              </ul>
-            </div>
-            <div class="kategori-action">Tindakan: Saring, endapkan 2-4 jam, rebus 15 menit.</div>
-          </div>
+              <div class="article-body">
+                <p class="lead-text">
+                  Setelah Anda melakukan analisis kualitas air menggunakan PAKAR-AIR, sistem akan menampilkan hasil prediksi yang terdiri dari <strong>tiga komponen utama</strong>: kategori kualitas air, tingkat kepercayaan (confidence score), dan rekomendasi penggunaan.
+                </p>
 
-          <!-- Kategori Tercemar -->
-          <div class="kategori-card tercemar">
-            <div class="kategori-icon">T</div>
-            <div class="kategori-title">Berpotensi Tercemar</div>
-            <div class="kategori-badge">Rekomendasi: Jangan Digunakan</div>
-            <p>Indikasi kuat adanya kontaminan berbahaya (bakteri patogen, logam berat, limbah kimia).</p>
-            <div class="kategori-detail">
-              <strong>Karakteristik:</strong>
-              <ul>
-                <li>Keruh pekat, berwarna (coklat, merah, kehitaman)</li>
-                <li>Bau menyengat (telur busuk, minyak, kimia)</li>
-                <li>Dari lingkungan berisiko tinggi (dekat industri)</li>
-              </ul>
+                <p>
+                  PAKAR-AIR dirancang sebagai <strong>alat bantu (decision support system)</strong> untuk memberikan estimasi awal kualitas air secara cepat melalui integrasi Machine Learning.
+                </p>
+
+                <h2>1. Tiga Kategori Kualitas Air</h2>
+                <p>
+                  Berdasarkan visual dan parameter fisik yang diinput, algoritma kami mengklasifikasikan air ke dalam tiga kategori:
+                </p>
+                <ul class="styled-list">
+                  <li><strong>Aman (Layak Digunakan):</strong> <span class="badge badge-success">Tindakan: Rebus sebelum konsumsi</span> — Air jernih, tidak berbau, tidak berwarna.</li>
+                  <li><strong>Perlu Perlakuan:</strong> <span class="badge badge-warning">Tindakan: Saring & Endapkan</span> — Terdapat kekeruhan ringan atau bau tanah.</li>
+                  <li><strong>Berpotensi Tercemar:</strong> <span class="badge badge-danger">Tindakan: Jangan Digunakan</span> — Indikasi kuat kontaminan. Keruh pekat, bau menyengat (kimia/busuk).</li>
+                </ul>
+
+                <div class="info-callout">
+                  <div class="callout-icon bg-primary-subtle text-primary">
+                    <Info size="20" />
+                  </div>
+                  <div class="callout-content">
+                    <strong>Tips Meningkatkan Confidence Score</strong>
+                    <p>Foto air menggunakan wadah kaca transparan dengan latar belakang putih. Pastikan pencahayaan terang dan hindari bayangan yang menutupi kejernihan air.</p>
+                  </div>
+                </div>
+
+                <h2>2. Memahami Confidence Score</h2>
+                <p>
+                  <strong>Confidence score</strong> (0-100%) menunjukkan seberapa yakin model AI PAKAR-AIR terhadap prediksi yang dihasilkan. Angka ini dipengaruhi oleh resolusi foto, kejernihan input, dan konsistensi parameter teks yang Anda isi.
+                </p>
+                <ul class="styled-list">
+                  <li><strong>Tinggi (80-100%):</strong> Prediksi sangat kuat, hasil dapat diandalkan.</li>
+                  <li><strong>Sedang (60-79%):</strong> Prediksi cukup yakin, disarankan foto ulang.</li>
+                  <li><strong>Rendah (0-59%):</strong> Kualitas input buruk. Sistem kesulitan menganalisis tekstur dan warna.</li>
+                </ul>
+
+                <h2>3. Batasan Sistem PAKAR-AIR</h2>
+                
+                <div class="warning-callout">
+                  <div class="callout-icon bg-danger-subtle text-danger">
+                    <AlertTriangle size="20" />
+                  </div>
+                  <div class="callout-content">
+                    <strong>Bukan Pengganti Uji Lab</strong>
+                    <p>PAKAR-AIR adalah alat skrining awal. Sistem AI kami tidak dapat mendeteksi virus mikroskopis, bakteri, atau kandungan kimia transparan. Jika aplikasi menyatakan "Berpotensi Tercemar", pastikan Anda melakukan uji laboratorium sesungguhnya.</p>
+                  </div>
+                </div>
+
+                <hr class="article-divider" />
+
+                <div class="reference-section">
+                  <h3 class="reference-title">Daftar Referensi</h3>
+                  <ul class="reference-list">
+                    <li>Dokumentasi Teknis Algoritma PAKAR-AIR (v1.0)</li>
+                    <li>Peraturan Menteri Kesehatan RI No. 492/Menkes/Per/IV/2010</li>
+                  </ul>
+                </div>
+              </div>
             </div>
-            <div class="kategori-action">Tindakan: JANGAN digunakan. Segera uji laboratorium.</div>
-          </div>
+          </BaseCard>
         </div>
 
-        <!-- ========== BAGIAN 2: CONFIDENCE SCORE ========== -->
-        <h2 class="section-title">2. Memahami Confidence Score (Tingkat Kepercayaan)</h2>
-        <p>
-          <strong>Confidence score</strong> adalah angka antara 0-100% yang menunjukkan seberapa yakin model AI 
-          PAKAR-AIR terhadap prediksi yang dihasilkan. Angka ini dihitung berdasarkan <strong>kualitas dan kelengkapan data input</strong> 
-          yang Anda berikan, meliputi:
-        </p>
-        <ul class="styled-list">
-          <li>Kualitas foto air (pencahayaan, ketajaman, latar belakang, kontras)</li>
-          <li>Kelengkapan data manual (warna, bau, sumber air, kondisi lingkungan)</li>
-          <li>Kesesuaian antara data visual dan data manual yang diinput</li>
-        </ul>
-
-        <div class="confidence-container">
-          <div class="confidence-bar">
-            <div class="bar high" style="width: 40%">80 - 100%</div>
-            <div class="bar medium" style="width: 35%">60 - 79%</div>
-            <div class="bar low" style="width: 25%">0 - 59%</div>
-          </div>
-          <div class="confidence-legend">
-            <div class="legend-item">
-              <div class="dot high"></div>
-              <div><strong>Tinggi (80-100%)</strong> — Prediksi sangat kuat, hasil dapat diandalkan untuk pengambilan keputusan.</div>
+        <!-- RIGHT: SIDEBAR -->
+        <div class="article-sidebar">
+          
+          <BaseCard class="action-card" padding="lg">
+            <div class="action-icon-wrap">
+              <Droplet size="24" class="text-primary" />
             </div>
-            <div class="legend-item">
-              <div class="dot medium"></div>
-              <div><strong>Sedang (60-79%)</strong> — Prediksi cukup yakin, disarankan mengulang analisis dengan foto yang lebih baik.</div>
+            <h3 class="action-title">Mulai Uji Coba</h3>
+            <p class="action-desc">Terapkan pengetahuan Anda dengan melakukan analisis sampel air nyata.</p>
+            <button class="btn btn--primary btn--full" @click="goToAnalisis">
+              Mulai Analisis
+              <ArrowRight size="16" />
+            </button>
+          </BaseCard>
+
+          <BaseCard padding="md" class="related-card">
+            <h3 class="sidebar-title">Artikel Terkait</h3>
+            <div class="related-list">
+              <div class="related-item" @click="router.push('/artikel')">
+                <div class="related-thumb">
+                  <img src="https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=200&q=80" alt="Thumb" loading="lazy">
+                </div>
+                <div class="related-info">
+                  <h4>Parameter Fisik Air Layak Konsumsi</h4>
+                  <span class="related-meta">Edukasi Dasar</span>
+                </div>
+              </div>
+              <div class="related-item" @click="router.push('/artikel2')">
+                <div class="related-thumb">
+                  <img src="https://images.unsplash.com/photo-1564424224827-cd24b8915874?w=200&q=80" alt="Thumb" loading="lazy">
+                </div>
+                <div class="related-info">
+                  <h4>Dampak Pencemaran Air bagi Kesehatan</h4>
+                  <span class="related-meta">Kesehatan & Lingkungan</span>
+                </div>
+              </div>
             </div>
-            <div class="legend-item">
-              <div class="dot low"></div>
-              <div><strong>Rendah (0-59%)</strong> — Kualitas input tidak memadai. Ulangi analisis dengan pencahayaan lebih baik.</div>
-            </div>
-          </div>
+          </BaseCard>
+
         </div>
-
-        <div class="info-tips">
-          <div class="tips-icon">i</div>
-          <div class="tips-content">
-            <strong>Tips Meningkatkan Confidence Score</strong>
-            <ul>
-              <li>Gunakan foto dengan pencahayaan alami yang cukup (pukul 10.00 - 14.00)</li>
-              <li>Letakkan sampel air dalam wadah bening dengan latar belakang putih bersih</li>
-              <li>Pastikan foto tidak buram, tidak terlalu gelap, dan tidak terkena bayangan</li>
-              <li>Isi seluruh data manual dengan jujur dan teliti</li>
-              <li>Jangan gunakan filter atau efek kamera saat memotret sampel air</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- ========== BAGIAN 3: CONTOH KASUS ========== -->
-        <h2 class="section-title">3. Contoh Hasil Analisis</h2>
-        <p>
-          Berikut adalah beberapa skenario contoh hasil analisis menggunakan PAKAR-AIR untuk membantu 
-          Anda memahami output sistem:
-        </p>
-
-        <div class="examples-list">
-          <div class="example-item">
-            <div class="example-header">📋 Skenario 1: Air Sumur di Daerah Pemukiman</div>
-            <div class="example-body">
-              <p><strong>Data Input:</strong> Foto air jernih, tidak berbau, sumber sumur, lingkungan pemukiman.</p>
-              <p><strong>Output PAKAR-AIR:</strong></p>
-              <ul>
-                <li>Kategori: <span class="badge aman-badge">Aman</span></li>
-                <li>Confidence Score: 94% (Tinggi)</li>
-                <li>Rekomendasi: Air layak digunakan. Rebus sebelum minum.</li>
-              </ul>
-              <p class="interpretasi">Interpretasi: Sangat baik. Data input berkualitas tinggi. Air aman digunakan.</p>
-            </div>
-          </div>
-
-          <div class="example-item">
-            <div class="example-header">📋 Skenario 2: Air Sungai di Dekat Kawasan Industri</div>
-            <div class="example-body">
-              <p><strong>Data Input:</strong> Foto keruh kecoklatan, bau amis, sumber sungai, lingkungan industri.</p>
-              <p><strong>Output PAKAR-AIR:</strong></p>
-              <ul>
-                <li>Kategori: <span class="badge tercemar-badge">Berpotensi Tercemar</span></li>
-                <li>Confidence Score: 87% (Tinggi)</li>
-                <li>Rekomendasi: JANGAN digunakan. Segera uji laboratorium.</li>
-              </ul>
-              <p class="interpretasi">Interpretasi: Peringatan serius. Harus segera ditindaklanjuti dengan uji lab.</p>
-            </div>
-          </div>
-
-          <div class="example-item">
-            <div class="example-header">📋 Skenario 3: Kualitas Input Kurang Baik</div>
-            <div class="example-body">
-              <p><strong>Data Input:</strong> Foto gelap buram, data manual tidak diisi.</p>
-              <p><strong>Output PAKAR-AIR:</strong></p>
-              <ul>
-                <li>Kategori: Tidak dapat ditentukan</li>
-                <li>Confidence Score: 42% (Rendah)</li>
-                <li>Rekomendasi: Ulangi analisis dengan foto yang lebih jelas dan data lengkap.</li>
-              </ul>
-              <p class="interpretasi">Interpretasi: Hasil tidak dapat diandalkan. Perbaiki kualitas input.</p>
-            </div>
-          </div>
-
-          <div class="example-item">
-            <div class="example-header">📋 Skenario 4: Air PDAM di Perkotaan</div>
-            <div class="example-body">
-              <p><strong>Data Input:</strong> Foto air jernih, bau kaporit ringan, sumber PDAM.</p>
-              <p><strong>Output PAKAR-AIR:</strong></p>
-              <ul>
-                <li>Kategori: <span class="badge perlu-badge">Perlu Perlakuan</span></li>
-                <li>Confidence Score: 76% (Sedang)</li>
-                <li>Rekomendasi: Endapkan 30 menit atau gunakan filter karbon aktif.</li>
-              </ul>
-              <p class="interpretasi">Interpretasi: Air PDAM umumnya memenuhi standar, kadar klorin tinggi.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- ========== BAGIAN 4: BATASAN SISTEM ========== -->
-        <h2 class="section-title">4. Batasan PAKAR-AIR (Harus Dipahami)</h2>
-        <p>
-          Sebagai pengguna PAKAR-AIR, penting untuk memahami keterbatasan sistem agar tidak 
-          terjadi kesalahan interpretasi:
-        </p>
-
-        <div class="limitation-box">
-          <div class="limitation-icon">!</div>
-          <div class="limitation-content">
-            <strong>Batasan Fundamental PAKAR-AIR</strong>
-            <ul>
-              <li><strong>Bukan pengganti uji laboratorium:</strong> PAKAR-AIR adalah alat skrining awal (screening tool), BUKAN pengganti uji laboratorium bersertifikasi.</li>
-              <li><strong>Parameter terbatas:</strong> Sistem tidak mendeteksi virus, logam berat kadar sangat rendah, pestisida, atau kontaminan mikroba spesifik secara langsung.</li>
-              <li><strong>Ketergantungan pada kualitas input:</strong> Akurasi prediksi sangat bergantung pada kualitas foto dan kelengkapan data manual.</li>
-              <li><strong>Estimasi, bukan diagnosis:</strong> Hasil PAKAR-AIR adalah estimasi awal berdasarkan dataset pelatihan model AI.</li>
-            </ul>
-          </div>
-        </div>
-
-        <p>
-          Jika confidence score berada di bawah 60% atau kategori menunjukkan "Berpotensi Tercemar", 
-          <strong>WAJIB melakukan konfirmasi ke laboratorium kesehatan lingkungan terdekat</strong> 
-          (Balai Teknis Kesehatan Lingkungan atau Laboratorium Kesehatan Daerah).
-        </p>
-
-        <!-- ========== BAGIAN 5: FAQ ========== -->
-        <h2 class="section-title">5. Pertanyaan yang Sering Diajukan (FAQ)</h2>
-
-        <div class="faq-list">
-          <div class="faq-item">
-            <div class="faq-question">Apakah PAKAR-AIR bisa menggantikan tes laboratorium?</div>
-            <div class="faq-answer">Tidak. PAKAR-AIR adalah alat skrining awal. Untuk keperluan medis, legal, atau komersial, Anda tetap WAJIB menggunakan uji laboratorium standar yang terakreditasi.</div>
-          </div>
-          <div class="faq-item">
-            <div class="faq-question">Seberapa akurat PAKAR-AIR?</div>
-            <div class="faq-answer">PAKAR-AIR memiliki tingkat akurasi sekitar 85-90% untuk deteksi kontaminasi tingkat menengah hingga berat berdasarkan parameter visual.</div>
-          </div>
-          <div class="faq-item">
-            <div class="faq-question">Mengapa confidence score saya rendah padahal air terlihat bersih?</div>
-            <div class="faq-answer">Confidence score rendah biasanya disebabkan oleh kualitas foto yang kurang baik: pencahayaan kurang, gambar buram, latar belakang tidak kontras, atau data manual tidak lengkap.</div>
-          </div>
-          <div class="faq-item">
-            <div class="faq-question">Apakah data analisis saya aman?</div>
-            <div class="faq-answer">Ya. Semua data analisis Anda disimpan secara aman untuk keperluan riwayat analisis. Data hanya dapat diakses oleh akun Anda sendiri.</div>
-          </div>
-        </div>
-
-        <!-- ========== REFERENSI ========== -->
-        <div class="reference-section">
-          <h3>Referensi</h3>
-          <ul>
-            <li>Dokumentasi Teknis PAKAR-AIR (Pendeteksi Kualitas Air Berbasis Artificial Intelligence) v1.0</li>
-            <li>Peraturan Menteri Kesehatan RI No. 492/Menkes/Per/IV/2010 tentang Persyaratan Kualitas Air Minum</li>
-            <li>World Health Organization (WHO) — Guidelines for Drinking-water Quality, 4th Edition</li>
-            <li>United Nations Sustainable Development Goal 6: Clean Water and Sanitation</li>
-          </ul>
-        </div>
-
-        <!-- ========== PENUTUP ========== -->
-        <div class="closing-statement">
-          <p>
-            <strong>Pesan PAKAR-AIR</strong><br>
-            Kami berharap panduan ini membantu Anda memahami hasil analisis air dengan lebih baik. 
-            PAKAR-AIR hadir untuk memberdayakan masyarakat dalam memantau kualitas air secara mandiri. 
-            Dengan pengetahuan yang tepat, Anda dapat melindungi diri, keluarga, dan lingkungan dari 
-            risiko yang terkait dengan air tercemar.
-          </p>
-          <p class="hashtag">#AirBersihUntukSemua #SDG6 #PAKARAIR #AIuntukLingkungan</p>
-        </div>
-
       </div>
-
-      <!-- ========== FOOTER TOMBOL ========== -->
-      <div class="article-footer">
-        <button class="btn-outline" @click="goBack">← Kembali ke Halaman Edukasi</button>
-        <button class="btn-primary" @click="goToAnalysis">Coba Analisis Sekarang →</button>
-      </div>
-
     </div>
-  </div>
+  </DashboardLayout>
 </template>
 
-<script>
-export default {
-  name: 'HomeArticle3',
-  data() {
-    return {
-      coverImagePath: ''
-    }
-  },
-  computed: {
-    coverImage() {
-      if (this.coverImagePath) {
-        return this.coverImagePath
-      }
-      return 'https://placehold.co/860x450/4a6a8a/ffffff?text=Analisis+PAKAR-AIR'
-    }
-  },
-  mounted() {
-    // Mencoba load gambar dari berbagai kemungkinan path
-    const possiblePaths = [
-      '@/assets/images/cover-ai-analisis.jpg',
-      '../assets/images/cover-ai-analisis.jpg',
-      './assets/images/cover-ai-analisis.jpg',
-      '@/assets/images/cover-ai-analisis.png',
-      '../assets/images/cover-ai-analisis.png'
-    ]
-    
-    for (const path of possiblePaths) {
-      try {
-        const imgPath = require(path)
-        this.coverImagePath = imgPath
-        break
-      } catch (e) {
-        // Lanjut ke path berikutnya
-      }
-    }
-  },
-  methods: {
-    setPlaceholder() {
-      this.coverImagePath = 'https://placehold.co/860x450/4a6a8a/ffffff?text=Hasil+Analisis+PAKAR-AIR'
-    },
-    goBack() {
-      this.$router.push('/edukasi')
-    },
-    goToAnalysis() {
-      this.$router.push('/dashboard')
-    }
-  }
+<script setup>
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+import DashboardLayout from '@/layouts/DashboardLayout.vue'
+import BaseCard from '@/components/common/BaseCard.vue'
+import { ArrowLeft, ArrowRight, Calendar, Clock, User, Info, AlertTriangle, Droplet } from 'lucide-vue-next'
+
+const router = useRouter()
+
+// Fixing the corrupt unsplash ID by using a verified working one
+const coverImage = computed(() => {
+  return 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200&q=80'
+})
+
+function goToAnalisis() {
+  router.push('/analysis')
 }
 </script>
 
 <style scoped>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.article-page {
-  background: #f5f2ed;
-  min-height: 100vh;
-  padding: 40px 24px;
-  font-family: 'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
-}
-
-.article-container {
-  max-width: 880px;
-  margin: 0 auto;
-  background: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-}
-
-/* ========== HEADER ========== */
-.article-header {
-  padding: 44px 52px 0 52px;
-}
-
-.header-meta {
+.article-detail-view {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* Top Nav */
+.article-top-nav {
+  margin-bottom: 24px;
+}
+
+.back-link {
+  display: inline-flex;
   align-items: center;
-  margin-bottom: 20px;
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.category-tag {
-  background: #eae4da;
-  color: #6b5a4a;
-  padding: 5px 14px;
-  border-radius: 30px;
-  font-size: 12px;
-}
-
-.category-tag.ai {
-  background: #e0e8e0;
-  color: #4a6a5a;
-}
-
-.reading-time {
-  color: #9a8e82;
-}
-
-.article-title {
-  font-size: 34px;
-  line-height: 1.3;
+  gap: 8px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  text-decoration: none;
   font-weight: 600;
-  color: #3a5a4a;
-  margin-bottom: 18px;
-  letter-spacing: -0.3px;
+  transition: all 0.2s ease;
+  padding: 8px 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
-.author-credit {
-  font-size: 13px;
-  color: #7e8c7e;
-  border-top: 1px solid #e8e0d6;
-  padding-top: 18px;
+.back-link:hover {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  transform: translateX(-4px);
 }
 
-.separator {
-  margin: 0 10px;
-  color: #c0b4a4;
+/* Grid Layout */
+.article-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: start;
 }
 
-/* ========== COVER GAMBAR ========== */
-.cover-container {
-  padding: 30px 52px 0 52px;
+@media (min-width: 1024px) {
+  .article-grid {
+    grid-template-columns: 1fr 340px;
+  }
 }
 
-.cover-image {
+/* Main Article Card */
+.article-card {
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+}
+
+.article-cover-wrap {
+  position: relative;
   width: 100%;
-  border-radius: 16px;
+  height: 320px;
+  background: var(--color-bg);
+}
+
+.article-cover {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
-.cover-caption {
-  font-size: 12px;
-  color: #a89888;
-  text-align: center;
-  margin-top: 12px;
-  font-style: italic;
+.cover-overlay {
+  position: absolute;
+  bottom: 0; left: 0; width: 100%;
+  padding: 24px;
+  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  display: flex;
+  align-items: flex-end;
 }
 
-/* ========== KONTEN ========== */
+.badge-category {
+  background: var(--color-primary);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: var(--shadow-sm);
+}
+
+.article-content {
+  padding: 40px;
+}
+
+@media (max-width: 768px) {
+  .article-content { padding: 24px; }
+}
+
+.article-title {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin: 0 0 16px 0;
+  line-height: 1.3;
+}
+
+.meta-info {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.meta-divider {
+  color: var(--color-border-strong);
+}
+
 .article-body {
-  padding: 24px 52px 48px 52px;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--color-text-secondary);
 }
 
-.lead-paragraph {
-  font-size: 17px;
-  line-height: 1.65;
-  color: #4a5a4a;
-  margin-bottom: 28px;
-  border-left: 3px solid #6a9a6a;
-  padding-left: 22px;
+.article-body h2 {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 40px 0 16px 0;
+  letter-spacing: -0.01em;
 }
 
 .article-body p {
-  font-size: 16px;
-  line-height: 1.7;
-  color: #3a4a3c;
-  margin-bottom: 18px;
+  margin-bottom: 24px;
 }
 
-.section-title {
-  font-size: 24px;
-  font-weight: 600;
-  color: #3a5a4a;
-  margin: 40px 0 20px 0;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #e0d6cc;
+.article-body strong {
+  color: var(--color-text-primary);
+  font-weight: 700;
 }
 
-/* ========== KATEGORI GRID (3 KATEGORI) ========== */
-.kategori-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  margin: 24px 0;
-}
-
-.kategori-card {
-  background: #f8f6f2;
-  border-radius: 16px;
-  padding: 20px;
-  text-align: center;
-  border-top: 3px solid;
-}
-
-.kategori-card.aman { border-top-color: #6a9a6a; }
-.kategori-card.perlu { border-top-color: #d4a06a; }
-.kategori-card.tercemar { border-top-color: #c46a4a; }
-
-.kategori-icon {
-  width: 48px;
-  height: 48px;
-  background: rgba(0,0,0,0.05);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  font-weight: bold;
-  margin: 0 auto 12px auto;
-}
-
-.kategori-title {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.aman .kategori-title { color: #4a6a4a; }
-.perlu .kategori-title { color: #c9a06a; }
-.tercemar .kategori-title { color: #c46a4a; }
-
-.kategori-badge {
-  font-size: 11px;
-  background: rgba(0,0,0,0.05);
-  padding: 4px 8px;
-  border-radius: 20px;
-  display: inline-block;
-  margin-bottom: 12px;
-}
-
-.kategori-card p {
-  font-size: 13px;
-  margin-bottom: 12px;
-  color: #6a7a6a;
-}
-
-.kategori-detail {
-  font-size: 12px;
-  text-align: left;
-  margin: 12px 0;
-  padding: 10px;
-  background: rgba(0,0,0,0.02);
-  border-radius: 10px;
-}
-
-.kategori-detail ul {
-  margin: 6px 0 0 18px;
-  padding: 0;
-}
-
-.kategori-detail li {
-  font-size: 11px;
-  margin-bottom: 4px;
-}
-
-.kategori-action {
-  font-size: 12px;
-  background: rgba(0,0,0,0.03);
-  padding: 10px;
-  border-radius: 8px;
-  margin-top: 10px;
+.lead-text {
+  font-size: 1.15rem;
   font-weight: 500;
+  color: var(--color-text-primary);
+  line-height: 1.7;
 }
 
-/* ========== CONFIDENCE SCORE ========== */
-.confidence-container {
-  background: #f8f6f2;
-  padding: 24px;
-  border-radius: 16px;
-  margin: 24px 0;
+.styled-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px 0;
 }
 
-.confidence-bar {
+.styled-list li {
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 16px;
+}
+
+.styled-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--color-primary);
+  font-size: 1.5rem;
+  line-height: 1;
+  top: -2px;
+}
+
+/* Callouts */
+.info-callout, .warning-callout {
   display: flex;
-  height: 48px;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 20px;
+  gap: 16px;
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  margin: 32px 0;
+  border: 1px solid var(--color-border);
 }
 
-.bar {
+.info-callout { background: color-mix(in srgb, var(--color-primary) 3%, transparent); }
+.warning-callout { background: color-mix(in srgb, var(--color-danger) 3%, transparent); }
+
+.callout-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-weight: bold;
-  font-size: 14px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
-.bar.high { background: #6a9a6a; }
-.bar.medium { background: #d4a06a; }
-.bar.low { background: #c46a4a; }
+.bg-primary-subtle { background: color-mix(in srgb, var(--color-primary) 12%, transparent); }
+.bg-danger-subtle { background: color-mix(in srgb, var(--color-danger) 12%, transparent); }
+.text-primary { color: var(--color-primary); }
+.text-danger { color: var(--color-danger); }
 
-.confidence-legend {
+.callout-content {
   display: flex;
   flex-direction: column;
-  gap: 12px;
 }
 
-.legend-item {
+.callout-content strong {
+  font-size: var(--font-size-md);
+  margin-bottom: 4px;
+  color: var(--color-text-primary);
+}
+
+.callout-content p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+}
+
+/* Badges Inline */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  margin-left: 4px;
+}
+.badge-danger { background: color-mix(in srgb, var(--color-danger) 10%, transparent); color: var(--color-danger); }
+.badge-warning { background: color-mix(in srgb, var(--color-warning) 15%, transparent); color: color-mix(in srgb, var(--color-warning) 80%, black); }
+.badge-success { background: color-mix(in srgb, var(--color-success) 10%, transparent); color: var(--color-success); }
+
+/* References */
+.article-divider {
+  border: none;
+  border-top: 1px solid var(--color-border-light);
+  margin: 48px 0 32px 0;
+}
+
+.reference-section {
+  background: var(--color-bg);
+  padding: 24px;
+  border-radius: var(--radius-md);
+}
+
+.reference-title {
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-muted);
+  margin: 0 0 12px 0;
+  font-weight: 700;
+}
+
+.reference-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+.reference-list li { margin-bottom: 8px; }
+
+/* Sidebar */
+.article-sidebar {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  font-size: 13px;
-  line-height: 1.4;
+  flex-direction: column;
+  gap: 24px;
+  position: sticky;
+  top: 24px;
 }
 
-.dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  margin-top: 3px;
-  flex-shrink: 0;
+.action-card {
+  text-align: center;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
+  background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-bg) 100%);
 }
 
-.dot.high { background: #6a9a6a; }
-.dot.medium { background: #d4a06a; }
-.dot.low { background: #c46a4a; }
-
-/* ========== INFO TIPS ========== */
-.info-tips {
-  background: #e8f0e8;
-  padding: 20px;
-  border-radius: 14px;
-  margin: 24px 0;
-  display: flex;
-  gap: 16px;
-}
-
-.tips-icon {
-  width: 32px;
-  height: 32px;
-  background: #4a6a4a;
-  color: white;
+.action-icon-wrap {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
+}
+
+.action-title {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 8px 0;
+}
+
+.action-desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0 0 20px 0;
+}
+
+.btn--full {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.sidebar-title {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 16px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.related-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.related-item {
+  display: flex;
+  gap: 12px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--radius-md);
+  transition: background 0.2s;
+}
+
+.related-item:hover {
+  background: var(--color-bg);
+}
+
+.related-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
   flex-shrink: 0;
 }
 
-.tips-content strong {
-  display: block;
-  margin-bottom: 8px;
-  color: #2c4a2e;
+.related-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.tips-content ul {
-  margin: 0;
-  padding-left: 18px;
+.related-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.tips-content li {
-  margin-bottom: 6px;
-  font-size: 13px;
-}
-
-/* ========== CONTOH KASUS ========== */
-.examples-list {
-  margin: 20px 0;
-}
-
-.example-item {
-  border: 1px solid #e0d6cc;
-  border-radius: 12px;
-  margin-bottom: 16px;
+.related-info h4 {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 4px 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.example-header {
-  background: #f0ece4;
-  padding: 12px 16px;
-  font-weight: 600;
-  color: #5a4a3a;
-}
-
-.example-body {
-  padding: 16px;
-}
-
-.example-body p {
-  font-size: 13px;
-  margin-bottom: 8px;
-}
-
-.example-body ul {
-  margin: 6px 0 8px 20px;
-}
-
-.example-body li {
-  font-size: 13px;
-  margin-bottom: 4px;
-}
-
-.interpretasi {
-  font-size: 12px;
-  color: #6a7a6a;
-  font-style: italic;
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px dashed #e0d6cc;
-}
-
-/* ========== BADGES ========== */
-.badge {
-  padding: 2px 10px;
-  border-radius: 20px;
+.related-meta {
   font-size: 11px;
-  font-weight: 500;
-}
-
-.aman-badge { background: #d4e5d4; color: #3d6b3d; }
-.perlu-badge { background: #f0e5c8; color: #a5832e; }
-.tercemar-badge { background: #f0d6d6; color: #b85c5c; }
-
-/* ========== LIMITATION BOX ========== */
-.limitation-box {
-  background: #fef6e8;
-  border-left: 4px solid #d4a06a;
-  padding: 18px 22px;
-  border-radius: 14px;
-  margin: 24px 0;
-  display: flex;
-  gap: 16px;
-}
-
-.limitation-icon {
-  width: 28px;
-  height: 28px;
-  background: #d4a06a;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  flex-shrink: 0;
-}
-
-.limitation-content ul {
-  margin: 10px 0 0 18px;
-}
-
-.limitation-content li {
-  margin-bottom: 8px;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-/* ========== FAQ ========== */
-.faq-list {
-  margin: 20px 0;
-}
-
-.faq-item {
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #e0d6cc;
-}
-
-.faq-question {
+  color: var(--color-primary);
   font-weight: 600;
-  font-size: 15px;
-  color: #4a6a4a;
-  margin-bottom: 8px;
-}
-
-.faq-answer {
-  font-size: 14px;
-  color: #7a8a7a;
-  line-height: 1.55;
-}
-
-/* ========== REFERENSI ========== */
-.reference-section {
-  background: #f8f6f2;
-  padding: 20px 24px;
-  border-radius: 14px;
-  margin: 36px 0 24px 0;
-}
-
-.reference-section h3 {
-  font-size: 15px;
-  font-weight: 600;
-  color: #6b5a4a;
-  margin-bottom: 12px;
-}
-
-.reference-section ul {
-  margin: 0;
-  padding-left: 20px;
-}
-
-.reference-section li {
-  font-size: 12px;
-  color: #7e8c7e;
-  margin-bottom: 6px;
-}
-
-/* ========== PENUTUP ========== */
-.closing-statement {
-  background: #faf6f0;
-  padding: 24px 28px;
-  border-radius: 14px;
-  margin-top: 32px;
-}
-
-.closing-statement p {
-  margin-bottom: 12px;
-  font-size: 15px;
-  line-height: 1.6;
-  color: #5a6a5a;
-}
-
-.hashtag {
-  font-size: 12px;
-  color: #b0a090;
-  text-align: center;
-  margin-top: 12px;
-  font-style: normal;
-}
-
-/* ========== FOOTER ========== */
-.article-footer {
-  padding: 20px 52px 44px 52px;
-  border-top: 1px solid #e8e0d6;
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  background: #fefcf9;
-}
-
-.btn-outline, .btn-primary {
-  padding: 12px 28px;
-  border-radius: 40px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  font-family: inherit;
-  transition: all 0.2s;
-}
-
-.btn-outline {
-  background: transparent;
-  border: 1px solid #d0c0b0;
-  color: #6b5a4a;
-}
-
-.btn-outline:hover {
-  background: #f0ece4;
-}
-
-.btn-primary {
-  background: #4a6a4a;
-  border: none;
-  color: white;
-}
-
-.btn-primary:hover {
-  background: #2c4a2e;
-}
-
-/* ========== RESPONSIF ========== */
-@media (max-width: 700px) {
-  .article-header, .cover-container, .article-body, .article-footer {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-  
-  .article-title {
-    font-size: 24px;
-  }
-  
-  .header-meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-  
-  .kategori-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  
-  .confidence-bar {
-    flex-direction: column;
-    height: auto;
-  }
-  
-  .bar {
-    padding: 8px;
-  }
-  
-  .info-tips {
-    flex-direction: column;
-  }
-  
-  .article-footer {
-    flex-direction: column;
-  }
+  text-transform: uppercase;
 }
 </style>

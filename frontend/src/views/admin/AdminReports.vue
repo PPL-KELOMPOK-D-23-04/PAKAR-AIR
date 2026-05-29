@@ -176,24 +176,24 @@ onMounted(fetchReports)
   gap: 16px;
   margin-bottom: 24px;
 }
-.page-title { font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
-.page-subtitle { font-size: 13px; color: #64748b; }
+.page-title { font-size: var(--font-size-xl); font-weight: 700; color: var(--color-text-primary); margin-bottom: 4px; }
+.page-subtitle { font-size: var(--font-size-sm); color: var(--color-text-muted); }
 
 .btn-export {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 10px 18px;
-  background: #0f172a;
-  color: #fff;
+  background: var(--color-text-primary);
+  color: var(--color-surface);
   border: none;
-  border-radius: 8px;
-  font-size: 13px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s;
 }
-.btn-export:hover { background: #1e293b; }
+.btn-export:hover { background: var(--color-nav-active); }
 .btn-export:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .filter-bar {
@@ -202,53 +202,53 @@ onMounted(fetchReports)
   flex-wrap: wrap;
   align-items: flex-end;
   padding: 16px;
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   margin-bottom: 16px;
 }
 .filter-group { display: flex; flex-direction: column; gap: 5px; }
-.filter-label { font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; }
+.filter-label { font-size: var(--font-size-xs); font-weight: 600; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
 .filter-input {
   padding: 8px 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 7px;
-  font-size: 13px;
-  color: #1e293b;
-  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  background: var(--color-neutral-bg);
   outline: none;
 }
-.filter-input:focus { border-color: #3b82f6; background: #fff; }
+.filter-input:focus { border-color: var(--color-accent); background: var(--color-surface); }
 .btn-filter {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 9px 16px;
-  background: #3b82f6;
-  color: #fff;
+  background: var(--color-accent);
+  color: var(--color-surface);
   border: none;
-  border-radius: 7px;
-  font-size: 13px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s;
 }
-.btn-filter:hover { background: #2563eb; }
+.btn-filter:hover { background: var(--color-primary); }
 
 .error-banner {
   padding: 12px 16px;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 8px;
-  color: #b91c1c;
-  font-size: 13px;
+  background: var(--color-danger-bg);
+  border: 1px solid var(--color-danger-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-danger-text);
+  font-size: var(--font-size-sm);
   margin-bottom: 14px;
 }
 
 .table-card {
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
   overflow: hidden;
 }
 .reports-table {
@@ -256,27 +256,27 @@ onMounted(fetchReports)
   border-collapse: collapse;
 }
 .reports-table thead tr {
-  background: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
+  background: var(--color-neutral-bg);
+  border-bottom: 1px solid var(--color-border);
 }
 .reports-table th {
   padding: 12px 16px;
   text-align: left;
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #64748b;
+  color: var(--color-text-muted);
 }
 .reports-table tbody tr {
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--color-neutral-bg);
   transition: background 0.1s;
 }
 .reports-table tbody tr:last-child { border-bottom: none; }
-.reports-table tbody tr:hover { background: #fafbfc; }
-.reports-table td { padding: 12px 16px; font-size: 13px; color: #1e293b; }
-.td-num { color: #94a3b8; font-size: 12px; }
-.td-date { color: #94a3b8; font-size: 12px; }
+.reports-table tbody tr:hover { background: var(--color-neutral-bg); }
+.reports-table td { padding: 12px 16px; font-size: var(--font-size-sm); color: var(--color-text-primary); }
+.td-num { color: var(--color-text-muted-light); font-size: var(--font-size-xs); }
+.td-date { color: var(--color-text-muted-light); font-size: var(--font-size-xs); }
 
 .badge {
   display: inline-flex;
@@ -284,11 +284,11 @@ onMounted(fetchReports)
   gap: 4px;
   padding: 3px 10px;
   border-radius: 20px;
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   font-weight: 600;
 }
-.badge--layak { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
-.badge--tidak { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+.badge--layak { background: var(--color-success-bg); color: var(--color-success-text); border: 1px solid var(--color-success-border); }
+.badge--tidak { background: var(--color-danger-bg); color: var(--color-danger-text); border: 1px solid var(--color-danger-border); }
 
 .loading-state {
   display: flex;
@@ -296,14 +296,14 @@ onMounted(fetchReports)
   justify-content: center;
   gap: 12px;
   padding: 60px;
-  color: #64748b;
-  font-size: 14px;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
 }
 .spinner {
   width: 20px;
   height: 20px;
-  border: 2px solid #e2e8f0;
-  border-top-color: #3b82f6;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-accent);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
@@ -314,6 +314,6 @@ onMounted(fetchReports)
   padding: 60px 20px;
 }
 .empty-icon { font-size: 40px; margin-bottom: 12px; }
-.empty-state p { font-size: 14px; font-weight: 600; color: #0f172a; }
-.empty-sub { font-size: 13px; color: #64748b; font-weight: 400; margin-top: 4px; }
+.empty-state p { font-size: var(--font-size-sm); font-weight: 600; color: var(--color-text-primary); }
+.empty-sub { font-size: var(--font-size-sm); color: var(--color-text-muted); font-weight: 400; margin-top: 4px; }
 </style>

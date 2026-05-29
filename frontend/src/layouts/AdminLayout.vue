@@ -1,17 +1,37 @@
 <template>
   <div class="admin-root">
 
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+      <div class="mobile-header__logo">
+        <span class="mobile-header__logo-mark">PAKAR-AIR</span>
+      </div>
+      <button class="hamburger-btn" @click="isMobileMenuOpen = true" aria-label="Buka Menu">
+        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" :class="{ 'sidebar-overlay--open': isMobileMenuOpen }" @click="isMobileMenuOpen = false"></div>
+
     <!-- SIDEBAR ADMIN -->
-    <aside class="sidebar" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
+    <aside class="sidebar" :class="{ 'sidebar-collapsed': sidebarCollapsed, 'sidebar--open': isMobileMenuOpen }">
       <div class="sidebar-header">
         <div class="sidebar-logo">
-          <div class="logo-icon">💧</div>
+          <div class="logo-icon">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+            </svg>
+          </div>
           <span class="logo-text" v-show="!sidebarCollapsed">PAKAR-AIR</span>
         </div>
         <button
           class="collapse-btn"
           @click="sidebarCollapsed = !sidebarCollapsed"
           aria-label="Toggle Sidebar"
+          v-show="!isMobileView"
         >
           <svg
             width="16"
@@ -32,7 +52,7 @@
         <span class="badge-label">Panel Admin</span>
       </div>
 
-      <nav class="sidebar-nav">
+      <nav class="sidebar-nav" @click="handleMobileNavClick">
         <RouterLink to="/admin" exact class="nav-item" active-class="nav-item--active">
           <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -104,7 +124,7 @@
         <div class="topbar-right">
           <div class="user-info">
             <div class="avatar">{{ userInitial }}</div>
-            <div class="user-meta" v-show="!isMobile">
+            <div class="user-meta" v-show="!isMobileView">
               <span class="user-name">{{ userName }}</span>
               <span class="user-role">Administrator</span>
             </div>
@@ -121,7 +141,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 
@@ -130,11 +150,28 @@ const router = useRouter()
 
 const sidebarCollapsed = ref(false)
 const isLoggingOut = ref(false)
-const isMobile = ref(window.innerWidth < 640)
+const isMobileMenuOpen = ref(false)
+const isMobileView = ref(window.innerWidth <= 768)
+
+function updateWidth() {
+  isMobileView.value = window.innerWidth <= 768
+  if (isMobileView.value) {
+    sidebarCollapsed.value = false
+  }
+}
+
+onMounted(() => window.addEventListener('resize', updateWidth))
+onUnmounted(() => window.removeEventListener('resize', updateWidth))
+
+function handleMobileNavClick() {
+  if (isMobileView.value) {
+    isMobileMenuOpen.value = false
+  }
+}
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
 
-const token = computed(() => sessionStorage.getItem('token'))
+const token = computed(() => sessionStorage.getItem('token') || sessionStorage.getItem('pakar_air_token'))
 
 const userName = computed(() => {
   try {
@@ -185,31 +222,84 @@ async function handleLogout() {
 /* ── Root ── */
 .admin-root {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
-  background: #f0f4f8;
-  font-family: 'Inter', 'Segoe UI', sans-serif;
+  background: var(--color-bg);
+  font-family: var(--font-sans);
+}
+
+/* ── Mobile Header ── */
+.mobile-header {
+  display: none;
+  height: var(--topbar-height);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 150;
+}
+
+.mobile-header__logo-mark {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: 0.3px;
+}
+
+.hamburger-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  padding: 4px;
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.4);
+  z-index: 150;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.sidebar-overlay--open {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* ── Sidebar ── */
 .sidebar {
-  width: 240px;
-  background: linear-gradient(180deg, #0f172a 0%, #1e3a5f 100%);
+  width: var(--sidebar-width);
+  background: var(--bg-sidebar-admin);
   display: flex;
   flex-direction: column;
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s;
   position: fixed;
   height: 100vh;
-  z-index: 100;
+  z-index: 200;
   overflow: hidden;
+  left: 0;
+  top: 0;
 }
-.sidebar-collapsed { width: 72px; }
+.sidebar-collapsed { width: var(--sidebar-width-collapsed); }
 
 .sidebar-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1.25rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--border-sidebar-admin);
 }
 .sidebar-logo {
   display: flex;
@@ -220,19 +310,19 @@ async function handleLogout() {
 .logo-icon {
   width: 2.25rem;
   height: 2.25rem;
-  background: linear-gradient(135deg, #3b82f6, #06b6d4);
-  border-radius: 10px;
+  background: linear-gradient(135deg, var(--color-logo-start), var(--color-logo-end));
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  color: #fff;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  box-shadow: var(--shadow-md);
 }
 .logo-text {
   font-weight: 800;
   color: #fff;
-  font-size: 0.9rem;
+  font-size: var(--font-size-md);
   letter-spacing: 0.05em;
   white-space: nowrap;
 }
@@ -240,7 +330,7 @@ async function handleLogout() {
 .collapse-btn {
   background: rgba(255,255,255,0.06);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   padding: 6px;
   cursor: pointer;
   color: rgba(255,255,255,0.5);
@@ -278,10 +368,10 @@ async function handleLogout() {
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 13px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--text-sidebar-admin);
   text-decoration: none;
   border: none;
   background: transparent;
@@ -293,32 +383,24 @@ async function handleLogout() {
 }
 .nav-item:hover {
   background: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  color: var(--text-sidebar-admin-hover);
 }
 .nav-item--active,
 .router-link-active.nav-item {
-  background: rgba(59, 130, 246, 0.2);
-  color: #93c5fd;
-}
-
-.nav-item--secondary {
-  color: rgba(255,255,255,0.4);
-}
-.nav-item--secondary:hover {
-  background: rgba(255,255,255,0.05);
-  color: rgba(255,255,255,0.7);
+  background: var(--color-nav-active-bg);
+  color: var(--text-sidebar-admin-active);
 }
 
 .nav-item--logout {
-  color: rgba(248, 113, 113, 0.7);
+  color: var(--text-sidebar-admin-logout);
 }
 .nav-item--logout:hover {
-  background: rgba(248, 113, 113, 0.1);
+  background: var(--bg-sidebar-admin-logout);
   color: #f87171;
 }
 
 .sidebar-divider {
-  border-top: 1px solid rgba(255,255,255,0.07);
+  border-top: 1px solid var(--border-sidebar-admin);
   margin: 4px 0;
 }
 
@@ -332,29 +414,33 @@ async function handleLogout() {
 /* ── Main wrapper ── */
 .main-wrapper {
   flex: 1;
-  margin-left: 240px;
+  margin-left: var(--sidebar-width);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .main-wrapper--expanded {
-  margin-left: 72px;
+  margin-left: var(--sidebar-width-collapsed);
 }
 
 /* ── Topbar ── */
 .topbar {
-  height: 60px;
-  background: #fff;
-  border-bottom: 1px solid #e2e8f0;
+  height: var(--topbar-height);
+  background: rgba(255, 255, 255, 0.80);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 28px;
+  padding: 0 var(--content-padding);
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 100;
   gap: 16px;
+  transition: all 0.2s ease;
 }
 .topbar-left {
   display: flex;
@@ -365,54 +451,86 @@ async function handleLogout() {
   display: flex;
   align-items: center;
   gap: 5px;
-  background: #eff6ff;
-  color: #2563eb;
-  font-size: 11px;
+  background: var(--color-info-bg);
+  color: var(--color-accent-hover);
+  font-size: var(--font-size-xs);
   font-weight: 700;
   letter-spacing: 0.04em;
   padding: 4px 10px;
   border-radius: 20px;
-  border: 1px solid #bfdbfe;
+  border: 1px solid var(--color-info-border);
 }
 .topbar-breadcrumb {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
-  color: #94a3b8;
+  font-size: var(--font-size-base);
+  color: var(--color-text-breadcrumb);
 }
 .breadcrumb-active {
-  color: #1e293b;
+  color: var(--color-text-primary);
   font-weight: 600;
 }
 
 .topbar-right { display: flex; align-items: center; gap: 12px; }
 .user-info { display: flex; align-items: center; gap: 10px; }
 .avatar {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #3b82f6, #06b6d4);
+  background: linear-gradient(135deg, var(--color-logo-start), var(--color-logo-end));
   color: #fff;
-  font-size: 13px;
+  font-size: var(--font-size-base);
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
 }
 .user-meta {
   display: flex;
   flex-direction: column;
   line-height: 1.2;
 }
-.user-name { font-size: 13px; font-weight: 600; color: #1e293b; }
-.user-role { font-size: 11px; color: #94a3b8; }
+.user-name { font-size: var(--font-size-base); font-weight: 600; color: var(--color-text-primary); }
+.user-role { font-size: var(--font-size-xs); color: var(--color-text-muted); }
 
 /* ── Content ── */
 .main-content {
   flex: 1;
-  padding: 28px;
-  background: #f0f4f8;
+  padding: var(--content-padding);
+  background: var(--color-bg);
+}
+
+/* ── Mobile Responsive ── */
+@media (max-width: 768px) {
+  .admin-root {
+    flex-direction: column;
+  }
+  .mobile-header {
+    display: flex;
+  }
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  .sidebar--open {
+    transform: translateX(0);
+  }
+  .sidebar-overlay {
+    display: block;
+  }
+  .main-wrapper {
+    margin-left: 0;
+  }
+  .main-wrapper--expanded {
+    margin-left: 0;
+  }
+  .topbar {
+    display: none;
+  }
+  .main-content {
+    padding: 1rem;
+  }
 }
 </style>
