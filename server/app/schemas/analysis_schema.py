@@ -65,6 +65,7 @@ class AnalysisSummary(BaseModel):
     water_source: Optional[str] = None
     water_color: Optional[str] = None
     ph: Optional[float] = None
+    original_filename: Optional[str] = None
 
 # ─── Full Analysis Detail ────────────────────────────────────────
 
@@ -97,3 +98,19 @@ class HistoryResponse(BaseModel):
     page: int
     per_page: int
     total_pages: int
+
+
+# ─── History Detail ──────────────────────────────────────────────
+
+class HistoryDetailResponse(BaseModel):
+    """Flat detail response for GET /api/analysis/history/:id (HistoryDetailView)."""
+    id: UUID
+    created_at: datetime
+    status: str
+    category: Optional[str] = None
+    confidence: Optional[float] = None
+    image_path: Optional[str] = None
+    manual_input: Optional[dict] = None
+    explanation: Optional[str] = None
+    recommendation: Optional[str] = None
+    model_config = ConfigDict(from_attributes=True)
