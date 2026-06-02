@@ -13,7 +13,8 @@ from app.utils.supabase import get_supabase
 from app.utils.file_handler import upload_to_supabase
 from app.models.models import Profile
 from app.schemas.analysis_schema import (
-    AnalysisSubmitResponse, AnalysisDetailResponse, AnalysisResultResponse, HistoryResponse
+    AnalysisSubmitResponse, AnalysisDetailResponse, AnalysisResultResponse, HistoryResponse,
+    HistoryDetailResponse
 )
 from app.services import analysis_service
 
@@ -108,6 +109,7 @@ async def get_history(
             "category": a.result.category if a.result else None,
             "confidence": a.result.confidence if a.result else None,
             "image_path": a.image_input.image_path if a.image_input else None,
+            "original_filename": a.image_input.original_filename if a.image_input else None,
             "ph": manual_data.get("ph"),
             "Turbidity": manual_data.get("Turbidity"),
         })
@@ -223,6 +225,29 @@ async def export_single_analysis(
         } if result else None,
         "image_path": analysis.image_input.image_path if analysis.image_input else None,
     }
+
+@router.get("/history/{analysis_id}", response_model=HistoryDetailResponse)
+async def get_history_detail(
+    analysis_id: UUID,
+    current_user: Profile = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    KF-07 Detail: Get flat history detail for HistoryDetailView.
+    """
+    analysis = analysis_service.get_history_detail(analysis_id, current_user.id, db)
+    return {
+        "id": analysis.id,
+        "created_at": analysis.created_at,
+        "status": analysis.status.value if analysis.status else "unknown",
+        "category": analysis.result.category if analysis.result else None,
+        "confidence": analysis.result.confidence if analysis.result else None,
+        "image_path": analysis.image_input.image_path if analysis.image_input else None,
+        "manual_input": analysis.manual_input.data_json if analysis.manual_input else None,
+        "explanation": analysis.result.explanation if analysis.result else None,
+        "recommendation": analysis.result.recommendation if analysis.result else None,
+    }
+
 
 @router.get("/{analysis_id}")
 async def get_analysis(
