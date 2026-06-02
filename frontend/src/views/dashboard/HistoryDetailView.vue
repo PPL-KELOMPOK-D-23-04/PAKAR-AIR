@@ -37,8 +37,8 @@
               {{ formatDate(detail.created_at) }}
             </p>
           </div>
-          <span class="status-badge" :class="'status--' + detail.result?.category">
-            {{ detail.result?.category === 'layak' ? '✅ Layak' : '❌ Tidak Layak' }}
+          <span class="status-badge" :class="'status--' + detail.category">
+            {{ detail.category === 'layak' ? '✅ Layak' : '❌ Tidak Layak' }}
           </span>
         </div>
 
@@ -48,7 +48,7 @@
           <div class="card">
             <h2 class="card-title">Foto Sampel Air</h2>
             <div class="image-wrap">
-              <img v-if="detail.image_input?.image_path" :src="detail.image_input.image_path" alt="Sampel Air" class="detail-image" />
+              <img v-if="detail.image_path" :src="detail.image_path" alt="Sampel Air" class="detail-image" />
               <div v-else class="no-image">
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -62,25 +62,25 @@
           <div class="card">
             <h2 class="card-title">Hasil Analisis</h2>
             <div class="result-wrap">
-              <div class="result-category" :class="'result--' + detail.result?.category">
-                {{ detail.result?.category === 'layak' ? '✅ Layak Digunakan' : '❌ Tidak Layak Digunakan' }}
+              <div class="result-category" :class="'result--' + detail.category">
+                {{ detail.category === 'layak' ? '✅ Layak Digunakan' : '❌ Tidak Layak Digunakan' }}
               </div>
-              <div class="confidence-bar-wrap" v-if="detail.result?.confidence">
+              <div class="confidence-bar-wrap" v-if="detail.confidence">
                 <div class="confidence-label">
                   <span>Tingkat Kepercayaan</span>
-                  <span class="confidence-value">{{ Math.round(detail.result.confidence * 100) }}%</span>
+                  <span class="confidence-value">{{ Math.round(detail.confidence * 100) }}%</span>
                 </div>
                 <div class="confidence-bar">
-                  <div class="confidence-fill" :style="{ width: (detail.result.confidence * 100) + '%' }" :class="'fill--' + detail.result?.category"></div>
+                  <div class="confidence-fill" :style="{ width: (detail.confidence * 100) + '%' }" :class="'fill--' + detail.category"></div>
                 </div>
               </div>
-              <div v-if="detail.result?.explanation" class="explanation">
+              <div v-if="detail.explanation" class="explanation">
                 <h3 class="section-label">Penjelasan</h3>
-                <p>{{ detail.result.explanation }}</p>
+                <p>{{ detail.explanation }}</p>
               </div>
-              <div v-if="detail.result?.recommendation" class="recommendation">
+              <div v-if="detail.recommendation" class="recommendation">
                 <h3 class="section-label">Rekomendasi</h3>
-                <p>{{ detail.result.recommendation }}</p>
+                <p>{{ detail.recommendation }}</p>
               </div>
             </div>
           </div>
@@ -122,7 +122,7 @@ async function fetchDetail() {
   error.value = null
   try {
     const token = localStorage.getItem('pakar_air_token') || localStorage.getItem('token')
-    const res = await axios.get(`${API_BASE}/api/analysis/${route.params.id}`, {
+    const res = await axios.get(`${API_BASE}/api/analysis/history/${route.params.id}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     detail.value = res.data
