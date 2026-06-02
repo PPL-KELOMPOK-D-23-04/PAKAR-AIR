@@ -1,0 +1,9 @@
+node_modules/
+output/reports/
+output/json/
+output/selenium/
+screenshots/
+test-results/
+playwright-report/
+.playwright/
+*.side

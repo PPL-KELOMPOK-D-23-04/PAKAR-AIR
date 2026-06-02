@@ -1,0 +1,35 @@
+{
+  "name": "pakar-air-automation",
+  "version": "1.0.0",
+  "description": "Enterprise Automation Testing Subsystem for PAKAR-AIR — Playwright → AST → Universal JSON → Exporter Pipeline",
+  "private": true,
+  "scripts": {
+    "test": "npx playwright test",
+    "test:auth": "npx playwright test playwright/tests/auth/",
+    "test:analysis": "npx playwright test playwright/tests/analysis/",
+    "test:history": "npx playwright test playwright/tests/history/",
+    "test:profile": "npx playwright test playwright/tests/profile/",
+    "test:notification": "npx playwright test playwright/tests/notification/",
+    "test:admin": "npx playwright test playwright/tests/admin/",
+    "test:security": "npx playwright test playwright/tests/security/",
+    "test:e2e": "npx playwright test playwright/tests/e2e/",
+    "test:headed": "npx playwright test --headed",
+    "test:debug": "npx playwright test --debug",
+    "export:side": "node exporters/index.js --format=selenium-ide",
+    "export:master": "node exporters/index.js --all",
+    "export:modules": "node exporters/index.js --modular",
+    "export:all": "npm run export:master && npm run export:modules",
+    "pipeline": "npm run test && npm run export:all",
+    "report": "npx playwright show-report output/reports/html",
+    "report:open": "npx playwright show-report output/reports/html",
+    "validate:side": "node exporters/side-validator.js",
+    "clean": "node -e \"const fs=require('fs');['output/json','output/selenium','output/reports','screenshots'].forEach(d=>{if(fs.existsSync(d))fs.rmSync(d,{recursive:true});fs.mkdirSync(d,{recursive:true})})\""
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "playwright": "^1.60.0"
+  },
+  "dependencies": {
+    "uuid": "^9.0.0"
+  }
+}

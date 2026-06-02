@@ -30,6 +30,7 @@
           <div class="toolbar-search">
             <Search size="16" class="toolbar-icon" />
             <input
+              id="history-search"
               v-model="searchQuery"
               type="text"
               class="toolbar-input"
@@ -48,6 +49,7 @@
             </div>
             <div class="toolbar-date-wrap">
               <input
+                id="history-date"
                 v-model="filterDate"
                 type="date"
                 class="toolbar-input date-input"

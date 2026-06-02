@@ -72,6 +72,7 @@
               
               <div class="form-grid">
                 <BaseInput 
+                  id="profile-name"
                   v-model="form.nama" 
                   label="Nama Lengkap" 
                   placeholder="Mis. John Doe"
@@ -79,6 +80,7 @@
                   required
                 />
                 <BaseInput 
+                  id="profile-email"
                   v-model="form.email" 
                   type="email"
                   label="Alamat Email" 
@@ -109,6 +111,7 @@
               <div class="security-form">
                 <div class="form-group-section">
                   <BaseInput 
+                    id="profile-old-password"
                     v-model="securityForm.oldPassword" 
                     type="password"
                     label="Kata Sandi Saat Ini" 
@@ -124,6 +127,7 @@
                   <h4 class="sub-section-title">Kata Sandi Baru</h4>
                   <div class="new-password-grid">
                     <BaseInput 
+                      id="profile-new-password"
                       v-model="securityForm.newPassword" 
                       type="password"
                       label="Kata Sandi Baru" 
@@ -132,6 +136,7 @@
                       required
                     />
                     <BaseInput 
+                      id="profile-confirm-password"
                       v-model="securityForm.confirmPassword" 
                       type="password"
                       label="Konfirmasi Sandi Baru" 

@@ -22,6 +22,7 @@
         <div class="input-wrapper">
           <span class="material-icons input-icon">mail</span>
           <input
+            id="email"
             v-model="form.email"
             type="email"
             placeholder="contoh@email.com"
@@ -40,6 +41,7 @@
           <div class="input-wrapper">
             <span class="material-icons input-icon">lock</span>
             <input
+              id="password"
               v-model="form.password"
               type="password"
               placeholder="Password"

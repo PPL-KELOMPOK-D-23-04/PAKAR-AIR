@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <BaseCard padding="md">
     <template #header>
       <div class="header-content">
@@ -28,8 +28,7 @@
             :placeholder="field.placeholder"
             step="any"
             min="0"
-            v-model.number="local[field.key]"
-            @input="sync"
+            v-model.number="store.manualData[field.key]"
           />
         </div>
       </div>
@@ -56,22 +55,6 @@ const fields = [
   { key: 'trihalomethanes', label: 'Trihalomethanes',   unit: 'μg/L',     placeholder: 'Contoh: 86.99' },
   { key: 'turbidity',       label: 'Turbidity',         unit: 'NTU',      placeholder: 'Contoh: 2.96' },
 ]
-
-const local = reactive({
-  ph:              store.manualData.ph,
-  hardness:        store.manualData.hardness,
-  solids:          store.manualData.solids,
-  chloramines:     store.manualData.chloramines,
-  sulfate:         store.manualData.sulfate,
-  conductivity:    store.manualData.conductivity,
-  organic_carbon:  store.manualData.organic_carbon,
-  trihalomethanes: store.manualData.trihalomethanes,
-  turbidity:       store.manualData.turbidity,
-})
-
-function sync() {
-  store.setManualData({ ...local })
-}
 </script>
 
 <style scoped>

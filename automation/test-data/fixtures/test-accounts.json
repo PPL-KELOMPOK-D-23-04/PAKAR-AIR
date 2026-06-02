@@ -1,0 +1,17 @@
+{
+  "testAccounts": {
+    "user": {
+      "email": "userpakarair@gmail.com",
+      "password": "password123",
+      "fullName": "Pengguna Publik",
+      "role": "user"
+    },
+    "admin": {
+      "email": "adminpakarair@gmail.com",
+      "password": "password123",
+      "fullName": "Admin Pakar Air",
+      "role": "admin"
+    }
+  },
+  "note": "Updated with seeded database credentials."
+}

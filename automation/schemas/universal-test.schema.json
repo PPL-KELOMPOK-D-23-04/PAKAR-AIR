@@ -1,0 +1,209 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PAKAR-AIR Universal Test Schema",
+  "description": "Framework-agnostic test representation — Single Source of Truth for all exporters",
+  "type": "object",
+  "required": ["id", "name", "version", "suites"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the test project"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable project name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Project description"
+    },
+    "baseUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Base URL for all navigation actions"
+    },
+    "version": {
+      "type": "string",
+      "description": "Schema version"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "Source framework (e.g., playwright)"
+        },
+        "sourceFile": {
+          "type": "string",
+          "description": "Original source file path"
+        },
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of generation"
+        },
+        "generator": {
+          "type": "string",
+          "description": "Generator tool name and version"
+        },
+        "projectName": {
+          "type": "string",
+          "description": "PAKAR-AIR module name"
+        }
+      },
+      "required": ["source", "generatedAt", "generator"]
+    },
+    "suites": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/TestSuite"
+      },
+      "minItems": 1,
+      "description": "Array of test suites"
+    }
+  },
+  "definitions": {
+    "TestSuite": {
+      "type": "object",
+      "required": ["id", "name", "tests"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique suite identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "Suite name (e.g., 'Auth Tests')"
+        },
+        "description": {
+          "type": "string"
+        },
+        "tests": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TestCase"
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "TestCase": {
+      "type": "object",
+      "required": ["id", "name", "steps"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique test case identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "Test case name"
+        },
+        "description": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Tags for categorization (e.g., ['positive', 'auth', 'P1'])"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TestStep"
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "TestStep": {
+      "type": "object",
+      "required": ["action"],
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "goto",
+            "click",
+            "fill",
+            "type",
+            "select",
+            "upload",
+            "dragdrop",
+            "check",
+            "uncheck",
+            "wait",
+            "assertText",
+            "assertVisible",
+            "assertUrl",
+            "screenshot"
+          ],
+          "description": "Action type to perform"
+        },
+        "target": {
+          "type": "string",
+          "description": "Element selector or URL depending on action"
+        },
+        "value": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "number" },
+            { "type": "boolean" },
+            { "type": "null" },
+            {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          ],
+          "description": "Value for the action (text to fill, URL to navigate, file path to upload, etc.)"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable step description"
+        },
+        "options": {
+          "type": "object",
+          "properties": {
+            "timeout": {
+              "type": "number",
+              "description": "Timeout in milliseconds"
+            },
+            "force": {
+              "type": "boolean",
+              "description": "Force action even if element is not actionable"
+            },
+            "delay": {
+              "type": "number",
+              "description": "Delay between keystrokes in ms (for type action)"
+            },
+            "button": {
+              "type": "string",
+              "enum": ["left", "right", "middle"],
+              "description": "Mouse button for click"
+            },
+            "modifiers": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["Alt", "Control", "Meta", "Shift"]
+              }
+            },
+            "exact": {
+              "type": "boolean",
+              "description": "Exact text match for assertions"
+            },
+            "waitFor": {
+              "type": "string",
+              "enum": ["visible", "hidden", "attached", "detached"],
+              "description": "Wait condition"
+            },
+            "screenshotName": {
+              "type": "string",
+              "description": "Custom name for screenshot file"
+            }
+          }
+        }
+      }
+    }
+  }
+}

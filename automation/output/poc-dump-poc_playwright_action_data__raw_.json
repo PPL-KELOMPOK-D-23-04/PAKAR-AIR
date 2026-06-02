@@ -1,0 +1,107 @@
+[
+  {
+    "depth": 0,
+    "title": "Before Hooks",
+    "category": "hook",
+    "duration": 430,
+    "error": null
+  },
+  {
+    "depth": 1,
+    "title": "Fixture \"browser\"",
+    "category": "fixture",
+    "duration": 194,
+    "error": null
+  },
+  {
+    "depth": 2,
+    "title": "Launch browser",
+    "category": "pw:api",
+    "duration": 181,
+    "error": null
+  },
+  {
+    "depth": 1,
+    "title": "Fixture \"context\"",
+    "category": "fixture",
+    "duration": 38,
+    "error": null
+  },
+  {
+    "depth": 2,
+    "title": "Create context",
+    "category": "pw:api",
+    "duration": 31,
+    "error": null
+  },
+  {
+    "depth": 1,
+    "title": "Fixture \"page\"",
+    "category": "fixture",
+    "duration": 176,
+    "error": null
+  },
+  {
+    "depth": 2,
+    "title": "Create page",
+    "category": "pw:api",
+    "duration": 171,
+    "error": null
+  },
+  {
+    "depth": 0,
+    "title": "Navigate to \"/\"",
+    "category": "pw:api",
+    "duration": 203,
+    "error": null
+  },
+  {
+    "depth": 0,
+    "title": "Fill \"test@test.com\" locator('#email')",
+    "category": "pw:api",
+    "duration": 15007,
+    "error": "Error occurred"
+  },
+  {
+    "depth": 0,
+    "title": "After Hooks",
+    "category": "hook",
+    "duration": 2538,
+    "error": null
+  },
+  {
+    "depth": 1,
+    "title": "Fixture \"page\"",
+    "category": "fixture",
+    "duration": 0,
+    "error": null
+  },
+  {
+    "depth": 1,
+    "title": "Fixture \"context\"",
+    "category": "fixture",
+    "duration": 2431,
+    "error": null
+  },
+  {
+    "depth": 2,
+    "title": "Close context",
+    "category": "pw:api",
+    "duration": 2384,
+    "error": null
+  },
+  {
+    "depth": 0,
+    "title": "Worker Cleanup",
+    "category": "hook",
+    "duration": 175,
+    "error": null
+  },
+  {
+    "depth": 1,
+    "title": "Fixture \"browser\"",
+    "category": "fixture",
+    "duration": 168,
+    "error": null
+  }
+]

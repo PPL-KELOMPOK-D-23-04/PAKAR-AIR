@@ -65,8 +65,9 @@ async def submit_analysis(
         db=db,
     )
 
-    # Run ML/DL pipeline
-    result = analysis_service.run_analysis(analysis.id, db)
+    # Run ML/DL pipeline without blocking the async event loop
+    from starlette.concurrency import run_in_threadpool
+    result = await run_in_threadpool(analysis_service.run_analysis, analysis.id, db)
 
     return AnalysisSubmitResponse(
         analysis_id=analysis.id,
