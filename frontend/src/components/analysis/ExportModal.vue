@@ -101,7 +101,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { exportHistoryCSV } from '@/api/analysis'
+//import { exportHistoryCSV } from '@/api/analysis'
 
 const props = defineProps({
   totalItems: { type: Number, default: 0 },
@@ -121,7 +121,7 @@ async function handleExport() {
 
   try {
     if (selectedFormat.value === 'csv') {
-      await exportHistoryCSV(props.activeFilters)
+      // await exportHistoryCSV(props.activeFilters)
       emit('close')
     } else if (selectedFormat.value === 'pdf') {
       exportPDF()
