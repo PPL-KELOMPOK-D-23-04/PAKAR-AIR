@@ -129,6 +129,17 @@ def get_analysis_detail(analysis_id: UUID, user_id: UUID, db: Session) -> Analys
     return analysis
 
 
+def get_history_detail(analysis_id: UUID, user_id: UUID, db: Session) -> Analysis:
+    """Get history detail for display in HistoryDetailView."""
+    analysis = db.query(Analysis).filter(
+        Analysis.id == analysis_id,
+        Analysis.user_id == user_id
+    ).first()
+    if not analysis:
+        raise HTTPException(status_code=404, detail="Analysis not found")
+    return analysis
+
+
 def get_user_history(
     user_id: UUID,
     page: int,
