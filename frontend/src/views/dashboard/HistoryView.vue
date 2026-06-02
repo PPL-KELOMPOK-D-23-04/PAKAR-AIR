@@ -42,7 +42,7 @@
             v-model="searchQuery"
             type="text"
             class="filter-input"
-            placeholder="Cari sumber air (sumur, sungai, PDAM...)"
+            placeholder="Cari riwayat analisis..."
             @input="handleFilter"
           />
         </div>
@@ -137,7 +137,7 @@
           <div class="history-card__info">
             <div class="history-card__top">
               <h3 class="history-card__title">
-                {{ item.water_source || `Analisis #${totalItems - (currentPage - 1) * 10 - index}` }}
+                {{ item.original_filename || `Analisis #${totalItems - (currentPage - 1) * 10 - index}` }}
               </h3>
               <span class="status-badge" :class="'status--' + item.category">
                 {{ item.category === 'layak' ? '✅ Layak' : '❌ Tidak Layak' }}
