@@ -1,16 +1,17 @@
 <template>
-  <div class="edukasi-container">
-    <!-- HERO SECTION -->
-    <div class="hero-section">
-      <h1 class="hero-title">📚 Edukasi Kualitas Air</h1>
-      <p class="hero-subtitle">
-          <span class="search-icon">🔍</span>
-        Pelajari tentang kualitas air, pencemaran, dan teknologi pengolahan air 
-        bersama PAKAR-AIR
-      </p>
-      
-      <!-- SEARCH BAR (Integrasi dengan SearchBar) -->
-      <div class="search-wrapper">
+  <DashboardLayout>
+    <div class="edukasi-container">
+      <!-- HERO SECTION -->
+      <div class="hero-section">
+        <h1 class="hero-title">📚 Edukasi Kualitas Air</h1>
+        <p class="hero-subtitle">
+            <span class="search-icon">🔍</span>
+          Pelajari tentang kualitas air, pencemaran, dan teknologi pengolahan air 
+          bersama PAKAR-AIR
+        </p>
+        
+        <!-- SEARCH BAR (Integrasi dengan SearchBar) -->
+        <div class="search-wrapper">
         <input 
           v-model="searchQuery" 
           type="text"
@@ -85,20 +86,18 @@
         <span class="stat-label">Artikel Edukasi</span>
       </div>
       <div class="stat-card">
-        <span class="stat-number">100%</span>
-        <span class="stat-label">Gratis</span>
-      </div>
-      <div class="stat-card">
         <span class="stat-number">24/7</span>
         <span class="stat-label">Akses</span>
       </div>
     </div>
   </div>
+  </DashboardLayout>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import DashboardLayout from '@/layouts/DashboardLayout.vue'
 
 const router = useRouter()
 
