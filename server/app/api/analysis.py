@@ -13,8 +13,7 @@ from app.utils.supabase import get_supabase
 from app.utils.file_handler import upload_to_supabase
 from app.models.models import Profile
 from app.schemas.analysis_schema import (
-    AnalysisSubmitResponse, AnalysisDetailResponse, AnalysisResultResponse, HistoryResponse,
-    HistoryDetailResponse
+    AnalysisSubmitResponse, AnalysisDetailResponse, AnalysisResultResponse, HistoryResponse
 )
 from app.services import analysis_service
 
@@ -235,7 +234,7 @@ def export_single_analysis(
         "image_path": analysis.image_input.image_path if analysis.image_input else None,
     }
 
-@router.get("/history/{analysis_id}", response_model=HistoryDetailResponse)
+@router.get("/history/{analysis_id}")
 async def get_history_detail(
     analysis_id: UUID,
     current_user: Profile = Depends(get_current_user),
