@@ -77,7 +77,7 @@ async def submit_analysis(
 
 
 @router.get("/history", response_model=HistoryResponse)
-async def get_history(
+def get_history(
     page: int = 1,
     per_page: int = 10,
     category: str = None,
@@ -122,7 +122,7 @@ async def get_history(
     }
 
 @router.get("/export/csv", summary="Export riwayat analisis ke CSV")
-async def export_history_csv(
+def export_history_csv(
     category: str = Query(None, description="Filter hasil: layak / tidak_layak"),
     date: str = Query(None, description="Filter tanggal format YYYY-MM-DD"),
     search: str = Query(None, description="Kata kunci sumber air"),
@@ -186,7 +186,7 @@ async def export_history_csv(
 
 
 @router.get("/export/{analysis_id}/detail")
-async def export_single_analysis(
+def export_single_analysis(
     analysis_id: UUID,
     current_user: Profile = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -226,7 +226,7 @@ async def export_single_analysis(
     }
 
 @router.get("/{analysis_id}")
-async def get_analysis(
+def get_analysis(
     analysis_id: UUID,
     current_user: Profile = Depends(get_current_user),
     db: Session = Depends(get_db),

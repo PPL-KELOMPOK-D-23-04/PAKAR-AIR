@@ -18,7 +18,7 @@ router = APIRouter()
 
 
 @router.get("", response_model=NotificationListResponse)
-async def list_notifications(
+def list_notifications(
     current_user: Profile = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
@@ -33,7 +33,7 @@ async def list_notifications(
 
 
 @router.put("/{notification_id}/read", response_model=NotificationResponse)
-async def mark_notification_read(
+def mark_notification_read(
     notification_id: UUID,
     current_user: Profile = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -48,7 +48,7 @@ async def mark_notification_read(
 
 
 @router.get("/unread-count", response_model=UnreadCountResponse)
-async def unread_count(
+def unread_count(
     current_user: Profile = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):

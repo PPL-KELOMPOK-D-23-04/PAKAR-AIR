@@ -31,7 +31,7 @@ async function loginViaUI(page, user = USERS.validUser) {
     }, sessionData);
     
     // Force navigation to trigger router auth guard properly
-    await page.goto('/dashboard');
+    await page.goto('/dashboard', { waitUntil: 'commit' });
     await page.waitForURL(/\/(dashboard|admin)/, { timeout: 5000 });
     return;
   }

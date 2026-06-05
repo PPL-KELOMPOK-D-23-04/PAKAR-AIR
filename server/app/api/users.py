@@ -13,7 +13,7 @@ from app.services import user_service
 router = APIRouter()
 
 @router.post("/change-password")
-async def change_password(
+def change_password(
     data: PasswordChange,
     supabase: Client = Depends(get_supabase),
 ):
@@ -24,7 +24,7 @@ async def change_password(
 
 
 @router.delete("/me")
-async def delete_account(
+def delete_account(
     current_user: Profile = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
@@ -34,7 +34,7 @@ async def delete_account(
     return user_service.delete_account(current_user, db)
 
 @router.get("/profile", response_model=ProfileResponse)
-async def get_profile(
+def get_profile(
     current_user: Profile = Depends(get_current_user),
 ):
     """
@@ -43,7 +43,7 @@ async def get_profile(
     return current_user
 
 @router.put("/profile", response_model=ProfileResponse)
-async def update_profile(
+def update_profile(
     data: ProfileUpdate,
     current_user: Profile = Depends(get_current_user),
     db: Session = Depends(get_db),

@@ -14,12 +14,13 @@ test.beforeEach(async ({ page }) => { await loginViaUI(page, USERS.validUser); }
 test.describe('Analysis — Submit & Hasil', () => {
 
   test('Pengguna berhasil melakukan analisis kualitas air hingga hasil prediksi ditampilkan', async ({ page }) => {
+    test.setTimeout(60000);
     const analysisPage = new AnalysisPage(page);
     await analysisPage.navigate();
     await analysisPage.uploadFile(getTestFilePath('sample_water.jpg'));
     await analysisPage.fillAllParameters(VALID_PARAMS);
     await analysisPage.submitAnalysis();
-    await page.waitForTimeout(5000);
+    
     const hasResult = await analysisPage.isResultVisible();
     const hasError = await analysisPage.getErrorBanner();
     expect(hasResult || hasError).toBeTruthy();

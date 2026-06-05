@@ -18,7 +18,12 @@ class AnalysisPage extends BasePage {
   }
 
   async isPreviewVisible() {
-    return this.isVisible(L.previewContainer);
+    try {
+      await this.page.waitForSelector(L.previewContainer, { state: 'visible', timeout: 5000 });
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   async getPreviewFilename() {
@@ -79,8 +84,8 @@ class AnalysisPage extends BasePage {
     await this.clickSubmit();
     try {
       await Promise.race([
-        this.page.waitForSelector(L.resultContainer, { state: 'visible', timeout: 15000 }),
-        this.page.waitForSelector(L.errorBanner, { state: 'visible', timeout: 15000 })
+        this.page.waitForSelector(L.resultContainer, { state: 'visible', timeout: 30000 }),
+        this.page.waitForSelector(L.errorBanner, { state: 'visible', timeout: 30000 })
       ]);
     } catch {
       // Timeout exceeded, we will let the assertions fail instead of blocking for 60s

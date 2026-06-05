@@ -23,7 +23,7 @@ router = APIRouter()
 # ─── Dashboard Stats (KF-09 + KF-11) ────────────────────────────
 
 @router.get("/dashboard/stats")
-async def dashboard_stats(
+def dashboard_stats(
     admin: Profile = Depends(get_admin_user),
     db: Session = Depends(get_db),
 ):
@@ -36,7 +36,7 @@ async def dashboard_stats(
 # ─── User Management (KF-10) ─────────────────────────────────────
 
 @router.get("/users", response_model=List[ProfileResponse])
-async def list_users(
+def list_users(
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=500),
     admin: Profile = Depends(get_admin_user),
@@ -50,7 +50,7 @@ async def list_users(
 
 
 @router.put("/users/{user_id}/status")
-async def toggle_user_status(
+def toggle_user_status(
     user_id: UUID,
     is_active: bool = Query(..., description="Set user active/inactive"),
     admin: Profile = Depends(get_admin_user),
@@ -69,7 +69,7 @@ async def toggle_user_status(
 
 
 @router.delete("/users/{user_id}")
-async def delete_user(
+def delete_user(
     user_id: UUID,
     admin: Profile = Depends(get_admin_user),
     db: Session = Depends(get_db),
@@ -88,7 +88,7 @@ async def delete_user(
 # ─── Analysis Stats (KF-11) ──────────────────────────────────────
 
 @router.get("/analysis/stats")
-async def analysis_stats(
+def analysis_stats(
     admin: Profile = Depends(get_admin_user),
     db: Session = Depends(get_db),
 ):
@@ -101,7 +101,7 @@ async def analysis_stats(
 # ─── Reports (KF-12) ─────────────────────────────────────────────
 
 @router.get("/reports")
-async def get_reports(
+def get_reports(
     date_from: Optional[str] = Query(None, description="Start date (YYYY-MM-DD)"),
     date_to: Optional[str] = Query(None, description="End date (YYYY-MM-DD)"),
     category: Optional[str] = Query(None, description="Filter: layak / tidak_layak"),
@@ -118,7 +118,7 @@ async def get_reports(
 
 
 @router.get("/reports/export")
-async def export_reports(
+def export_reports(
     date_from: Optional[str] = Query(None),
     date_to: Optional[str] = Query(None),
     category: Optional[str] = Query(None),

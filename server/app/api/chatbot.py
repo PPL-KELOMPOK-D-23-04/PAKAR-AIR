@@ -27,7 +27,7 @@ router = APIRouter()
 # ─── Sessions ────────────────────────────────────────────────────
 
 @router.post("/sessions", response_model=ChatSessionResponse, status_code=201)
-async def create_session(
+def create_session(
     body: ChatSessionCreate = ChatSessionCreate(),
     admin: Profile = Depends(get_admin_user),
     db: Session = Depends(get_db),
@@ -42,7 +42,7 @@ async def create_session(
 
 
 @router.get("/sessions", response_model=List[ChatSessionResponse])
-async def list_sessions(
+def list_sessions(
     admin: Profile = Depends(get_admin_user),
     db: Session = Depends(get_db),
 ):
@@ -51,7 +51,7 @@ async def list_sessions(
 
 
 @router.get("/sessions/{session_id}", response_model=ChatSessionWithMessages)
-async def get_session(
+def get_session(
     session_id: UUID,
     admin: Profile = Depends(get_admin_user),
     db: Session = Depends(get_db),
@@ -77,7 +77,7 @@ async def get_session(
 
 
 @router.delete("/sessions/{session_id}")
-async def delete_session(
+def delete_session(
     session_id: UUID,
     admin: Profile = Depends(get_admin_user),
     db: Session = Depends(get_db),
@@ -95,7 +95,7 @@ async def delete_session(
 # ─── Messages ────────────────────────────────────────────────────
 
 @router.post("/sessions/{session_id}/messages", response_model=ChatBotResponse)
-async def send_message(
+def send_message(
     session_id: UUID,
     body: ChatMessageRequest,
     admin: Profile = Depends(get_admin_user),

@@ -33,7 +33,7 @@ const HistoryLocators = {
 
   // States
   loadingSpinner: '.spinner',
-  emptyState: '.state-container',
+  emptyState: '.empty-state',
 
   // Export Modal
   exportModal: '.export-modal',

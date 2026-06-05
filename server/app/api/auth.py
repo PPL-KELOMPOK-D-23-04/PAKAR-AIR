@@ -18,7 +18,7 @@ router = APIRouter()
 
 
 @router.post("/register", response_model=MessageResponse)
-async def register(
+def register(
     data: RegisterRequest,
     db: Session = Depends(get_db),
     supabase: Client = Depends(get_supabase),
@@ -32,7 +32,7 @@ async def register(
 
 
 @router.post("/login", response_model=TokenResponse)
-async def login(
+def login(
     data: LoginRequest,
     db: Session = Depends(get_db),
     supabase: Client = Depends(get_supabase),
@@ -48,7 +48,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 auth_bearer = HTTPBearer()
 
 @router.post("/logout", response_model=MessageResponse)
-async def logout(
+def logout(
     token: HTTPAuthorizationCredentials = Depends(auth_bearer),
     supabase: Client = Depends(get_supabase),
 ):
@@ -61,7 +61,7 @@ async def logout(
 
 
 @router.post("/refresh", response_model=TokenResponse)
-async def refresh(
+def refresh(
     data: RefreshRequest,
     db: Session = Depends(get_db),
     supabase: Client = Depends(get_supabase),
