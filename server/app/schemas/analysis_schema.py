@@ -64,6 +64,7 @@ class AnalysisSummary(BaseModel):
     category: Optional[str] = None
     confidence: Optional[float] = None
     image_path: Optional[str] = None
+    original_filename: Optional[str] = None
     # Parameter kunci yang ditampilkan di daftar
     ph: Optional[float] = None
     turbidity: Optional[float] = Field(None, alias="Turbidity")
