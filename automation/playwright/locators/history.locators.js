@@ -36,7 +36,7 @@ const HistoryLocators = {
   emptyState: '.empty-state',
 
   // Export Modal
-  exportModal: '.export-modal',
+  exportModal: '.modal-box',
 };
 
 module.exports = { HistoryLocators };

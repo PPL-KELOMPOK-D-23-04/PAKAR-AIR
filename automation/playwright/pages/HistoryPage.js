@@ -8,25 +8,31 @@ class HistoryPage extends BasePage {
   async navigate() {
     await this.goto('/history');
     await this.waitForElement(L.view);
+    await this.page.waitForSelector(L.loadingSpinner, { state: 'hidden', timeout: 10000 }).catch(() => {});
   }
 
   async search(keyword) {
     await this.fillInput(L.searchInput, keyword);
+    await this.page.waitForSelector(L.loadingSpinner, { state: 'hidden', timeout: 10000 }).catch(() => {});
     await this.page.waitForTimeout(500);
   }
 
   async filterByCategory(value) {
     await this.page.locator(L.categorySelect).selectOption(value);
+    await this.page.waitForSelector(L.loadingSpinner, { state: 'hidden', timeout: 10000 }).catch(() => {});
     await this.page.waitForTimeout(500);
   }
 
   async filterByDate(date) {
     await this.fillInput(L.dateInput, date);
+    await this.page.waitForSelector(L.loadingSpinner, { state: 'hidden', timeout: 10000 }).catch(() => {});
     await this.page.waitForTimeout(500);
   }
 
   async clearFilters() {
     await this.clickElement(L.clearFilterButton);
+    await this.page.waitForSelector(L.loadingSpinner, { state: 'hidden', timeout: 10000 }).catch(() => {});
+    await this.page.waitForTimeout(500);
   }
 
   async getHistoryCount() {
@@ -52,6 +58,7 @@ class HistoryPage extends BasePage {
 
   async goToPage(pageNum) {
     await this.page.locator(L.pageNumber).filter({ hasText: String(pageNum) }).click();
+    await this.page.waitForSelector(L.loadingSpinner, { state: 'hidden', timeout: 10000 }).catch(() => {});
     await this.page.waitForTimeout(500);
   }
 

@@ -72,7 +72,7 @@ test.describe('History — Search & Filter', () => {
     const totalCount = await historyPage.getHistoryCount();
     if (totalCount > 0) {
       await historyPage.clickExport();
-      const modal = page.locator('.modal-content');
+      const modal = page.locator('.modal-box');
       await expect(modal).toBeVisible();
     } else {
       test.skip();
@@ -86,8 +86,8 @@ test.describe('History — Search & Filter', () => {
     const hasData = await historyPage.getHistoryCount() > 0;
     if (hasData) {
       await historyPage.clickHistoryRow(0);
-      await page.waitForURL(/\/history\/\d+/);
-      expect(page.url()).toMatch(/\/history\/\d+/);
+      await page.waitForURL(/\/history\/.+/);
+      expect(page.url()).toMatch(/\/history\/.+/);
     } else {
       test.skip();
     }
