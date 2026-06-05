@@ -46,6 +46,9 @@ export const useAuthStore = defineStore('auth', {
 
         // Set default auth header for future requests
         axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`
+        
+        // Fetch full profile to get avatar and username
+        await this.fetchProfile()
 
         return { success: true, isAdmin: is_admin || false }
       } catch (err) {
@@ -55,6 +58,63 @@ export const useAuthStore = defineStore('auth', {
           'Email atau password salah. Silakan coba lagi.'
         this.error = message
         return { success: false, message }
+      } finally {
+        this.isLoading = false
+      }
+    },
+
+    async fetchProfile() {
+      try {
+        const response = await axios.get(`${API_BASE}/api/users/profile`)
+        this.user = { ...this.user, ...response.data }
+        sessionStorage.setItem('pakar_air_user', JSON.stringify(this.user))
+        return { success: true, data: response.data }
+      } catch (err) {
+        return { success: false, message: err.message }
+      }
+    },
+
+    async updateProfile(data) {
+      this.isLoading = true
+      try {
+        const response = await axios.put(`${API_BASE}/api/users/profile`, data)
+        this.user = { ...this.user, ...response.data }
+        sessionStorage.setItem('pakar_air_user', JSON.stringify(this.user))
+        return { success: true, data: response.data }
+      } catch (err) {
+        return { success: false, message: err.response?.data?.detail || err.message }
+      } finally {
+        this.isLoading = false
+      }
+    },
+
+    async uploadAvatar(file) {
+      this.isLoading = true
+      try {
+        const formData = new FormData()
+        formData.append('file', file)
+        const response = await axios.post(`${API_BASE}/api/users/profile/avatar`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        })
+        this.user = { ...this.user, ...response.data }
+        sessionStorage.setItem('pakar_air_user', JSON.stringify(this.user))
+        return { success: true, data: response.data }
+      } catch (err) {
+        return { success: false, message: err.response?.data?.detail || err.message }
+      } finally {
+        this.isLoading = false
+      }
+    },
+
+    async changePassword(newPassword) {
+      this.isLoading = true
+      try {
+        const response = await axios.post(`${API_BASE}/api/users/change-password`, {
+          new_password: newPassword
+        })
+        return { success: true, data: response.data }
+      } catch (err) {
+        return { success: false, message: err.response?.data?.detail || err.message }
       } finally {
         this.isLoading = false
       }
@@ -93,6 +153,7 @@ export const useAuthStore = defineStore('auth', {
     initAuth() {
       if (this.token) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
+        this.fetchProfile() // Refresh profile data on app load
       }
     },
   },

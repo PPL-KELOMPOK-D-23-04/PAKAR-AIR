@@ -1,5 +1,6 @@
 <template>
   <DashboardLayout>
+<<<<<<< HEAD
     <div class="edukasi-view">
       
       <!-- HERO SECTION (High-End Card Based) -->
@@ -11,6 +12,81 @@
               Tingkatkan pemahaman Anda tentang kualitas air, standar kesehatan, dan 
               teknologi sanitasi modern untuk melindungi keluarga dan lingkungan.
             </p>
+=======
+    <div class="edukasi-container">
+      <!-- HERO SECTION -->
+      <div class="hero-section">
+        <h1 class="hero-title">📚 Edukasi Kualitas Air</h1>
+        <p class="hero-subtitle">
+            <span class="search-icon">🔍</span>
+          Pelajari tentang kualitas air, pencemaran, dan teknologi pengolahan air 
+          bersama PAKAR-AIR
+        </p>
+        
+        <!-- SEARCH BAR (Integrasi dengan SearchBar) -->
+        <div class="search-wrapper">
+        <input 
+          v-model="searchQuery" 
+          type="text"
+          placeholder="Cari artikel... (contoh: parameter, pencemaran, teknologi)"
+          class="search-input"
+          @input="handleSearch"
+        />
+        <button v-if="searchQuery" @click="clearSearch" class="clear-search">✖</button>
+      </div>
+    </div>
+
+    <!-- FILTER KATEGORI -->
+    <div class="filter-section">
+      <span class="filter-label">Filter kategori:</span>
+      <button 
+        v-for="cat in categories" 
+        :key="cat"
+        @click="selectedCategory = cat"
+        :class="['filter-chip', { active: selectedCategory === cat }]"
+      >
+        {{ cat }}
+      </button>
+      <button 
+        @click="selectedCategory = 'Semua'"
+        :class="['filter-chip', { active: selectedCategory === 'Semua' }]"
+      >
+        Semua
+      </button>
+    </div>
+
+    <!-- HASIL PENCARIAN & FILTER -->
+    <div class="result-info" v-if="searchQuery || selectedCategory !== 'Semua'">
+      <span>🔍 Menampilkan {{ filteredArticles.length }} dari {{ articles.length }} artikel</span>
+      <button @click="resetFilters" class="reset-filters">Reset Filter</button>
+    </div>
+
+    <!-- DAFTAR ARTIKEL (Integrasi Artikel 1,2,3) -->
+    <div v-if="filteredArticles.length === 0" class="empty-state">
+      <span class="empty-icon">😢</span>
+      <h3>Tidak ada artikel yang ditemukan</h3>
+      <p>Coba cari dengan kata kunci lain</p>
+      <button @click="resetFilters" class="empty-btn">Lihat Semua Artikel</button>
+    </div>
+
+    <div v-else class="articles-grid">
+      <div 
+        v-for="article in filteredArticles" 
+        :key="article.id"
+        class="article-card"
+        @click="goToArticle(article.route)"
+      >
+        <div class="card-image">
+          <img :src="article.image" :alt="article.title">
+          <span class="card-category">{{ article.category }}</span>
+        </div>
+        <div class="card-content">
+          <h3>{{ article.title }}</h3>
+          <p>{{ article.excerpt }}</p>
+          <div class="card-meta">
+            <span>📅 {{ article.date }}</span>
+            <span>⏱️ {{ article.readTime }}</span>
+>>>>>>> 94642f67206f872f05a9a345f263228187656abd
           </div>
           <div class="hero-visual">
             <div class="glass-orb orb-1"></div>
@@ -66,6 +142,7 @@
         </p>
         <button @click="resetFilters" class="btn-text" v-if="filteredArticles.length > 0">Reset Filter</button>
       </div>
+<<<<<<< HEAD
 
       <!-- EMPTY STATE -->
       <EmptyState 
@@ -140,9 +217,18 @@
             <span class="stat-desc">Inovasi filter dan pengolahan terbaru.</span>
           </div>
         </BaseCard>
+=======
+      <div class="stat-card">
+        <span class="stat-number">24/7</span>
+        <span class="stat-label">Akses</span>
+>>>>>>> 94642f67206f872f05a9a345f263228187656abd
       </div>
 
     </div>
+<<<<<<< HEAD
+=======
+  </div>
+>>>>>>> 94642f67206f872f05a9a345f263228187656abd
   </DashboardLayout>
 </template>
 
@@ -150,9 +236,12 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
+<<<<<<< HEAD
 import BaseCard from '@/components/common/BaseCard.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
 import { Search, X, Calendar, Clock, ChevronRight, FileText, BookOpen, Layers, Award } from 'lucide-vue-next'
+=======
+>>>>>>> 94642f67206f872f05a9a345f263228187656abd
 
 const router = useRouter()
 
