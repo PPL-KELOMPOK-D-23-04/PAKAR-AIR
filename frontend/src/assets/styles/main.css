@@ -1,4 +1,4 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 
 /* =====================================================
    PAKAR-AIR — Global Base Styles
@@ -27,14 +27,14 @@
   --color-primary-hover: #1e293b;
   
   /* Sidebar Admin Colors */
-  --bg-sidebar-admin: #0f172a;
-  --text-sidebar-admin: #94a3b8;
-  --text-sidebar-admin-hover: #f8fafc;
-  --text-sidebar-admin-active: #ffffff;
-  --border-sidebar-admin: #1e293b;
-  --bg-sidebar-admin-active: #1e293b;
-  --bg-sidebar-admin-logout: #7f1d1d;
-  --text-sidebar-admin-logout: #fca5a5;
+  --bg-sidebar-admin: #ffffff;
+  --text-sidebar-admin: #64748b;
+  --text-sidebar-admin-hover: #334155;
+  --text-sidebar-admin-active: #0f172a;
+  --border-sidebar-admin: #e2e8f0;
+  --bg-sidebar-admin-active: #f1f5f9;
+  --bg-sidebar-admin-logout: #fef2f2;
+  --text-sidebar-admin-logout: #dc2626;
 
   /* Semantic Colors */
   --color-success-bg: #f0fdf4;
@@ -54,11 +54,11 @@
   --color-info-text: #1e40af;
 
   /* Layout Dimensions */
-  --sidebar-width: 240px;
+  --sidebar-width: 220px;
   --sidebar-width-collapsed: 72px;
-  --topbar-height: 60px;
+  --topbar-height: 56px;
   --content-max-width: 1200px;
-  --content-padding: 32px;
+  --content-padding: 28px;
   --page-gap: 24px;
   --card-gap: 20px;
   --section-gap: 32px;
@@ -76,13 +76,13 @@
 
   /* Typography */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-size-xs: 12px;
-  --font-size-sm: 13px;
-  --font-size-base: 14px;
-  --font-size-md: 16px;
-  --font-size-lg: 18px;
-  --font-size-xl: 24px;
-  --font-size-2xl: 32px;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 13px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
 
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -142,40 +142,43 @@ a:hover { color: var(--color-accent-hover); }
 .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
 .btn--primary {
-  background: var(--color-primary);
-  color: var(--color-surface);
-  border-color: var(--color-primary);
+  background: #1e40af;
+  color: #ffffff;
+  border-color: #1e40af;
   box-shadow: var(--shadow-sm);
 }
-.btn--primary:hover:not(:disabled) { background: var(--color-primary-hover); }
+.btn--primary:hover:not(:disabled) { background: #1d3a9e; box-shadow: 0 2px 6px rgba(30, 64, 175, 0.3); }
+.btn--primary:active { background: #1e3a8a; box-shadow: none; }
 
 .btn--secondary {
-  background: var(--color-surface);
-  color: var(--color-text-primary);
-  border-color: var(--color-border-strong);
+  background: #ffffff;
+  color: #374151;
+  border-color: #d1d5db;
   box-shadow: var(--shadow-sm);
 }
-.btn--secondary:hover:not(:disabled) { background: #f8fafc; border-color: #94a3b8; }
+.btn--secondary:hover:not(:disabled) { background: #f9fafb; border-color: #9ca3af; }
+.btn--secondary:active { background: #f1f5f9; }
 
 .btn--danger {
-  background: #dc2626;
-  color: #fff;
-  border-color: #dc2626;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
 }
-.btn--danger:hover:not(:disabled) { background: #b91c1c; }
+.btn--danger:hover:not(:disabled) { opacity: 0.9; }
 
 /* =====================================================
    PAKAR-AIR - Base Inputs
    ===================================================== */
 .form-input {
   width: 100%;
-  padding: 10px 12px;
-  font-size: var(--font-size-base);
-  color: var(--color-text-primary);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
+  padding: 8px 11px;
+  font-size: 13px;
+  color: #1a202c;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  box-shadow: none;
   transition: all var(--transition-fast);
   box-sizing: border-box;
 }
@@ -188,11 +191,13 @@ a:hover { color: var(--color-accent-hover); }
 .form-input:disabled { background: var(--color-bg); opacity: 0.7; cursor: not-allowed; }
 
 .form-label {
-  display: block;
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  color: var(--color-text-secondary);
-  margin-bottom: 6px;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 5px;
 }
 
 /* =====================================================

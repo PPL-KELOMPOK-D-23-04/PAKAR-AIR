@@ -1,369 +1,316 @@
 <template>
   <DashboardLayout>
-<<<<<<< HEAD
     <div class="profile-view">
-      
-      <PageHeader 
-        title="Pengaturan Profil" 
-        description="Kelola informasi akun, foto profil, dan preferensi keamanan Anda."
-      />
 
-      <div class="settings-grid">
-        <!-- Sidebar Navigation -->
-        <div class="settings-sidebar">
+      <!-- Header -->
+      <header class="workspace-header">
+        <div>
+          <p class="header-eyebrow">PakarAir — Manajemen Akun</p>
+          <h1 class="workspace-title">Pengaturan Profil</h1>
+          <p class="workspace-desc">Kelola informasi akun, foto profil, dan preferensi keamanan Anda.</p>
+        </div>
+      </header>
+
+      <div class="settings-layout">
+
+        <!-- Sidebar -->
+        <aside class="settings-sidebar">
+          <span class="sidebar-label">Navigasi</span>
           <nav class="settings-nav">
-            <button 
-              class="nav-item" 
-              :class="{ active: activeTab === 'profile' }"
-              @click="activeTab = 'profile'"
+            <button
+              v-for="tab in tabs"
+              :key="tab.id"
+              class="nav-item"
+              :class="{ 'nav-item--active': activeTab === tab.id }"
+              @click="activeTab = tab.id"
             >
-              <User size="18" />
-              <span>Profil Personal</span>
-            </button>
-            <button 
-              class="nav-item" 
-              :class="{ active: activeTab === 'security' }"
-              @click="activeTab = 'security'"
-            >
-              <ShieldCheck size="18" />
-              <span>Keamanan & Sandi</span>
-            </button>
-            <button 
-              class="nav-item" 
-              :class="{ active: activeTab === 'notifications' }"
-              @click="activeTab = 'notifications'"
-            >
-              <Bell size="18" />
-              <span>Preferensi Notifikasi</span>
+              <component :is="tab.icon" :size="14" class="nav-icon" />
+              <span class="nav-label">{{ tab.label }}</span>
+              <span v-if="activeTab === tab.id" class="nav-badge">Aktif</span>
             </button>
           </nav>
-        </div>
 
-        <!-- Main Content -->
+          <div class="sidebar-divider" />
+
+          <div class="sidebar-meta">
+            <span class="sidebar-meta-label">Bergabung</span>
+            <span class="sidebar-meta-value">{{ joinDate }}</span>
+          </div>
+        </aside>
+
+        <!-- Content Panels -->
         <div class="settings-content">
-          
-          <!-- TAB: PROFIL PERSONAL -->
+
+          <!-- ─── TAB: PROFIL ─── -->
           <template v-if="activeTab === 'profile'">
-            <!-- Avatar Card -->
-            <BaseCard class="avatar-card" padding="lg">
-              <div class="avatar-section">
-                <div class="avatar-info">
-                  <h2 class="section-title">Foto Profil</h2>
-                  <p class="section-desc">Ini akan ditampilkan di profil publik dan topbar Anda.</p>
-                </div>
-                <div class="avatar-action">
-                  <div class="avatar-wrapper">
-                    <img :src="previewImage || form.foto" class="profile-image" alt="Profile" />
-                    <label class="upload-overlay">
-                      <Camera size="20" class="camera-icon" />
-                      <input type="file" accept="image/png,image/jpeg,image/jpg" @change="handleImageUpload" class="hidden-input" />
+
+            <!-- Avatar + Info Panel -->
+            <div class="panel">
+              <div class="panel-head">
+                <span class="panel-title">Foto Profil</span>
+                <span class="panel-hint">Maks 2MB · JPG/PNG</span>
+              </div>
+              <div class="panel-body">
+                <div class="avatar-row">
+                  <div class="avatar-wrap">
+                    <img
+                      :src="previewImage || form.foto"
+                      class="avatar-img"
+                      alt="Profile"
+                    />
+                    <label class="avatar-overlay" tabindex="0" aria-label="Ganti foto profil">
+                      <Camera size="16" />
+                      <input
+                        type="file"
+                        accept="image/png,image/jpeg,image/jpg"
+                        @change="handleImageUpload"
+                        class="sr-only"
+                      />
                     </label>
                   </div>
-                  <div class="upload-hint">
-                    <p class="help-text">Disarankan: Persegi, maks 2MB (JPG/PNG).</p>
+                  <div class="avatar-meta">
+                    <p class="avatar-name">{{ form.nama || 'Nama Pengguna' }}</p>
+                    <p class="avatar-email">{{ form.email }}</p>
+                    <label class="btn-upload" tabindex="0">
+                      <ArrowUp size="11" />
+                      Ganti Foto
+                      <input
+                        type="file"
+                        accept="image/png,image/jpeg,image/jpg"
+                        @change="handleImageUpload"
+                        class="sr-only"
+                      />
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Personal info fields -->
+                <div class="form-grid">
+                  <div class="field">
+                    <label class="field-label" for="p-name">Nama Lengkap</label>
+                    <input
+                      id="p-name"
+                      v-model="form.nama"
+                      type="text"
+                      class="field-input"
+                      :class="{ 'field-input--error': errors.nama }"
+                      placeholder="Mis. Budi Santoso"
+                    />
+                    <span v-if="errors.nama" class="field-error">{{ errors.nama }}</span>
+                  </div>
+                  <div class="field">
+                    <label class="field-label" for="p-email">Alamat Email</label>
+                    <input
+                      id="p-email"
+                      v-model="form.email"
+                      type="email"
+                      class="field-input field-input--disabled"
+                      disabled
+                    />
+                    <span class="field-hint">Email tidak dapat diubah setelah registrasi.</span>
                   </div>
                 </div>
               </div>
-            </BaseCard>
-
-            <!-- Form Card -->
-            <BaseCard class="form-card" padding="lg">
-              <h2 class="section-title">Informasi Personal</h2>
-              <p class="section-desc mb-24">Perbarui detail personal dan cara kami menghubungi Anda.</p>
-              
-              <div class="form-grid">
-                <BaseInput 
-                  id="profile-name"
-                  v-model="form.nama" 
-                  label="Nama Lengkap" 
-                  placeholder="Mis. John Doe"
-                  :error="errors.nama"
-                  required
-                />
-                <BaseInput 
-                  id="profile-email"
-                  v-model="form.email" 
-                  type="email"
-                  label="Alamat Email" 
-                  placeholder="Mis. john@example.com"
-                  :error="errors.email"
-                  required
-                  disabled
-                  helperText="Email tidak dapat diubah setelah registrasi."
-                />
-              </div>
-              
-              <div class="form-actions">
-                <button class="btn btn--primary btn-save" @click="updateProfile" :disabled="isSaving">
-                  <Save size="16" v-if="!isSaving" />
-                  <Loader2 size="16" class="spin-icon" v-else />
+              <div class="panel-foot">
+                <button class="btn-cancel" @click="resetForm">Batalkan</button>
+                <button class="btn-save" @click="updateProfile" :disabled="isSaving">
+                  <Loader2 v-if="isSaving" size="12" class="spin" />
+                  <Check v-else size="12" />
                   {{ isSaving ? 'Menyimpan...' : 'Simpan Perubahan' }}
                 </button>
               </div>
-            </BaseCard>
+            </div>
+
           </template>
 
-          <!-- TAB: KEAMANAN & SANDI -->
+          <!-- ─── TAB: KEAMANAN ─── -->
           <template v-if="activeTab === 'security'">
-            <BaseCard padding="lg">
-              <h2 class="section-title">Ubah Kata Sandi</h2>
-              <p class="section-desc mb-32">Pastikan akun Anda menggunakan kata sandi yang panjang dan acak untuk tetap aman.</p>
-              
-              <div class="security-form">
-                <div class="form-group-section">
-                  <BaseInput 
-                    id="profile-old-password"
-                    v-model="securityForm.oldPassword" 
-                    type="password"
-                    label="Kata Sandi Saat Ini" 
-                    placeholder="Masukkan kata sandi saat ini"
-                    :error="securityErrors.oldPassword"
-                    required
-                  />
-                </div>
-                
-                <hr class="form-divider" />
-                
-                <div class="form-group-section">
-                  <h4 class="sub-section-title">Kata Sandi Baru</h4>
-                  <div class="new-password-grid">
-                    <BaseInput 
-                      id="profile-new-password"
-                      v-model="securityForm.newPassword" 
-                      type="password"
-                      label="Kata Sandi Baru" 
-                      placeholder="Minimal 8 karakter"
-                      :error="securityErrors.newPassword"
-                      required
-                    />
-                    <BaseInput 
-                      id="profile-confirm-password"
-                      v-model="securityForm.confirmPassword" 
-                      type="password"
-                      label="Konfirmasi Sandi Baru" 
-                      placeholder="Ketik ulang kata sandi baru"
-                      :error="securityErrors.confirmPassword"
-                      required
-                    />
+            <div class="panel">
+              <div class="panel-head">
+                <span class="panel-title">Keamanan & Sandi</span>
+                <span class="panel-hint">Gunakan sandi yang kuat dan unik</span>
+              </div>
+              <div class="panel-body">
+
+                <!-- Current password -->
+                <div class="sec-section">
+                  <span class="sec-section-label">Verifikasi Identitas</span>
+                  <div class="field" style="max-width: 380px">
+                    <label class="field-label" for="s-old">Kata Sandi Saat Ini</label>
+                    <div class="pw-wrap">
+                      <input
+                        id="s-old"
+                        v-model="securityForm.oldPassword"
+                        :type="showOld ? 'text' : 'password'"
+                        class="field-input"
+                        :class="{ 'field-input--error': securityErrors.oldPassword }"
+                        placeholder="Masukkan kata sandi saat ini"
+                      />
+                      <button class="pw-toggle" @click="showOld = !showOld" type="button" tabindex="-1">
+                        <Eye v-if="!showOld" size="13" />
+                        <EyeOff v-else size="13" />
+                      </button>
+                    </div>
+                    <span v-if="securityErrors.oldPassword" class="field-error">{{ securityErrors.oldPassword }}</span>
                   </div>
                 </div>
+
+                <!-- New password -->
+                <div class="sec-section">
+                  <span class="sec-section-label">Sandi Baru</span>
+                  <div class="form-grid">
+                    <div class="field">
+                      <label class="field-label" for="s-new">Kata Sandi Baru</label>
+                      <div class="pw-wrap">
+                        <input
+                          id="s-new"
+                          v-model="securityForm.newPassword"
+                          :type="showNew ? 'text' : 'password'"
+                          class="field-input"
+                          :class="{ 'field-input--error': securityErrors.newPassword }"
+                          placeholder="Min. 8 karakter"
+                        />
+                        <button class="pw-toggle" @click="showNew = !showNew" type="button" tabindex="-1">
+                          <Eye v-if="!showNew" size="13" />
+                          <EyeOff v-else size="13" />
+                        </button>
+                      </div>
+                      <!-- Strength bar -->
+                      <div class="strength-bar" v-if="securityForm.newPassword">
+                        <div
+                          v-for="i in 4"
+                          :key="i"
+                          class="strength-seg"
+                          :class="{ 'strength-seg--filled': i <= passwordStrength.score }"
+                        />
+                      </div>
+                      <span v-if="securityForm.newPassword" class="field-hint" :class="'strength-label--' + passwordStrength.level">
+                        {{ passwordStrength.label }}
+                      </span>
+                      <span v-if="securityErrors.newPassword" class="field-error">{{ securityErrors.newPassword }}</span>
+                    </div>
+                    <div class="field">
+                      <label class="field-label" for="s-confirm">Konfirmasi Sandi</label>
+                      <div class="pw-wrap">
+                        <input
+                          id="s-confirm"
+                          v-model="securityForm.confirmPassword"
+                          :type="showConfirm ? 'text' : 'password'"
+                          class="field-input"
+                          :class="{ 'field-input--error': securityErrors.confirmPassword }"
+                          placeholder="Ketik ulang sandi baru"
+                        />
+                        <button class="pw-toggle" @click="showConfirm = !showConfirm" type="button" tabindex="-1">
+                          <Eye v-if="!showConfirm" size="13" />
+                          <EyeOff v-else size="13" />
+                        </button>
+                      </div>
+                      <span v-if="securityErrors.confirmPassword" class="field-error">{{ securityErrors.confirmPassword }}</span>
+                    </div>
+                  </div>
+                </div>
+
               </div>
-              
-              <div class="form-actions mt-32">
-                <button class="btn btn--primary btn-save" @click="updatePassword" :disabled="isSavingSecurity">
-                  <ShieldCheck size="16" v-if="!isSavingSecurity" />
-                  <Loader2 size="16" class="spin-icon" v-else />
+              <div class="panel-foot">
+                <button class="btn-cancel" @click="resetSecurityForm">Batalkan</button>
+                <button class="btn-save" @click="updatePassword" :disabled="isSavingSecurity">
+                  <Loader2 v-if="isSavingSecurity" size="12" class="spin" />
+                  <ShieldCheck v-else size="12" />
                   {{ isSavingSecurity ? 'Memperbarui...' : 'Perbarui Sandi' }}
                 </button>
               </div>
-            </BaseCard>
+            </div>
           </template>
 
-          <!-- TAB: NOTIFIKASI -->
+          <!-- ─── TAB: NOTIFIKASI ─── -->
           <template v-if="activeTab === 'notifications'">
-            <BaseCard padding="lg">
-              <h2 class="section-title">Preferensi Notifikasi</h2>
-              <p class="section-desc mb-24">Pilih pemberitahuan yang ingin Anda terima via Email dan In-App.</p>
-              
-              <div class="notification-list">
-                
-                <div class="notification-item">
-                  <div class="notif-info">
-                    <h4 class="notif-title">Analisis Selesai</h4>
-                    <p class="notif-desc">Dapatkan pemberitahuan saat hasil analisis air sudah tersedia.</p>
-                  </div>
-                  <label class="toggle-switch">
-                    <input type="checkbox" v-model="notifPrefs.analysis" />
-                    <span class="slider"></span>
-                  </label>
-                </div>
-
-                <div class="notification-item">
-                  <div class="notif-info">
-                    <h4 class="notif-title">Artikel & Edukasi Baru</h4>
-                    <p class="notif-desc">Dapatkan tips dan artikel terbaru seputar kualitas air.</p>
-                  </div>
-                  <label class="toggle-switch">
-                    <input type="checkbox" v-model="notifPrefs.education" />
-                    <span class="slider"></span>
-                  </label>
-                </div>
-
-                <div class="notification-item">
-                  <div class="notif-info">
-                    <h4 class="notif-title">Pembaruan Sistem</h4>
-                    <p class="notif-desc">Informasi terkait pemeliharaan dan fitur baru di aplikasi.</p>
-                  </div>
-                  <label class="toggle-switch">
-                    <input type="checkbox" v-model="notifPrefs.updates" />
-                    <span class="slider"></span>
-                  </label>
-                </div>
-
+            <div class="panel">
+              <div class="panel-head">
+                <span class="panel-title">Preferensi Notifikasi</span>
+                <span class="panel-hint">Email &amp; In-App</span>
               </div>
-              
-              <div class="form-actions mt-32">
-                <button class="btn btn--primary btn-save" @click="updateNotifications" :disabled="isSavingNotif">
-                  <Bell size="16" v-if="!isSavingNotif" />
-                  <Loader2 size="16" class="spin-icon" v-else />
+              <div class="panel-body" style="padding-bottom: 0">
+                <div
+                  v-for="item in notifItems"
+                  :key="item.key"
+                  class="notif-row"
+                >
+                  <div class="notif-info">
+                    <p class="notif-title">{{ item.title }}</p>
+                    <p class="notif-desc">{{ item.desc }}</p>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" v-model="notifPrefs[item.key]" />
+                    <span class="toggle-track" />
+                    <span class="toggle-thumb" />
+                  </label>
+                </div>
+              </div>
+              <div class="panel-foot" style="margin-top: 0">
+                <button class="btn-save" @click="updateNotifications" :disabled="isSavingNotif">
+                  <Loader2 v-if="isSavingNotif" size="12" class="spin" />
+                  <Bell v-else size="12" />
                   {{ isSavingNotif ? 'Menyimpan...' : 'Simpan Preferensi' }}
                 </button>
               </div>
-            </BaseCard>
+            </div>
           </template>
 
         </div>
       </div>
 
-      <!-- Premium Toast Notification -->
+      <!-- Toast -->
       <Transition name="toast">
-        <div v-if="message" class="toast-message" :class="isError ? 'toast-error' : 'toast-success'">
-          <div class="toast-icon">
-            <CheckCircle v-if="!isError" size="18" />
-            <AlertCircle v-else size="18" />
-          </div>
-          <p class="toast-text">{{ message }}</p>
+        <div v-if="toast.visible" class="toast" :class="toast.isError ? 'toast--error' : 'toast--success'">
+          <span class="toast-dot" />
+          <p class="toast-text">{{ toast.message }}</p>
         </div>
       </Transition>
 
-=======
-    <div class="profile-container">
-      <div class="profile-header">
-        <h2>Profil</h2>
-        <p>Kelola informasi profil Anda</p>
-      </div>
-
-      <div class="profile-content">
-        <!-- Left Side: Avatar Card -->
-        <div class="avatar-card">
-          <div class="avatar-wrapper">
-            <img v-if="authStore.currentUser?.avatar_url" :src="authStore.currentUser.avatar_url" class="avatar-img" />
-            <div v-else class="avatar-placeholder">{{ userInitial }}</div>
-          </div>
-          <h3>{{ authStore.currentUser?.full_name || authStore.currentUser?.username || 'Pengguna' }}</h3>
-          <p>User</p>
-          <div class="upload-btn-wrapper">
-            <button class="upload-btn" :disabled="authStore.isLoading">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-              Upload Foto
-            </button>
-            <input type="file" accept="image/png,image/jpeg,image/jpg" @change="handleImageUpload" :disabled="authStore.isLoading" class="file-input" />
-          </div>
-        </div>
-
-        <!-- Right Side: Info & Security -->
-        <div class="info-security-wrapper">
-          
-          <!-- Informasi Profil -->
-          <div class="info-card">
-            <div class="card-header">
-              <h3>Informasi Profil</h3>
-              <button class="edit-btn" @click="isEditing = !isEditing">
-                {{ isEditing ? 'Batal' : 'Edit Profil' }}
-              </button>
-            </div>
-            
-            <div class="form-group">
-              <label>Nama Lengkap</label>
-              <div class="input-with-icon">
-                <div class="icon-wrapper">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                </div>
-                <input type="text" v-model="form.nama" :disabled="!isEditing || authStore.isLoading" />
-              </div>
-            </div>
-            
-            <div class="form-group">
-              <label>Username</label>
-              <div class="input-with-icon">
-                <div class="icon-wrapper">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                </div>
-                <input type="text" v-model="form.username" :disabled="!isEditing || authStore.isLoading" />
-              </div>
-            </div>
-            
-            <div class="form-group">
-              <label>Tanggal Bergabung</label>
-              <div class="input-with-icon">
-                <div class="icon-wrapper">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                </div>
-                <input type="text" :value="formatDate(authStore.currentUser?.created_at)" disabled />
-              </div>
-            </div>
-
-            <button v-if="isEditing" class="save-btn" @click="updateProfile" :disabled="authStore.isLoading">
-              {{ authStore.isLoading ? 'Menyimpan...' : 'Simpan Perubahan' }}
-            </button>
-          </div>
-          
-          <!-- Keamanan -->
-          <div class="security-card">
-            <h3>Keamanan</h3>
-            
-            <div class="security-item">
-              <div class="security-text">
-                <h4>Ganti Password</h4>
-                <p>Pastikan akun Anda menggunakan password yang kuat untuk menjaga keamanan</p>
-              </div>
-              <button class="change-pw-btn" @click="showPasswordForm = !showPasswordForm">
-                Ganti Password
-              </button>
-            </div>
-            
-            <div v-if="showPasswordForm" class="password-form">
-              <div class="form-group">
-                <input type="password" v-model="newPassword" placeholder="Masukkan password baru minimal 6 karakter" :disabled="authStore.isLoading" />
-              </div>
-              <button class="save-btn" @click="changePassword" :disabled="authStore.isLoading">
-                {{ authStore.isLoading ? 'Memproses...' : 'Simpan Password' }}
-              </button>
-            </div>
-          </div>
-          
-          <!-- Notifikasi Global untuk Halaman -->
-          <div v-if="message" class="message" :class="{ 'error-message': isError }">
-            {{ message }}
-          </div>
-          
-        </div>
-      </div>
->>>>>>> 94642f67206f872f05a9a345f263228187656abd
     </div>
   </DashboardLayout>
 </template>
 
 <script setup>
-<<<<<<< HEAD
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import PageHeader from '@/components/common/PageHeader.vue'
-import BaseCard from '@/components/common/BaseCard.vue'
-import BaseInput from '@/components/common/BaseInput.vue'
-import { User, ShieldCheck, Bell, Camera, Save, CheckCircle, AlertCircle, Loader2 } from 'lucide-vue-next'
+import { useAuthStore } from '@/stores/authStore'
+import {
+  User, ShieldCheck, Bell, Camera, Check, ArrowUp,
+  Loader2, Eye, EyeOff, AlertCircle
+} from 'lucide-vue-next'
+
+// ─── Tabs config ──────────────────────────────────────────────
+const authStore = useAuthStore()
 
 const activeTab = ref('profile')
 
-// Toasts
-const message = ref('')
-const isError = ref(false)
-const showMessage = (msg, error = false) => {
-  message.value = msg
-  isError.value = error
-  setTimeout(() => { message.value = '' }, 3500)
+const tabs = [
+  { id: 'profile',       label: 'Profil Personal',    icon: User },
+  { id: 'security',      label: 'Keamanan & Sandi',   icon: ShieldCheck },
+  { id: 'notifications', label: 'Notifikasi',          icon: Bell },
+]
+
+const joinDate = ref('12 Mar 2024')
+
+// ─── Toast ────────────────────────────────────────────────────
+const toast = ref({ visible: false, message: '', isError: false })
+let toastTimer = null
+
+function showToast(message, isError = false) {
+  clearTimeout(toastTimer)
+  toast.value = { visible: true, message, isError }
+  toastTimer = setTimeout(() => { toast.value.visible = false }, 3500)
 }
 
-// ----------------------
-// TAB 1: PROFILE
-// ----------------------
+// ─── Profile ─────────────────────────────────────────────────
 const previewImage = ref(null)
 const isSaving = ref(false)
 
 const form = ref({
   nama: '',
   email: '',
-  foto: 'https://ui-avatars.com/api/?name=User&background=3b82f6&color=fff&size=200'
+  foto: '',
 })
 
 const errors = ref({ nama: '', email: '' })
@@ -371,646 +318,700 @@ const errors = ref({ nama: '', email: '' })
 onMounted(() => {
   try {
     const user = JSON.parse(sessionStorage.getItem('pakar_air_user') || '{}')
-    if (user.full_name) form.value.nama = user.full_name
-    if (user.email) form.value.email = user.email
-    form.value.foto = `https://ui-avatars.com/api/?name=${encodeURIComponent(form.value.nama || 'User')}&background=3b82f6&color=fff&size=200`
-  } catch (err) {}
+    form.value.nama  = user.full_name || ''
+    form.value.email = user.email     || ''
+    joinDate.value   = user.created_at
+      ? new Date(user.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+      : joinDate.value
+  } catch {}
+  form.value.foto = `https://ui-avatars.com/api/?name=${encodeURIComponent(form.value.nama || 'User')}&background=1e40af&color=fff&size=200&bold=true&rounded=false`
 })
 
-const handleImageUpload = (event) => {
+const selectedFile = ref(null)
+
+function handleImageUpload(event) {
   const file = event.target.files[0]
   if (!file) return
-
-  const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']
-  if (!allowedTypes.includes(file.type)) {
-    showMessage('Format gambar harus PNG/JPG/JPEG', true)
-    return
-=======
-import { ref, onMounted, computed } from 'vue'
-import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import { useAuthStore } from '@/stores/authStore'
-
-const authStore = useAuthStore()
-
-const isEditing = ref(false)
-const showPasswordForm = ref(false)
-const message = ref('')
-const isError = ref(false)
-const newPassword = ref('')
-
-const form = ref({
-  nama: '',
-  username: ''
-})
-
-const userInitial = computed(() => {
-  const name = authStore.currentUser?.full_name || authStore.currentUser?.username || 'User'
-  return name.charAt(0).toUpperCase()
-})
-
-onMounted(async () => {
-  await authStore.fetchProfile()
-  if (authStore.currentUser) {
-    form.value.nama = authStore.currentUser.full_name || ''
-    form.value.username = authStore.currentUser.username || ''
->>>>>>> 94642f67206f872f05a9a345f263228187656abd
+  if (!['image/png', 'image/jpeg', 'image/jpg'].includes(file.type)) {
+    showToast('Format gambar harus PNG/JPG/JPEG', true); return
   }
-})
-
-<<<<<<< HEAD
   if (file.size > 2 * 1024 * 1024) {
-    showMessage('Ukuran gambar maksimal 2MB', true)
-    return
+    showToast('Ukuran gambar maksimal 2MB', true); return
   }
-
+  selectedFile.value = file
   const reader = new FileReader()
   reader.onload = (e) => { previewImage.value = e.target.result }
   reader.readAsDataURL(file)
-  showMessage('Foto berhasil dipilih', false)
 }
 
-const updateProfile = () => {
+function resetForm() {
   errors.value = { nama: '', email: '' }
-  if (form.value.nama.length < 3) {
-    errors.value.nama = 'Nama minimal 3 karakter'
-    return
+  previewImage.value = null
+  selectedFile.value = null
+  form.value.nama = authStore.currentUser?.full_name || ''
+}
+
+async function updateProfile() {
+  errors.value = { nama: '', email: '' }
+  if (form.value.nama.trim().length < 3) {
+    errors.value.nama = 'Nama minimal 3 karakter'; return
   }
   isSaving.value = true
-  setTimeout(() => {
+  
+  try {
+    if (form.value.nama !== authStore.currentUser?.full_name) {
+      await authStore.updateProfile({ full_name: form.value.nama })
+    }
+    if (selectedFile.value) {
+      await authStore.uploadAvatar(selectedFile.value)
+      selectedFile.value = null
+    }
+    showToast('Profil personal berhasil diperbarui')
+  } catch (error) {
+    showToast('Gagal memperbarui profil', true)
+  } finally {
     isSaving.value = false
-    try {
-      const user = JSON.parse(sessionStorage.getItem('pakar_air_user') || '{}')
-      user.full_name = form.value.nama
-      sessionStorage.setItem('pakar_air_user', JSON.stringify(user))
-    } catch(e) {}
-    showMessage('Profil personal berhasil diperbarui', false)
-  }, 800)
+  }
 }
 
-// ----------------------
-// TAB 2: SECURITY
-// ----------------------
+// ─── Security ─────────────────────────────────────────────────
 const isSavingSecurity = ref(false)
-const securityForm = ref({
-  oldPassword: '',
-  newPassword: '',
-  confirmPassword: ''
-})
+const showOld     = ref(false)
+const showNew     = ref(false)
+const showConfirm = ref(false)
+
+const securityForm = ref({ oldPassword: '', newPassword: '', confirmPassword: '' })
 const securityErrors = ref({ oldPassword: '', newPassword: '', confirmPassword: '' })
 
-const updatePassword = () => {
-  securityErrors.value = { oldPassword: '', newPassword: '', confirmPassword: '' }
-  let valid = true
-
-  if (!securityForm.value.oldPassword) {
-    securityErrors.value.oldPassword = 'Kata sandi saat ini wajib diisi'
-    valid = false
-  }
-  if (securityForm.value.newPassword.length < 8) {
-    securityErrors.value.newPassword = 'Kata sandi baru minimal 8 karakter'
-    valid = false
-  }
-  if (securityForm.value.newPassword !== securityForm.value.confirmPassword) {
-    securityErrors.value.confirmPassword = 'Konfirmasi kata sandi tidak cocok'
-    valid = false
-  }
-
-  if (!valid) return
-
-  isSavingSecurity.value = true
-  setTimeout(() => {
-    isSavingSecurity.value = false
-    securityForm.value = { oldPassword: '', newPassword: '', confirmPassword: '' }
-    showMessage('Kata sandi berhasil diperbarui', false)
-  }, 1000)
-}
-
-// ----------------------
-// TAB 3: NOTIFICATIONS
-// ----------------------
-const isSavingNotif = ref(false)
-const notifPrefs = ref({
-  analysis: true,
-  education: false,
-  updates: true
+const passwordStrength = computed(() => {
+  const pw = securityForm.value.newPassword
+  if (!pw) return { score: 0, level: '', label: '' }
+  let score = 0
+  if (pw.length >= 8)   score++
+  if (pw.length >= 12)  score++
+  if (/[A-Z]/.test(pw) && /[0-9]/.test(pw)) score++
+  if (/[^a-zA-Z0-9]/.test(pw)) score++
+  const levels = ['', 'Lemah', 'Sedang', 'Kuat', 'Sangat Kuat']
+  return { score: Math.max(1, score), level: ['','weak','medium','strong','very-strong'][score] || 'strong', label: levels[score] || 'Sangat Kuat' }
 })
 
-const updateNotifications = () => {
+function resetSecurityForm() {
+  securityForm.value = { oldPassword: '', newPassword: '', confirmPassword: '' }
+  securityErrors.value = { oldPassword: '', newPassword: '', confirmPassword: '' }
+}
+
+async function updatePassword() {
+  securityErrors.value = { oldPassword: '', newPassword: '', confirmPassword: '' }
+  let valid = true
+  if (!securityForm.value.oldPassword) {
+    securityErrors.value.oldPassword = 'Kata sandi saat ini wajib diisi'; valid = false
+  }
+  if (securityForm.value.newPassword.length < 8) {
+    securityErrors.value.newPassword = 'Minimal 8 karakter'; valid = false
+  }
+  if (securityForm.value.newPassword !== securityForm.value.confirmPassword) {
+    securityErrors.value.confirmPassword = 'Konfirmasi sandi tidak cocok'; valid = false
+  }
+  if (!valid) return
+  
+  isSavingSecurity.value = true
+  const res = await authStore.changePassword(securityForm.value.newPassword)
+  isSavingSecurity.value = false
+  
+  if (res.success) {
+    resetSecurityForm()
+    showToast('Kata sandi berhasil diperbarui')
+  } else {
+    showToast(res.message || 'Gagal memperbarui kata sandi', true)
+  }
+}
+
+// ─── Notifications ────────────────────────────────────────────
+const isSavingNotif = ref(false)
+
+const notifItems = [
+  { key: 'analysis',  title: 'Analisis Selesai',        desc: 'Pemberitahuan saat hasil analisis air sudah tersedia.' },
+  { key: 'education', title: 'Artikel & Edukasi Baru',  desc: 'Tips dan artikel terbaru seputar kualitas air.' },
+  { key: 'updates',   title: 'Pembaruan Sistem',        desc: 'Informasi terkait pemeliharaan dan fitur baru di aplikasi.' },
+]
+
+const notifPrefs = ref({ analysis: true, education: false, updates: true })
+
+function updateNotifications() {
   isSavingNotif.value = true
   setTimeout(() => {
     isSavingNotif.value = false
-    showMessage('Preferensi notifikasi berhasil disimpan', false)
+    showToast('Preferensi notifikasi berhasil disimpan')
   }, 800)
-=======
-const formatDate = (dateString) => {
-  if (!dateString) return '2025-01-15' // Fallback
-  const date = new Date(dateString)
-  return new Intl.DateTimeFormat('id-ID', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(date)
-}
-
-const showMessage = (msg, error = false) => {
-  message.value = msg
-  isError.value = error
-  setTimeout(() => {
-    message.value = ''
-  }, 3000)
-}
-
-// UPLOAD FOTO
-const handleImageUpload = async (event) => {
-  const file = event.target.files[0]
-  if (!file) return
-
-  const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']
-  if (!allowedTypes.includes(file.type)) {
-    showMessage('Format gambar harus PNG/JPG/JPEG', true)
-    return
-  }
-  if (file.size > 2 * 1024 * 1024) {
-    showMessage('Ukuran gambar maksimal 2MB', true)
-    return
-  }
-
-  showMessage('Mengunggah foto...', false)
-  const res = await authStore.uploadAvatar(file)
-  if (res.success) {
-    showMessage('Foto berhasil diperbarui', false)
-  } else {
-    showMessage(res.message || 'Gagal mengunggah foto', true)
-  }
-}
-
-// UPDATE PROFILE
-const updateProfile = async () => {
-  if (form.value.nama.length < 3) {
-    showMessage('Nama minimal 3 karakter', true)
-    return
-  }
-  if (form.value.username.length < 3) {
-    showMessage('Username minimal 3 karakter', true)
-    return
-  }
-  const regex = /^[a-zA-Z0-9_]+$/
-  if (!regex.test(form.value.username)) {
-    showMessage('Username hanya boleh huruf, angka, underscore', true)
-    return
-  }
-
-  const res = await authStore.updateProfile({
-    full_name: form.value.nama,
-    username: form.value.username
-  })
-  
-  if (res.success) {
-    showMessage('Profile berhasil diperbarui', false)
-    isEditing.value = false
-  } else {
-    showMessage(res.message || 'Terjadi kesalahan', true)
-  }
-}
-
-// UBAH PASSWORD
-const changePassword = async () => {
-  if (newPassword.value.length < 6) {
-    showMessage('Password baru minimal 6 karakter', true)
-    return
-  }
-  
-  const res = await authStore.changePassword(newPassword.value)
-  if (res.success) {
-    showMessage('Password berhasil diubah', false)
-    newPassword.value = ''
-    showPasswordForm.value = false
-  } else {
-    showMessage(res.message || 'Gagal mengubah password', true)
-  }
->>>>>>> 94642f67206f872f05a9a345f263228187656abd
 }
 </script>
 
 <style scoped>
-<<<<<<< HEAD
+/* ============================================================
+   IMPORTS
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+/* ============================================================
+   LOCAL TOKENS
+   ============================================================ */
 .profile-view {
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --h-rule: var(--color-border);
+  --h-rule-2: var(--color-border-light);
+
   display: flex;
   flex-direction: column;
   min-height: 100%;
-}
-
-.settings-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-
-@media (min-width: 1024px) {
-  .settings-grid {
-    flex-direction: row;
-    align-items: flex-start;
-  }
-}
-
-/* Sidebar Nav */
-.settings-sidebar {
-  width: 100%;
-}
-
-@media (min-width: 1024px) {
-  .settings-sidebar {
-    width: 260px;
-    flex-shrink: 0;
-    position: sticky;
-    top: calc(var(--topbar-height) + 24px);
-  }
-}
-
-.settings-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 16px;
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  color: var(--color-text-secondary);
-  text-decoration: none;
-  transition: all 0.2s ease;
-  background: transparent;
-  border: 1px solid transparent;
-  cursor: pointer;
-  text-align: left;
-  width: 100%;
-}
-
-.nav-item:hover {
-  background: var(--color-surface);
-  color: var(--color-text-primary);
-}
-
-.nav-item.active {
-  background: var(--color-surface);
-  color: var(--color-primary);
-  font-weight: 600;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--color-border);
-}
-
-/* Main Content */
-.settings-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
   gap: 24px;
-  min-width: 0; /* Prevent overflow */
-  max-width: 880px; /* Prevent excessive stretching on ultra-wide screens */
 }
 
-.section-title {
-  font-size: var(--font-size-lg);
-  font-weight: 700;
+/* Screen-reader only */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.workspace-header {
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--color-text-primary);
+}
+
+.header-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 0 0 6px;
+}
+
+.workspace-title {
+  font-family: var(--mono);
+  font-size: var(--font-size-xl);
+  font-weight: 600;
   color: var(--color-text-primary);
-  margin: 0 0 6px 0;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin: 0 0 6px;
 }
 
-.section-desc {
+.workspace-desc {
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
   margin: 0;
 }
 
-.mb-24 { margin-bottom: 24px; }
-.mb-32 { margin-bottom: 32px; }
-.mt-32 { margin-top: 32px; }
-
-/* Avatar Section */
-.avatar-section {
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.settings-layout {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-}
-
-@media (min-width: 640px) {
-  .avatar-section {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-}
-
-.avatar-action {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.avatar-wrapper {
-  position: relative;
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  border: 2px solid var(--color-border);
-  padding: 4px;
-  background: var(--color-bg);
-}
-
-.profile-image {
-  width: 100%;
-  height: 100%;
-=======
-.profile-container {
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.profile-header {
-  margin-bottom: 24px;
-}
-
-.profile-header h2 {
-  font-size: 24px;
-  font-weight: 700;
-  color: #1a202c;
-  margin-bottom: 4px;
-}
-
-.profile-header p {
-  color: #718096;
-  font-size: 14px;
-}
-
-.profile-content {
-  display: flex;
   gap: 24px;
   align-items: flex-start;
 }
 
-/* Avatar Card */
-.avatar-card {
-  background: white;
-  border-radius: 12px;
-  padding: 32px 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  border: 1px solid #e2e8f0;
-  width: 280px;
+@media (min-width: 1024px) {
+  .settings-layout {
+    flex-direction: row;
+  }
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.settings-sidebar {
+  width: 100%;
   flex-shrink: 0;
 }
 
-.avatar-wrapper {
-  width: 120px;
-  height: 120px;
->>>>>>> 94642f67206f872f05a9a345f263228187656abd
-  border-radius: 50%;
-  background: #3b82f6;
-  color: white;
+@media (min-width: 1024px) {
+  .settings-sidebar {
+    width: 220px;
+    position: sticky;
+    top: calc(var(--topbar-height, 60px) + 24px);
+  }
+}
+
+.sidebar-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  padding: 0 12px 8px;
+}
+
+.settings-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .settings-nav {
+    flex-direction: row;
+    gap: 4px;
+  }
+}
+
+.nav-item {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 48px;
+  gap: 10px;
+  padding: 9px 12px;
+  width: 100%;
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: 2px;
+  font-family: var(--sans, inherit);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.nav-item:hover {
+  color: var(--color-text-primary);
+  background: var(--color-surface);
+  border-color: var(--h-rule);
+}
+
+.nav-item--active {
+  color: var(--color-text-primary);
+  background: var(--color-surface);
+  border-color: var(--color-text-primary);
   font-weight: 600;
-  margin-bottom: 16px;
+}
+
+.nav-icon { flex-shrink: 0; }
+
+.nav-label { flex: 1; }
+
+.nav-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  background: var(--color-text-primary);
+  color: var(--color-surface);
+  padding: 1px 5px;
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+.sidebar-divider {
+  border: none;
+  border-top: 1px solid var(--h-rule);
+  margin: 12px 0;
+}
+
+.sidebar-meta {
+  padding: 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-meta-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted-light);
+}
+
+.sidebar-meta-value {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+/* ============================================================
+   CONTENT
+   ============================================================ */
+.settings-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+/* ============================================================
+   PANEL
+   ============================================================ */
+.panel {
+  background: var(--color-surface);
+  border: 1px solid var(--h-rule);
+  border-radius: 2px;
   overflow: hidden;
+}
+
+.panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--h-rule);
+  background: var(--color-neutral-bg);
+}
+
+.panel-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+}
+
+.panel-hint {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--color-text-muted);
+}
+
+.panel-body {
+  padding: 20px;
+}
+
+.panel-foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--h-rule-2);
+  background: var(--color-neutral-bg);
+}
+
+/* ============================================================
+   AVATAR
+   ============================================================ */
+.avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--h-rule-2);
+}
+
+.avatar-wrap {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 2px;
+  border: 1px solid var(--h-rule);
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .avatar-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-<<<<<<< HEAD
-.upload-overlay {
+.avatar-overlay {
   position: absolute;
-  inset: 4px; /* inside padding */
-  border-radius: 50%;
+  inset: 0;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  color: #fff;
+  transition: opacity 0.15s;
 }
 
-.avatar-wrapper:hover .upload-overlay {
+.avatar-wrap:hover .avatar-overlay {
   opacity: 1;
 }
 
-.camera-icon {
-  color: white;
+.avatar-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
-.hidden-input {
-  display: none;
-}
-
-.upload-hint .help-text {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
+.avatar-name {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
   margin: 0;
 }
 
-/* Form Grid */
+.avatar-email {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin: 0 0 8px;
+}
+
+.btn-upload {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  padding: 5px 12px;
+  border: 1px solid var(--h-rule);
+  background: var(--color-neutral-bg);
+  color: var(--color-text-secondary);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.btn-upload:hover {
+  border-color: var(--color-text-primary);
+  color: var(--color-text-primary);
+}
+
+/* ============================================================
+   FORM FIELDS
+   ============================================================ */
 .form-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
-  margin-bottom: 32px;
+  gap: 16px;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 600px) {
   .form-grid {
     grid-template-columns: 1fr 1fr;
   }
 }
 
-.security-form {
+.field {
   display: flex;
   flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.field-input {
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--h-rule);
+  background: var(--color-surface);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--color-text-primary);
+  outline: none;
+  transition: border-color 0.15s;
   width: 100%;
 }
 
-.form-group-section {
-  display: flex;
-  flex-direction: column;
+.field-input:focus {
+  border-color: var(--color-text-primary);
 }
 
-.sub-section-title {
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  color: var(--color-text-primary);
-  margin: 0 0 16px 0;
+.field-input--error {
+  border-color: var(--color-danger);
 }
 
-.new-password-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
+.field-input--disabled,
+.field-input:disabled {
+  background: var(--color-neutral-bg);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
 }
 
-@media (min-width: 768px) {
-  .new-password-grid {
-    grid-template-columns: 1fr 1fr;
-  }
+.field-hint {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--color-text-muted);
 }
 
-.form-divider {
-  border: none;
-  border-top: 1px solid var(--color-border-light);
-  margin: 24px 0;
+.field-error {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--color-danger);
 }
 
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  border-top: 1px solid var(--color-border-light);
-  padding-top: 24px;
-}
-
+/* ============================================================
+   BUTTONS
+   ============================================================ */
 .btn-save {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  padding: 7px 16px;
+  border: 1px solid var(--color-text-primary);
+  background: var(--color-text-primary);
+  color: var(--color-surface);
+  border-radius: 2px;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-width: 160px;
-  justify-content: center;
+  gap: 7px;
+  transition: opacity 0.15s;
 }
 
-.spin-icon {
-  animation: spin 1s linear infinite;
+.btn-save:hover:not(:disabled) {
+  opacity: 0.8;
 }
 
-@keyframes spin { 100% { transform: rotate(360deg); } }
-
-/* Notification List */
-.notification-list {
-=======
-.avatar-card h3 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #1a202c;
-  margin-bottom: 4px;
-  text-align: center;
+.btn-save:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
-.avatar-card p {
-  color: #718096;
-  font-size: 14px;
-  margin-bottom: 24px;
+.btn-cancel {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  padding: 7px 14px;
+  border: 1px solid var(--h-rule);
+  background: transparent;
+  color: var(--color-text-secondary);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
 }
 
-.upload-btn-wrapper {
+.btn-cancel:hover {
+  border-color: var(--color-text-secondary);
+  color: var(--color-text-primary);
+}
+
+.spin {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ============================================================
+   SECURITY
+   ============================================================ */
+.sec-section {
+  margin-bottom: 20px;
+}
+
+.sec-section:last-child {
+  margin-bottom: 0;
+}
+
+.sec-section-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--h-rule-2);
+}
+
+.pw-wrap {
   position: relative;
-  overflow: hidden;
-  display: inline-block;
-  width: 100%;
 }
 
-.upload-btn {
-  border: 1px solid #e2e8f0;
-  color: #4a5568;
-  background-color: white;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  cursor: pointer;
-  width: 100%;
-  transition: all 0.2s;
+.pw-wrap .field-input {
+  padding-right: 36px;
 }
 
-.upload-btn:hover {
-  background-color: #f7fafc;
-}
-
-.file-input {
-  font-size: 100px;
+.pw-toggle {
   position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
   cursor: pointer;
-  height: 100%;
-  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  transition: color 0.15s;
 }
 
-/* Right Section */
-.info-security-wrapper {
+.pw-toggle:hover {
+  color: var(--color-text-primary);
+}
+
+/* Password strength bar */
+.strength-bar {
+  display: flex;
+  gap: 3px;
+  margin-top: 6px;
+}
+
+.strength-seg {
   flex: 1;
->>>>>>> 94642f67206f872f05a9a345f263228187656abd
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  min-width: 0;
+  height: 2px;
+  background: var(--h-rule-2);
+  border-radius: 0;
 }
 
-.info-card, .security-card {
-  background: white;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  border: 1px solid #e2e8f0;
+.strength-seg--filled {
+  background: var(--color-success);
 }
 
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-}
+.strength-label--weak   { color: var(--color-danger) !important; }
+.strength-label--medium { color: var(--color-warning, #b45309) !important; }
+.strength-label--strong,
+.strength-label--very-strong { color: var(--color-success) !important; }
 
-.info-card h3, .security-card h3 {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1a202c;
-}
-
-.edit-btn {
-  background: white;
-  border: 1px solid #e2e8f0;
-  color: #4a5568;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.edit-btn:hover {
-  background: #f7fafc;
-}
-
-<<<<<<< HEAD
-.notification-item {
+/* ============================================================
+   NOTIFICATIONS
+   ============================================================ */
+.notif-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-bg);
+  padding: 14px 0;
+  border-bottom: 1px solid var(--h-rule-2);
+}
+
+.notif-row:last-child {
+  border-bottom: none;
 }
 
 .notif-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
+  padding-right: 16px;
 }
 
 .notif-title {
   font-size: var(--font-size-sm);
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-text-primary);
   margin: 0;
 }
@@ -1021,254 +1022,108 @@ const changePassword = async () => {
   margin: 0;
 }
 
-/* Toggle Switch */
-.toggle-switch {
+/* Square toggle */
+.toggle {
   position: relative;
   display: inline-block;
-  width: 44px;
-  height: 24px;
+  width: 36px;
+  height: 20px;
+  flex-shrink: 0;
+  cursor: pointer;
 }
 
-.toggle-switch input {
+.toggle input {
+  position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-.slider {
+.toggle-track {
   position: absolute;
-  cursor: pointer;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: var(--color-border-strong);
-  transition: .3s;
-  border-radius: 34px;
+  inset: 0;
+  background: var(--h-rule);
+  border-radius: 0;
+  transition: background 0.2s;
 }
 
-.slider:before {
+.toggle input:checked ~ .toggle-track {
+  background: var(--color-text-primary);
+}
+
+.toggle-thumb {
   position: absolute;
-  content: "";
-  height: 18px;
-  width: 18px;
+  top: 3px;
   left: 3px;
-  bottom: 3px;
-  background-color: white;
-  transition: .3s;
-  border-radius: 50%;
-  box-shadow: var(--shadow-sm);
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border-radius: 0;
+  pointer-events: none;
+  transition: transform 0.2s;
 }
 
-input:checked + .slider {
-  background-color: var(--color-primary);
+.toggle input:checked ~ .toggle-thumb {
+  transform: translateX(16px);
 }
 
-input:checked + .slider:before {
-  transform: translateX(20px);
-}
-
-/* Toast */
-.toast-message {
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast {
   position: fixed;
-  bottom: 32px;
-  right: 32px;
+  bottom: 28px;
+  right: 28px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 20px;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 2px;
   z-index: 1000;
-  font-size: var(--font-size-sm);
+  font-family: var(--mono);
+  font-size: 11px;
   font-weight: 500;
-  max-width: 400px;
+  letter-spacing: 0.04em;
+  max-width: 360px;
 }
 
-.toast-success {
-  background: var(--color-surface);
-  border: 1px solid var(--color-success);
-  color: var(--color-text-primary);
+.toast--success {
+  background: var(--color-text-primary);
+  color: var(--color-surface);
 }
 
-.toast-success .toast-icon { color: var(--color-success); }
-
-.toast-error {
+.toast--error {
   background: var(--color-danger);
-  border: 1px solid var(--color-danger);
-  color: white;
+  color: #fff;
 }
 
-.toast-error .toast-icon { color: white; }
+.toast-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.toast--error .toast-dot {
+  background: #fff;
+}
 
 .toast-text {
   margin: 0;
   line-height: 1.4;
 }
 
+/* Transition */
 .toast-enter-active,
 .toast-leave-active {
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.toast-enter-from {
-  opacity: 0;
-  transform: translateY(20px) scale(0.95);
-}
-
+.toast-enter-from,
 .toast-leave-to {
   opacity: 0;
-  transform: translateY(20px) scale(0.95);
-=======
-.form-group {
-  margin-bottom: 16px;
-}
-
-.form-group label {
-  display: block;
-  font-size: 13px;
-  color: #4a5568;
-  margin-bottom: 8px;
-  font-weight: 500;
-}
-
-.input-with-icon {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.icon-wrapper {
-  position: absolute;
-  left: 12px;
-  color: #a0aec0;
-  display: flex;
-  align-items: center;
-}
-
-.input-with-icon input {
-  width: 100%;
-  padding: 10px 12px 10px 40px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 14px;
-  color: #2d3748;
-  transition: border-color 0.2s;
-}
-
-.input-with-icon input:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 1px #3b82f6;
-}
-
-.input-with-icon input:disabled {
-  background-color: #f7fafc;
-  color: #718096;
-}
-
-.save-btn {
-  background: #3b82f6;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  margin-top: 8px;
-  transition: background 0.2s;
-}
-
-.save-btn:hover {
-  background: #2563eb;
-}
-
-.save-btn:disabled {
-  background: #9ca3af;
-  cursor: not-allowed;
-}
-
-/* Security Section */
-.security-card h3 {
-  margin-bottom: 20px;
-}
-
-.security-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.security-text h4 {
-  font-size: 14px;
-  font-weight: 600;
-  color: #2d3748;
-  margin-bottom: 4px;
-}
-
-.security-text p {
-  font-size: 13px;
-  color: #718096;
-}
-
-.change-pw-btn {
-  background: white;
-  border: 1px solid #e2e8f0;
-  color: #4a5568;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
-  white-space: nowrap;
-}
-
-.change-pw-btn:hover {
-  background: #f7fafc;
-}
-
-.password-form {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid #edf2f7;
-}
-
-.password-form .form-group input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 14px;
-}
-
-.message {
-  padding: 12px 16px;
-  border-radius: 8px;
-  background-color: #f0fdf4;
-  color: #166534;
-  font-size: 14px;
-  border: 1px solid #bbf7d0;
-}
-
-.error-message {
-  background-color: #fef2f2;
-  color: #991b1b;
-  border: 1px solid #fecaca;
-}
-
-@media (max-width: 768px) {
-  .profile-content {
-    flex-direction: column;
-  }
-  
-  .avatar-card {
-    width: 100%;
-  }
-  
-  .security-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
->>>>>>> 94642f67206f872f05a9a345f263228187656abd
+  transform: translateY(12px) scale(0.97);
 }
 </style>

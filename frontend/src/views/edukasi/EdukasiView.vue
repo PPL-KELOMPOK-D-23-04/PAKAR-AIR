@@ -1,97 +1,36 @@
 <template>
   <DashboardLayout>
-<<<<<<< HEAD
     <div class="edukasi-view">
       
-      <!-- HERO SECTION (High-End Card Based) -->
+      <!-- HERO SECTION -->
       <BaseCard class="hero-card" padding="none">
         <div class="hero-inner">
           <div class="hero-content">
-            <h1 class="hero-title">Pusat Edukasi PAKAR-AIR</h1>
+            <div class="hero-eyebrow">
+              <span class="eyebrow-dot"></span>
+              Pusat Pengetahuan
+            </div>
+            <h1 class="hero-title">Edukasi <br><span class="hero-title-accent">PAKAR-AIR</span></h1>
             <p class="hero-desc">
               Tingkatkan pemahaman Anda tentang kualitas air, standar kesehatan, dan 
               teknologi sanitasi modern untuk melindungi keluarga dan lingkungan.
             </p>
-=======
-    <div class="edukasi-container">
-      <!-- HERO SECTION -->
-      <div class="hero-section">
-        <h1 class="hero-title">📚 Edukasi Kualitas Air</h1>
-        <p class="hero-subtitle">
-            <span class="search-icon">🔍</span>
-          Pelajari tentang kualitas air, pencemaran, dan teknologi pengolahan air 
-          bersama PAKAR-AIR
-        </p>
-        
-        <!-- SEARCH BAR (Integrasi dengan SearchBar) -->
-        <div class="search-wrapper">
-        <input 
-          v-model="searchQuery" 
-          type="text"
-          placeholder="Cari artikel... (contoh: parameter, pencemaran, teknologi)"
-          class="search-input"
-          @input="handleSearch"
-        />
-        <button v-if="searchQuery" @click="clearSearch" class="clear-search">✖</button>
-      </div>
-    </div>
-
-    <!-- FILTER KATEGORI -->
-    <div class="filter-section">
-      <span class="filter-label">Filter kategori:</span>
-      <button 
-        v-for="cat in categories" 
-        :key="cat"
-        @click="selectedCategory = cat"
-        :class="['filter-chip', { active: selectedCategory === cat }]"
-      >
-        {{ cat }}
-      </button>
-      <button 
-        @click="selectedCategory = 'Semua'"
-        :class="['filter-chip', { active: selectedCategory === 'Semua' }]"
-      >
-        Semua
-      </button>
-    </div>
-
-    <!-- HASIL PENCARIAN & FILTER -->
-    <div class="result-info" v-if="searchQuery || selectedCategory !== 'Semua'">
-      <span>🔍 Menampilkan {{ filteredArticles.length }} dari {{ articles.length }} artikel</span>
-      <button @click="resetFilters" class="reset-filters">Reset Filter</button>
-    </div>
-
-    <!-- DAFTAR ARTIKEL (Integrasi Artikel 1,2,3) -->
-    <div v-if="filteredArticles.length === 0" class="empty-state">
-      <span class="empty-icon">😢</span>
-      <h3>Tidak ada artikel yang ditemukan</h3>
-      <p>Coba cari dengan kata kunci lain</p>
-      <button @click="resetFilters" class="empty-btn">Lihat Semua Artikel</button>
-    </div>
-
-    <div v-else class="articles-grid">
-      <div 
-        v-for="article in filteredArticles" 
-        :key="article.id"
-        class="article-card"
-        @click="goToArticle(article.route)"
-      >
-        <div class="card-image">
-          <img :src="article.image" :alt="article.title">
-          <span class="card-category">{{ article.category }}</span>
-        </div>
-        <div class="card-content">
-          <h3>{{ article.title }}</h3>
-          <p>{{ article.excerpt }}</p>
-          <div class="card-meta">
-            <span>📅 {{ article.date }}</span>
-            <span>⏱️ {{ article.readTime }}</span>
->>>>>>> 94642f67206f872f05a9a345f263228187656abd
+            <div class="hero-pills">
+              <span class="hero-pill">💧 Kualitas Air</span>
+              <span class="hero-pill">🔬 Teknologi</span>
+              <span class="hero-pill">♻️ Lingkungan</span>
+            </div>
           </div>
           <div class="hero-visual">
             <div class="glass-orb orb-1"></div>
             <div class="glass-orb orb-2"></div>
-            <img src="https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=800&q=80" alt="Edukasi Air" class="hero-image" loading="lazy">
+            <img 
+              src="https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?w=900&q=85&auto=format&fit=crop" 
+              alt="Edukasi Air Bersih" 
+              class="hero-image" 
+              loading="lazy"
+            >
+            <div class="hero-image-overlay"></div>
           </div>
         </div>
       </BaseCard>
@@ -100,7 +39,7 @@
         <!-- SEARCH BAR -->
         <div class="search-wrapper">
           <div class="search-input-group">
-            <Search class="search-icon" size="20" />
+            <Search class="search-icon" size="18" />
             <input 
               v-model="searchQuery" 
               type="text"
@@ -108,7 +47,7 @@
               class="search-input"
             />
             <button v-if="searchQuery" @click="clearSearch" class="clear-btn" aria-label="Clear search">
-              <X size="16" />
+              <X size="14" />
             </button>
           </div>
         </div>
@@ -142,7 +81,6 @@
         </p>
         <button @click="resetFilters" class="btn-text" v-if="filteredArticles.length > 0">Reset Filter</button>
       </div>
-<<<<<<< HEAD
 
       <!-- EMPTY STATE -->
       <EmptyState 
@@ -157,32 +95,36 @@
       <!-- ARTICLES GRID -->
       <div v-else class="articles-grid">
         <BaseCard 
-          v-for="article in filteredArticles" 
+          v-for="(article, index) in filteredArticles" 
           :key="article.id"
           class="article-card"
-          padding="none"
+          padding="lg"
           @click="goToArticle(article.route)"
         >
-          <div class="article-image-wrap">
-            <img :src="article.image" :alt="article.title" class="article-image" loading="lazy">
-            <div class="article-badge">{{ article.category }}</div>
+          <div class="article-header">
+            <div class="article-badge" :class="`badge--${article.categoryKey}`">
+              <span class="badge-dot"></span>
+              {{ article.category }}
+            </div>
+            <div class="article-time">
+              <Clock size="12" />
+              {{ article.readTime }}
+            </div>
           </div>
-          <div class="article-content">
-            <h3 class="article-title">{{ article.title }}</h3>
-            <p class="article-excerpt">{{ article.excerpt }}</p>
-            <div class="article-meta">
-              <div class="meta-item">
-                <Calendar size="14" />
-                <span>{{ article.date }}</span>
-              </div>
-              <div class="meta-item">
-                <Clock size="14" />
-                <span>{{ article.readTime }}</span>
-              </div>
+
+          <h3 class="article-title">{{ article.title }}</h3>
+          <p class="article-excerpt">{{ article.excerpt }}</p>
+          
+          <div class="article-footer">
+            <div class="article-date">
+              <Calendar size="12" />
+              <span>{{ article.date }}</span>
             </div>
             <div class="article-action">
-              Baca Artikel
-              <ChevronRight size="16" class="action-icon" />
+              Baca Selengkapnya
+              <span class="action-arrow">
+                <ChevronRight size="14" />
+              </span>
             </div>
           </div>
         </BaseCard>
@@ -190,7 +132,7 @@
 
       <!-- STATS SECTION -->
       <div class="stats-section">
-        <BaseCard class="stat-card" padding="lg">
+        <div class="stat-card">
           <div class="stat-icon-wrap bg-primary-subtle">
             <BookOpen size="24" class="text-primary" />
           </div>
@@ -198,8 +140,8 @@
             <span class="stat-value">Edukasi Dasar</span>
             <span class="stat-desc">Pemahaman parameter fundamental air.</span>
           </div>
-        </BaseCard>
-        <BaseCard class="stat-card" padding="lg">
+        </div>
+        <div class="stat-card">
           <div class="stat-icon-wrap bg-success-subtle">
             <Layers size="24" class="text-success" />
           </div>
@@ -207,8 +149,8 @@
             <span class="stat-value">Dampak Lingkungan</span>
             <span class="stat-desc">Analisis bahaya pencemaran ekosistem.</span>
           </div>
-        </BaseCard>
-        <BaseCard class="stat-card" padding="lg">
+        </div>
+        <div class="stat-card">
           <div class="stat-icon-wrap bg-info-subtle">
             <Award size="24" class="text-info" />
           </div>
@@ -216,19 +158,10 @@
             <span class="stat-value">Teknologi Modern</span>
             <span class="stat-desc">Inovasi filter dan pengolahan terbaru.</span>
           </div>
-        </BaseCard>
-=======
-      <div class="stat-card">
-        <span class="stat-number">24/7</span>
-        <span class="stat-label">Akses</span>
->>>>>>> 94642f67206f872f05a9a345f263228187656abd
+        </div>
       </div>
 
     </div>
-<<<<<<< HEAD
-=======
-  </div>
->>>>>>> 94642f67206f872f05a9a345f263228187656abd
   </DashboardLayout>
 </template>
 
@@ -236,25 +169,24 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-<<<<<<< HEAD
 import BaseCard from '@/components/common/BaseCard.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
 import { Search, X, Calendar, Clock, ChevronRight, FileText, BookOpen, Layers, Award } from 'lucide-vue-next'
-=======
->>>>>>> 94642f67206f872f05a9a345f263228187656abd
 
 const router = useRouter()
 
-// DATA ARTIKEL
+// DATA ARTIKEL - Gambar dari Unsplash (query spesifik, format modern)
 const articles = ref([
   {
     id: 1,
     title: 'Parameter Kualitas Air yang Perlu Diketahui',
-    excerpt: 'Pelajari berbagai parameter fisika, kimia, dan biologi untuk menentukan kualitas air bersih. Lengkap dengan standar baku mutu air.',
+    excerpt: 'Pelajari berbagai parameter fisika, kimia, dan biologi untuk menentukan kualitas air bersih. Lengkap dengan standar baku mutu air Indonesia.',
     category: 'Edukasi Dasar',
+    categoryKey: 'edukasi',
     date: '22 Apr 2026',
     readTime: '5 mnt baca',
-    image: 'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=800&q=80',
+    // Water testing / laboratory water quality
+    image: 'https://images.unsplash.com/photo-1628191013085-990d39ec1571?w=700&q=85&auto=format&fit=crop',
     route: '/artikel',
     keywords: ['parameter', 'kualitas air', 'fisika', 'kimia', 'biologi', 'pH', 'kekeruhan', 'standar']
   },
@@ -263,20 +195,24 @@ const articles = ref([
     title: 'Dampak Pencemaran Air bagi Kesehatan dan Lingkungan',
     excerpt: 'Ketahui bahaya pencemaran air dari limbah industri, rumah tangga, dan pertanian. Serta dampaknya terhadap kesehatan dan ekosistem.',
     category: 'Kesehatan & Lingkungan',
+    categoryKey: 'kesehatan',
     date: '22 Apr 2026',
     readTime: '6 mnt baca',
-    image: 'https://images.unsplash.com/photo-1564424224827-cd24b8915874?w=800&q=80',
+    // Industrial water pollution / river contamination
+    image: 'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=700&q=85&auto=format&fit=crop',
     route: '/artikel2',
     keywords: ['pencemaran', 'limbah', 'kesehatan', 'penyakit', 'diare', 'lingkungan', 'ekosistem', 'industri']
   },
   {
     id: 3,
     title: 'Teknologi Pengolahan Air Bersih dan Penerapannya di Indonesia',
-    excerpt: 'Berbagai teknologi modern dan tradisional untuk mengolah air menjadi layak konsumsi. Dilengkapi rekomendasi untuk kebutuhan Anda.',
+    excerpt: 'Berbagai teknologi modern dan tradisional untuk mengolah air menjadi layak konsumsi. Dilengkapi rekomendasi untuk kebutuhan rumah tangga dan industri.',
     category: 'Teknologi & Inovasi',
+    categoryKey: 'teknologi',
     date: '22 Apr 2026',
     readTime: '7 mnt baca',
-    image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80', // Valid Unsplash ID
+    // Water treatment / filtration technology
+    image: 'https://images.unsplash.com/photo-1581244277943-fe4a9c777189?w=700&q=85&auto=format&fit=crop',
     route: '/artikel3',
     keywords: ['teknologi', 'pengolahan air', 'RO', 'filtrasi', 'SODIS', 'UV', 'IPAL', 'alat']
   }
@@ -308,18 +244,9 @@ const filteredArticles = computed(() => {
 })
 
 // METHODS
-const clearSearch = () => {
-  searchQuery.value = ''
-}
-
-const resetFilters = () => {
-  searchQuery.value = ''
-  selectedCategory.value = 'Semua'
-}
-
-const goToArticle = (route) => {
-  router.push(route)
-}
+const clearSearch = () => { searchQuery.value = '' }
+const resetFilters = () => { searchQuery.value = ''; selectedCategory.value = 'Semua' }
+const goToArticle = (route) => { router.push(route) }
 </script>
 
 <style scoped>
@@ -329,7 +256,7 @@ const goToArticle = (route) => {
   min-height: 100%;
 }
 
-/* High-End Hero Card */
+/* ─── HERO ─────────────────────────────────────────────── */
 .hero-card {
   margin-bottom: 32px;
   background: var(--color-surface);
@@ -344,10 +271,7 @@ const goToArticle = (route) => {
 }
 
 @media (min-width: 900px) {
-  .hero-inner {
-    flex-direction: row;
-    align-items: stretch;
-  }
+  .hero-inner { flex-direction: row; align-items: stretch; }
 }
 
 .hero-content {
@@ -356,6 +280,27 @@ const goToArticle = (route) => {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 0;
+}
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 16px;
+}
+
+.eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  display: inline-block;
 }
 
 .hero-title {
@@ -363,32 +308,50 @@ const goToArticle = (route) => {
   font-weight: 800;
   color: var(--color-text-primary);
   margin: 0 0 16px 0;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.hero-title-accent {
+  color: var(--color-primary);
 }
 
 .hero-desc {
-  font-size: 1.125rem;
+  font-size: 1.0625rem;
   color: var(--color-text-secondary);
-  line-height: 1.6;
-  margin: 0;
-  max-width: 500px;
+  line-height: 1.65;
+  margin: 0 0 24px 0;
+  max-width: 480px;
+}
+
+.hero-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hero-pill {
+  padding: 6px 14px;
+  background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
+  border-radius: 20px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-primary);
 }
 
 .hero-visual {
   position: relative;
   flex: 1;
-  min-height: 240px;
-  background: color-mix(in srgb, var(--color-primary) 5%, transparent);
+  min-height: 260px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: color-mix(in srgb, var(--color-primary) 6%, transparent);
 }
 
-@media (min-width: 900px) {
-  .hero-visual { min-height: 100%; }
-}
+@media (min-width: 900px) { .hero-visual { min-height: 100%; } }
 
 .hero-image {
   width: 100%;
@@ -396,40 +359,55 @@ const goToArticle = (route) => {
   object-fit: cover;
   position: absolute;
   z-index: 2;
-  mask-image: linear-gradient(to right, transparent, black 20%);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 20%);
+  mask-image: linear-gradient(to right, transparent 0%, black 28%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 28%);
+  transition: transform 0.6s ease;
+}
+
+.hero-card:hover .hero-image {
+  transform: scale(1.03);
 }
 
 @media (max-width: 899px) {
   .hero-image {
-    mask-image: linear-gradient(to bottom, transparent, black 20%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent, black 20%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 28%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 28%);
   }
 }
 
-/* Glass Orbs for background decoration */
+.hero-image-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: linear-gradient(135deg, 
+    color-mix(in srgb, var(--color-primary) 12%, transparent) 0%, 
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
 .glass-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(40px);
+  filter: blur(50px);
   z-index: 1;
 }
 .orb-1 {
-  width: 200px; height: 200px;
-  background: color-mix(in srgb, var(--color-primary) 40%, transparent);
-  top: -50px; left: -50px;
+  width: 220px; height: 220px;
+  background: color-mix(in srgb, var(--color-primary) 35%, transparent);
+  top: -60px; left: -60px;
 }
 .orb-2 {
-  width: 250px; height: 250px;
-  background: color-mix(in srgb, var(--color-info) 30%, transparent);
-  bottom: -80px; right: 20px;
+  width: 280px; height: 280px;
+  background: color-mix(in srgb, var(--color-info) 25%, transparent);
+  bottom: -90px; right: 10px;
 }
 
-/* Search & Filter */
+/* ─── SEARCH & FILTER ──────────────────────────────────── */
 .search-filter-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
   margin-bottom: 24px;
 }
 
@@ -441,10 +419,7 @@ const goToArticle = (route) => {
   }
 }
 
-.search-wrapper {
-  width: 100%;
-  max-width: 400px;
-}
+.search-wrapper { width: 100%; max-width: 380px; }
 
 .search-input-group {
   position: relative;
@@ -454,17 +429,18 @@ const goToArticle = (route) => {
 
 .search-icon {
   position: absolute;
-  left: 16px;
+  left: 14px;
   color: var(--color-text-muted);
+  pointer-events: none;
 }
 
 .search-input {
   width: 100%;
-  padding: 14px 16px 14px 48px;
+  padding: 12px 14px 12px 44px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-sm);
   color: var(--color-text-primary);
   transition: all 0.2s ease;
   box-shadow: var(--shadow-sm);
@@ -476,58 +452,51 @@ const goToArticle = (route) => {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 15%, transparent);
 }
 
+.search-input::placeholder { color: var(--color-text-muted); }
+
 .clear-btn {
   position: absolute;
-  right: 12px;
+  right: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   border: none;
   background: var(--color-bg);
   color: var(--color-text-muted);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s;
 }
 
-.clear-btn:hover {
-  background: var(--color-border);
-  color: var(--color-text-primary);
-}
+.clear-btn:hover { background: var(--color-border); color: var(--color-text-primary); }
 
-.filter-section {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
+.filter-section { display: flex; flex-wrap: wrap; gap: 8px; }
 
 .filter-chip {
-  padding: 8px 16px;
+  padding: 7px 16px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 20px;
-  font-size: var(--font-size-sm);
-  font-weight: 500;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
   color: var(--color-text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
+  letter-spacing: 0.01em;
 }
 
-.filter-chip:hover {
-  background: var(--color-bg);
-  border-color: var(--color-border-strong);
-}
+.filter-chip:hover { background: var(--color-bg); border-color: var(--color-border-strong); }
 
 .filter-chip.active {
   background: var(--color-primary);
   color: white;
   border-color: var(--color-primary);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-primary) 35%, transparent);
 }
 
-/* Result Meta */
+/* ─── RESULT META ──────────────────────────────────────── */
 .result-meta {
   display: flex;
   align-items: center;
@@ -535,15 +504,8 @@ const goToArticle = (route) => {
   margin-bottom: 24px;
 }
 
-.result-text {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-  margin: 0;
-}
-
-.result-text strong {
-  color: var(--color-text-primary);
-}
+.result-text { font-size: var(--font-size-sm); color: var(--color-text-secondary); margin: 0; }
+.result-text strong { color: var(--color-text-primary); }
 
 .btn-text {
   background: none;
@@ -553,12 +515,9 @@ const goToArticle = (route) => {
   font-weight: 600;
   cursor: pointer;
 }
+.btn-text:hover { text-decoration: underline; }
 
-.btn-text:hover {
-  text-decoration: underline;
-}
-
-/* Articles Grid */
+/* ─── ARTICLES GRID ────────────────────────────────────── */
 .articles-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -566,87 +525,116 @@ const goToArticle = (route) => {
   margin-bottom: 48px;
 }
 
-@media (min-width: 640px) {
-  .articles-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .articles-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
+@media (min-width: 640px) { .articles-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .articles-grid { grid-template-columns: repeat(3, 1fr); } }
 
 .article-card {
   display: flex;
   flex-direction: column;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
   overflow: hidden;
   border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  position: relative;
+  z-index: 1;
+}
+
+.article-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--color-primary) 3%, transparent) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+  pointer-events: none;
 }
 
 .article-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
+  transform: translateY(-6px);
+  box-shadow: 
+    0 16px 40px color-mix(in srgb, var(--color-primary) 12%, transparent),
+    0 4px 12px rgba(0,0,0,0.04);
+  border-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
 }
 
-.article-image-wrap {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  background: var(--color-bg);
-  border-bottom: 1px solid var(--color-border-light);
+.article-card:hover::before {
+  opacity: 1;
 }
 
-.article-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.article-card:hover .article-image {
-  transform: scale(1.05);
+/* Header (Badge & Time) */
+.article-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
 }
 
 .article-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(4px);
-  color: var(--color-text-primary);
-  padding: 4px 12px;
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-xs);
-  font-weight: 700;
-  box-shadow: var(--shadow-sm);
-}
-
-.article-content {
   display: flex;
-  flex-direction: column;
-  padding: 24px;
-  flex: 1;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
 }
 
+.badge--edukasi {
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  color: var(--color-primary);
+}
+
+.badge--kesehatan {
+  background: color-mix(in srgb, var(--color-success) 10%, transparent);
+  color: var(--color-success);
+}
+
+.badge--teknologi {
+  background: color-mix(in srgb, var(--color-info) 10%, transparent);
+  color: var(--color-info);
+}
+
+.badge-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.article-time {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+/* Typography */
 .article-title {
-  font-size: var(--font-size-lg);
+  font-size: 1.125rem;
   font-weight: 700;
   color: var(--color-text-primary);
-  margin: 0 0 8px 0;
-  line-height: 1.3;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  transition: color 0.2s;
+}
+
+.article-card:hover .article-title {
+  color: var(--color-primary);
 }
 
 .article-excerpt {
-  font-size: var(--font-size-sm);
+  font-size: 0.9375rem;
   color: var(--color-text-secondary);
-  line-height: 1.6;
-  margin: 0 0 20px 0;
+  line-height: 1.65;
+  margin: 0 0 24px 0;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -654,22 +642,23 @@ const goToArticle = (route) => {
   flex: 1;
 }
 
-.article-meta {
+/* Footer */
+.article-footer {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--color-border-light);
-  margin-bottom: 16px;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-border-light);
+  margin-top: auto;
 }
 
-.meta-item {
+.article-date {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   font-size: var(--font-size-xs);
-  font-weight: 500;
   color: var(--color-text-muted);
+  font-weight: 500;
 }
 
 .article-action {
@@ -677,67 +666,88 @@ const goToArticle = (route) => {
   align-items: center;
   gap: 4px;
   color: var(--color-primary);
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  transition: gap 0.2s;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.01em;
 }
 
-.article-card:hover .article-action {
-  gap: 8px;
+.action-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  transition: background 0.2s, transform 0.2s;
 }
 
-/* Stats Section */
+.article-card:hover .action-arrow {
+  background: color-mix(in srgb, var(--color-primary) 18%, transparent);
+  transform: translateX(3px);
+}
+
+/* ─── STATS SECTION ────────────────────────────────────── */
 .stats-section {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
+  gap: 16px;
   margin-top: auto;
 }
 
-@media (min-width: 768px) {
-  .stats-section {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
+@media (min-width: 768px) { .stats-section { grid-template-columns: repeat(3, 1fr); } }
 
 .stat-card {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
+  padding: 22px 24px;
   border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.08);
 }
 
 .stat-icon-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-md);
+  width: 54px;
+  height: 54px;
+  border-radius: var(--radius-lg);
   flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+.stat-card:hover .stat-icon-wrap {
+  transform: scale(1.05);
 }
 
 .bg-primary-subtle { background: color-mix(in srgb, var(--color-primary) 12%, transparent); }
 .bg-success-subtle { background: color-mix(in srgb, var(--color-success) 12%, transparent); }
-.bg-info-subtle { background: color-mix(in srgb, var(--color-info) 12%, transparent); }
+.bg-info-subtle    { background: color-mix(in srgb, var(--color-info) 12%, transparent); }
 .text-primary { color: var(--color-primary); }
 .text-success { color: var(--color-success); }
-.text-info { color: var(--color-info); }
+.text-info    { color: var(--color-info); }
 
-.stat-info {
-  display: flex;
-  flex-direction: column;
-}
+.stat-info { display: flex; flex-direction: column; gap: 4px; }
 
 .stat-value {
-  font-size: var(--font-size-base);
+  font-size: 1rem;
   font-weight: 700;
   color: var(--color-text-primary);
-  margin-bottom: 2px;
+  letter-spacing: -0.01em;
 }
 
 .stat-desc {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.45;
 }
 </style>

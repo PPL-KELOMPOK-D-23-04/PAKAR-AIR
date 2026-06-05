@@ -222,10 +222,11 @@ async function handleLogout() {
 /* ── Root ── */
 .admin-root {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   min-height: 100vh;
   background: var(--color-bg);
   font-family: var(--font-sans);
+  overflow: hidden;
 }
 
 /* ── Mobile Header ── */
@@ -387,7 +388,7 @@ async function handleLogout() {
 }
 .nav-item--active,
 .router-link-active.nav-item {
-  background: var(--color-nav-active-bg);
+  background: var(--bg-sidebar-admin-active);
   color: var(--text-sidebar-admin-active);
 }
 
@@ -414,14 +415,15 @@ async function handleLogout() {
 /* ── Main wrapper ── */
 .main-wrapper {
   flex: 1;
-  margin-left: var(--sidebar-width);
+  padding-left: var(--sidebar-width);
+  width: 100%;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .main-wrapper--expanded {
-  margin-left: var(--sidebar-width-collapsed);
+  padding-left: var(--sidebar-width-collapsed);
 }
 
 /* ── Topbar ── */
@@ -473,7 +475,24 @@ async function handleLogout() {
 }
 
 .topbar-right { display: flex; align-items: center; gap: 12px; }
-.user-info { display: flex; align-items: center; gap: 10px; }
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px 6px 6px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(226, 232, 240, 0.6);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+.user-info:hover {
+  background: #ffffff;
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+  transform: translateY(-1px);
+}
 .avatar {
   width: 36px;
   height: 36px;
@@ -521,10 +540,12 @@ async function handleLogout() {
     display: block;
   }
   .main-wrapper {
-    margin-left: 0;
+    padding-left: 0;
+    width: 100%;
   }
   .main-wrapper--expanded {
-    margin-left: 0;
+    padding-left: 0;
+    width: 100%;
   }
   .topbar {
     display: none;

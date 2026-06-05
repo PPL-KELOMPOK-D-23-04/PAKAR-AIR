@@ -22,18 +22,25 @@ async function loginViaUI(page, user = USERS.validUser) {
   
   // Reuse session if exists
   if (fs.existsSync(cacheFile)) {
-    const sessionData = JSON.parse(fs.readFileSync(cacheFile, 'utf8'));
-    await page.goto('/');
-    await page.evaluate((data) => {
-      for (const [key, value] of Object.entries(data)) {
-        sessionStorage.setItem(key, value);
-      }
-    }, sessionData);
-    
-    // Force navigation to trigger router auth guard properly
-    await page.goto('/dashboard');
-    await page.waitForURL(/\/(dashboard|admin)/, { timeout: 5000 });
-    return;
+    const stats = fs.statSync(cacheFile);
+    const ageMs = Date.now() - stats.mtimeMs;
+    // JWT expires in 1 hour. Invalidate cache after 45 minutes.
+    if (ageMs < 45 * 60 * 1000) {
+      const sessionData = JSON.parse(fs.readFileSync(cacheFile, 'utf8'));
+      await page.goto('/');
+      await page.evaluate((data) => {
+        for (const [key, value] of Object.entries(data)) {
+          sessionStorage.setItem(key, value);
+        }
+      }, sessionData);
+      
+      // Force navigation to trigger router auth guard properly
+      await page.goto('/dashboard');
+      await page.waitForURL(/\/(dashboard|admin)/, { timeout: 5000 });
+      return;
+    } else {
+      fs.unlinkSync(cacheFile);
+    }
   }
 
   // Perform Real UI Login
