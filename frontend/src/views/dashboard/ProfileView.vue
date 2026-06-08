@@ -323,8 +323,11 @@ onMounted(() => {
     joinDate.value   = user.created_at
       ? new Date(user.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
       : joinDate.value
-  } catch {}
-  form.value.foto = `https://ui-avatars.com/api/?name=${encodeURIComponent(form.value.nama || 'User')}&background=1e40af&color=fff&size=200&bold=true&rounded=false`
+      
+    form.value.foto = user.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(form.value.nama || 'User')}&background=1e40af&color=fff&size=200&bold=true&rounded=false`
+  } catch {
+    form.value.foto = `https://ui-avatars.com/api/?name=${encodeURIComponent(form.value.nama || 'User')}&background=1e40af&color=fff&size=200&bold=true&rounded=false`
+  }
 })
 
 const selectedFile = ref(null)

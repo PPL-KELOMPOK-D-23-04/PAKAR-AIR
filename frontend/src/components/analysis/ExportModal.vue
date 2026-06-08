@@ -144,27 +144,26 @@ function exportPDF() {
   })
 
   // Kumpulkan data dari history cards yang ada di halaman
-  const cards = document.querySelectorAll('.history-card')
+  const cards = document.querySelectorAll('.ledger-row')
   let tableRows = ''
 
   if (cards.length === 0) {
     tableRows = '<tr><td colspan="5" style="text-align:center;color:#64748b;">Tidak ada data untuk diekspor</td></tr>'
   } else {
     cards.forEach((card, idx) => {
-      const title = card.querySelector('.history-card__title')?.innerText || '-'
-      const date = card.querySelector('.history-card__date')?.innerText?.trim() || '-'
+      const title = card.querySelector('.source-name')?.innerText || '-'
+      const date = card.querySelector('.source-date')?.innerText?.trim() || '-'
       const badge = card.querySelector('.status-badge')?.innerText?.trim() || '-'
       const isLayak = badge.includes('Layak') && !badge.includes('Tidak')
-      const meta = card.querySelectorAll('.history-card__meta span')
-      const color = meta[0]?.innerText || '-'
-      const ph = meta[1]?.innerText || '-'
+      const ph = card.querySelector('.col-ph strong')?.innerText || '-'
+      const conf = card.querySelector('.conf-pct')?.innerText || '-'
 
       tableRows += `
         <tr>
           <td style="text-align:center;">${idx + 1}</td>
           <td>${date}</td>
           <td>${title}</td>
-          <td>${color} | ${ph}</td>
+          <td>pH: ${ph} | Akurasi: ${conf}</td>
           <td style="text-align:center;">
             <span style="
               display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;

@@ -146,8 +146,9 @@ def export_history_csv(
 
     output = io.StringIO()
     fieldnames = [
-        "No", "Tanggal", "Sumber Air", "Warna Air", "pH", "Turbidity",
-        "Hasil", "Confidence (%)", "Status"
+        "No", "Tanggal", "pH", "Hardness", "Solids", "Chloramines", 
+        "Sulfate", "Conductivity", "Organic Carbon", "Trihalomethanes", 
+        "Turbidity", "Hasil", "Confidence (%)", "Status"
     ]
     writer = csv.DictWriter(output, fieldnames=fieldnames)
     writer.writeheader()
@@ -159,9 +160,14 @@ def export_history_csv(
         writer.writerow({
             "No": idx,
             "Tanggal": a.created_at.strftime("%d/%m/%Y %H:%M") if a.created_at else "",
-            "Sumber Air": manual_data.get("water_source", "N/A"),
-            "Warna Air": manual_data.get("water_color", "N/A"),
-            "pH": manual_data.get("water_ph", "N/A"),
+            "pH": manual_data.get("ph", "N/A"),
+            "Hardness": manual_data.get("Hardness", "N/A"),
+            "Solids": manual_data.get("Solids", "N/A"),
+            "Chloramines": manual_data.get("Chloramines", "N/A"),
+            "Sulfate": manual_data.get("Sulfate", "N/A"),
+            "Conductivity": manual_data.get("Conductivity", "N/A"),
+            "Organic Carbon": manual_data.get("Organic_carbon", "N/A"),
+            "Trihalomethanes": manual_data.get("Trihalomethanes", "N/A"),
             "Turbidity": manual_data.get("Turbidity", "N/A"),
             "Hasil": "Layak" if category_val == "layak" else ("Tidak Layak" if category_val == "tidak_layak" else "N/A"),
             "Confidence (%)": f"{confidence_val * 100:.1f}" if confidence_val is not None else "N/A",
@@ -204,13 +210,15 @@ def export_single_analysis(
             "username": analysis.owner.username if analysis.owner else current_user.username,
         },
         "manual_input": {
-            "water_source": manual.get("water_source", "N/A"),
-            "water_color": manual.get("water_color", "N/A"),
-            "water_smell": manual.get("water_smell", "N/A"),
-            "water_ph": manual.get("water_ph", "N/A"),
-            "water_temperature": manual.get("water_temperature", "N/A"),
-            "environment_condition": manual.get("environment_condition", "N/A"),
-            "additional_notes": manual.get("additional_notes", ""),
+            "ph": manual.get("ph", "N/A"),
+            "Hardness": manual.get("Hardness", "N/A"),
+            "Solids": manual.get("Solids", "N/A"),
+            "Chloramines": manual.get("Chloramines", "N/A"),
+            "Sulfate": manual.get("Sulfate", "N/A"),
+            "Conductivity": manual.get("Conductivity", "N/A"),
+            "Organic_carbon": manual.get("Organic_carbon", "N/A"),
+            "Trihalomethanes": manual.get("Trihalomethanes", "N/A"),
+            "Turbidity": manual.get("Turbidity", "N/A"),
         },
         "result": {
             "category": result.category if result else None,
