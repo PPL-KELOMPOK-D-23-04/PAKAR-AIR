@@ -317,12 +317,15 @@ const unreadCount = computed(() => notificationStore.unreadCount || 0)
 // ─── System Health Check ──────────────────────────────────────────────
 const systemStatus = ref('Memeriksa Sistem...')
 const systemIsActive = ref(true)
-let healthCheckInterval = null
 
 async function checkSystemHealth() {
   try {
     const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
-    await axios.get(`${API_BASE}/`, { timeout: 2000 })
+
+    await axios.get(`${API_BASE}/`, {
+      timeout: 2000
+    })
+
     systemIsActive.value = true
     systemStatus.value = 'Sistem Aktif - 0 kendala'
   } catch (err) {
@@ -333,11 +336,6 @@ async function checkSystemHealth() {
 
 onMounted(() => {
   checkSystemHealth()
-  healthCheckInterval = setInterval(checkSystemHealth, 3000) // Poll every 3s
-})
-
-onUnmounted(() => {
-  if (healthCheckInterval) clearInterval(healthCheckInterval)
 })
 </script>
 
