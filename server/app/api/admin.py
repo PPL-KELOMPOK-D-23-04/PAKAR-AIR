@@ -1,8 +1,3 @@
-"""
-Admin API Router — /api/admin/*
-Handles: dashboard stats, user management, analysis stats,
-         reports (filterable), CSV export
-"""
 from fastapi import APIRouter, Depends, Query, HTTPException
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
@@ -18,9 +13,6 @@ from app.schemas.user import ProfileResponse
 from app.services import report_service
 
 router = APIRouter()
-
-
-# ─── Dashboard Stats (KF-09 + KF-11) ────────────────────────────
 
 @router.get("/dashboard/stats")
 def dashboard_stats(

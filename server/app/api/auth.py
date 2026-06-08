@@ -1,7 +1,3 @@
-"""
-Auth API Router — /api/auth/*
-Handles: register, login, logout, refresh
-"""
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from supabase import Client

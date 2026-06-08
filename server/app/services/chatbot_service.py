@@ -147,12 +147,9 @@ def send_message(
     def tool_get_latest_analyses_brief(limit: int = 5):
         return chatbot_tools.get_latest_analyses_brief(db, limit)
 
-    # 5. Call Gemini with Automatic Function Calling
     try:
-        print("DEBUG API KEY IS:", repr(settings.GEMINI_API_KEY))
         client = _get_client()
         
-        # Prepare content list
         contents = chat_history + [
             types.Content(
                 role="user",
@@ -160,7 +157,6 @@ def send_message(
             )
         ]
 
-        # Call Gemini with tool configuration
         response = client.models.generate_content(
             model=GEMINI_MODEL,
             contents=contents,

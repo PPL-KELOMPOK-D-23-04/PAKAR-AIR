@@ -1,8 +1,3 @@
-"""
-Admin Chatbot API Router — /api/admin/chatbot/*
-Handles: chat session CRUD, sending messages to Gemini AI.
-All endpoints require admin authentication.
-"""
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
@@ -21,8 +16,6 @@ from app.schemas.chatbot_schema import (
 )
 from app.services import chatbot_service
 from app.config import settings
-
-print("===== AT STARTUP: GEMINI_API_KEY IS:", repr(settings.GEMINI_API_KEY), "=====")
 
 router = APIRouter()
 

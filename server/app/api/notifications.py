@@ -1,7 +1,3 @@
-"""
-Notifications API Router — /api/notifications/*
-Handles: GET list, PUT mark-read, GET unread-count
-"""
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from uuid import UUID
@@ -22,9 +18,6 @@ def list_notifications(
     current_user: Profile = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """
-    KF-13: Get all notifications for current user.
-    """
     items = notification_service.get_user_notifications(current_user.id, db)
     return NotificationListResponse(
         items=[NotificationResponse.model_validate(n) for n in items],
@@ -38,9 +31,6 @@ def mark_notification_read(
     current_user: Profile = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """
-    KF-13: Mark a notification as read.
-    """
     notif = notification_service.mark_as_read(notification_id, current_user.id, db)
     if not notif:
         raise HTTPException(status_code=404, detail="Notification not found")
@@ -52,8 +42,5 @@ def unread_count(
     current_user: Profile = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """
-    KF-13: Get count of unread notifications.
-    """
     count = notification_service.get_unread_count(current_user.id, db)
     return UnreadCountResponse(count=count)
