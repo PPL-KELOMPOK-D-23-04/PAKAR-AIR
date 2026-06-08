@@ -454,12 +454,12 @@ const steps = [
   gap: 32px;
   padding: 44px 52px;
   border-radius: var(--radius-xl, 20px);
-  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f2942 100%);
+  background: linear-gradient(135deg, #071952, #1A1953);
   box-shadow:
     0 4px 6px -1px rgba(0,0,0,.15),
-    0 20px 60px -10px rgba(59,130,246,.18),
+    0 20px 60px -10px rgba(7,25,82,.35),
     inset 0 1px 0 rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.15);
 }
 
 /* grain texture overlay */
@@ -494,9 +494,9 @@ const steps = [
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  background: rgba(59,130,246,.15);
-  border: 1px solid rgba(59,130,246,.25);
-  color: #93c5fd;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.25);
+  color: #ffffff;
   font-size: 11.5px;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -508,14 +508,14 @@ const steps = [
 }
 .cta-badge__dot {
   width: 6px; height: 6px;
-  background: #3b82f6;
+  background: #ffffff;
   border-radius: 50%;
-  box-shadow: 0 0 0 3px rgba(59,130,246,.25);
+  box-shadow: 0 0 0 3px rgba(255,255,255,.25);
   animation: pulse 2s ease-in-out infinite;
 }
 @keyframes pulse {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 0 3px rgba(59,130,246,.25); }
-  50%       { transform: scale(1.1); box-shadow: 0 0 0 5px rgba(59,130,246,.15); }
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 3px rgba(255,255,255,.25); }
+  50%       { transform: scale(1.1); box-shadow: 0 0 0 5px rgba(255,255,255,.15); }
 }
 
 /* Title */
@@ -528,10 +528,11 @@ const steps = [
   letter-spacing: -0.4px;
 }
 .cta-title--accent {
-  background: linear-gradient(90deg, #60a5fa, #34d399);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  background: transparent;
+  color: #ffffff;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  background-clip: unset;
 }
 
 .cta-desc {
@@ -558,6 +559,16 @@ const steps = [
   padding: 11px 22px;
   border-radius: 10px;
   text-decoration: none;
+}
+.cta-btn.btn--primary {
+  background: #ffffff;
+  color: #071952;
+  border-color: #ffffff;
+  transition: all var(--transition-fast);
+}
+.cta-btn.btn--primary:hover {
+  background: rgba(255, 255, 255, 0.85);
+  transform: translateY(-1px);
 }
 .cta-btn-secondary {
   display: inline-flex;
@@ -606,13 +617,14 @@ const steps = [
   transform: translate(-50%, -50%);
   width: 76px; height: 76px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #1d4ed8, #0891b2);
+  background: rgba(255, 255, 255, 0.05);
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow:
-    0 0 0 10px rgba(59,130,246,.12),
-    0 12px 40px rgba(59,130,246,.3);
+    0 0 0 10px rgba(255,255,255,.05),
+    0 12px 40px rgba(0,0,0,.2);
+  border: 2px solid rgba(255, 255, 255, 0.15);
   z-index: 3;
   animation: orbBob 4s ease-in-out infinite;
 }
@@ -636,12 +648,12 @@ const steps = [
   position: absolute;
   top: 50%; left: 50%;
   border-radius: 50%;
-  border: 1px solid rgba(59,130,246,.2);
+  border: 1px solid rgba(255,255,255,.15);
   transform: translate(-50%, -50%);
 }
 .ring-1 { width: 100px; height: 100px; animation: ringPulse 3s ease-in-out infinite 0.0s; }
-.ring-2 { width: 136px; height: 136px; animation: ringPulse 3s ease-in-out infinite 0.5s; border-color: rgba(59,130,246,.12); }
-.ring-3 { width: 172px; height: 172px; animation: ringPulse 3s ease-in-out infinite 1.0s; border-color: rgba(59,130,246,.06); }
+.ring-2 { width: 136px; height: 136px; animation: ringPulse 3s ease-in-out infinite 0.5s; border-color: rgba(255,255,255,.08); }
+.ring-3 { width: 172px; height: 172px; animation: ringPulse 3s ease-in-out infinite 1.0s; border-color: rgba(255,255,255,.04); }
 @keyframes ringPulse {
   0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
   50%       { transform: translate(-50%, -50%) scale(1.04); opacity: .6; }
@@ -653,7 +665,7 @@ const steps = [
   position: absolute;
   top: 50%; left: 50%;
   width: 4px; height: 4px;
-  background: rgba(96,165,250,.7);
+  background: rgba(255,255,255,.6);
   border-radius: 50%;
 }
 .particle:nth-child(1)  { animation: particleFloat 5s infinite 0.0s; }

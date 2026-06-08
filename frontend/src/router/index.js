@@ -4,7 +4,7 @@ import { useAuthStore } from '@/stores/authStore'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import LandingPage from '@/views/public/LandingPage.vue'
 import AnalysisView from '@/views/dashboard/AnalysisView.vue'
-import AdminLayout from '@/layouts/AdminLayout.vue'
+
 import ProfileView from '@/views/dashboard/ProfileView.vue'
 import NotificationView from '@/views/dashboard/NotificationView.vue'
 
@@ -108,7 +108,7 @@ const routes = [
   // Admin Panel
   {
     path: '/admin',
-    component: AdminLayout,
+    component: () => import('@/layouts/DashboardLayout.vue'),
     meta: { requiresAuth: true, requiresAdmin: true },
     children: [
       {

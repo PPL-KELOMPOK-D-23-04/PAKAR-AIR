@@ -1,172 +1,233 @@
 <template>
-  <div class="register-root">
-    <!-- Background blobs -->
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
+  <div class="register-page">
+
+    <!-- Ambient Background -->
+    <div class="bg-grid"></div>
+    <div class="bg-radial bg-radial--1"></div>
+    <div class="bg-radial bg-radial--2"></div>
+    <div class="bg-noise"></div>
+    <div class="orb orb--1"></div>
+    <div class="orb orb--2"></div>
 
     <!-- Card -->
     <div class="register-card">
+
+      <!-- Top Accent Bar -->
+      <div class="card-accent-bar">
+        <div class="card-accent-bar__inner"></div>
+      </div>
+
       <!-- Header -->
-      <div class="register-header">
-        <RouterLink to="/" class="logo-link">
-          <div class="logo-icon">💧</div>
-          <span class="logo-text">PAKAR-AIR</span>
+      <div class="reg-header">
+        <RouterLink to="/" class="reg-logo-link">
+          <div class="reg-logo">
+            <span class="material-icons">water_drop</span>
+          </div>
+          <span class="reg-brand">PAKAR-AIR</span>
         </RouterLink>
-        <h1 class="register-title">Buat Akun Baru</h1>
-        <p class="register-subtitle">Daftar untuk mulai menganalisis kualitas air</p>
+        <h1 class="reg-title">Buat Akun Baru</h1>
+        <p class="reg-subtitle">Daftar untuk mulai menganalisis kualitas air</p>
+      </div>
+
+      <!-- Step Indicator (visual only) -->
+      <div class="step-track">
+        <div class="step-item step-item--active">
+          <span class="step-dot"></span>
+          <span class="step-label">Info Akun</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-item">
+          <span class="step-dot step-dot--inactive"></span>
+          <span class="step-label" style="color: #334155;">Verifikasi</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-item">
+          <span class="step-dot step-dot--inactive"></span>
+          <span class="step-label" style="color: #334155;">Selesai</span>
+        </div>
       </div>
 
       <!-- Form -->
-      <form class="register-form" @submit.prevent="handleRegister" novalidate>
+      <form class="reg-form" @submit.prevent="handleRegister" novalidate>
 
-        <!-- Full Name -->
-        <div class="form-group" :class="{ 'has-error': fieldErrors.full_name }">
-          <label for="full_name" class="form-label">
-            <UserIcon class="label-icon" />
-            Nama Lengkap
-          </label>
-          <input
-            id="full_name"
-            v-model="form.full_name"
-            type="text"
-            class="form-input"
-            placeholder="Nama lengkap Anda"
-            :disabled="isLoading"
-            @input="fieldErrors.full_name = ''"
-          />
-          <span v-if="fieldErrors.full_name" class="field-error">{{ fieldErrors.full_name }}</span>
-        </div>
+        <!-- Row: Full Name + Username -->
+        <div class="field-row">
 
-        <!-- Username -->
-        <div class="form-group" :class="{ 'has-error': fieldErrors.username }">
-          <label for="username" class="form-label">
-            <AtSignIcon class="label-icon" />
-            Username
-          </label>
-          <input
-            id="username"
-            v-model="form.username"
-            type="text"
-            class="form-input"
-            placeholder="username (min 3 karakter)"
-            :disabled="isLoading"
-            @input="fieldErrors.username = ''"
-          />
-          <span v-if="fieldErrors.username" class="field-error">{{ fieldErrors.username }}</span>
+          <!-- Full Name -->
+          <div class="field-group" :class="{ 'field-group--error': fieldErrors.full_name }">
+            <label class="field-label" for="full_name">
+              <span class="material-icons label-icon">person_outline</span>
+              Nama Lengkap
+            </label>
+            <div class="field-ctrl">
+              <input
+                id="full_name"
+                v-model="form.full_name"
+                type="text"
+                class="field-input"
+                placeholder="Nama lengkap"
+                :disabled="isLoading"
+                @input="fieldErrors.full_name = ''"
+              />
+              <Transition name="check-fade">
+                <span v-if="form.full_name && !fieldErrors.full_name" class="input-check material-icons">check_circle</span>
+              </Transition>
+            </div>
+            <Transition name="err-slide">
+              <span v-if="fieldErrors.full_name" class="err-msg">
+                <span class="material-icons">error_outline</span>{{ fieldErrors.full_name }}
+              </span>
+            </Transition>
+          </div>
+
+          <!-- Username -->
+          <div class="field-group" :class="{ 'field-group--error': fieldErrors.username }">
+            <label class="field-label" for="username">
+              <span class="material-icons label-icon">alternate_email</span>
+              Username
+            </label>
+            <div class="field-ctrl">
+              <input
+                id="username"
+                v-model="form.username"
+                type="text"
+                class="field-input"
+                placeholder="username_anda"
+                :disabled="isLoading"
+                @input="fieldErrors.username = ''"
+              />
+              <Transition name="check-fade">
+                <span v-if="form.username.length >= 3 && !fieldErrors.username" class="input-check material-icons">check_circle</span>
+              </Transition>
+            </div>
+            <Transition name="err-slide">
+              <span v-if="fieldErrors.username" class="err-msg">
+                <span class="material-icons">error_outline</span>{{ fieldErrors.username }}
+              </span>
+            </Transition>
+          </div>
+
         </div>
 
         <!-- Email -->
-        <div class="form-group" :class="{ 'has-error': fieldErrors.email }">
-          <label for="email" class="form-label">
-            <MailIcon class="label-icon" />
+        <div class="field-group" :class="{ 'field-group--error': fieldErrors.email }">
+          <label class="field-label" for="email">
+            <span class="material-icons label-icon">mail_outline</span>
             Email
           </label>
-          <input
-            id="email"
-            v-model="form.email"
-            type="email"
-            class="form-input"
-            placeholder="contoh@email.com"
-            autocomplete="email"
-            :disabled="isLoading"
-            @input="fieldErrors.email = ''"
-          />
-          <span v-if="fieldErrors.email" class="field-error">{{ fieldErrors.email }}</span>
+          <div class="field-ctrl">
+            <input
+              id="email"
+              v-model="form.email"
+              type="email"
+              class="field-input field-input--wide"
+              placeholder="contoh@email.com"
+              autocomplete="email"
+              :disabled="isLoading"
+              @input="fieldErrors.email = ''"
+            />
+            <Transition name="check-fade">
+              <span v-if="form.email && !fieldErrors.email" class="input-check material-icons">check_circle</span>
+            </Transition>
+          </div>
+          <Transition name="err-slide">
+            <span v-if="fieldErrors.email" class="err-msg">
+              <span class="material-icons">error_outline</span>{{ fieldErrors.email }}
+            </span>
+          </Transition>
         </div>
 
         <!-- Password -->
-        <div class="form-group" :class="{ 'has-error': fieldErrors.password }">
-          <label for="password" class="form-label">
-            <LockIcon class="label-icon" />
+        <div class="field-group" :class="{ 'field-group--error': fieldErrors.password }">
+          <label class="field-label" for="password">
+            <span class="material-icons label-icon">lock_outline</span>
             Password
           </label>
-          <div class="input-wrapper">
+          <div class="field-ctrl">
             <input
               id="password"
               v-model="form.password"
               :type="showPassword ? 'text' : 'password'"
-              class="form-input"
+              class="field-input field-input--wide field-input--pw"
               placeholder="Minimal 6 karakter"
               :disabled="isLoading"
               @input="fieldErrors.password = ''"
             />
-            <button
-              type="button"
-              class="password-toggle"
-              @click="showPassword = !showPassword"
-            >
-              <EyeOffIcon v-if="showPassword" class="eye-icon" />
-              <EyeIcon v-else class="eye-icon" />
+            <button type="button" class="pw-toggle" @click="showPassword = !showPassword" :aria-label="showPassword ? 'Sembunyikan' : 'Tampilkan'">
+              <span class="material-icons">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
             </button>
           </div>
-          <span v-if="fieldErrors.password" class="field-error">{{ fieldErrors.password }}</span>
+
+          <!-- Password Strength -->
+          <div v-if="form.password" class="pw-strength">
+            <div class="pw-bars">
+              <div class="pw-bar" :class="{ 'pw-bar--filled': pwScore >= 1, 'pw-bar--weak': pwScore === 1, 'pw-bar--medium': pwScore === 2, 'pw-bar--strong': pwScore >= 3 }"></div>
+              <div class="pw-bar" :class="{ 'pw-bar--filled': pwScore >= 2, 'pw-bar--medium': pwScore === 2, 'pw-bar--strong': pwScore >= 3 }"></div>
+              <div class="pw-bar" :class="{ 'pw-bar--filled': pwScore >= 3, 'pw-bar--strong': pwScore >= 3 }"></div>
+              <div class="pw-bar" :class="{ 'pw-bar--filled': pwScore >= 4, 'pw-bar--strong': pwScore >= 4 }"></div>
+            </div>
+            <span class="pw-label" :class="pwLabelClass">{{ pwLabelText }}</span>
+          </div>
+
+          <Transition name="err-slide">
+            <span v-if="fieldErrors.password" class="err-msg">
+              <span class="material-icons">error_outline</span>{{ fieldErrors.password }}
+            </span>
+          </Transition>
         </div>
 
         <!-- Global Error -->
-        <Transition name="shake">
+        <Transition name="err-slide">
           <div v-if="errorMessage" class="global-error" role="alert">
-            <AlertCircleIcon class="error-icon" />
+            <span class="material-icons">warning_amber</span>
             <span>{{ errorMessage }}</span>
           </div>
         </Transition>
 
-        <!-- Success -->
-        <Transition name="fade">
+        <!-- Global Success -->
+        <Transition name="err-slide">
           <div v-if="successMessage" class="global-success" role="status">
-            <CheckCircleIcon class="success-icon" />
+            <span class="material-icons">check_circle</span>
             <span>{{ successMessage }}</span>
           </div>
         </Transition>
 
         <!-- Submit -->
-        <button
-          type="submit"
-          class="btn-submit"
-          :disabled="isLoading"
-        >
-          <span v-if="isLoading" class="btn-loader">
+        <button type="submit" class="btn-submit" :disabled="isLoading">
+          <span v-if="isLoading" class="btn-loading">
             <span class="spinner"></span>
-            Memproses...
+            <span>Memproses...</span>
           </span>
           <span v-else class="btn-label">
-            <UserPlusIcon class="btn-icon" />
-            Daftar Sekarang
+            <span class="material-icons">person_add</span>
+            <span>Daftar Sekarang</span>
+            <span class="material-icons btn-arrow">arrow_forward</span>
           </span>
+          <span class="btn-shine"></span>
         </button>
+
       </form>
 
       <!-- Footer -->
-      <div class="register-footer">
-        <p class="login-text">
+      <div class="reg-footer">
+        <p class="footer-text">
           Sudah punya akun?
-          <RouterLink to="/login" class="login-link">Masuk di sini</RouterLink>
+          <RouterLink to="/login" class="footer-link">Masuk di sini</RouterLink>
         </p>
         <RouterLink to="/" class="back-link">
-          <ArrowLeftIcon class="back-icon" />
-          Kembali ke Beranda
+          <span class="material-icons">arrow_back</span>
+          <span>Kembali ke Beranda</span>
         </RouterLink>
       </div>
+
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
-import {
-  UserIcon,
-  AtSignIcon,
-  MailIcon,
-  LockIcon,
-  EyeIcon,
-  EyeOffIcon,
-  AlertCircleIcon,
-  CheckCircleIcon,
-  UserPlusIcon,
-  ArrowLeftIcon,
-} from 'lucide-vue-next'
 
 const router = useRouter()
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
@@ -189,40 +250,38 @@ const fieldErrors = reactive({
   password: '',
 })
 
+// Password strength score (0-4)
+const pwScore = computed(() => {
+  const pw = form.password
+  if (!pw) return 0
+  let score = 0
+  if (pw.length >= 6)  score++
+  if (pw.length >= 10) score++
+  if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score++
+  if (/[^a-zA-Z0-9]/.test(pw) || /[0-9]/.test(pw)) score++
+  return score
+})
+const pwLabelText = computed(() => {
+  const labels = ['', 'Lemah', 'Cukup', 'Kuat', 'Sangat Kuat']
+  return labels[pwScore.value] || ''
+})
+const pwLabelClass = computed(() => {
+  const classes = ['', 'pw-label--weak', 'pw-label--medium', 'pw-label--strong', 'pw-label--strong']
+  return classes[pwScore.value] || ''
+})
+
 function validate() {
   let valid = true
+  Object.keys(fieldErrors).forEach(k => fieldErrors[k] = '')
 
-  if (!form.full_name.trim()) {
-    fieldErrors.full_name = 'Nama lengkap tidak boleh kosong.'
-    valid = false
-  }
-
-  if (!form.username.trim()) {
-    fieldErrors.username = 'Username tidak boleh kosong.'
-    valid = false
-  } else if (form.username.length < 3) {
-    fieldErrors.username = 'Username minimal 3 karakter.'
-    valid = false
-  } else if (form.username.length > 50) {
-    fieldErrors.username = 'Username maksimal 50 karakter.'
-    valid = false
-  }
-
-  if (!form.email) {
-    fieldErrors.email = 'Email tidak boleh kosong.'
-    valid = false
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-    fieldErrors.email = 'Format email tidak valid.'
-    valid = false
-  }
-
-  if (!form.password) {
-    fieldErrors.password = 'Password tidak boleh kosong.'
-    valid = false
-  } else if (form.password.length < 6) {
-    fieldErrors.password = 'Password minimal 6 karakter.'
-    valid = false
-  }
+  if (!form.full_name.trim()) { fieldErrors.full_name = 'Nama lengkap tidak boleh kosong.'; valid = false }
+  if (!form.username.trim()) { fieldErrors.username = 'Username tidak boleh kosong.'; valid = false }
+  else if (form.username.length < 3) { fieldErrors.username = 'Username minimal 3 karakter.'; valid = false }
+  else if (form.username.length > 50) { fieldErrors.username = 'Username maksimal 50 karakter.'; valid = false }
+  if (!form.email) { fieldErrors.email = 'Email tidak boleh kosong.'; valid = false }
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { fieldErrors.email = 'Format email tidak valid.'; valid = false }
+  if (!form.password) { fieldErrors.password = 'Password tidak boleh kosong.'; valid = false }
+  else if (form.password.length < 6) { fieldErrors.password = 'Password minimal 6 karakter.'; valid = false }
 
   return valid
 }
@@ -240,12 +299,8 @@ async function handleRegister() {
       full_name: form.full_name,
       username: form.username,
     })
-
     successMessage.value = 'Akun berhasil dibuat! Mengarahkan ke halaman login...'
-    setTimeout(() => {
-      router.push('/login')
-    }, 2000)
-
+    setTimeout(() => { router.push('/login') }, 2000)
   } catch (err) {
     errorMessage.value =
       err.response?.data?.detail ||
@@ -258,173 +313,472 @@ async function handleRegister() {
 </script>
 
 <style scoped>
-.register-root {
+/* ============================================================
+   PAGE BASE
+   ============================================================ */
+.register-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f2d52 100%);
+  background: #060e24;
   position: relative;
   overflow: hidden;
-  padding: 2rem 1rem;
-  font-family: 'Inter', 'Segoe UI', sans-serif;
+  padding: 24px 16px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-.blob {
+/* Grid Pattern */
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(37, 99, 235, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 99, 235, 0.035) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+/* Radial Glows */
+.bg-radial {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.25;
-  animation: float 8s ease-in-out infinite;
+  pointer-events: none;
+  filter: blur(120px);
 }
-.blob-1 { width: 500px; height: 500px; background: radial-gradient(circle, #3b82f6, #1d4ed8); top: -150px; left: -150px; animation-delay: 0s; }
-.blob-2 { width: 400px; height: 400px; background: radial-gradient(circle, #06b6d4, #0284c7); bottom: -100px; right: -100px; animation-delay: 3s; }
-.blob-3 { width: 300px; height: 300px; background: radial-gradient(circle, #818cf8, #6366f1); top: 50%; left: 60%; animation-delay: 5s; }
+.bg-radial--1 {
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(30, 64, 175, 0.2) 0%, transparent 70%);
+  top: -250px; left: -200px;
+}
+.bg-radial--2 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(7, 25, 82, 0.3) 0%, transparent 70%);
+  bottom: -100px; right: -100px;
+}
 
-@keyframes float {
+/* Noise */
+.bg-noise {
+  position: absolute;
+  inset: 0; opacity: 0.025;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* Orbs */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: orb-float 10s ease-in-out infinite;
+}
+.orb--1 {
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(26, 25, 83, 0.5) 0%, transparent 70%);
+  top: 5%; right: 5%;
+  animation-delay: 0s;
+}
+.orb--2 {
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, transparent 70%);
+  bottom: 10%; left: 10%;
+  animation-delay: 5s;
+}
+@keyframes orb-float {
   0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-30px) scale(1.05); }
+  50% { transform: translateY(-20px) scale(1.04); }
 }
 
+/* ============================================================
+   CARD
+   ============================================================ */
 .register-card {
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 440px;
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  max-width: 560px;
+  background: #0b1630;
+  border: 1px solid rgba(37, 99, 235, 0.12);
   border-radius: 24px;
-  padding: 2.5rem 2rem;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  padding: 0 0 36px;
+  box-shadow:
+    0 0 0 1px rgba(37, 99, 235, 0.08),
+    0 40px 80px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(7, 25, 82, 0.3);
+  animation: card-enter 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  overflow: hidden;
 }
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(40px) scale(0.95); }
+@keyframes card-enter {
+  from { opacity: 0; transform: translateY(36px) scale(0.95); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.register-header { text-align: center; margin-bottom: 2rem; }
-
-.logo-link {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  text-decoration: none; margin-bottom: 1.5rem;
+/* Top Accent Bar */
+.card-accent-bar {
+  height: 3px;
+  background: rgba(37, 99, 235, 0.08);
+  margin-bottom: 0;
 }
-.logo-icon {
-  width: 2.5rem; height: 2.5rem;
-  background: linear-gradient(135deg, #3b82f6, #06b6d4);
-  border-radius: 12px; display: flex; align-items: center;
-  justify-content: center; font-size: 1.25rem;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+.card-accent-bar__inner {
+  height: 100%;
+  width: 60%;
+  background: linear-gradient(90deg, #1e40af, #2563eb, #60a5fa, transparent);
+  border-radius: 0 2px 2px 0;
 }
-.logo-text { font-size: 1.25rem; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
-.register-title { font-size: 1.5rem; font-weight: 700; color: #fff; margin: 0 0 0.5rem; }
-.register-subtitle { font-size: 0.875rem; color: rgba(255,255,255,0.55); margin: 0; }
 
-.register-form { display: flex; flex-direction: column; gap: 1.25rem; }
-
-.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
-
-.form-label {
-  display: flex; align-items: center; gap: 0.375rem;
-  font-size: 0.8rem; font-weight: 600;
-  color: rgba(255,255,255,0.7); letter-spacing: 0.3px; text-transform: uppercase;
+/* ============================================================
+   HEADER
+   ============================================================ */
+.reg-header {
+  text-align: center;
+  padding: 36px 36px 20px;
 }
-.label-icon { width: 0.875rem; height: 0.875rem; opacity: 0.8; }
 
-.input-wrapper { position: relative; }
+.reg-logo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  margin-bottom: 20px;
+}
 
-.form-input {
-  width: 100%;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.12);
+.reg-logo {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
   border-radius: 12px;
-  padding: 0.75rem 1rem;
-  color: #fff; font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35), 0 0 0 1px rgba(255,255,255,0.08) inset;
+}
+.reg-logo .material-icons { font-size: 24px; color: #fff; }
+
+.reg-brand {
+  font-size: 18px;
+  font-weight: 800;
+  color: #f1f5f9;
+  letter-spacing: 0.5px;
+}
+
+.reg-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f1f5f9;
+  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+}
+.reg-subtitle { font-size: 13px; color: #64748b; }
+
+/* ============================================================
+   STEP INDICATOR
+   ============================================================ */
+.step-track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 36px 24px;
+}
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.step-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+  display: block;
+}
+.step-dot--inactive {
+  background: #1e293b;
+  box-shadow: none;
+  border: 1px solid #334155;
+}
+.step-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #60a5fa;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+.step-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(37, 99, 235, 0.12);
+  max-width: 64px;
+  margin-bottom: 18px;
+}
+
+/* ============================================================
+   FORM
+   ============================================================ */
+.reg-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 0 36px;
+}
+
+/* Two-column row */
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* Field Group */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Label */
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.label-icon { font-size: 13px; opacity: 0.7; }
+
+/* Field Control Wrapper */
+.field-ctrl {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Input */
+.field-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 40px 0 14px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(37, 99, 235, 0.1);
+  border-radius: 11px;
+  font-size: 14px;
+  color: #e2e8f0;
   transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-  outline: none; box-sizing: border-box;
+  outline: none;
+  box-sizing: border-box;
 }
-.form-input::placeholder { color: rgba(255,255,255,0.3); }
-.form-input:focus {
-  border-color: #3b82f6;
-  background: rgba(59,130,246,0.08);
-  box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+.field-input::placeholder { color: #334155; font-size: 13px; }
+.field-input:focus {
+  border-color: #2563eb;
+  background: rgba(37, 99, 235, 0.06);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
-.form-input:disabled { opacity: 0.5; cursor: not-allowed; }
-.has-error .form-input { border-color: #f87171; background: rgba(248,113,113,0.07); }
+.field-input:disabled { opacity: 0.5; cursor: not-allowed; }
+.field-input--wide { width: 100%; }
+.field-input--pw  { padding-right: 48px; }
 
-.password-toggle {
-  position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%);
-  background: none; border: none; cursor: pointer;
-  color: rgba(255,255,255,0.4); padding: 0.25rem;
-  display: flex; transition: color 0.2s;
+/* Error state */
+.field-group--error .field-input {
+  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.04);
 }
-.password-toggle:hover { color: rgba(255,255,255,0.8); }
-.eye-icon { width: 1.1rem; height: 1.1rem; }
 
-.field-error { font-size: 0.75rem; color: #fca5a5; padding-left: 0.25rem; }
+/* Valid check icon */
+.input-check {
+  position: absolute;
+  right: 12px;
+  font-size: 15px;
+  color: #10b981;
+  pointer-events: none;
+}
 
+/* Password toggle */
+.pw-toggle {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #334155;
+  border-radius: 6px;
+  transition: color 0.2s;
+}
+.pw-toggle:hover { color: #94a3b8; }
+.pw-toggle .material-icons { font-size: 18px; }
+
+/* Error message */
+.err-msg {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #f87171;
+}
+.err-msg .material-icons { font-size: 12px; }
+
+/* ============================================================
+   PASSWORD STRENGTH
+   ============================================================ */
+.pw-strength {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2px;
+}
+.pw-bars {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+.pw-bar {
+  height: 3px;
+  flex: 1;
+  border-radius: 2px;
+  background: rgba(37, 99, 235, 0.1);
+  transition: background 0.3s;
+}
+.pw-bar--filled.pw-bar--weak   { background: #ef4444; }
+.pw-bar--filled.pw-bar--medium { background: #f59e0b; }
+.pw-bar--filled.pw-bar--strong { background: #10b981; }
+
+.pw-label { font-size: 11px; font-weight: 600; white-space: nowrap; }
+.pw-label--weak   { color: #ef4444; }
+.pw-label--medium { color: #f59e0b; }
+.pw-label--strong { color: #10b981; }
+
+/* ============================================================
+   GLOBAL ALERTS
+   ============================================================ */
 .global-error {
-  display: flex; align-items: center; gap: 0.5rem;
-  background: rgba(239,68,68,0.12);
-  border: 1px solid rgba(239,68,68,0.3);
-  border-radius: 10px; padding: 0.75rem 1rem;
-  color: #fca5a5; font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 10px;
+  color: #fca5a5;
+  font-size: 13px;
 }
-.error-icon { width: 1rem; height: 1rem; flex-shrink: 0; }
+.global-error .material-icons { font-size: 16px; color: #ef4444; flex-shrink: 0; }
 
 .global-success {
-  display: flex; align-items: center; gap: 0.5rem;
-  background: rgba(34,197,94,0.12);
-  border: 1px solid rgba(34,197,94,0.3);
-  border-radius: 10px; padding: 0.75rem 1rem;
-  color: #86efac; font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 10px;
+  color: #a7f3d0;
+  font-size: 13px;
 }
-.success-icon { width: 1rem; height: 1rem; flex-shrink: 0; }
+.global-success .material-icons { font-size: 16px; color: #10b981; flex-shrink: 0; }
 
-.shake-enter-active { animation: shake 0.4s ease; }
-.fade-enter-active { transition: opacity 0.3s ease; }
-.fade-enter-from { opacity: 0; }
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-6px); }
-  40% { transform: translateX(6px); }
-  60% { transform: translateX(-4px); }
-  80% { transform: translateX(4px); }
-}
-
+/* ============================================================
+   SUBMIT BUTTON
+   ============================================================ */
 .btn-submit {
+  position: relative;
   width: 100%;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  color: #fff; border: none; border-radius: 12px;
-  padding: 0.875rem; font-size: 1rem; font-weight: 700;
-  cursor: pointer; transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
-  box-shadow: 0 8px 20px rgba(59,130,246,0.4); margin-top: 0.25rem;
+  height: 50px;
+  background: linear-gradient(135deg, #1e40af 0%, #2563eb 60%, #3b82f6 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35), 0 0 0 1px rgba(255,255,255,0.06) inset;
+  margin-top: 4px;
 }
-.btn-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(59,130,246,0.5); }
+.btn-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(37, 99, 235, 0.45), 0 0 0 1px rgba(255,255,255,0.08) inset;
+}
+.btn-submit:active:not(:disabled) { transform: translateY(0); }
 .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
-.btn-label, .btn-loader { display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
-.btn-icon { width: 1.1rem; height: 1.1rem; }
+
+.btn-shine {
+  position: absolute;
+  top: 0; left: -120%;
+  width: 80%; height: 100%;
+  background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.12) 50%, transparent 80%);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+}
+.btn-submit:hover .btn-shine { left: 160%; }
+
+.btn-label, .btn-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-label .material-icons { font-size: 18px; }
+.btn-arrow { transition: transform 0.2s; }
+.btn-submit:hover .btn-arrow { transform: translateX(3px); }
+
 .spinner {
-  width: 1rem; height: 1rem;
+  width: 18px; height: 18px;
   border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: #fff; border-radius: 50%;
-  animation: spin 0.7s linear infinite;
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.65s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.register-footer { text-align: center; margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
-.login-text { font-size: 0.875rem; color: rgba(255,255,255,0.45); }
-.login-link { color: #60a5fa; font-weight: 600; text-decoration: none; }
-.login-link:hover { text-decoration: underline; }
-.back-link {
-  display: inline-flex; align-items: center; gap: 0.375rem;
-  color: rgba(255,255,255,0.35); font-size: 0.875rem;
-  text-decoration: none; transition: color 0.2s; justify-content: center;
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.reg-footer {
+  text-align: center;
+  padding: 24px 36px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
-.back-link:hover { color: rgba(255,255,255,0.7); }
-.back-icon { width: 0.875rem; height: 0.875rem; }
+.footer-text { font-size: 13px; color: #475569; }
+.footer-link { color: #60a5fa; font-weight: 600; text-decoration: none; }
+.footer-link:hover { color: #93c5fd; }
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #334155;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.back-link:hover { color: #64748b; }
+.back-link .material-icons { font-size: 14px; }
+
+/* ============================================================
+   TRANSITIONS
+   ============================================================ */
+.err-slide-enter-active  { transition: all 0.2s ease; }
+.err-slide-enter-from    { opacity: 0; transform: translateY(-4px); }
+.check-fade-enter-active { transition: opacity 0.3s ease; }
+.check-fade-enter-from   { opacity: 0; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 560px) {
+  .register-card { border-radius: 16px; }
+  .reg-header, .reg-form, .reg-footer { padding-left: 24px; padding-right: 24px; }
+  .field-row { grid-template-columns: 1fr; }
+  .step-track { display: none; }
+}
 </style>

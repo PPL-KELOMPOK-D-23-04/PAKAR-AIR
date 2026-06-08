@@ -20,13 +20,13 @@
   background: linear-gradient(180deg, var(--color-text-primary) 0%, var(--color-surface-dark) 100%);
   display: flex;
   flex-direction: column;
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-right: 1px solid rgba(15, 23, 42, 0.06);
   flex-shrink: 0;
 }
 
 .sidebar-top {
   padding: 20px 16px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
 }
 
 .new-chat-btn {
@@ -62,7 +62,7 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(15, 23, 42, 0.3);
   padding: 14px 16px 8px;
 }
 
@@ -74,7 +74,7 @@
 
 .session-list::-webkit-scrollbar { width: 4px; }
 .session-list::-webkit-scrollbar-track { background: transparent; }
-.session-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+.session-list::-webkit-scrollbar-thumb { background: rgba(15, 23, 42, 0.1); border-radius: 4px; }
 
 .session-item {
   display: flex;
@@ -86,14 +86,14 @@
   transition: background 0.15s;
   margin-bottom: 2px;
 }
-.session-item:hover { background: rgba(255, 255, 255, 0.06); }
+.session-item:hover { background: rgba(15, 23, 42, 0.06); }
 .session-item.active { background: rgba(59, 130, 246, 0.2); }
 
 .session-icon {
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(15, 23, 42, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -111,18 +111,18 @@
 .session-title {
   font-size: 13px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.8);
-  white-space: nowrap;
+  color: rgba(15, 23, 42, 0.8);
+  var(--color-surface)-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .session-item.active .session-title {
-  color: #93c5fd;
+  color: var(--color-info-border);
   font-weight: 600;
 }
 .session-date {
   font-size: 10px;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(15, 23, 42, 0.3);
   margin-top: 2px;
 }
 
@@ -139,14 +139,14 @@
 }
 .session-item:hover .session-delete-btn { opacity: 1; }
 .session-delete-btn:hover {
-  color: #f87171;
+  color: var(--color-danger-text);
   background: rgba(248, 113, 113, 0.1);
 }
 
 .no-sessions {
   text-align: center;
   padding: 32px 16px;
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(15, 23, 42, 0.25);
   font-size: 12px;
 }
 
@@ -204,7 +204,7 @@
 .chat-messages::-webkit-scrollbar { width: 6px; }
 .chat-messages::-webkit-scrollbar-track { background: transparent; }
 .chat-messages::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 6px; }
-.chat-messages::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+.chat-messages::-webkit-scrollbar-thumb:hover { background: var(--color-border-strong); }
 
 /* ─── Message Bubbles ────────────────────────────────────── */
 .message {
@@ -239,7 +239,7 @@
   font-weight: 700;
 }
 .message.assistant .message-avatar {
-  background: linear-gradient(135deg, var(--color-accent), #0891b2);
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent));
   color: var(--color-surface);
 }
 
@@ -348,7 +348,7 @@
   display: flex;
   align-items: flex-end;
   gap: 10px;
-  background: #f8fafc;
+  background: var(--color-bg);
   border: 1.5px solid var(--color-border);
   border-radius: 14px;
   padding: 8px 8px 8px 16px;
@@ -416,7 +416,7 @@
   width: 72px;
   height: 72px;
   border-radius: 20px;
-  background: linear-gradient(135deg, var(--color-info-bg), #dbeafe);
+  background: linear-gradient(135deg, var(--color-info-bg), var(--color-info-border));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -486,7 +486,7 @@
     height: auto;
     max-height: 200px;
     border-right: none;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
   }
   .session-list-label { display: none; }
   .session-list { flex-direction: row; display: flex; gap: 8px; padding: 8px; overflow-x: auto; }

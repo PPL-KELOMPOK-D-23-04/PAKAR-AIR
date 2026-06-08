@@ -273,6 +273,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import { useAuthStore } from '@/stores/authStore'
 import {
@@ -281,6 +282,7 @@ import {
 } from 'lucide-vue-next'
 
 // ─── Tabs config ──────────────────────────────────────────────
+const router = useRouter()
 const authStore = useAuthStore()
 
 const activeTab = ref('profile')
@@ -348,10 +350,18 @@ function handleImageUpload(event) {
 }
 
 function resetForm() {
+  const currentName = authStore.currentUser?.full_name || ''
+  const hasChanges = form.value.nama !== currentName || selectedFile.value !== null
+  
+  if (!hasChanges) {
+    router.push(authStore.isAdmin ? '/admin' : '/dashboard')
+    return
+  }
+  
   errors.value = { nama: '', email: '' }
   previewImage.value = null
   selectedFile.value = null
-  form.value.nama = authStore.currentUser?.full_name || ''
+  form.value.nama = currentName
 }
 
 async function updateProfile() {
@@ -399,6 +409,13 @@ const passwordStrength = computed(() => {
 })
 
 function resetSecurityForm() {
+  const hasChanges = securityForm.value.oldPassword !== '' || securityForm.value.newPassword !== '' || securityForm.value.confirmPassword !== ''
+  
+  if (!hasChanges) {
+    router.push(authStore.isAdmin ? '/admin' : '/dashboard')
+    return
+  }
+
   securityForm.value = { oldPassword: '', newPassword: '', confirmPassword: '' }
   securityErrors.value = { oldPassword: '', newPassword: '', confirmPassword: '' }
 }

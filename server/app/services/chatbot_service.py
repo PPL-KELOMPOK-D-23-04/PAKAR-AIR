@@ -41,6 +41,7 @@ GEMINI_MODEL = "gemini-2.5-flash"
 
 def _get_client():
     """Initialize and return a Gemini client instance."""
+    # Use key from .env settings
     return genai.Client(api_key=settings.GEMINI_API_KEY)
 
 
@@ -148,6 +149,7 @@ def send_message(
 
     # 5. Call Gemini with Automatic Function Calling
     try:
+        print("DEBUG API KEY IS:", repr(settings.GEMINI_API_KEY))
         client = _get_client()
         
         # Prepare content list

@@ -20,6 +20,9 @@ from app.schemas.chatbot_schema import (
     ChatBotResponse,
 )
 from app.services import chatbot_service
+from app.config import settings
+
+print("===== AT STARTUP: GEMINI_API_KEY IS:", repr(settings.GEMINI_API_KEY), "=====")
 
 router = APIRouter()
 

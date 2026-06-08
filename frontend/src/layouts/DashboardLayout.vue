@@ -48,10 +48,13 @@
 
 
 
-      <div class="sidebar__section-label">Menu Utama</div>
+      <div class="sidebar__section-label">{{ isAdmin ? 'Menu Admin' : 'Menu Utama' }}</div>
 
       <!-- Nav -->
       <nav class="sidebar__nav" @click="isMobileMenuOpen = false">
+
+        <!-- User Sidebar -->
+        <template v-if="!isAdmin">
 
         <router-link to="/dashboard" class="sidebar__item" active-class="sidebar__item--active">
           <span class="sidebar__item-icon">
@@ -102,15 +105,59 @@
           <span class="sidebar__item-label">Profil</span>
           <span class="sidebar__item-pip" aria-hidden="true"></span>
         </router-link>
+        </template>
+
+        <!-- Admin Sidebar -->
+        <template v-else>
+          <router-link to="/admin" class="sidebar__item" exact-active-class="sidebar__item--active">
+            <span class="sidebar__item-icon">
+              <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+            </span>
+            <span class="sidebar__item-label">Dashboard</span>
+            <span class="sidebar__item-pip" aria-hidden="true"></span>
+          </router-link>
+
+          <router-link to="/admin/users" class="sidebar__item" active-class="sidebar__item--active">
+            <span class="sidebar__item-icon">
+              <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            </span>
+            <span class="sidebar__item-label">Kelola Pengguna</span>
+            <span class="sidebar__item-pip" aria-hidden="true"></span>
+          </router-link>
+
+          <router-link to="/admin/reports" class="sidebar__item" active-class="sidebar__item--active">
+            <span class="sidebar__item-icon">
+              <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </span>
+            <span class="sidebar__item-label">Laporan</span>
+            <span class="sidebar__item-pip" aria-hidden="true"></span>
+          </router-link>
+
+          <router-link to="/admin/chatbot" class="sidebar__item" active-class="sidebar__item--active">
+            <span class="sidebar__item-icon">
+              <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+              </svg>
+            </span>
+            <span class="sidebar__item-label">AI Chatbot</span>
+            <span class="sidebar__item-pip" aria-hidden="true"></span>
+          </router-link>
+        </template>
 
       </nav>
 
       <!-- Bottom area -->
       <div class="sidebar__bottom">
         <!-- Version info -->
-        <div class="sidebar__version">
-          <span class="sidebar__version-dot"></span>
-          <span>v2.1.0 · Sistem Aktif</span>
+        <div class="sidebar__version" :class="{ 'sidebar__version--error': !systemIsActive }">
+          <span class="sidebar__version-dot" :style="{ backgroundColor: systemIsActive ? 'var(--sb-accent)' : '#ef4444' }"></span>
+          <span>{{ systemStatus }}</span>
         </div>
 
         <button class="sidebar__logout" @click="handleLogout">
@@ -132,7 +179,7 @@
       <header class="topbar">
         <!-- Breadcrumb -->
         <div class="topbar__breadcrumb">
-          <span class="topbar__breadcrumb-root">Aplikasi</span>
+          <span class="topbar__breadcrumb-root">{{ isAdmin ? 'Admin' : 'Aplikasi' }}</span>
           <svg class="topbar__breadcrumb-sep" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
           </svg>
@@ -142,8 +189,8 @@
         <!-- Right actions -->
         <div class="topbar__right">
 
-          <!-- Notification -->
-          <router-link to="/notifications" class="topbar__icon-btn" aria-label="Notifikasi">
+          <!-- Notifications (only for regular users) -->
+          <router-link v-if="!isAdmin" to="/notifications" class="topbar__icon-btn" aria-label="Notifikasi">
             <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
@@ -202,6 +249,7 @@
       <!-- Page Content -->
       <main class="main-content">
         <slot />
+        <router-view />
       </main>
 
     </div>
@@ -209,8 +257,9 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
 import { useNotificationStore } from '@/stores/notificationStore'
 
@@ -230,7 +279,11 @@ const routeMap = {
   '/profile': 'Pengaturan Profil',
   '/artikel': 'Membaca Artikel Edukasi',
   '/artikel2': 'Membaca Artikel Edukasi',
-  '/artikel3': 'Membaca Artikel Edukasi'
+  '/artikel3': 'Membaca Artikel Edukasi',
+  '/admin': 'Ringkasan Sistem',
+  '/admin/users': 'Kelola Pengguna',
+  '/admin/reports': 'Laporan',
+  '/admin/chatbot': 'AI Chatbot'
 }
 
 const currentPageTitle = computed(() => {
@@ -244,6 +297,7 @@ async function handleLogout() {
 }
 
 const user = computed(() => authStore.currentUser || {})
+const isAdmin = computed(() => !!user.value?.is_admin)
 const userName = computed(() => {
   const u = user.value
   return u?.full_name || u?.username || (u?.email ? u.email.split('@')[0] : 'Pengguna')
@@ -259,6 +313,32 @@ const userInitial = computed(() => {
 })
 const userAvatar = computed(() => user.value?.avatar_url)
 const unreadCount = computed(() => notificationStore.unreadCount || 0)
+
+// ─── System Health Check ──────────────────────────────────────────────
+const systemStatus = ref('Memeriksa Sistem...')
+const systemIsActive = ref(true)
+let healthCheckInterval = null
+
+async function checkSystemHealth() {
+  try {
+    const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+    await axios.get(`${API_BASE}/`, { timeout: 2000 })
+    systemIsActive.value = true
+    systemStatus.value = 'Sistem Aktif - 0 kendala'
+  } catch (err) {
+    systemIsActive.value = false
+    systemStatus.value = 'Sistem Bermasalah - 1 kendala (API Down)'
+  }
+}
+
+onMounted(() => {
+  checkSystemHealth()
+  healthCheckInterval = setInterval(checkSystemHealth, 3000) // Poll every 3s
+})
+
+onUnmounted(() => {
+  if (healthCheckInterval) clearInterval(healthCheckInterval)
+})
 </script>
 
 <style scoped>
@@ -490,18 +570,15 @@ const unreadCount = computed(() => notificationStore.unreadCount || 0)
   background: var(--sb-hover-bg);
   color: var(--sb-text-bright);
 }
-.sidebar__item--active,
-.sidebar__item.router-link-active {
+.sidebar__item--active {
   background: var(--sb-active-bg) !important;
   color: var(--color-primary) !important;
   border-color: color-mix(in srgb, var(--color-primary) 12%, transparent) !important;
 }
-.sidebar__item--active .sidebar__item-icon,
-.sidebar__item.router-link-active .sidebar__item-icon {
+.sidebar__item--active .sidebar__item-icon {
   color: var(--color-primary);
 }
-.sidebar__item--active .sidebar__item-pip,
-.sidebar__item.router-link-active .sidebar__item-pip {
+.sidebar__item--active .sidebar__item-pip {
   opacity: 1;
   transform: translateY(-50%) scale(1);
 }
