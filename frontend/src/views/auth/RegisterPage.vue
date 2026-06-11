@@ -564,7 +564,7 @@ async function handleRegister() {
   padding: 0 40px 0 14px;
   background: rgba(15, 23, 42, 0.8);
   border: 1px solid rgba(37, 99, 235, 0.1);
-  border-radius: 11px;
+  border-radius: 8px;
   font-size: 14px;
   color: #e2e8f0;
   transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
@@ -578,6 +578,18 @@ async function handleRegister() {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 .field-input:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Fix Browser Autofill White Background Issue */
+.field-input:-webkit-autofill,
+.field-input:-webkit-autofill:hover, 
+.field-input:-webkit-autofill:focus, 
+.field-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 50px #0f172a inset !important;
+  -webkit-text-fill-color: #e2e8f0 !important;
+  transition: background-color 5000s ease-in-out 0s;
+  caret-color: #e2e8f0;
+}
+
 .field-input--wide { width: 100%; }
 .field-input--pw  { padding-right: 48px; }
 
@@ -692,7 +704,7 @@ async function handleRegister() {
   background: linear-gradient(135deg, #1e40af 0%, #2563eb 60%, #3b82f6 100%);
   color: #fff;
   border: none;
-  border-radius: 12px;
+  border-radius: 8px;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
