@@ -26,24 +26,31 @@
 
           <div class="brand-stats">
             <div class="stat-item">
-              <span class="stat-value">99.8%</span>
-              <span class="stat-label">Akurasi Deteksi</span>
+              <div class="stat-icon"><span class="material-icons">radar</span></div>
+              <div class="stat-text">
+                <span class="stat-value">99.8%</span>
+                <span class="stat-label">Akurasi Deteksi Citra</span>
+              </div>
             </div>
-            <div class="stat-divider"></div>
             <div class="stat-item">
-              <span class="stat-value">24/7</span>
-              <span class="stat-label">Monitoring Real-time</span>
+              <div class="stat-icon"><span class="material-icons">schedule</span></div>
+              <div class="stat-text">
+                <span class="stat-value">24/7</span>
+                <span class="stat-label">Monitoring Real-time</span>
+              </div>
             </div>
-            <div class="stat-divider"></div>
             <div class="stat-item">
-              <span class="stat-value">15+</span>
-              <span class="stat-label">Parameter Air</span>
+              <div class="stat-icon"><span class="material-icons">science</span></div>
+              <div class="stat-text">
+                <span class="stat-value">15+</span>
+                <span class="stat-label">Parameter Analisis Air</span>
+              </div>
             </div>
           </div>
 
           <div class="brand-badge">
             <span class="badge-dot"></span>
-            <span>Sistem Aktif &amp; Berjalan</span>
+            <span>Sistem Pakar Aktif & Berjalan</span>
           </div>
         </div>
       </div>
@@ -342,9 +349,9 @@ async function handleLogin() {
    BRAND PANEL — Left Side
    ============================================================ */
 .brand-panel {
-  flex: 0 0 340px;
+  flex: 0 0 380px;
   background: linear-gradient(160deg, #0f1f5c 0%, #071952 40%, #060e2a 100%);
-  padding: 48px 40px;
+  padding: 56px 48px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -395,58 +402,70 @@ async function handleLogin() {
 }
 
 .brand-name {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 800;
   color: #ffffff;
   letter-spacing: 0.5px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .brand-tagline {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
-  color: rgba(148, 163, 184, 0.85);
-  margin-bottom: 36px;
-  max-width: 220px;
+  color: #94a3b8;
+  margin-bottom: 48px;
+  max-width: 260px;
 }
 
-/* Stats */
+/* Stats - Vertical List Layout */
 .brand-stats {
   display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 32px;
-  padding: 20px;
-  background: rgba(37, 99, 235, 0.07);
-  border: 1px solid rgba(37, 99, 235, 0.12);
-  border-radius: 14px;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 48px;
 }
 
 .stat-item {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 16px;
 }
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(37, 99, 235, 0.1);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: 8px;
+  color: #60a5fa;
+  flex-shrink: 0;
+}
+
+.stat-icon .material-icons {
+  font-size: 20px;
+}
+
+.stat-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .stat-value {
+  font-family: var(--font-mono);
   font-size: 16px;
   font-weight: 700;
-  color: #60a5fa;
-  letter-spacing: -0.5px;
+  color: #f1f5f9;
+  letter-spacing: 0.5px;
 }
+
 .stat-label {
-  font-size: 10px;
-  color: rgba(148, 163, 184, 0.6);
-  text-align: center;
-  line-height: 1.3;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-}
-.stat-divider {
-  width: 1px;
-  height: 32px;
-  background: rgba(37, 99, 235, 0.2);
-  flex-shrink: 0;
+  font-size: 13px;
+  color: #94a3b8;
+  line-height: 1.4;
 }
 
 /* Active Badge */
@@ -534,7 +553,7 @@ async function handleLogin() {
 }
 .form-divider span {
   font-size: 11px;
-  color: #475569;
+  color: #64748b;
   white-space: nowrap;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -564,7 +583,7 @@ async function handleLogin() {
 .field-label {
   font-size: 12px;
   font-weight: 600;
-  color: #94a3b8;
+  color: #cbd5e1;
   letter-spacing: 0.4px;
   text-transform: uppercase;
 }
@@ -590,7 +609,7 @@ async function handleLogin() {
   padding: 0 44px 0 44px;
   background: rgba(15, 23, 42, 0.8);
   border: 1px solid rgba(37, 99, 235, 0.12);
-  border-radius: 12px;
+  border-radius: 8px;
   font-size: 14px;
   color: #e2e8f0;
   transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
@@ -606,6 +625,17 @@ async function handleLogin() {
 .field-input:focus + .field-check { opacity: 1; }
 .field-input:focus ~ .field-icon,
 .field-control:focus-within .field-icon { color: #3b82f6; }
+
+/* Fix Browser Autofill White Background Issue */
+.field-input:-webkit-autofill,
+.field-input:-webkit-autofill:hover, 
+.field-input:-webkit-autofill:focus, 
+.field-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 50px #0f172a inset !important;
+  -webkit-text-fill-color: #e2e8f0 !important;
+  transition: background-color 5000s ease-in-out 0s;
+  caret-color: #e2e8f0;
+}
 
 .field-input--pw { padding-right: 48px; }
 
@@ -673,7 +703,7 @@ async function handleLogin() {
   background: linear-gradient(135deg, #1e40af 0%, #2563eb 60%, #3b82f6 100%);
   color: #ffffff;
   border: none;
-  border-radius: 12px;
+  border-radius: 8px;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
