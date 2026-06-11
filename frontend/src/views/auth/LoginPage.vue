@@ -236,7 +236,7 @@ async function handleLogin() {
   position: relative;
   overflow: hidden;
   padding: 20px;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-sans);
 }
 
 /* Grid Pattern */

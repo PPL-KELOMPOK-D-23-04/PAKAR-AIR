@@ -162,10 +162,10 @@ onMounted(fetchReports)
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
 
 .admin-reports {
-  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  
   --h-rule: var(--color-border);
   --h-rule-2: var(--color-border-light);
   display: flex;
@@ -185,7 +185,7 @@ onMounted(fetchReports)
   flex-wrap: wrap;
 }
 .header-eyebrow {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -193,7 +193,7 @@ onMounted(fetchReports)
   margin: 0 0 6px;
 }
 .page-title {
-  font-family: var(--mono);
+  font-family: var(--font-sans);
   font-size: var(--font-size-xl);
   font-weight: 600;
   color: var(--color-text-primary);
@@ -207,7 +207,7 @@ onMounted(fetchReports)
   margin: 0;
 }
 .btn-export {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -241,7 +241,7 @@ onMounted(fetchReports)
 }
 .filter-group { display: flex; flex-direction: column; gap: 5px; }
 .filter-label {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -252,7 +252,7 @@ onMounted(fetchReports)
   padding: 7px 11px;
   border: 1px solid var(--h-rule);
   border-radius: 2px;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--color-text-primary);
   background: var(--color-bg);
@@ -274,7 +274,7 @@ onMounted(fetchReports)
   color: var(--color-surface);
   border: none;
   border-radius: 2px;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -290,7 +290,7 @@ onMounted(fetchReports)
   border-radius: 2px;
   background: var(--color-danger-bg);
   color: var(--color-danger-text);
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   margin-bottom: 14px;
 }
@@ -313,7 +313,7 @@ onMounted(fetchReports)
 .reports-table th {
   padding: 10px 14px;
   text-align: left;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -331,24 +331,25 @@ onMounted(fetchReports)
 .reports-table td { padding: 11px 14px; vertical-align: middle; }
 
 .cell-num {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--color-text-muted-light);
 }
 .td-user {
-  font-size: var(--font-size-sm);
+  font-family: var(--font-sans);
+  font-size: 13px;
   font-weight: 500;
   color: var(--color-text-primary);
 }
 .td-conf {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   color: var(--color-text-secondary);
   letter-spacing: 0.04em;
 }
 .td-date {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--color-text-muted-light);
 }
@@ -360,10 +361,10 @@ onMounted(fetchReports)
   gap: 5px;
   padding: 3px 9px;
   border-radius: 1px;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 500;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -381,7 +382,7 @@ onMounted(fetchReports)
   gap: 12px;
   padding: 60px;
   color: var(--color-text-muted);
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.06em;
 }
@@ -401,7 +402,7 @@ onMounted(fetchReports)
   padding: 60px 20px;
 }
 .empty-title {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-text-primary);
@@ -409,7 +410,7 @@ onMounted(fetchReports)
   letter-spacing: 0.04em;
 }
 .empty-sub {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--color-text-muted);
 }

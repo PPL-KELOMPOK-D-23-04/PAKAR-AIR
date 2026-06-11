@@ -355,10 +355,10 @@ onMounted(fetchUsers)
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
 
 .admin-users {
-  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  
   --h-rule: var(--color-border);
   --h-rule-2: var(--color-border-light);
   position: relative;
@@ -379,7 +379,7 @@ onMounted(fetchUsers)
   flex-wrap: wrap;
 }
 .header-eyebrow {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -387,7 +387,7 @@ onMounted(fetchUsers)
   margin: 0 0 6px;
 }
 .page-title {
-  font-family: var(--mono);
+  font-family: var(--font-sans);
   font-size: var(--font-size-xl);
   font-weight: 600;
   color: var(--color-text-primary);
@@ -413,7 +413,7 @@ onMounted(fetchUsers)
   padding: 5px 12px;
   border: 1px solid var(--h-rule);
   border-radius: 2px;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -429,7 +429,7 @@ onMounted(fetchUsers)
 .stat-dot--blue  { background: var(--color-accent); }
 .stat-dot--green { background: var(--color-success-text); }
 .stat-dot--red   { background: var(--color-danger-text); }
-.mono { font-family: var(--mono); }
+.mono { font-family: var(--font-mono); }
 
 /* ── Toolbar ── */
 .toolbar {
@@ -457,7 +457,7 @@ onMounted(fetchUsers)
   padding: 8px 11px 8px 32px;
   border: 1px solid var(--h-rule);
   border-radius: 2px;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   background: var(--color-surface);
   color: var(--color-text-primary);
@@ -474,7 +474,7 @@ onMounted(fetchUsers)
   padding: 8px 11px;
   border: 1px solid var(--h-rule);
   border-radius: 2px;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   background: var(--color-surface);
   color: var(--color-text-secondary);
@@ -490,7 +490,7 @@ onMounted(fetchUsers)
   background: var(--color-surface);
   border: 1px solid var(--h-rule);
   border-radius: 2px;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -513,7 +513,7 @@ onMounted(fetchUsers)
   border-radius: 2px;
   background: var(--color-danger-bg);
   color: var(--color-danger-text);
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   margin-bottom: 14px;
 }
@@ -537,7 +537,7 @@ onMounted(fetchUsers)
   background: var(--color-text-primary);
   color: var(--color-surface);
   border-radius: 2px;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.04em;
@@ -587,7 +587,7 @@ onMounted(fetchUsers)
 .users-table th {
   padding: 10px 14px;
   text-align: left;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -611,7 +611,7 @@ onMounted(fetchUsers)
 
 /* ── Cells ── */
 .cell-num {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--color-text-muted-light);
 }
@@ -625,7 +625,7 @@ onMounted(fetchUsers)
   height: 30px;
   border-radius: 50%;
   color: var(--color-surface);
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 600;
   display: flex;
@@ -634,35 +634,37 @@ onMounted(fetchUsers)
   flex-shrink: 0;
 }
 .user-name {
-  font-size: var(--font-size-sm);
+  font-family: var(--font-sans);
   font-weight: 500;
+  font-size: 13px;
   color: var(--color-text-primary);
+  line-height: 1.2;
 }
-.username-text {
-  font-family: var(--mono);
+.user-email {
+  font-family: var(--font-mono);
   font-size: 10px;
+  font-weight: 400;
   color: var(--color-text-muted);
   letter-spacing: 0.02em;
 }
 .date-text {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--color-text-muted-light);
 }
 
 /* ── Badges ── */
-.badge {
+.status-badge {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 3px 9px;
-  border-radius: 1px;
-  font-family: var(--mono);
+  padding: 4px 8px;
+  border-radius: 2px;
+  font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 500;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  white-space: nowrap;
+  border: 1px solid transparent;
 }
 .badge--admin    { background: var(--color-info-bg);    color: var(--color-info-text);    border: 1px solid var(--color-info-border); }
 .badge--user     { background: var(--color-bg); color: var(--color-text-muted);   border: 1px solid var(--h-rule); }
@@ -686,7 +688,7 @@ onMounted(fetchUsers)
   gap: 4px;
   padding: 5px 10px;
   border-radius: 2px;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.04em;
@@ -719,7 +721,7 @@ onMounted(fetchUsers)
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--color-text-muted-light);
   padding: 5px 8px;
@@ -745,7 +747,7 @@ onMounted(fetchUsers)
   background: var(--color-surface);
 }
 .empty-title {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-text-primary);
@@ -753,7 +755,7 @@ onMounted(fetchUsers)
   letter-spacing: 0.04em;
 }
 .empty-sub {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--color-text-muted);
 }
@@ -791,7 +793,7 @@ onMounted(fetchUsers)
 .modal-icon--warn    { background: var(--color-warning-bg); color: var(--color-warning-text); }
 .modal-icon--success { background: var(--color-success-bg); color: var(--color-success-text); }
 .modal-title {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 14px;
   font-weight: 600;
   color: var(--color-text-primary);
@@ -809,7 +811,7 @@ onMounted(fetchUsers)
   flex: 1;
   padding: 9px;
   border-radius: 2px;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.06em;

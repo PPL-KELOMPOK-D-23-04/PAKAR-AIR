@@ -305,13 +305,13 @@ onMounted(fetchHistory)
 /* ============================================================
    IMPORTS
    ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
 
 /* ============================================================
    LOCAL TOKENS
    ============================================================ */
 .history-view {
-  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  
   --h-rule: var(--color-border);
   --h-rule-light: var(--color-border-light);
   --h-good: var(--color-success);
@@ -345,7 +345,7 @@ onMounted(fetchHistory)
 }
 
 .header-eyebrow {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -354,7 +354,7 @@ onMounted(fetchHistory)
 }
 
 .workspace-title {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: var(--font-size-xl);
   font-weight: 600;
   color: var(--color-text-primary);
@@ -377,7 +377,7 @@ onMounted(fetchHistory)
 }
 
 .count-pill {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -393,7 +393,7 @@ onMounted(fetchHistory)
 }
 
 .btn-export {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -460,7 +460,7 @@ onMounted(fetchHistory)
   height: 100%;
   border: none;
   background: transparent;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 12px;
   color: var(--color-text-primary);
   outline: none;
@@ -488,7 +488,7 @@ onMounted(fetchHistory)
   height: 100%;
   border: none;
   background: transparent;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 12px;
   color: var(--color-text-secondary);
   outline: none;
@@ -554,10 +554,10 @@ onMounted(fetchHistory)
 }
 
 .th {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-text-muted);
   padding: 8px 0;
@@ -574,7 +574,7 @@ onMounted(fetchHistory)
   border-bottom: 1px solid var(--h-rule-light);
   display: flex;
   justify-content: space-between;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -615,7 +615,7 @@ onMounted(fetchHistory)
 
 /* Columns */
 .col-num {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 500;
   color: var(--color-text-muted);
@@ -653,21 +653,24 @@ onMounted(fetchHistory)
 }
 
 .source-name {
-  font-size: var(--font-size-sm);
+  font-family: var(--font-sans);
+  font-size: 13px;
   font-weight: 500;
   color: var(--color-text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: block;
+  margin-bottom: 3px;
+  letter-spacing: -0.01em;
 }
 
 .source-date {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
+  font-weight: 400;
   color: var(--color-text-muted);
   display: flex;
   align-items: center;
   gap: 4px;
+  letter-spacing: 0.02em;
 }
 
 .col-status {
@@ -676,16 +679,17 @@ onMounted(fetchHistory)
 }
 
 .status-badge {
+  font-family: var(--font-mono);
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 3px 8px;
+  padding: 4px 8px;
   border-radius: 2px;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
   white-space: nowrap;
 }
 
@@ -718,7 +722,7 @@ onMounted(fetchHistory)
 }
 
 .col-ph strong {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 13px;
   font-weight: 500;
   color: var(--color-text-primary);
@@ -726,14 +730,14 @@ onMounted(fetchHistory)
 }
 
 .ph-label {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.06em;
   color: var(--color-text-muted);
 }
 
 .ph-empty {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 12px;
   color: var(--color-text-muted-light);
 }
@@ -762,7 +766,7 @@ onMounted(fetchHistory)
 .fill-tidak_layak { background: var(--h-bad); }
 
 .conf-pct {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 500;
   color: var(--color-text-secondary);
@@ -796,7 +800,7 @@ onMounted(fetchHistory)
 }
 
 .page-info {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.08em;
   color: var(--color-text-muted);
@@ -833,7 +837,7 @@ onMounted(fetchHistory)
 }
 
 .page-num {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   width: 28px;
@@ -857,7 +861,7 @@ onMounted(fetchHistory)
 }
 
 .page-ellipsis {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--color-text-muted);
   padding: 0 4px;
@@ -889,7 +893,7 @@ onMounted(fetchHistory)
 }
 
 .state-label {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.06em;
   color: var(--color-text-muted);

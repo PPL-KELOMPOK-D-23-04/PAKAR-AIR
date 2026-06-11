@@ -74,11 +74,8 @@ const displayId = computed(() => {
 onMounted(async () => {
   try {
     const res = await axios.get(`/api/analysis/${route.params.id}`)
-    if (res.data && res.data.result) {
-      result.value = res.data.result
-    } else {
-      result.value = res.data
-    }
+    // Pass full response so PredictionResult can access image_input
+    result.value = res.data
   } catch (err) {
     console.error(err)
     error.value = 'Data analisis untuk ID ini tidak dapat ditemukan atau terjadi kesalahan server.'

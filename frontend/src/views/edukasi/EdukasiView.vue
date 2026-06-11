@@ -262,7 +262,7 @@ const goToArticle = (route) => { router.push(route) }
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   overflow: hidden;
-  border-radius: var(--radius-xl);
+  border-radius: 2px;
 }
 
 .hero-inner {
@@ -287,6 +287,7 @@ const goToArticle = (route) => { router.push(route) }
   display: flex;
   align-items: center;
   gap: 8px;
+  font-family: var(--font-mono);
   font-size: var(--font-size-xs);
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -304,7 +305,8 @@ const goToArticle = (route) => { router.push(route) }
 }
 
 .hero-title {
-  font-size: var(--font-size-3xl);
+  font-family: var(--font-sans);
+  font-size: 32px;
   font-weight: 800;
   color: var(--color-text-primary);
   margin: 0 0 16px 0;
@@ -317,7 +319,8 @@ const goToArticle = (route) => { router.push(route) }
 }
 
 .hero-desc {
-  font-size: 1.0625rem;
+  font-family: var(--font-sans);
+  font-size: 14px;
   color: var(--color-text-secondary);
   line-height: 1.65;
   margin: 0 0 24px 0;
@@ -334,7 +337,8 @@ const goToArticle = (route) => { router.push(route) }
   padding: 6px 14px;
   background: color-mix(in srgb, var(--color-primary) 8%, transparent);
   border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
-  border-radius: 20px;
+  border-radius: 2px;
+  font-family: var(--font-mono);
   font-size: var(--font-size-xs);
   font-weight: 600;
   color: var(--color-primary);
@@ -439,7 +443,8 @@ const goToArticle = (route) => { router.push(route) }
   padding: 12px 14px 12px 44px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border-radius: 2px;
+  font-family: var(--font-mono);
   font-size: var(--font-size-sm);
   color: var(--color-text-primary);
   transition: all 0.2s ease;
@@ -478,7 +483,8 @@ const goToArticle = (route) => { router.push(route) }
   padding: 7px 16px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: 20px;
+  border-radius: 2px;
+  font-family: var(--font-mono);
   font-size: var(--font-size-xs);
   font-weight: 600;
   color: var(--color-text-secondary);
@@ -535,7 +541,7 @@ const goToArticle = (route) => { router.push(route) }
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
   overflow: hidden;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
+  border-radius: 2px;
   background: var(--color-surface);
   position: relative;
   z-index: 1;
@@ -577,7 +583,8 @@ const goToArticle = (route) => { router.push(route) }
   align-items: center;
   gap: 6px;
   padding: 4px 12px;
-  border-radius: 20px;
+  border-radius: 2px;
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.03em;
@@ -610,6 +617,7 @@ const goToArticle = (route) => { router.push(route) }
   display: flex;
   align-items: center;
   gap: 5px;
+  font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 500;
   color: var(--color-text-muted);
@@ -617,7 +625,8 @@ const goToArticle = (route) => { router.push(route) }
 
 /* Typography */
 .article-title {
-  font-size: 1.125rem;
+  font-family: var(--font-sans);
+  font-size: 18px;
   font-weight: 700;
   color: var(--color-text-primary);
   margin: 0 0 12px 0;
@@ -631,7 +640,8 @@ const goToArticle = (route) => { router.push(route) }
 }
 
 .article-excerpt {
-  font-size: 0.9375rem;
+  font-family: var(--font-sans);
+  font-size: 14px;
   color: var(--color-text-secondary);
   line-height: 1.65;
   margin: 0 0 24px 0;
@@ -656,6 +666,7 @@ const goToArticle = (route) => { router.push(route) }
   display: flex;
   align-items: center;
   gap: 5px;
+  font-family: var(--font-mono);
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
   font-weight: 500;
@@ -665,6 +676,7 @@ const goToArticle = (route) => { router.push(route) }
   display: flex;
   align-items: center;
   gap: 4px;
+  font-family: var(--font-mono);
   color: var(--color-primary);
   font-size: var(--font-size-xs);
   font-weight: 700;
@@ -677,7 +689,7 @@ const goToArticle = (route) => { router.push(route) }
   justify-content: center;
   width: 22px;
   height: 22px;
-  border-radius: 50%;
+  border-radius: 2px;
   background: color-mix(in srgb, var(--color-primary) 10%, transparent);
   transition: background 0.2s, transform 0.2s;
 }
@@ -703,7 +715,7 @@ const goToArticle = (route) => { router.push(route) }
   gap: 18px;
   padding: 22px 24px;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
+  border-radius: 2px;
   background: var(--color-surface);
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
@@ -720,7 +732,7 @@ const goToArticle = (route) => { router.push(route) }
   justify-content: center;
   width: 54px;
   height: 54px;
-  border-radius: var(--radius-lg);
+  border-radius: 2px;
   flex-shrink: 0;
   transition: transform 0.25s ease;
 }
@@ -739,14 +751,16 @@ const goToArticle = (route) => { router.push(route) }
 .stat-info { display: flex; flex-direction: column; gap: 4px; }
 
 .stat-value {
-  font-size: 1rem;
+  font-family: var(--font-sans);
+  font-size: 16px;
   font-weight: 700;
   color: var(--color-text-primary);
   letter-spacing: -0.01em;
 }
 
 .stat-desc {
-  font-size: 0.875rem;
+  font-family: var(--font-sans);
+  font-size: 14px;
   color: var(--color-text-secondary);
   line-height: 1.45;
 }

@@ -18,7 +18,7 @@
 
         body {
             background: linear-gradient(145deg, #d4eef7 0%, #c2e3f0 100%);
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-sans);
             padding: 24px 20px;
             min-height: 100vh;
         }
@@ -187,7 +187,7 @@
             width: 200px;
             outline: none;
             background: transparent;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-sans);
         }
         .search-wrapper input::placeholder {
             color: #aac6d8;
@@ -264,7 +264,7 @@
             cursor: pointer;
             padding: 6px 0;
             transition: gap 0.2s;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-sans);
         }
 
         .btn-read i {
@@ -332,7 +332,7 @@
             gap: 6px;
             cursor: pointer;
             padding: 0;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-sans);
         }
 
         /* Modal Popup (simulasi baca artikel) */

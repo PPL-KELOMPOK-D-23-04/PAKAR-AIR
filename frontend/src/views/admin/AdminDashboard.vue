@@ -213,10 +213,10 @@ onMounted(fetchStats)
 /* ============================================================
    TOKENS (local — warna dari main.css via var())
    ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
 
 .admin-dashboard {
-  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  
   --h-rule: var(--color-border);
   --h-rule-2: var(--color-border-light);
 
@@ -240,7 +240,7 @@ onMounted(fetchStats)
 }
 
 .header-eyebrow {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -249,7 +249,7 @@ onMounted(fetchStats)
 }
 
 .page-title {
-  font-family: var(--mono);
+  font-family: var(--font-sans);
   font-size: var(--font-size-xl);
   font-weight: 600;
   color: var(--color-text-primary);
@@ -265,7 +265,7 @@ onMounted(fetchStats)
 }
 
 .btn-manage {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -338,7 +338,7 @@ onMounted(fetchStats)
 
 /* Semantic badge classes — warna dari main.css */
 .stat-badge {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -354,7 +354,7 @@ onMounted(fetchStats)
 .badge-danger  { background: var(--color-danger-bg);  color: var(--color-danger-text);  }
 
 .stat-num {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 26px;
   font-weight: 600;
   color: var(--color-text-primary);
@@ -363,14 +363,14 @@ onMounted(fetchStats)
 }
 
 .stat-lbl {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.1em;
   color: var(--color-text-muted);
 }
 
 .stat-sub {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--color-text-muted-light);
   position: absolute;
@@ -409,7 +409,7 @@ onMounted(fetchStats)
    SECTION EYEBROW
    ============================================================ */
 .section-eyebrow {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.18em;
@@ -505,7 +505,7 @@ onMounted(fetchStats)
 }
 
 .action-desc {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.04em;
   color: var(--color-text-muted);
@@ -513,7 +513,7 @@ onMounted(fetchStats)
 }
 
 .action-count {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -555,7 +555,7 @@ onMounted(fetchStats)
 }
 
 .status-head-title {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.12em;
@@ -564,7 +564,7 @@ onMounted(fetchStats)
 }
 
 .status-all-ok {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--color-success-text);
   display: flex;
@@ -600,7 +600,7 @@ onMounted(fetchStats)
 }
 
 .status-name {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--color-text-secondary);
 }
@@ -612,13 +612,13 @@ onMounted(fetchStats)
 }
 
 .status-meta {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--color-text-muted-light);
 }
 
 .status-ok {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -632,7 +632,7 @@ onMounted(fetchStats)
    ERROR
    ============================================================ */
 .error-strip {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   padding: 10px 16px;
   border: 1px solid var(--color-danger-border, #fecaca);
