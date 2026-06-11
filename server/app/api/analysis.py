@@ -65,7 +65,6 @@ async def submit_analysis(
         db=db,
     )
 
-    # Run ML/DL pipeline without blocking the async event loop
     from starlette.concurrency import run_in_threadpool
     result = await run_in_threadpool(analysis_service.run_analysis, analysis.id, db)
 
@@ -86,10 +85,6 @@ def get_history(
     current_user: Profile = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """
-    KF-07: Get analysis history for current user with optional filters.
-    Query params: category (layak|tidak_layak), date (YYYY-MM-DD), search (water_source keyword)
-    """
     items, total, total_pages = analysis_service.get_user_history(
         current_user.id, page, per_page, db,
         category=category,
@@ -97,10 +92,8 @@ def get_history(
         search=search,
     )
 
-    # Map models to Summary schema
     history_items = []
     for a in items:
-        # Extract display fields from manual_input.data_json
         manual_data = a.manual_input.data_json if a.manual_input else {}
         history_items.append({
             "id": a.id,
@@ -109,6 +102,7 @@ def get_history(
             "category": a.result.category if a.result else None,
             "confidence": a.result.confidence if a.result else None,
             "image_path": a.image_input.image_path if a.image_input else None,
+            "original_filename": a.image_input.original_filename if a.image_input else None,
             "ph": manual_data.get("ph"),
             "Turbidity": manual_data.get("Turbidity"),
         })

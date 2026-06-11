@@ -134,7 +134,7 @@
               </div>
 
               <div class="col-source">
-                <span class="source-name">{{ item.water_source || `Analisis #${String(item.id).substring(0, 8)}` }}</span>
+                <span class="source-name">{{ getDisplayFilename(item.original_filename) || `Analisis #${String(item.id).substring(0, 8)}` }}</span>
                 <span class="source-date"><Calendar size="10" /> {{ formatDate(item.created_at) }}</span>
               </div>
 
@@ -269,6 +269,12 @@ async function fetchHistory() {
   }
 }
 
+function getDisplayFilename(filename) {
+  if (!filename) return ''
+
+  return filename.replace(/\.[^/.]+$/, '')
+}
+
 function handleFilter() {
   currentPage.value = 1
   fetchHistory()
@@ -302,14 +308,7 @@ onMounted(fetchHistory)
 </script>
 
 <style scoped>
-/* ============================================================
-   IMPORTS
-   ============================================================ */
 
-
-/* ============================================================
-   LOCAL TOKENS
-   ============================================================ */
 .history-view {
   
   --h-rule: var(--color-border);
@@ -325,9 +324,6 @@ onMounted(fetchHistory)
   gap: 24px;
 }
 
-/* ============================================================
-   HEADER
-   ============================================================ */
 .workspace-header {
   display: flex;
   flex-direction: column;
