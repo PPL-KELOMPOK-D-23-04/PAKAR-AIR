@@ -5,7 +5,7 @@
 }
 
 .profile-page {
-  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-family: var(--font-sans);
   min-height: 100vh;
   display: flex;
   flex-direction: column;

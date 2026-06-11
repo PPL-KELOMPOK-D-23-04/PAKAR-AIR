@@ -222,40 +222,6 @@
             </div>
           </template>
 
-          <!-- ─── TAB: NOTIFIKASI ─── -->
-          <template v-if="activeTab === 'notifications'">
-            <div class="panel">
-              <div class="panel-head">
-                <span class="panel-title">Preferensi Notifikasi</span>
-                <span class="panel-hint">Email &amp; In-App</span>
-              </div>
-              <div class="panel-body" style="padding-bottom: 0">
-                <div
-                  v-for="item in notifItems"
-                  :key="item.key"
-                  class="notif-row"
-                >
-                  <div class="notif-info">
-                    <p class="notif-title">{{ item.title }}</p>
-                    <p class="notif-desc">{{ item.desc }}</p>
-                  </div>
-                  <label class="toggle">
-                    <input type="checkbox" v-model="notifPrefs[item.key]" />
-                    <span class="toggle-track" />
-                    <span class="toggle-thumb" />
-                  </label>
-                </div>
-              </div>
-              <div class="panel-foot" style="margin-top: 0">
-                <button class="btn-save" @click="updateNotifications" :disabled="isSavingNotif">
-                  <Loader2 v-if="isSavingNotif" size="12" class="spin" />
-                  <Bell v-else size="12" />
-                  {{ isSavingNotif ? 'Menyimpan...' : 'Simpan Preferensi' }}
-                </button>
-              </div>
-            </div>
-          </template>
-
         </div>
       </div>
 
@@ -289,8 +255,7 @@ const activeTab = ref('profile')
 
 const tabs = [
   { id: 'profile',       label: 'Profil Personal',    icon: User },
-  { id: 'security',      label: 'Keamanan & Sandi',   icon: ShieldCheck },
-  { id: 'notifications', label: 'Notifikasi',          icon: Bell },
+  { id: 'security',      label: 'Keamanan & Sandi',   icon: ShieldCheck }
 ]
 
 const joinDate = ref('12 Mar 2024')
@@ -445,38 +410,19 @@ async function updatePassword() {
     showToast(res.message || 'Gagal memperbarui kata sandi', true)
   }
 }
-
-// ─── Notifications ────────────────────────────────────────────
-const isSavingNotif = ref(false)
-
-const notifItems = [
-  { key: 'analysis',  title: 'Analisis Selesai',        desc: 'Pemberitahuan saat hasil analisis air sudah tersedia.' },
-  { key: 'education', title: 'Artikel & Edukasi Baru',  desc: 'Tips dan artikel terbaru seputar kualitas air.' },
-  { key: 'updates',   title: 'Pembaruan Sistem',        desc: 'Informasi terkait pemeliharaan dan fitur baru di aplikasi.' },
-]
-
-const notifPrefs = ref({ analysis: true, education: false, updates: true })
-
-function updateNotifications() {
-  isSavingNotif.value = true
-  setTimeout(() => {
-    isSavingNotif.value = false
-    showToast('Preferensi notifikasi berhasil disimpan')
-  }, 800)
-}
 </script>
 
 <style scoped>
 /* ============================================================
    IMPORTS
    ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
 
 /* ============================================================
    LOCAL TOKENS
    ============================================================ */
 .profile-view {
-  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  
   --h-rule: var(--color-border);
   --h-rule-2: var(--color-border-light);
 
@@ -506,7 +452,7 @@ function updateNotifications() {
 }
 
 .header-eyebrow {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -515,7 +461,7 @@ function updateNotifications() {
 }
 
 .workspace-title {
-  font-family: var(--mono);
+  font-family: var(--font-sans);
   font-size: var(--font-size-xl);
   font-weight: 600;
   color: var(--color-text-primary);
@@ -564,7 +510,7 @@ function updateNotifications() {
 
 .sidebar-label {
   display: block;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 500;
   letter-spacing: 0.16em;
@@ -595,7 +541,7 @@ function updateNotifications() {
   border: 1px solid transparent;
   background: transparent;
   border-radius: 2px;
-  font-family: var(--sans, inherit);
+  font-family: var(--font-mono);
   font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-text-muted);
@@ -622,7 +568,7 @@ function updateNotifications() {
 .nav-label { flex: 1; }
 
 .nav-badge {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -647,7 +593,7 @@ function updateNotifications() {
 }
 
 .sidebar-meta-label {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -655,7 +601,7 @@ function updateNotifications() {
 }
 
 .sidebar-meta-value {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   color: var(--color-text-secondary);
@@ -692,7 +638,7 @@ function updateNotifications() {
 }
 
 .panel-title {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.1em;
@@ -701,7 +647,7 @@ function updateNotifications() {
 }
 
 .panel-hint {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--color-text-muted);
 }
@@ -773,7 +719,7 @@ function updateNotifications() {
 }
 
 .avatar-name {
-  font-family: var(--mono);
+  font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 600;
   color: var(--color-text-primary);
@@ -781,7 +727,7 @@ function updateNotifications() {
 }
 
 .avatar-email {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--color-text-muted);
   margin: 0 0 8px;
@@ -791,7 +737,7 @@ function updateNotifications() {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -831,7 +777,7 @@ function updateNotifications() {
 }
 
 .field-label {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.1em;
@@ -845,7 +791,7 @@ function updateNotifications() {
   border: 1px solid var(--h-rule);
   background: var(--color-surface);
   border-radius: 2px;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 12px;
   color: var(--color-text-primary);
   outline: none;
@@ -869,13 +815,13 @@ function updateNotifications() {
 }
 
 .field-hint {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--color-text-muted);
 }
 
 .field-error {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--color-danger);
 }
@@ -884,7 +830,7 @@ function updateNotifications() {
    BUTTONS
    ============================================================ */
 .btn-save {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -910,7 +856,7 @@ function updateNotifications() {
 }
 
 .btn-cancel {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.06em;
   padding: 7px 14px;
@@ -946,7 +892,7 @@ function updateNotifications() {
 
 .sec-section-label {
   display: block;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 500;
   letter-spacing: 0.12em;
@@ -1100,7 +1046,7 @@ function updateNotifications() {
   padding: 10px 16px;
   border-radius: 2px;
   z-index: 1000;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.04em;

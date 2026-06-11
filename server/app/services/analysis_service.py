@@ -103,7 +103,7 @@ def run_analysis(analysis_id: UUID, db: Session) -> AnalysisResult:
             title="Hasil Analisis Selesai",
             message=f"Analisis air Anda selesai. Hasil: {category_label} "
                     f"(confidence: {result.confidence:.0%})",
-            notif_type="analysis_complete",
+            notif_type="success",
             db=db,
         )
 

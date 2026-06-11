@@ -336,6 +336,13 @@ async function checkSystemHealth() {
 
 onMounted(() => {
   checkSystemHealth()
+  if (!isAdmin.value) {
+    notificationStore.startPolling()
+  }
+})
+
+onUnmounted(() => {
+  notificationStore.stopPolling()
 })
 </script>
 
@@ -524,10 +531,11 @@ onMounted(() => {
 .sidebar__section-label {
   position: relative;
   z-index: 1;
+  font-family: var(--font-mono);
   font-size: 9.5px;
-  font-weight: 700;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   color: var(--sb-text-dim);
   padding: 14px 20px 6px;
   opacity: 0.55;
@@ -552,8 +560,10 @@ onMounted(() => {
   gap: 10px;
   padding: 9px 11px;
   border-radius: 9px;
-  font-size: 13px;
+  font-family: var(--font-mono);
+  font-size: 12px;
   font-weight: 500;
+  letter-spacing: 0.04em;
   color: var(--sb-text-mid);
   text-decoration: none;
   border: 1px solid transparent;
@@ -706,10 +716,11 @@ onMounted(() => {
 .topbar__breadcrumb {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  font-family: var(--font-sans);
 }
 .topbar__breadcrumb-root {
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--color-text-muted);
 }
@@ -721,6 +732,7 @@ onMounted(() => {
   font-size: 13px;
   font-weight: 600;
   color: var(--color-text-primary);
+  letter-spacing: -0.02em;
 }
 
 /* Right cluster */

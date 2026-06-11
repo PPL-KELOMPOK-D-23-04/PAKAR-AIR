@@ -497,6 +497,7 @@ const steps = [
   background: rgba(255,255,255,.1);
   border: 1px solid rgba(255,255,255,.25);
   color: #ffffff;
+  font-family: var(--font-mono);
   font-size: 11.5px;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -520,6 +521,7 @@ const steps = [
 
 /* Title */
 .cta-title {
+  font-family: var(--font-sans);
   font-size: clamp(22px, 2.4vw, 28px);
   font-weight: 700;
   color: #f0f9ff;

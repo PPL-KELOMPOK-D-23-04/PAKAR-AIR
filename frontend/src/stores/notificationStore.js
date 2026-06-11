@@ -9,9 +9,24 @@ export const useNotificationStore = defineStore('notification', {
     unreadCount: 0,
     isLoading: false,
     error: null,
+    pollingInterval: null
   }),
 
   actions: {
+    startPolling(intervalMs = 10000) {
+      this.fetchNotifications()
+      if (this.pollingInterval) clearInterval(this.pollingInterval)
+      this.pollingInterval = setInterval(() => {
+        this.fetchNotifications()
+      }, intervalMs)
+    },
+
+    stopPolling() {
+      if (this.pollingInterval) {
+        clearInterval(this.pollingInterval)
+        this.pollingInterval = null
+      }
+    },
     async fetchNotifications() {
       this.isLoading = true
       this.error = null

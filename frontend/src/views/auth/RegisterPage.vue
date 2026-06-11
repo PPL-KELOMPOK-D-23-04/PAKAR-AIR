@@ -325,7 +325,7 @@ async function handleRegister() {
   position: relative;
   overflow: hidden;
   padding: 24px 16px;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-sans);
 }
 
 /* Grid Pattern */

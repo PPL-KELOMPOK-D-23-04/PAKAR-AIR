@@ -319,10 +319,9 @@ function renderMarkdown(text) {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
 
 .chatbot-page {
-  --mono: 'IBM Plex Mono', ui-monospace, monospace;
   --h-rule: var(--color-border);
   --h-rule-2: var(--color-border-light);
   --sidebar-w: 240px;
@@ -363,7 +362,7 @@ function renderMarkdown(text) {
   color: var(--color-surface);
   border: none;
   border-radius: 2px;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -375,7 +374,7 @@ function renderMarkdown(text) {
 
 .sidebar-label {
   padding: 12px 14px 6px;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -391,7 +390,7 @@ function renderMarkdown(text) {
 
 .no-sessions {
   padding: 20px 14px;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--color-text-muted-light);
   text-align: center;
@@ -416,6 +415,7 @@ function renderMarkdown(text) {
 
 .session-info { flex: 1; min-width: 0; }
 .session-title {
+  font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 500;
   color: var(--color-text-primary);
@@ -425,7 +425,7 @@ function renderMarkdown(text) {
   margin-bottom: 2px;
 }
 .session-date {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
   color: var(--color-text-muted-light);
   letter-spacing: 0.04em;
@@ -460,7 +460,7 @@ function renderMarkdown(text) {
   gap: 8px;
 }
 .sidebar-footer-label {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.1em;
   color: var(--color-text-muted-light);
@@ -506,18 +506,18 @@ function renderMarkdown(text) {
   background: var(--color-bg);
 }
 .header-title {
-  font-family: var(--mono);
-  font-size: 12px;
-  font-weight: 600;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
   color: var(--color-text-primary);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   margin-bottom: 2px;
 }
 .header-status {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--color-text-muted);
   letter-spacing: 0.04em;
@@ -541,7 +541,7 @@ function renderMarkdown(text) {
   background: var(--color-danger-bg);
   border-bottom: 1px solid var(--color-danger-border);
   color: var(--color-danger-text);
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   flex-shrink: 0;
 }
@@ -578,7 +578,7 @@ function renderMarkdown(text) {
   background: var(--color-bg);
 }
 .empty-title {
-  font-family: var(--mono);
+  font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 600;
   color: var(--color-text-primary);
@@ -604,7 +604,7 @@ function renderMarkdown(text) {
   background: var(--color-surface);
   border: 1px solid var(--h-rule);
   border-radius: 2px;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 500;
   color: var(--color-text-secondary);
@@ -645,10 +645,10 @@ function renderMarkdown(text) {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-weight: 400;
+  letter-spacing: 0.06em;
   flex-shrink: 0;
 }
 .msg-avatar--user {
@@ -667,7 +667,9 @@ function renderMarkdown(text) {
   padding: 11px 14px;
   border: 1px solid var(--h-rule);
   border-radius: 2px;
+  font-family: var(--font-sans);
   font-size: var(--font-size-sm);
+  font-weight: 400;
   color: var(--color-text-primary);
   line-height: 1.65;
   background: var(--color-surface);
@@ -681,14 +683,14 @@ function renderMarkdown(text) {
 .msg-content :deep(p:last-child) { margin-bottom: 0; }
 .msg-content :deep(ul)     { padding-left: 18px; margin: 6px 0; color: inherit; }
 .msg-content :deep(li)     { margin-bottom: 4px; color: inherit; }
-.msg-content :deep(code)   { font-family: var(--mono); font-size: 11px; background: rgba(0,0,0,0.07); padding: 1px 5px; border-radius: 2px; }
+.msg-content :deep(code)   { font-family: var(--font-mono); font-size: 11px; background: rgba(0,0,0,0.07); padding: 1px 5px; border-radius: 2px; }
 .msg-content :deep(pre)    { background: var(--color-text-primary); border-radius: 2px; padding: 12px; margin: 8px 0; overflow-x: auto; }
 .msg-content :deep(pre code) { background: none; color: var(--color-border); font-size: 11px; }
 .msg-content :deep(strong) { font-weight: 600; color: inherit; }
 .msg-content :deep(em)     { color: inherit; }
 
 .msg-time {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
   color: var(--color-text-muted-light);
   letter-spacing: 0.04em;
@@ -749,7 +751,7 @@ function renderMarkdown(text) {
   font-size: var(--font-size-sm);
   color: var(--color-text-primary);
   line-height: 1.5;
-  font-family: inherit;
+  font-family: var(--font-sans);
   min-height: 20px;
   max-height: 120px;
 }
@@ -772,7 +774,7 @@ function renderMarkdown(text) {
 .btn-send:hover:not(:disabled) { opacity: 0.8; }
 .btn-send:disabled { opacity: 0.35; cursor: not-allowed; }
 .input-hint {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 9px;
   color: var(--color-text-muted-light);
   letter-spacing: 0.06em;

@@ -37,18 +37,22 @@
   --text-sidebar-admin-logout: #dc2626;
 
   /* Semantic Colors */
+  --color-success: #10b981;
   --color-success-bg: #f0fdf4;
   --color-success-border: #bbf7d0;
   --color-success-text: #166534;
 
+  --color-danger: #ef4444;
   --color-danger-bg: #fef2f2;
   --color-danger-border: #fecaca;
   --color-danger-text: #991b1b;
 
+  --color-warning: #f59e0b;
   --color-warning-bg: #fffbeb;
   --color-warning-border: #fde68a;
   --color-warning-text: #92400e;
 
+  --color-info: #3b82f6;
   --color-info-bg: #eff6ff;
   --color-info-border: #bfdbfe;
   --color-info-text: #1e40af;
@@ -76,6 +80,7 @@
 
   /* Typography */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
   --font-size-xs: 11px;
   --font-size-sm: 12px;
   --font-size-base: 13px;
@@ -102,11 +107,22 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* 3. Typography */
-h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; color: var(--color-text-primary); }
-p { color: var(--color-text-secondary); margin-bottom: 1rem; }
-a { color: var(--color-accent); text-decoration: none; transition: color var(--transition-fast); }
+/* 3. Typography Utilities */
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-sans); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; color: var(--color-text-primary); }
+p { font-family: var(--font-sans); color: var(--color-text-secondary); margin-bottom: 1rem; }
+a { font-family: var(--font-sans); color: var(--color-accent); text-decoration: none; transition: color var(--transition-fast); }
 a:hover { color: var(--color-accent-hover); }
+
+/* Typography Tiers (PAKAR-AIR Design System) */
+.type-eyebrow-section { font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; }
+.type-eyebrow-page { font-family: var(--font-mono); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+.type-table-header { font-family: var(--font-mono); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.type-tab { font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.type-btn-primary { font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.06em; }
+.type-btn-ghost { font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.04em; }
+.type-input { font-family: var(--font-mono); font-weight: 400; letter-spacing: 0.02em; }
+.type-body { font-family: var(--font-sans); font-weight: 400; letter-spacing: 0.01em; }
+.type-title { font-family: var(--font-sans); font-weight: 600; letter-spacing: -0.02em; }
 
 /* 4. Scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
@@ -129,6 +145,7 @@ a:hover { color: var(--color-accent-hover); }
   align-items: center;
   justify-content: center;
   gap: 8px;
+  font-family: var(--font-mono);
   font-size: var(--font-size-sm);
   font-weight: 500;
   border-radius: var(--radius-md);
@@ -146,6 +163,7 @@ a:hover { color: var(--color-accent-hover); }
   color: #ffffff;
   border-color: #1e40af;
   box-shadow: var(--shadow-sm);
+  letter-spacing: 0.06em;
 }
 .btn--primary:hover:not(:disabled) { background: #1d3a9e; box-shadow: 0 2px 6px rgba(30, 64, 175, 0.3); }
 .btn--primary:active { background: #1e3a8a; box-shadow: none; }
@@ -155,6 +173,7 @@ a:hover { color: var(--color-accent-hover); }
   color: #374151;
   border-color: #d1d5db;
   box-shadow: var(--shadow-sm);
+  letter-spacing: 0.04em;
 }
 .btn--secondary:hover:not(:disabled) { background: #f9fafb; border-color: #9ca3af; }
 .btn--secondary:active { background: #f1f5f9; }
@@ -173,7 +192,9 @@ a:hover { color: var(--color-accent-hover); }
 .form-input {
   width: 100%;
   padding: 8px 11px;
+  font-family: var(--font-mono);
   font-size: 13px;
+  letter-spacing: 0.02em;
   color: #1a202c;
   background: #ffffff;
   border: 1px solid #cbd5e1;
@@ -194,8 +215,11 @@ a:hover { color: var(--color-accent-hover); }
   display: flex;
   align-items: baseline;
   gap: 4px;
-  font-size: 12px;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: #374151;
   margin-bottom: 5px;
 }

@@ -1,20 +1,19 @@
 <template>
   <div class="confidence-gauge">
     <div class="gauge-header">
-      <span class="gauge-title">Akurasi Prediksi</span>
+      <div class="gauge-title-group">
+        <span class="gauge-title">Akurasi Prediksi</span>
+        <span class="gauge-desc">Kepercayaan sistem terhadap hasil analisis ini.</span>
+      </div>
       <span class="gauge-value" :class="labelClass">{{ percent }}%</span>
     </div>
+    
     <div class="gauge-track">
       <div 
         class="gauge-fill" 
         :class="gaugeClass"
         :style="{ width: percent + '%' }"
-      >
-        <div class="gauge-glow" :class="glowClass"></div>
-      </div>
-    </div>
-    <div class="gauge-footer">
-      <span class="gauge-desc">Kepercayaan sistem terhadap hasil analisis ini.</span>
+      ></div>
     </div>
   </div>
 </template>
@@ -27,7 +26,6 @@ const props = defineProps({
   category: { type: String, default: '' },
 })
 
-// Accept 0–1 or 0–100
 const percent = computed(() => {
   const v = props.value > 1 ? props.value : props.value * 100
   return Math.round(Math.min(100, Math.max(0, v)))
@@ -38,13 +36,6 @@ const gaugeClass = computed(() => {
   if (props.category === 'tidak_layak') return 'bg-warning'
   if (props.category === 'tercemar') return 'bg-danger'
   return 'bg-primary'
-})
-
-const glowClass = computed(() => {
-  if (props.category === 'layak') return 'glow-success'
-  if (props.category === 'tidak_layak') return 'glow-warning'
-  if (props.category === 'tercemar') return 'glow-danger'
-  return 'glow-primary'
 })
 
 const labelClass = computed(() => {
@@ -59,85 +50,64 @@ const labelClass = computed(() => {
 .confidence-gauge {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   width: 100%;
 }
 
 .gauge-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: flex-start;
+}
+
+.gauge-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .gauge-title {
-  font-size: var(--font-size-sm);
+  font-family: var(--font-sans);
+  font-size: 14px;
   font-weight: 600;
   color: var(--color-text-primary);
 }
 
+.gauge-desc {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
 .gauge-value {
-  font-size: var(--font-size-lg);
+  font-family: var(--font-mono);
+  font-size: 18px;
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.2;
 }
 
 .gauge-track {
   width: 100%;
-  height: 10px;
+  height: 8px;
   background: var(--color-border-light);
-  border-radius: var(--radius-full);
+  border-radius: 2px;
   overflow: hidden;
-  position: relative;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .gauge-fill {
   height: 100%;
-  border-radius: var(--radius-full);
-  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
+  border-radius: 2px;
+  transition: width 1s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* Base Colors */
+/* Strict Solid Colors for Corporate Look */
 .bg-success { background-color: var(--color-success); }
 .bg-warning { background-color: var(--color-warning); }
 .bg-danger { background-color: var(--color-danger); }
 .bg-primary { background-color: var(--color-primary); }
 
-.text-success { color: var(--color-success-text); }
-.text-warning { color: var(--color-warning-text); }
-.text-danger { color: var(--color-danger-text); }
+.text-success { color: var(--color-success); }
+.text-warning { color: color-mix(in srgb, var(--color-warning) 80%, black); }
+.text-danger { color: var(--color-danger); }
 .text-primary { color: var(--color-primary); }
-
-/* Glow Effects */
-.gauge-glow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 0.3;
-  animation: pulse 2s ease-in-out infinite alternate;
-}
-
-.glow-success { background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent); }
-.glow-warning { background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent); }
-.glow-danger { background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent); }
-.glow-primary { background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent); }
-
-.gauge-footer {
-  display: flex;
-  justify-content: space-between;
-}
-
-.gauge-desc {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
-}
-
-@keyframes pulse {
-  0% { opacity: 0.2; transform: translateX(-100%); }
-  100% { opacity: 0.5; transform: translateX(100%); }
-}
 </style>

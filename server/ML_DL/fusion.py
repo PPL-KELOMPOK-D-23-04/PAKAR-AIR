@@ -49,23 +49,22 @@ def _generate_explanation(dl_result, ml_result, score, category) -> str:
     detections = dl_result.get("detections", [])
     if detections:
         labels = [f"{d['label']} ({d['confidence']:.0%})" for d in detections[:5]]
-        parts.append(f"Analisis citra: terdeteksi {', '.join(labels)}.")
+        parts.append(f"• Analisis Citra (Deep Learning): Terdeteksi {', '.join(labels)}.")
     else:
-        parts.append("Analisis citra: tidak ada objek terdeteksi.")
+        parts.append("• Analisis Citra (Deep Learning): Tidak ada objek signifikan yang terdeteksi.")
 
     # ML explanation
     ml_cat = ml_result.get("category")
     ml_conf = ml_result.get("confidence", 0)
     if ml_cat:
-        status = "layak" if ml_cat == "layak" else "tidak layak"
-        parts.append(f"Analisis data manual: air {status} ({ml_conf:.0%}).")
+        status = "LAYAK" if ml_cat == "layak" else "TIDAK LAYAK"
+        parts.append(f"• Analisis Parameter (Machine Learning): Diprediksi {status} dengan confidence {ml_conf:.0%}.")
 
     # Final
-    final_status = "LAYAK DIGUNAKAN" if category == "layak" else "TIDAK LAYAK DIGUNAKAN"
-    parts.append(f"Hasil akhir (DL×{DL_WEIGHT} + ML×{ML_WEIGHT}): {final_status} "
-                 f"dengan confidence {score:.0%}.")
+    final_status = "LAYAK" if category == "layak" else "TIDAK LAYAK"
+    parts.append(f"• Kesimpulan Akhir (Pembobotan DL {DL_WEIGHT*100:.0f}% + ML {ML_WEIGHT*100:.0f}%): Kualitas air dinyatakan {final_status} ({score:.0%}).")
 
-    return " ".join(parts)
+    return "\n".join(parts)
 
 
 def _generate_recommendation(category, dl_result, ml_result) -> str:
