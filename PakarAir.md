@@ -1,7 +1,7 @@
 # 📘 PAKAR-AIR — System Documentation
 
-**Version:** 1.0.0
-**Last Updated:** 29 Mei 2026
+**Version:** 1.1.0
+**Last Updated:** 11 Juni 2026
 **Classification:** Internal — Development Team Only
 
 > **Single Source of Truth** untuk seluruh pengembangan sistem PAKAR-AIR.
@@ -223,9 +223,10 @@ Sistem ini mencakup:
 ### 2.1.2 State Management
 
 - **Pinia 3** dengan Options API style (`defineStore` + `state/getters/actions`).
-- Dua store utama:
+- Tiga store utama:
   - `authStore` — mengelola token, user session, login/logout.
   - `analysisStore` — mengelola state image, manualData (9 parameter), dan result.
+  - `notificationStore` — mengelola daftar notifikasi, unread count, dan polling.
 - Token disimpan di `sessionStorage` dengan key:
   - `pakar_air_token` (primary)
   - `token` (fallback)
@@ -305,6 +306,7 @@ components/
 | `/dashboard` | `DashboardPage.vue` | DashboardLayout | Required |
 | `/analysis` | `AnalysisView.vue` | DashboardLayout | Required |
 | `/history` | `HistoryView.vue` | DashboardLayout | Required |
+| `/dashboard/history/:id` | `HistoryDetailView.vue` | DashboardLayout | Required |
 | `/education` | `EdukasiView.vue` | DashboardLayout | Public |
 | `/artikel` | `HomeArtikel.vue` | — | Public |
 | `/artikel2` | `HomeArtikel2.vue` | — | Public |
@@ -570,7 +572,8 @@ frontend/
     ├── stores/                 # Pinia state stores
     │   ├── analysisStore.js    # State: image, manualData, result
     │   ├── authStore.js        # State: user, token, login/logout
-    │   └── counter.js          # Unused boilerplate (can be removed)
+    │   ├── counter.js          # Unused boilerplate (can be removed)
+    │   └── notificationStore.js # State: notifications, unreadCount, polling
     └── views/                  # Page-level components
         ├── RegisterPage.vue    # (Duplicate? Also in auth/)
         ├── admin/
@@ -584,6 +587,7 @@ frontend/
         ├── dashboard/
         │   ├── AnalysisView.vue    # Upload + Input + Result page
         │   ├── DashboardPage.vue   # Main user dashboard
+        │   ├── HistoryDetailView.vue # Single analysis detail view
         │   ├── HistoryView.vue     # Analysis history list
         │   ├── NotificationView.vue # Notifications page
         │   └── ProfileView.vue     # User profile page
@@ -710,11 +714,11 @@ PAKAR-AIR mengadopsi karakter desain **Dashboard SaaS Modern** yang menggabungka
 | `--sidebar-width` | `220px` | Lebar sidebar tetap (DashboardLayout) |
 | `--sidebar-width-collapsed` | `72px` | Lebar sidebar collapsed (AdminLayout) |
 | `--topbar-height` | `56px` | Tinggi topbar sticky |
-| `--content-max-width` | `1100px` | Lebar maksimum konten utama |
+| `--content-max-width` | `1200px` | Lebar maksimum konten utama |
 | `--content-padding` | `28px` | Padding area konten |
-| `--page-gap` | `16px` | Gap antar section utama |
-| `--card-gap` | `16px` | Gap antar kartu dalam grid |
-| `--section-gap` | `24px` | Gap antar section besar |
+| `--page-gap` | `24px` | Gap antar section utama |
+| `--card-gap` | `20px` | Gap antar kartu dalam grid |
+| `--section-gap` | `32px` | Gap antar section besar |
 
 ### 4.2.2 Grid System
 
@@ -740,10 +744,11 @@ PAKAR-AIR mengadopsi karakter desain **Dashboard SaaS Modern** yang menggabungka
 
 | Token | HEX | RGB | Penggunaan |
 |---|---|---|---|
-| `--color-bg` | `#f3f6fb` | `243, 246, 251` | Background utama aplikasi |
+| `--color-bg` | `#f8fafc` | `248, 250, 252` | Background utama aplikasi |
 | `--color-surface` | `#ffffff` | `255, 255, 255` | Surface kartu, sidebar, topbar |
 | `--color-border` | `#e2e8f0` | `226, 232, 240` | Border utama kartu dan divider |
-| `--color-border-light` | `#eef0f4` | `238, 240, 244` | Border subtle/secondary |
+| `--color-border-light` | `#f1f5f9` | `241, 245, 249` | Border subtle/secondary |
+| `--color-border-strong` | `#cbd5e1` | `203, 213, 225` | Border kuat untuk input/form |
 
 ### 4.3.2 Text Colors
 
@@ -774,13 +779,14 @@ PAKAR-AIR mengadopsi karakter desain **Dashboard SaaS Modern** yang menggabungka
 
 ### 4.3.4 Semantic Colors
 
-| Kategori | Background | Border | Text | Badge BG |
+Semua semantic color tersedia sebagai CSS variable (`--color-{semantic}`). Contoh: `--color-success`, `--color-success-bg`, `--color-success-border`, `--color-success-text`.
+
+| Kategori | Base Color | Background | Border | Text |
 |---|---|---|---|---|
-| **Success** | `#f0fdf4` | `#bbf7d0` | `#166534` | `#dcfce7` |
-| **Danger** | `#fef2f2` | `#fecaca` | `#991b1b` | `#fee2e2` |
-| **Warning** | `#fffbeb` | `#fde68a` | `#92400e` | `#fef3c7` |
-| **Info** | `#eff6ff` | `#bfdbfe` | `#1e40af` | `#dbeafe` |
-| **Neutral** | `#f1f5f9` | `#e2e8f0` | `#475569` | `#f1f5f9` |
+| **Success** | `#10b981` | `#f0fdf4` | `#bbf7d0` | `#166534` |
+| **Danger** | `#ef4444` | `#fef2f2` | `#fecaca` | `#991b1b` |
+| **Warning** | `#f59e0b` | `#fffbeb` | `#fde68a` | `#92400e` |
+| **Info** | `#3b82f6` | `#eff6ff` | `#bfdbfe` | `#1e40af` |
 
 ### 4.3.5 Sidebar Colors (AdminLayout)
 
@@ -801,10 +807,11 @@ PAKAR-AIR mengadopsi karakter desain **Dashboard SaaS Modern** yang menggabungka
 ### 4.4.1 Font Family
 
 ```css
---font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+--font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+--font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 ```
 
-**Inter** adalah primary font. Harus di-load via Google Fonts atau self-hosted. Fallback ke system fonts.
+**Inter** adalah primary font untuk body text. **IBM Plex Mono** digunakan untuk label teknis, data numerik, dan kode. Harus di-load via Google Fonts atau self-hosted. Fallback ke system fonts.
 
 ### 4.4.2 Type Scale
 
@@ -1376,13 +1383,13 @@ Judul berubah secara dinamis:
 
 **Desktop (1024px – 1919px)**:
 - Sidebar: Full width (`220px` / `240px`).
-- Content max-width: `1100px`.
+- Content max-width: `1200px`.
 - Stats grid: `3 kolom`.
 - Steps grid: `3 kolom`.
 - Form grid: `2 kolom`.
 
 **Desktop XL (1920px+)**:
-- Content tetap di `max-width: 1100px` untuk readability.
+- Content tetap di `max-width: 1200px` untuk readability.
 - Centering horizontal dengan side whitespace.
 
 ### 4.11.3 CSS Breakpoint Implementation
@@ -3074,6 +3081,7 @@ jobs:
 
 | Tanggal | Versi | Penulis | Perubahan |
 |---|---|---|---|
+| 2026-06-11 | 1.1.0 | AI Agent (Antigravity) | Update: color system (semantic base colors, --color-bg, --font-mono), notificationStore, HistoryDetailView route, fusion.py explanation format (bullet-point), login/register autofill fix, brand panel layout |
 | 2026-05-29 | 1.0.0 | AI Agent (Antigravity) | Initial documentation — full system documentation |
 
 ---
