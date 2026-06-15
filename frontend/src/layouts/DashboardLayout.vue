@@ -323,7 +323,7 @@ async function checkSystemHealth() {
     const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
 
     await axios.get(`${API_BASE}/`, {
-      timeout: 2000
+      timeout: 10000
     })
 
     systemIsActive.value = true
